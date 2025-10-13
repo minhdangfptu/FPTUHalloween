@@ -10,6 +10,16 @@ const me = wrap(async (req, res) => {
   return res.json(profile)
 })
 
-module.exports = { me }
+const updateMe = wrap(async (req, res) => {
+  const updated = await svc.editUserProfile(req.user.id, req.body)
+  return res.json(updated)
+})
+
+const changePassword = wrap(async (req, res) => {
+  const result = await svc.changePassword(req.user.id, req.body)
+  return res.json(result)
+})
+
+module.exports = { me, updateMe, changePassword }
 
 
