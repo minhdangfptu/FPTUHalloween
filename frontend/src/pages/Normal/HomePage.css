@@ -1,0 +1,200 @@
+/* src/pages/halloween-landing.css */
+@font-face {
+  font-family: 'Midnight Minute';
+  src: url('../assets/fonts/SVN-MidnightMinutes.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.fptu-halloween-page {
+  background: #0f0f10;
+  color: #f3f4f6;
+}
+
+.fptu-halloween-hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.fptu-halloween-hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fptu-halloween-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    80% 60% at 50% 50%,
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.75)
+  );
+}
+.fptu-halloween-hero__content {
+  position: relative;
+  max-width: 900px;
+  padding: 0 20px;
+}
+.fptu-halloween-hero h1 {
+  font-family: 'Midnight Minute', sans-serif;
+  font-size: clamp(28px, 4vw, 56px);
+  margin: 0 0 12px;
+  color: #ff0000;
+  text-shadow: 0 0 18px rgba(255, 90, 0, 0.55);
+}
+.fptu-halloween-hero p {
+  font-size: clamp(16px, 2vw, 22px);
+  opacity: 0.9;
+}
+.fptu-halloween-btn {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  margin: 16px 10px 0;
+}
+.fptu-halloween-btn--primary {
+  background:  #ff0000;
+  color: #fff;
+  box-shadow: 0 0 16px rgba(255, 0, 120, 0.35);
+}
+.fptu-halloween-btn--ghost {
+  border: 1px solid #ffffff40;
+  color: #fff;
+}
+
+.fptu-halloween-section {
+  padding: 72px 20px;
+  background: #141416;
+}
+.fptu-halloween-section--dark {
+  background: #101113;
+}
+.fptu-halloween-section h2 {
+  text-align: center;
+  color: #ff6b00;
+  margin: 0 0 22px;
+}
+.fptu-halloween-section__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.fptu-halloween-link {
+  color: #ff6b00;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.fptu-halloween-cards {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+.fptu-halloween-card {
+  background: #1a1b1e;
+  border: 1px solid #2a2b2e;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.fptu-halloween-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.fptu-halloween-card__body {
+  padding: 14px 16px;
+}
+
+.fptu-halloween-kpis {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+.fptu-halloween-kpi {
+  background: #17181b;
+  border: 1px solid #292a2e;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+}
+.fptu-halloween-kpi__value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #ff6b00;
+}
+.fptu-halloween-kpi__label {
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+.fptu-halloween-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.fptu-halloween-feature {
+  background: #1a1b1e;
+  border: 1px solid #2a2b2e;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.fptu-halloween-news {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+.fptu-halloween-news__item {
+  background: #17181b;
+  border: 1px solid #292a2e;
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fptu-halloween-news__item time {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.fptu-halloween-agenda {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #17181b;
+  border: 1px solid #292a2e;
+  border-radius: 14px;
+}
+.fptu-halloween-agenda__row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 10px;
+  padding: 14px 16px;
+  border-top: 1px solid #292a2e;
+}
+.fptu-halloween-agenda__row:first-child {
+  border-top: none;
+}
+.fptu-halloween-agenda__day {
+  font-weight: 800;
+  color: #ff6b00;
+}

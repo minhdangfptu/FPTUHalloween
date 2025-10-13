@@ -1,0 +1,119 @@
+/* Header Styles - FPT Halloween Website */
+.fpt-header {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fpt-header__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.fpt-header__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fpt-header__contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fpt-header__contact-icon {
+  color: #ce0000;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.fpt-header__contact-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.fpt-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.fpt-header__social {
+  display: flex;
+  gap: 4px;
+}
+
+.fpt-header__social-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.fpt-header__social-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.fpt-header__social-btn--facebook {
+  color: #1877F2;
+}
+
+.fpt-header__social-btn--tiktok {
+  color: #bc29b7;
+}
+
+.fpt-header__social-btn--youtube {
+  color: #ce0000;
+}
+
+.fpt-header__cta-btn {
+  background-color: #ce0000;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fpt-header__cta-btn:hover {
+  background-color: #e70202;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .fpt-header__contact-text {
+    display: none;
+  }
+  
+  .fpt-header__cta-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .fpt-header__container {
+    padding: 0 12px;
+  }
+  
+  .fpt-header__actions {
+    gap: 8px;
+  }
+}

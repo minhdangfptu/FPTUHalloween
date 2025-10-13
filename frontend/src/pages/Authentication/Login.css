@@ -1,0 +1,174 @@
+/* ====== Reset trong scope ====== */
+.login-page,
+.login-page * {
+  box-sizing: border-box;
+}
+
+/* ====== 2 cột toàn màn hình ====== */
+.login-page {
+  width: 100vw; /* <-- đảm bảo full chiều ngang */
+  min-height: 100vh;
+  display: flex; /* 2 cột */
+  margin: 0; /* tránh layout bị co do margin mặc định */
+}
+.left-pane {
+  width: min(480px, 42vw);
+  background: #f7f7f8;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cột phải (ảnh) – dùng background-image từ JSX */
+.right-cover {
+  flex: 1; /* chiếm toàn bộ phần còn lại */
+  background-size: cover; /* phủ kín */
+  background-position: center; /* canh giữa */
+  background-repeat: no-repeat; /* không lặp */
+  min-height: 100vh; /* đề phòng bố cục con co lại */
+}
+
+.login-top {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.login-box {
+  width: 460px;
+  max-width: 92%;
+  text-align: center;
+}
+.login-logo {
+  width: 300px;
+  max-width: 80%;
+  height: auto;
+}
+
+/* Card form */
+.login-panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 12px auto 0;
+  width: 360px;
+  max-width: 100%;
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  color: black !important;
+  background-color: white !important;
+}
+.btn-primary {
+  width: 100%;
+  background: #c60000;
+  color: #fff;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.link-muted {
+  font-size: 12px;
+  color: #6b7280;
+  text-decoration: underline;
+}
+.text-muted {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* OAuth */
+.oauth-btn {
+  width: 360px;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  /* border: none; */
+  
+}
+.oauth-btn:hover,
+.oauth-btn:focus,
+.oauth-btn:focus-visible,
+.oauth-btn:active {
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
+  outline-offset: 1px;
+  border-color: #d1d5db !important;
+}
+.google-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 2px;
+  
+}
+
+/* Cột phải (ảnh cover lấp đầy phần còn lại) */
+
+/* Mobile: xếp dọc, ẩn hoặc giảm chiều cao ảnh */
+@media (max-width: 640px) {
+  .login-page {
+    flex-direction: column;
+  }
+  .left-pane {
+    width: 100%;
+  }
+  .right-cover {
+    height: 40vh;
+  }
+}
+.login-page .form-input {
+  background-color: #fff !important;
+  color: #111;
+  appearance: none;            /* bỏ style mặc định browser */
+  -webkit-appearance: none;
+  background-clip: padding-box;
+}
+
+/* Giữ trắng khi hover/focus */
+.login-page .form-input:hover,
+.login-page .form-input:focus {
+  background-color: #fff !important;
+  border-color: #c7cbd1;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1); /* nếu muốn */
+}
+
+/* Nếu có framework đặt màu khác khi NOT focus, ép lại */
+.login-page .form-input:not(:focus) {
+  background-color: #fff !important;
+}
+
+/* ===== Xử lý Chrome Autofill (hay làm nền khác màu) ===== */
+.login-page .form-input:-webkit-autofill,
+.login-page .form-input:-webkit-autofill:hover,
+.login-page .form-input:-webkit-autofill:focus,
+.login-page .form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important; /* nền trắng */
+  -webkit-text-fill-color: #111 !important;               /* chữ đen */
+  caret-color: #111 !important;
+  transition: background-color 9999s ease-out 0s;         /* chặn flash */
+}
+

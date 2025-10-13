@@ -18,7 +18,7 @@ export default function ErrorPage404() {
   return (
     <Box
       sx={{
-        minHeight: "90vh",
+        minHeight: "100vh",
         minWidth: "100vw",
         bgcolor: "background.default",
         display: "flex",
@@ -37,6 +37,7 @@ export default function ErrorPage404() {
           <Typography
             variant="h1"
             sx={{
+              color: "red",
               fontSize: { xs: "100px", md: "96px" },
               lineHeight: 1.05,
               fontWeight: 800,
@@ -80,21 +81,21 @@ export default function ErrorPage404() {
             component={Link}
             href="/"
         
-            color="primary.main"
+            color="black"
             variant="text"
             startIcon={<KeyboardReturnOutlinedIcon />}
             sx={{
               fontWeight: 700,
-              fontSize: (theme) => theme.typography.h3.fontSize,
-              color: "primary.main",
+              fontSize: 20,
+              color: "black",
               
               textUnderlineOffset: "6px",
               "&:hover": {
                 bgcolor: "transparent",
-                textDecoration: "underline",
+                // textDecoration: "underline",
                 fontWeight: 800,
                 textDecorationThickness: "3px",
-                color: "primary.main",
+                color: "red",
                 backgroundColor: "transparent",
                 transition: "all 0.3s ease-in-out",
               },

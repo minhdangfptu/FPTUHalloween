@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.page-wrapper {
+  min-height: 100vh;            /* toàn chiều cao viewport */
+  display: flex;
+  flex-direction: column;       /* sắp xếp dọc */
+}
+
+.page-content {
+  flex: 1;                      /* chiếm hết phần trống còn lại */
+}

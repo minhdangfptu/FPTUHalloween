@@ -22,12 +22,14 @@ const gray = {
 };
 
 const brand = {
-  red:  { 400: '#F51717', 200: '#FF6E6E', 100: '#FFC0C2', 50: '#FFEDEE' },
-  blue: { 400: '#3882F6', 300: '#9DC3FD', 100: '#DBEAFF', 50: '#EFF6FF' },
-  success: '#16A34A',
+  // Halloween primary (witch violet)
+  red:  { 400: '#6D28D9', 200: '#A78BFA', 100: '#DDD6FE', 50: '#F5F3FF' },
+  // Halloween secondary (magenta/fuchsia neon)
+  blue: { 400: '#D946EF', 300: '#F0ABFC', 100: '#FAE8FF', 50: '#FDF4FF' },
+  success: '#22C55E',
   warning: '#F59E0B',
-  error:   '#F97316',
-  info:    '#885CF6',
+  error:   '#EF4444',
+  info:    '#A855F7',
 };
 
 /* ========= Theme config ========= */
@@ -66,13 +68,13 @@ const theme = extendTheme({
         primary: {
           main: brand.red[400],
           light: brand.red[200],
-          dark: '#C81010',
+          dark: '#4C1D95',
           contrastText: '#FFFFFF',
         },
         secondary: {
           main: brand.blue[400],
           light: brand.blue[300],
-          dark: '#1F4AA9',
+          dark: '#A21CAF',
           contrastText: '#FFFFFF',
         },
         success: { main: brand.success },
@@ -98,13 +100,13 @@ const theme = extendTheme({
         primary: {
           main: brand.red[400],
           light: brand.red[200],
-          dark: '#BE0C0C',
+          dark: '#4C1D95',
           contrastText: '#FFFFFF',
         },
         secondary: {
           main: brand.blue[400],
           light: brand.blue[300],
-          dark: '#1F4AA9',
+          dark: '#A21CAF',
           contrastText: '#FFFFFF',
         },
         success: { main: brand.success },
@@ -113,13 +115,13 @@ const theme = extendTheme({
         info:    { main: brand.info },
         grey: gray,
         background: {
-          default: gray[900],
-          paper: gray[800],
+          default: '#0B0620',
+          paper: '#15102A',
         },
-        divider: gray[700],
+        divider: '#2A2140',
         text: {
-          primary: gray[50],
-          secondary: gray[400],
+          primary: '#F3E8FF',
+          secondary: '#C4B5FD',
         },
       },
     },
@@ -131,8 +133,8 @@ const theme = extendTheme({
       styleOverrides: {
         body: {
           '*::-webkit-scrollbar': { width: '8px', height: '8px' },
-          '*::-webkit-scrollbar-thumb': { backgroundColor: '#dcdde1', borderRadius: '4px' },
-          '*::-webkit-scrollbar-thumb:hover': { backgroundColor: '#c1c2c3' },
+          '*::-webkit-scrollbar-thumb': { backgroundColor: '#6D28D9', borderRadius: '4px' },
+          '*::-webkit-scrollbar-thumb:hover': { backgroundColor: '#4C1D95' },
         },
       },
     },
@@ -148,11 +150,11 @@ const theme = extendTheme({
         },
         containedPrimary: {
           backgroundColor: brand.red[400],
-          '&:hover': { backgroundColor: '#BE0C0C' },
+          '&:hover': { backgroundColor: '#4C1D95' },
         },
         containedSecondary: {
           backgroundColor: brand.blue[400],
-          '&:hover': { backgroundColor: '#1F4AA9' },
+          '&:hover': { backgroundColor: '#A21CAF' },
         },
         text: {
           color: 'var(--mui-palette-primary-main)',
