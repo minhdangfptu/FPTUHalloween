@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer')
 const { User, Role } = require('../models')
 
 function getAccessSecret() { return process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || 'dev-access-secret' }

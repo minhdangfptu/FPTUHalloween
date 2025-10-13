@@ -14,9 +14,9 @@ router.get('/_health', (req, res) => res.json({ ok: true }))
 // HALLOWEENS
 router.get('/halloweens',       halloweenCtrl.list)
 router.get('/halloweens/:id',   halloweenCtrl.get)
-router.post('/halloweens',      halloweenCtrl.create)
-router.patch('/halloweens/:id', halloweenCtrl.update)
-router.delete('/halloweens/:id',halloweenCtrl.remove)
+router.post('/halloweens',      requireAuth, requireRole('Staff'), halloweenCtrl.create)
+router.patch('/halloweens/:id', requireAuth, requireRole('Staff'), halloweenCtrl.update)
+router.delete('/halloweens/:id',requireAuth, requireRole('Staff'), halloweenCtrl.remove)
 router.get('/halloweens/:id/feedbacks', feedbackCtrl.listByEvent)
 
 // AUTH
@@ -34,9 +34,9 @@ router.patch('/users/:id/promote-to-staff', requireAuth, requireRole('Admin'), a
 // NEWS
 router.get('/news',       newsCtrl.list)
 router.get('/news/:id',   newsCtrl.get)
-router.post('/news',      newsCtrl.create)
-router.patch('/news/:id', newsCtrl.update)
-router.delete('/news/:id',newsCtrl.remove)
+router.post('/news',      requireAuth, requireRole('Staff'), newsCtrl.create)
+router.patch('/news/:id', requireAuth, requireRole('Staff'), newsCtrl.update)
+router.delete('/news/:id',requireAuth, requireRole('Staff'), newsCtrl.remove)
 
 // FEEDBACKS
 router.get('/feedbacks',       feedbackCtrl.list)
