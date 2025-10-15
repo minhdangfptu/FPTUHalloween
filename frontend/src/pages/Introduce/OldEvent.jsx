@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { useNavigate } from "react-router-dom";
 
 const eventsData = [
   {
@@ -98,7 +99,7 @@ Trong buổi tối 31/10 tới đây, BTC sẽ đưa bạn đến với Fear Cor
     id: 5,
     title: "FPTU Halloween 2020",
     // Sai thông tin trạng thái, hôm nay là 2025
-    status: "Đã kết thúc", 
+    status: "Đã kết thúc",
     statusColor: "error",
     date: "30/10 - 31/10/2020",
     description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟎]: 𝐓𝐇𝐄 𝐇𝐀𝐔𝐍𝐓𝐄𝐃 𝐅𝐎𝐑𝐄𝐒𝐓
@@ -122,7 +123,7 @@ Nghe nói từ xưa đến nay, mảnh đất xa xôi nội thành này vẫn lu
 
 export default function OldEvent() {
   const [searchQuery, setSearchQuery] = useState("");
-
+  const navigate = useNavigate();
   const filteredEvents = eventsData.filter((event) =>
     event.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -264,13 +265,12 @@ export default function OldEvent() {
                         lineHeight: 1.6,
                         fontSize: "0.9rem",
                         // Thêm thuộc tính này để hiển thị xuống dòng
-                        whiteSpace: "pre-line", 
+                        whiteSpace: "pre-line",
                       }}
                     >
                       {event.description}
                     </Typography>
                     {/* --- Kết thúc chỉnh sửa quan trọng --- */}
-
                   </CardContent>
                 </Card>
               ))}
@@ -284,6 +284,9 @@ export default function OldEvent() {
                 }}
               >
                 <Button
+                  onClick={() => {
+                    navigate ("/fanpage");
+                  }}
                   variant="outlined"
                   startIcon={<FacebookIcon />}
                   sx={{
