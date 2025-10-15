@@ -95,13 +95,13 @@ export default function HomePage() {
           <p>Nơi hòa quyện của niềm vui và nỗi sợ.</p>
           <div className="fptu-halloween-hero__cta">
             <a
-              href="/overall"
+              href="/event-page"
               className="fptu-halloween-btn fptu-halloween-btn--primary"
             >
               Khám phá
             </a>
             <a
-              href="/ticket-ghost"
+              href="/ticket-game"
               className="fptu-halloween-btn fptu-halloween-btn--ghost"
             >
               Mua vé ngay
