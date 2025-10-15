@@ -1,0 +1,311 @@
+/* ====== Reset trong scope ====== */
+.fptu-halloween-complete-register-page,
+.fptu-halloween-complete-register-page * {
+  box-sizing: border-box;
+}
+
+/* ====== 2 cột toàn màn hình ====== */
+.fptu-halloween-complete-register-page {
+  width: 100vw; /* <-- đảm bảo full chiều ngang */
+  min-height: 100vh;
+  display: flex; /* 2 cột */
+  margin: 0; /* tránh layout bị co do margin mặc định */
+}
+.fptu-halloween-complete-register-left-pane {
+  width: min(480px, 42vw);
+  background: #f7f7f8;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cột phải (ảnh) – dùng background-image từ JSX */
+.fptu-halloween-complete-register-right-cover {
+  flex: 1; /* chiếm toàn bộ phần còn lại */
+  background-size: cover; /* phủ kín */
+  background-position: center; /* canh giữa */
+  background-repeat: no-repeat; /* không lặp */
+  min-height: 100vh; /* đề phòng bố cục con co lại */
+}
+
+.fptu-halloween-complete-register-top {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.fptu-halloween-complete-register-box {
+  width: 460px;
+  max-width: 92%;
+  text-align: center;
+}
+.fptu-halloween-complete-register-logo {
+  width: 300px;
+  max-width: 80%;
+  height: auto;
+}
+
+/* Card form */
+.fptu-halloween-complete-register-panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 12px auto 0;
+  width: 360px;
+  max-width: 100%;
+  text-align: left;
+}
+
+/* Header section */
+.fptu-halloween-complete-register-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* Success Icon Animation */
+.fptu-halloween-complete-register-success-icon {
+  margin: 0 auto 20px;
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+
+.fptu-halloween-complete-register-success-checkmark {
+  width: 100%;
+  height: 100%;
+}
+
+.fptu-halloween-complete-register-success-circle {
+  stroke-dasharray: 62.83;
+  stroke-dashoffset: 62.83;
+  transition: stroke-dashoffset 0.6s ease-in-out;
+}
+
+.fptu-halloween-complete-register-success-check {
+  stroke-dasharray: 8;
+  stroke-dashoffset: 8;
+  transition: stroke-dashoffset 0.4s ease-in-out 0.3s;
+}
+
+.fptu-halloween-complete-register-success-icon.fptu-halloween-complete-register-animate .fptu-halloween-complete-register-success-circle {
+  stroke-dashoffset: 0;
+}
+
+.fptu-halloween-complete-register-success-icon.fptu-halloween-complete-register-animate .fptu-halloween-complete-register-success-check {
+  stroke-dashoffset: 0;
+}
+
+.fptu-halloween-complete-register-header h2 {
+  color: #E63946;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  animation: fptu-halloween-complete-register-fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.fptu-halloween-complete-register-description {
+  color: #374151;
+  font-size: 16px;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+  animation: fptu-halloween-complete-register-fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.fptu-halloween-complete-register-email {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0 0 16px 0;
+  padding: 12px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  border-left: 4px solid #E63946;
+  animation: fptu-halloween-complete-register-fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.fptu-halloween-complete-register-email strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.fptu-halloween-complete-register-instruction {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.4;
+  animation: fptu-halloween-complete-register-fadeInUp 0.6s ease-out 0.8s both;
+}
+
+/* Actions section */
+.fptu-halloween-complete-register-actions {
+  text-align: center;
+}
+
+.fptu-halloween-complete-register-btn-primary {
+  width: 100%;
+  background: #E63946;
+  color: #fff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  animation: fptu-halloween-complete-register-fadeInUp 0.6s ease-out 1s both;
+}
+
+.fptu-halloween-complete-register-btn-primary:hover {
+  background: #bf0000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+}
+
+.fptu-halloween-complete-register-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Additional info */
+.fptu-halloween-complete-register-additional-info {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  animation: fptu-halloween-complete-register-fadeInUp 0.6s ease-out 1.2s both;
+}
+
+.fptu-halloween-complete-register-info-text {
+  color: #6b7280;
+  font-size: 13px;
+  margin: 8px 0;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.fptu-halloween-complete-register-info-text:first-child {
+  margin-top: 0;
+}
+
+.fptu-halloween-complete-register-info-text:last-child {
+  margin-bottom: 0;
+}
+
+.fptu-halloween-complete-register-link-muted {
+  font-size: 12px;
+  color: #6b7280;
+  text-decoration: underline;
+}
+.fptu-halloween-complete-register-text-muted {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Animations */
+@keyframes fptu-halloween-complete-register-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fptu-halloween-complete-register-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.fptu-halloween-complete-register-success-icon.fptu-halloween-complete-register-animate {
+  animation: fptu-halloween-complete-register-bounce 0.8s ease-out 0.5s;
+}
+
+/* Cột phải (ảnh cover lấp đầy phần còn lại) */
+
+/* Mobile: xếp dọc, ẩn hoặc giảm chiều cao ảnh */
+@media (max-width: 640px) {
+  .fptu-halloween-complete-register-page {
+    flex-direction: column;
+  }
+  .fptu-halloween-complete-register-left-pane {
+    width: 100%;
+  }
+  .fptu-halloween-complete-register-right-cover {
+    height: 40vh;
+  }
+  
+  .fptu-halloween-complete-register-header h2 {
+    font-size: 24px;
+  }
+  
+  .fptu-halloween-complete-register-success-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Hover effects */
+.fptu-halloween-complete-register-panel {
+  transition: box-shadow 0.3s ease;
+}
+
+.fptu-halloween-complete-register-panel:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Success state styling */
+.fptu-halloween-complete-register-email {
+  position: relative;
+  overflow: hidden;
+}
+
+.fptu-halloween-complete-register-email::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.1), transparent);
+  animation: fptu-halloween-complete-register-shimmer 2s infinite;
+}
+
+@keyframes fptu-halloween-complete-register-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Focus states */
+.fptu-halloween-complete-register-btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.3);
+}
+
+/* Loading state (if needed) */
+.fptu-halloween-complete-register-btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.fptu-halloween-complete-register-btn-primary:disabled:hover {
+  background: #9ca3af;
+  transform: none;
+  box-shadow: none;
+}

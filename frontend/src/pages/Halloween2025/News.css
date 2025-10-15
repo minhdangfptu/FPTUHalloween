@@ -1,0 +1,435 @@
+/* ====== News Component Styles ====== */
+.fptu-halloween-news-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 40px 0;
+  padding-top: 0;
+}
+
+.fptu-halloween-news-header {
+  background-image: url('../../assets/cover-01.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  position: relative;
+  padding: 80px 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.fptu-halloween-news-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.fptu-halloween-news-banner {
+  position: relative;
+  z-index: 2;
+}
+
+.fptu-halloween-news-banner-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(45deg, #E63946, #ff6b7a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.fptu-halloween-news-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.fptu-halloween-news-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ====== Featured News ====== */
+.fptu-halloween-news-featured {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.fptu-halloween-news-featured-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #E63946;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.fptu-halloween-news-featured-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  /* transform: translateX(-50%); */
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #E63946, #ff6b7a);
+  border-radius: 2px;
+}
+
+.fptu-halloween-news-featured-main {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(230, 57, 70, 0.1);
+  /* transition: all 0.3s ease; */
+  position: relative;
+}
+
+.fptu-halloween-news-featured-main::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #E63946, #ff6b7a, #E63946);
+  z-index: 1;
+}
+
+.fptu-halloween-news-featured-main:hover {
+  /* transform: translateY(-8px); */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.fptu-halloween-news-featured-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  /* transition: transform 0.3s ease; */
+}
+
+.fptu-halloween-news-featured-main:hover .fptu-halloween-news-featured-image {
+  transform: scale(1.05);
+}
+
+.fptu-halloween-news-featured-content {
+  padding: 30px;
+}
+
+.fptu-halloween-news-featured-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  line-height: 1.4;
+  /* transition: color 0.3s ease; */
+}
+
+.fptu-halloween-news-featured-main:hover .fptu-halloween-news-featured-title {
+  color: #E63946;
+}
+
+.fptu-halloween-news-featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.fptu-halloween-news-featured-source {
+  background: linear-gradient(45deg, #E63946, #ff6b7a);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fptu-halloween-news-featured-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.fptu-halloween-news-featured-views {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ====== Secondary News ====== */
+.fptu-halloween-news-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.fptu-halloween-news-secondary-item {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(230, 57, 70, 0.1);
+  /* transition: all 0.3s ease; */
+  position: relative;
+}
+
+.fptu-halloween-news-secondary-item:hover {
+  /* transform: translateY(-5px); */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.fptu-halloween-news-secondary-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.fptu-halloween-news-secondary-item:hover .fptu-halloween-news-secondary-image {
+  transform: scale(1.05);
+}
+
+.fptu-halloween-news-secondary-content {
+  padding: 20px;
+}
+
+.fptu-halloween-news-secondary-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fptu-halloween-news-secondary-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.fptu-halloween-news-secondary-source {
+  background: #f0f0f0;
+  color: #666;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.fptu-halloween-news-secondary-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+/* ====== News List ====== */
+.fptu-halloween-news-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fptu-halloween-news-sidebar-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #E63946;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.fptu-halloween-news-sidebar-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  /* transform: translateX(-50%); */
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #E63946, #ff6b7a);
+  border-radius: 2px;
+}
+
+.fptu-halloween-news-list-item {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(230, 57, 70, 0.1);
+  /* transition: all 0.3s ease; */
+  position: relative;
+  overflow: hidden;
+}
+
+.fptu-halloween-news-list-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #E63946, #ff6b7a);
+  opacity: 0;
+  /* transition: opacity 0.3s ease; */
+}
+
+.fptu-halloween-news-list-item:hover {
+  /* transform: translateX(5px); */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.fptu-halloween-news-list-item:hover::before {
+  opacity: 1;
+}
+
+.fptu-halloween-news-list-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.4;
+  display: -webkit-box;
+  overflow: hidden;
+  /* transition: color 0.3s ease;   */
+}
+
+.fptu-halloween-news-list-item:hover .fptu-halloween-news-list-title {
+  color: #E63946;
+}
+
+.fptu-halloween-news-list-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.fptu-halloween-news-list-source {
+  background: #f8f9fa;
+  color: #666;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.fptu-halloween-news-list-time {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.fptu-halloween-news-list-views {
+  color: #666;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 1200px) {
+  .fptu-halloween-news-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .fptu-halloween-news-sidebar {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .fptu-halloween-news-header {
+    padding: 60px 20px;
+  }
+  
+  .fptu-halloween-news-banner-title {
+    font-size: 2.2rem;
+  }
+  
+  .fptu-halloween-news-content {
+    padding: 0 15px;
+  }
+  
+  .fptu-halloween-news-secondary {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .fptu-halloween-news-featured-content {
+    padding: 20px;
+  }
+  
+  .fptu-halloween-news-featured-title {
+    font-size: 1.5rem;
+  }
+  
+  .fptu-halloween-news-featured-image {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fptu-halloween-news-banner-title {
+    font-size: 1.8rem;
+  }
+  
+  .fptu-halloween-news-featured-image {
+    height: 200px;
+  }
+  
+  .fptu-halloween-news-featured-title {
+    font-size: 1.3rem;
+  }
+}
+
+/* ====== Animations ====== */
+/* @keyframes fptu-halloween-news-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} */
+
+.fptu-halloween-news-featured-main,
+.fptu-halloween-news-secondary-item,
+.fptu-halloween-news-list-item {
+  animation: fptu-halloween-news-fadeInUp 0.6s ease-out;
+}
+
+.fptu-halloween-news-secondary-item:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.fptu-halloween-news-list-item {
+  animation-delay: calc(var(--item-index, 0) * 0.1s);
+}

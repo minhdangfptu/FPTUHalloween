@@ -1,0 +1,525 @@
+/* ====== Reset và Base Styles ====== */
+.fptu-halloween-contact-page {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.fptu-halloween-contact-page * {
+  box-sizing: border-box;
+}
+
+/* ====== Header Styles ====== */
+.fptu-halloween-contact-header {
+  /* background-color: #E63946; */
+  background-image: url('../../assets/cover-01.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  position: relative;
+}
+
+.fptu-halloween-contact-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.fptu-halloween-contact-banner {
+  position: relative;
+  z-index: 2;
+}
+
+.fptu-halloween-contact-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background-color: white;
+  color: #333;
+}
+
+.fptu-halloween-contact-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fptu-halloween-contact-logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.fptu-halloween-contact-logo-text {
+  font-weight: bold;
+  font-size: 18px;
+  color: #E63946;
+}
+
+.fptu-halloween-contact-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.fptu-halloween-contact-nav-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.fptu-halloween-contact-nav-link:hover {
+  color: #E63946;
+}
+
+.fptu-halloween-contact-account-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fptu-halloween-contact-arrow {
+  font-size: 12px;
+}
+
+.fptu-halloween-contact-banner {
+
+  text-align: center;
+  padding: 40px 0;
+}
+
+.fptu-halloween-contact-banner-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ====== Main Content ====== */
+.fptu-halloween-contact-main {
+  padding: 40px 0;
+}
+
+.fptu-halloween-contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+/* ====== Form Section ====== */
+.fptu-halloween-contact-form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.fptu-halloween-contact-form-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+.fptu-halloween-contact-form-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 16px 0;
+}
+
+.fptu-halloween-contact-form-description {
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.fptu-halloween-contact-social {
+  margin-bottom: 32px;
+}
+
+.fptu-halloween-contact-social-icons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.fptu-halloween-contact-social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #666;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.fptu-halloween-contact-social-icon:hover {
+  background-color: #E63946;
+  color: white;
+}
+
+.fptu-halloween-contact-google-form-text {
+  color: #666;
+  margin: 0 0 12px 0;
+  font-size: 14px;
+}
+
+.fptu-halloween-contact-google-form-btn {
+  background: transparent;
+  border: 2px solid #E63946;
+  color: #E63946;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fptu-halloween-contact-google-form-btn:hover {
+  background-color: #E63946;
+  color: white;
+}
+
+/* ====== Form Styles ====== */
+.fptu-halloween-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fptu-halloween-contact-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fptu-halloween-contact-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.fptu-halloween-contact-form-input,
+.fptu-halloween-contact-form-textarea {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+  background-color: white;
+}
+
+.fptu-halloween-contact-form-input:focus,
+.fptu-halloween-contact-form-textarea:focus {
+  outline: none;
+  border-color: #E63946;
+  box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.1);
+}
+
+.fptu-halloween-contact-form-input-error {
+  border-color: #dc2626;
+}
+
+.fptu-halloween-contact-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.fptu-halloween-contact-form-error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.fptu-halloween-contact-form-submit {
+  background-color: #E63946;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-start;
+}
+
+.fptu-halloween-contact-form-submit:hover {
+  background-color: #c60000;
+}
+
+/* ====== Info Section ====== */
+.fptu-halloween-contact-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fptu-halloween-contact-map {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.fptu-halloween-contact-map-iframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+}
+
+.fptu-halloween-contact-info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.fptu-halloween-contact-info-card {
+  background: white;
+  border-radius: 12px;
+  padding: 17.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fptu-halloween-contact-info-icon {
+  font-size: 24px;
+  color: #E63946;
+  flex-shrink: 0;
+}
+
+.fptu-halloween-contact-info-content {
+  flex: 1;
+}
+
+.fptu-halloween-contact-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+.fptu-halloween-contact-info-text {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ====== Footer ====== */
+.fptu-halloween-contact-footer {
+  background-color: #E63946;
+  color: white;
+  padding: 40px 0;
+  margin-top: 60px;
+}
+
+.fptu-halloween-contact-footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.fptu-halloween-contact-footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fptu-halloween-contact-footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fptu-halloween-contact-footer-logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.fptu-halloween-contact-footer-logo-text {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.fptu-halloween-contact-footer-tagline {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.fptu-halloween-contact-footer-social {
+  display: flex;
+  gap: 12px;
+}
+
+.fptu-halloween-contact-footer-social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.fptu-halloween-contact-footer-social-icon:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.fptu-halloween-contact-footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fptu-halloween-contact-footer-column-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.fptu-halloween-contact-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fptu-halloween-contact-footer-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.fptu-halloween-contact-footer-link:hover {
+  color: white;
+}
+
+.fptu-halloween-contact-footer-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fptu-halloween-contact-footer-contact-item {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ====== Help Button ====== */
+.fptu-halloween-contact-help {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.fptu-halloween-contact-help-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #E63946;
+  color: white;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.fptu-halloween-contact-help-btn:hover {
+  background-color: #c60000;
+  transform: scale(1.05);
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 768px) {
+  .fptu-halloween-contact-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .fptu-halloween-contact-footer-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .fptu-halloween-contact-header-top {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .fptu-halloween-contact-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .fptu-halloween-contact-banner-title {
+    font-size: 24px;
+  }
+
+  .fptu-halloween-contact-form-card {
+    padding: 24px;
+  }
+
+  .fptu-halloween-contact-info-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .fptu-halloween-contact-main {
+    padding: 20px 0;
+  }
+
+  .fptu-halloween-contact-container {
+    padding: 0 16px;
+  }
+
+  .fptu-halloween-contact-form-card {
+    padding: 20px;
+  }
+
+  .fptu-halloween-contact-banner {
+    padding: 20px 0;
+  }
+
+  .fptu-halloween-contact-banner-title {
+    font-size: 20px;
+  }
+}

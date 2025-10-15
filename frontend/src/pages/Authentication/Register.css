@@ -1,0 +1,167 @@
+/* ====== Reset trong scope ====== */
+.fptu-halloween-register-page,
+.fptu-halloween-register-page * {
+  box-sizing: border-box;
+}
+
+/* ====== 2 cột toàn màn hình ====== */
+.fptu-halloween-register-page {
+  width: 100vw; /* <-- đảm bảo full chiều ngang */
+  min-height: 100vh;
+  display: flex; /* 2 cột */
+  margin: 0; /* tránh layout bị co do margin mặc định */
+}
+.fptu-halloween-register-left-pane {
+  width: min(480px, 42vw);
+  background: #f7f7f8;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cột phải (ảnh) – dùng background-image từ JSX */
+.fptu-halloween-register-right-cover {
+  flex: 1; /* chiếm toàn bộ phần còn lại */
+  background-size: cover; /* phủ kín */
+  background-position: center; /* canh giữa */
+  background-repeat: no-repeat; /* không lặp */
+  min-height: 100vh; /* đề phòng bố cục con co lại */
+}
+
+.fptu-halloween-register-top {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.fptu-halloween-register-box {
+  width: 460px;
+  max-width: 92%;
+  text-align: center;
+}
+.fptu-halloween-register-logo {
+  width: 300px;
+  max-width: 80%;
+  height: auto;
+}
+
+/* Card form */
+.fptu-halloween-register-panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 12px auto 0;
+  width: 360px;
+  max-width: 100%;
+  text-align: left;
+}
+
+.fptu-halloween-register-form-label {
+  display: block;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+.fptu-halloween-register-form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  color: black !important;
+  background-color: white !important;
+}
+
+/* Error message styling */
+.fptu-halloween-register-error-message {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.fptu-halloween-register-btn-primary {
+  width: 100%;
+  background: #c60000;
+  color: #fff;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+.fptu-halloween-register-btn-primary:hover {
+  background: #a00000;
+}
+
+.fptu-halloween-register-link-muted {
+  font-size: 12px;
+  color: #6b7280;
+  text-decoration: underline;
+}
+.fptu-halloween-register-text-muted {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Cột phải (ảnh cover lấp đầy phần còn lại) */
+
+/* Mobile: xếp dọc, ẩn hoặc giảm chiều cao ảnh */
+@media (max-width: 640px) {
+  .fptu-halloween-register-page {
+    flex-direction: column;
+  }
+  .fptu-halloween-register-left-pane {
+    width: 100%;
+  }
+  .fptu-halloween-register-right-cover {
+    height: 40vh;
+  }
+}
+
+.fptu-halloween-register-page .fptu-halloween-register-form-input {
+  background-color: #fff !important;
+  color: #111;
+  appearance: none;            /* bỏ style mặc định browser */
+  -webkit-appearance: none;
+  background-clip: padding-box;
+}
+
+/* Giữ trắng khi hover/focus */
+.fptu-halloween-register-page .fptu-halloween-register-form-input:hover,
+.fptu-halloween-register-page .fptu-halloween-register-form-input:focus {
+  background-color: #fff !important;
+  border-color: #c7cbd1;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1); /* nếu muốn */
+}
+
+/* Nếu có framework đặt màu khác khi NOT focus, ép lại */
+.fptu-halloween-register-page .fptu-halloween-register-form-input:not(:focus) {
+  background-color: #fff !important;
+}
+
+/* ===== Xử lý Chrome Autofill (hay làm nền khác màu) ===== */
+.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill,
+.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill:hover,
+.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill:focus,
+.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important; /* nền trắng */
+  -webkit-text-fill-color: #111 !important;               /* chữ đen */
+  caret-color: #111 !important;
+  transition: background-color 9999s ease-out 0s;         /* chặn flash */
+}
+
+/* Form validation states */
+.fptu-halloween-register-page .fptu-halloween-register-form-input.error {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+
+.fptu-halloween-register-page .fptu-halloween-register-form-input.error:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}

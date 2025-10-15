@@ -7,7 +7,6 @@ const FeedbackSchema = new Schema(
     full_name: { type: String, required: true, trim: true },
     phone_number: { type: String, trim: true, default: '' },
     title: { type: String, required: true, trim: true, maxlength: 200 },
-    rating: { type: Number, required: true, min: 1, max: 5 },
     feedback: { type: String, default: '' }
   },
   {

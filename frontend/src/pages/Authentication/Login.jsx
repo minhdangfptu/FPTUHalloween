@@ -3,11 +3,13 @@ import "./Login.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const onSubmit = (e) => e.preventDefault();
+  const navigate = useNavigate();
 
   return (
     <div className="login-page">
@@ -60,8 +62,8 @@ function Login() {
             <div style={{ marginTop: 12 }} className="text-muted">
               Hoặc
             </div>
-            <div style={{ marginTop: 12 }}>
-              <button type="button" className="oauth-btn">
+            <div style={{ marginTop: 12 , cursor: "pointer"}} >
+              <button type="button" className="oauth-btn" onClick={() => navigate("/login/fbgc")}>
                 <span aria-hidden className="google-swatch">
                   <img
                     style={{ width: "20px", height: "20px" }}

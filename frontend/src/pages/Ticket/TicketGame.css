@@ -1,0 +1,323 @@
+/* ====== Ticket Game Container ====== */
+.fptu-halloween-ticket-game-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 0;
+}
+
+/* ====== Content ====== */
+.fptu-halloween-ticket-game-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ====== Rows ====== */
+.fptu-halloween-ticket-game-row {
+  margin-bottom: 40px;
+}
+
+.fptu-halloween-ticket-game-row:last-child {
+  margin-bottom: 0;
+}
+
+/* ====== Grid Layout ====== */
+.fptu-halloween-ticket-game-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+.fptu-halloween-ticket-game-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ====== Card ====== */
+.fptu-halloween-ticket-game-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  padding-top: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(230, 57, 70, 0.1);
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fptu-halloween-ticket-game-card-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e63946;
+  margin-bottom: 25px;
+  text-align: center;
+  position: relative;
+}
+
+.fptu-halloween-ticket-game-card-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 3px;
+  background: linear-gradient(90deg, #e63946, #ff6b7a);
+  border-radius: 2px;
+}
+
+/* ====== A4 Landscape Frame ====== */
+.fptu-halloween-ticket-game-a4-landscape {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 297/210; /* A4 Landscape ratio */
+  background: #f8f9fa;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.fptu-halloween-ticket-game-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ====== Form Section ====== */
+.fptu-halloween-ticket-game-form-section {
+  background: white;
+  border-radius: 20px;
+  padding: 0 40px 30px 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(230, 57, 70, 0.1);
+  text-align: center;
+}
+
+.fptu-halloween-ticket-game-form-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e63946;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.fptu-halloween-ticket-game-form-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 3px;
+  background: linear-gradient(90deg, #e63946, #ff6b7a);
+  border-radius: 2px;
+}
+
+.fptu-halloween-ticket-game-form-description {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ====== Form Button ====== */
+.fptu-halloween-ticket-game-form-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #e63946;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  box-shadow: 0 8px 25px rgba(230, 57, 70, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.fptu-halloween-ticket-game-form-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+}
+
+.fptu-halloween-ticket-game-form-button:hover::before {
+  left: 100%;
+}
+
+.fptu-halloween-ticket-game-form-button:hover {
+  box-shadow: 0 15px 35px rgba(230, 57, 70, 0.4);
+}
+
+.fptu-halloween-ticket-game-form-button-icon {
+  font-size: 1.4rem;
+}
+
+.fptu-halloween-ticket-game-form-button-text {
+  position: relative;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.2rem;
+  z-index: 1;
+}
+
+/* ====== Rules Section ====== */
+.fptu-halloween-ticket-game-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fptu-halloween-ticket-game-rule-item {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 0px 20px 20px 20px;
+  border-left: 4px solid #e63946;
+  transition: all 0.3s ease;
+}
+
+.fptu-halloween-ticket-game-rule-item:hover {
+  background: #f0f0f0;
+}
+
+.fptu-halloween-ticket-game-rule-item h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e63946;
+  margin-bottom: 8px;
+}
+
+.fptu-halloween-ticket-game-rule-item p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ====== Contest Image ====== */
+/* A4 Landscape: ảnh vừa khung, không crop */
+
+
+.fptu-halloween-ticket-game-image {
+  width: 100%;
+  height: 100%;
+  display: block; /* bỏ khoảng trắng inline-img */
+  object-fit: cover; /* <-- quan trọng: ảnh vừa khung */
+  object-position: center;
+  background: #fff; /* “letterbox” đẹp hơn khi lệch tỉ lệ */
+}.fptu-halloween-ticket-game-a4-landscape {
+  position: relative;
+  width: 100%;
+  height: 200%;
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 297/210; /* Giữ khung A4 ngang */
+  background: #fff; /* màu nền lộ ra khi ảnh không đủ tỉ lệ */
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Ảnh giải thưởng: vừa khung, không crop */
+.fptu-halloween-ticket-game-contest-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.fptu-halloween-ticket-game-contest-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* <-- thay cover bằng contain */
+  object-position: center;
+  background: #fff;
+  transition: none; /* tránh zoom tạo cảm giác bị lệch khi contain */
+}
+
+/* Nếu vẫn muốn hiệu ứng hover nhẹ mà không làm lệch bố cục */
+.fptu-halloween-ticket-game-contest-image:hover
+  .fptu-halloween-ticket-game-contest-img {
+  transform: none; /* hoặc scale(1.01) rất nhẹ nếu thích */
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 768px) {
+  .fptu-halloween-ticket-game-content {
+    padding: 20px 15px;
+  }
+
+  .fptu-halloween-ticket-game-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .fptu-halloween-ticket-game-card {
+    padding: 20px;
+  }
+
+  .fptu-halloween-ticket-game-form-section {
+    padding: 30px 20px;
+  }
+
+  .fptu-halloween-ticket-game-card-title,
+  .fptu-halloween-ticket-game-form-title {
+    font-size: 1.5rem;
+  }
+
+  .fptu-halloween-ticket-game-form-button {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+  }
+
+  .fptu-halloween-ticket-game-a4-landscape {
+    max-width: 100%;
+  }
+
+  .fptu-halloween-ticket-game-rules {
+    gap: 15px;
+  }
+
+  .fptu-halloween-ticket-game-rule-item {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fptu-halloween-ticket-game-card-title,
+  .fptu-halloween-ticket-game-form-title {
+    font-size: 1.3rem;
+  }
+
+  .fptu-halloween-ticket-game-form-description {
+    font-size: 1rem;
+  }
+
+  .fptu-halloween-ticket-game-form-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}

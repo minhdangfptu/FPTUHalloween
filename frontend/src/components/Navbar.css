@@ -57,6 +57,11 @@
   background-color: transparent;
 }
 
+.fpt-navbar__nav-link.active {
+  color: #e60000 !important;
+  font-weight: bold;
+}
+
 .fpt-navbar__nav-arrow {
   font-size: 10px;
   transition: transform 0.2s ease;
@@ -255,6 +260,11 @@
 
 .fpt-navbar__dropdown-link:hover {
   background: #f6f7f9;
+}
+
+.fpt-navbar__dropdown-link.active {
+  color: #e60000 !important;
+  background-color: rgba(230, 0, 0, 0.1);
 }
 
 /* Mobile submenu */

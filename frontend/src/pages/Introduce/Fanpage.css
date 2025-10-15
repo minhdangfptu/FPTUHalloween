@@ -1,0 +1,73 @@
+.fptu-halloween-fanpage-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+    background: transparent;
+    background-color: transparent;
+  }
+  
+  .fptu-halloween-fanpage-column {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+  }
+  
+  /* Left */
+  .fptu-halloween-fanpage-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Right */
+  .fptu-halloween-fanpage-right h2 {
+    color: #e63946;
+    margin-bottom: 16px;
+    font-size: 1.8rem;
+  }
+  
+  .fptu-halloween-fanpage-right p {
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  .fptu-halloween-fanpage-right ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    color: #555;
+  }
+  
+  .fptu-halloween-fanpage-right li {
+    margin-bottom: 8px;
+  }
+  
+  .fptu-halloween-fanpage-btn-primary {
+    display: inline-block;
+    margin-top: 12px;
+    background: #e63946;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  
+  .fptu-halloween-fanpage-btn-primary:hover {
+    background: #cb000e;
+    color: white;
+  }
+  
+  /* Responsive */
+  @media (max-width: 900px) {
+    .fptu-halloween-fanpage-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  

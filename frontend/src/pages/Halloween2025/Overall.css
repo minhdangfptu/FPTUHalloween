@@ -1,0 +1,286 @@
+/* ====== Overall Component Styles ====== */
+.fptu-halloween-overall-container {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+  padding: 40px 0;
+}
+
+.fptu-halloween-overall-hero {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.fptu-halloween-overall-hero:hover {
+  transform: translateY(-5px);
+}
+
+.fptu-halloween-overall-hero-image {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: transform 0.3s ease;
+}
+
+.fptu-halloween-overall-hero:hover .fptu-halloween-overall-hero-image {
+  transform: scale(1.02);
+}
+
+.fptu-halloween-overall-hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 40px 30px 30px;
+  color: white;
+}
+
+.fptu-halloween-overall-hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(45deg, #E63946, #ff6b7a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.fptu-halloween-overall-info-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(230, 57, 70, 0.1);
+  transition: all 0.3s ease;
+}
+
+.fptu-halloween-overall-info-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.fptu-halloween-overall-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.fptu-halloween-overall-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  border-radius: 15px;
+  border-left: 4px solid #E63946;
+  transition: all 0.3s ease;
+}
+
+.fptu-halloween-overall-info-item:hover {
+  background: linear-gradient(135deg, #fff5f5, #ffe6e6);
+  transform: translateX(5px);
+}
+
+.fptu-halloween-overall-info-icon {
+  color: #E63946;
+  font-size: 24px;
+  margin-top: 2px;
+}
+
+.fptu-halloween-overall-info-content {
+  flex: 1;
+}
+
+.fptu-halloween-overall-info-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fptu-halloween-overall-info-value {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.fptu-halloween-overall-status-chip {
+  background: linear-gradient(45deg, #E63946, #ff6b7a) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3) !important;
+}
+
+.fptu-halloween-overall-register-section {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 2px solid #f0f0f0;
+  text-align: center;
+}
+
+.fptu-halloween-overall-register-btn {
+  background: linear-gradient(45deg, #E63946, #ff6b7a) !important;
+  color: white !important;
+  padding: 15px 40px !important;
+  border-radius: 25px !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  text-transform: none !important;
+  box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4) !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+}
+
+.fptu-halloween-overall-register-btn:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 35px rgba(230, 57, 70, 0.6) !important;
+  background: linear-gradient(45deg, #d32f2f, #e53935) !important;
+}
+
+.fptu-halloween-overall-concept-card {
+  background: linear-gradient(135deg, #fff5f5, #ffe6e6);
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(230, 57, 70, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.fptu-halloween-overall-concept-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #E63946, #ff6b7a, #E63946);
+}
+
+.fptu-halloween-overall-concept-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #E63946;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fptu-halloween-overall-concept-title::before {
+  content: '🎭';
+  font-size: 1.5rem;
+}
+
+.fptu-halloween-overall-concept-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  font-style: italic;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 4px solid #E63946;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.fptu-halloween-overall-description-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(230, 57, 70, 0.1);
+}
+
+.fptu-halloween-overall-description-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #E63946;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fptu-halloween-overall-description-title::before {
+  content: '📝';
+  font-size: 1.5rem;
+}
+
+.fptu-halloween-overall-description-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 4px solid #E63946;
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 768px) {
+  .fptu-halloween-overall-container {
+    padding: 20px 0;
+  }
+  
+  .fptu-halloween-overall-hero-image {
+    height: 250px;
+  }
+  
+  .fptu-halloween-overall-hero-title {
+    font-size: 1.8rem;
+  }
+  
+  .fptu-halloween-overall-info-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .fptu-halloween-overall-info-card,
+  .fptu-halloween-overall-concept-card,
+  .fptu-halloween-overall-description-card {
+    padding: 25px;
+    margin-bottom: 20px;
+  }
+  
+  .fptu-halloween-overall-register-btn {
+    padding: 12px 30px !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* ====== Animations ====== */
+@keyframes fptu-halloween-overall-fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fptu-halloween-overall-info-card,
+.fptu-halloween-overall-concept-card,
+.fptu-halloween-overall-description-card {
+  animation: fptu-halloween-overall-fadeInUp 0.6s ease-out;
+}
+
+.fptu-halloween-overall-info-item {
+  animation: fptu-halloween-overall-fadeInUp 0.6s ease-out;
+  animation-delay: calc(var(--item-index) * 0.1s);
+}

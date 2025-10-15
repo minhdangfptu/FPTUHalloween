@@ -1,0 +1,29 @@
+/* Force Grid layout to work properly */
+.MuiGrid-container {
+  width: 100% !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+.MuiGrid-item {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure cards take full height */
+.MuiGrid-item > .MuiCard-root {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Override any conflicting styles */
+.fptu-halloween-old-event-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+
+.fptu-halloween-old-event-grid-item {
+  display: flex !important;
+  flex-direction: column !important;
+}

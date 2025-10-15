@@ -1,43 +1,89 @@
 // src/pages/HomePage.jsx
-import React from "react";
+import React, { useState, useEffect, use } from "react";
 import "./HomePage.css";
+import halloweensApi from "../../apis/halloweensAPI";
 
 import hero from "../../assets/cover-01.png";
-
-const kpis = [
-  { label: "Khách tham dự", value: "~ 8,000" },
-  { label: "Gian hàng/Booth", value: "40+" },
-  { label: "Nghệ sĩ/Show", value: "10+" },
-  { label: "Tình nguyện viên", value: "300+" },
-];
+import { useNavigate } from "react-router-dom";
 
 const highlights = [
-  { title: "Nhà Ma – Wishbound", desc: "Trải nghiệm lời nguyền điều ước.", img: hero },
+  {
+    title: "Nhà Ma – Wishbound",
+    desc: "Trải nghiệm lời nguyền điều ước.",
+    img: hero,
+  },
   { title: "Main Stage", desc: "Âm nhạc – DJ – Lightshow.", img: hero },
-  { title: "Cosplay & Parade", desc: "Hóa thân & diễu hành chủ đề.", img: hero },
+  {
+    title: "Cosplay & Parade",
+    desc: "Hóa thân & diễu hành chủ đề.",
+    img: hero,
+  },
 ];
 
 const values = [
-  { title: "An toàn", desc: "Quy trình – y tế – PCCC đầy đủ." },
-  { title: "Sáng tạo", desc: "Concept, décor, minigame độc đáo." },
-  { title: "Trải nghiệm", desc: "Check-in, photobooth, thử thách." },
-  { title: "Cộng đồng", desc: "Lan tỏa tinh thần thiện nguyện." },
-  { title: "Công nghệ", desc: "Vé điện tử – checkin QR." },
+  {
+    title: "FPTU Halloween",
+    desc: "Sự kiện Halloween lớn nhất FPTU.",
+    link: "/overall",
+  },
+  {
+    title: "FPTU Board Game Club",
+    desc: "CLB Tổ chức sự kiện Halloween",
+    link: "/fbgc",
+  },
+  {
+    title: "Tin tức mới nhất",
+    desc: "Cập nhật tin tức về sự kiện",
+    link: "/news",
+  },
+  {
+    title: "Liên hệ và phản hồi",
+    desc: "Phản hồi với chúng tôi",
+    link: "/contact-us",
+  },
 ];
 
-const news = [
-  { date: "10/10/2025", title: "Mở bán vé sớm – Early Bird", href: "#" },
-  { date: "05/10/2025", title: "Công bố line-up nghệ sĩ", href: "#" },
-  { date: "28/09/2025", title: "Cuộc thi cosplay Wishbound", href: "#" },
-];
+export default function HomePage() {
+  const [halloweenEvents, setHalloweenEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchHalloweenEvents = async () => {
+      try {
+        setLoading(true);
+        const data = await halloweensApi.listAllHalloween();
+        console.log(data);
+        // Xử lý cấu trúc API với field items
+        if (data && Array.isArray(data.items)) {
+          setHalloweenEvents(data.items);
+        } else if (Array.isArray(data)) {
+          setHalloweenEvents(data);
+        } else if (data && Array.isArray(data.data)) {
+          // Nếu API trả về { data: [...] }
+          setHalloweenEvents(data.data);
+        } else if (data && Array.isArray(data.events)) {
+          // Nếu API trả về { events: [...] }
+          setHalloweenEvents(data.events);
+        } else {
+          // Nếu data không phải array, sử dụng fallback
+          console.warn("API returned non-array data:", data);
+          setHalloweenEvents(highlights);
+        }
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching halloween events:", err);
+        setError("Không thể tải dữ liệu sự kiện Halloween");
+        // Fallback to static data if API fails
+        setHalloweenEvents(highlights);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-const agenda = [
-  { day: "29/10", item: "Opening Fair & Booth" },
-  { day: "30/10", item: "House of Wishbound (preview)" },
-  { day: "31/10", item: "Grand Night & Live Show" },
-];
+    fetchHalloweenEvents();
+  }, []);
 
-export default function HalloweenLanding() {
   return (
     <div className="fptu-halloween-page">
       {/* HERO */}
@@ -48,78 +94,153 @@ export default function HalloweenLanding() {
           <h1>FPTU HALLOWEEN 2025 WISHBOUND</h1>
           <p>Nơi hòa quyện của niềm vui và nỗi sợ.</p>
           <div className="fptu-halloween-hero__cta">
-            <a href="/ticket" className="fptu-halloween-btn fptu-halloween-btn--primary">Khám phá</a>
-            <a href="/volunteer" className="fptu-halloween-btn fptu-halloween-btn--ghost">Mua vé ngay</a>
+            <a
+              href="/overall"
+              className="fptu-halloween-btn fptu-halloween-btn--primary"
+            >
+              Khám phá
+            </a>
+            <a
+              href="/ticket-ghost"
+              className="fptu-halloween-btn fptu-halloween-btn--ghost"
+            >
+              Mua vé ngay
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* VIDEO SECTION */}
+      <section className="fptu-halloween-video-section">
+        <div className="fptu-halloween-video-container">
+          <div className="fptu-halloween-video-content">
+            <div className="fptu-halloween-video-column">
+              <div className="fptu-halloween-video-wrapper">
+                <div className="fptu-halloween-video-embed">
+                  <iframe
+                    src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1481935782850269%2F&show_text=false&width=560&t=0&autoplay=1&mute=1"
+                    width="100%"
+                    height="420"
+                    style={{
+                      border: "none",
+                      overflow: "hidden",
+                      borderRadius: "16px",
+                    }}
+                    scrolling="no"
+                    frameBorder="0"
+                    allowFullScreen={true}
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    title="FPTU Halloween Video"
+                    className="fptu-halloween-video-embed-iframe"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+
+            <div className="fptu-halloween-video-description">
+              <h2>FPTU Halloween 2025</h2>
+              <p className="fptu-halloween-video-subtitle">
+                Mỗi đêm, vào ngày 31/10 hằng năm, giữa màn sương dày đặc, thị
+                trấn ma quái 𝐖𝐢𝐬𝐡𝐛𝐨𝐮𝐧𝐝 xuất hiện rồi biến mất như chưa từng tồn
+                tại…. Nhưng năm nay, sau hàng thế kỷ ẩn mình, cái tên bao năm ám
+                ảnh thị trấn hóa ra chỉ là một mặt nạ khác của Joker - thực thể
+                tàn nhẫn chỉ sống để đánh tráo điều ước, nuốt chửng linh hồn và
+                biến hy vọng thành lời nguyền. Lúc ấy, ở nơi trung tâm thi trấn
+                mới rõ hình Quán rượu cổ, nơi mọi điều ước đều có giá, mọi “quy
+                tắc trò chơi” chỉ để dẫn dắt những ván đấu chết chóc do hắn bày
+                ra.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* HIGHLIGHTS */}
-      <section className="fptu-halloween-section">
-        <h2>Điểm nhấn</h2>
-        <div className="fptu-halloween-cards">
-          {highlights.map((h) => (
-            <article key={h.title} className="fptu-halloween-card">
-              <img src={h.img} alt="" />
-              <div className="fptu-halloween-card__body">
-                <h3>{h.title}</h3>
-                <p>{h.desc}</p>
+      {/* <section className="fptu-halloween-section">
+        <h2>Các sự kiện Halloween từng tổ chức tại FPTU</h2>
+        {loading ? (
+          <div className="fptu-halloween-loading">
+            <p>Đang tải dữ liệu...</p>
+          </div>
+        ) : error ? (
+          <div className="fptu-halloween-error">
+            <p>{error}</p>
+          </div>
+        ) : (
+          <div className="fptu-halloween-cards" style={{ cursor: "pointer" }}>
+            {Array.isArray(halloweenEvents) && halloweenEvents.length > 0 ? (
+              halloweenEvents.map((event, index) => (
+                <article
+                  key={event._id || event.id || index}
+                  className="fptu-halloween-card"
+                >
+                  <img
+                    src={event.event_image_url || hero}
+                    alt={event.event_name || event.title}
+                  />
+                  <div className="fptu-halloween-card__body">
+                    <h3>{event.event_name || event.title || event.name}</h3>
+                    <p>
+                      {event.event_description ||
+                        event.description ||
+                        event.desc}
+                    </p>
+                    <div className="fptu-halloween-card__details">
+                      {event.event_concept && (
+                        <div className="fptu-halloween-card__concept">
+                          <span>🎭 {event.event_concept}</span>
+                        </div>
+                      )}
+                      {event.event_start_time && (
+                        <div className="fptu-halloween-card__date">
+                          <span>
+                            📅{" "}
+                            {new Date(
+                              event.event_start_time
+                            ).toLocaleDateString("vi-VN")}
+                          </span>
+                        </div>
+                      )}
+                      {event.event_location && (
+                        <div className="fptu-halloween-card__location">
+                          <span>📍 {event.event_location}</span>
+                        </div>
+                      )}
+                      {event.event_year && (
+                        <div className="fptu-halloween-card__year">
+                          <span>🗓️ Năm {event.event_year}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))
+            ) : (
+              <div className="fptu-halloween-no-data">
+                <p>Không có dữ liệu sự kiện Halloween</p>
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* KPI */}
-      <section className="fptu-halloween-section fptu-halloween-section--dark">
-        <h2>Con số ấn tượng</h2>
-        <div className="fptu-halloween-kpis">
-          {kpis.map((k) => (
-            <div key={k.label} className="fptu-halloween-kpi">
-              <div className="fptu-halloween-kpi__value">{k.value}</div>
-              <div className="fptu-halloween-kpi__label">{k.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+            )}
+          </div>
+        )}
+      </section> */}
 
       {/* CORE VALUES */}
       <section className="fptu-halloween-section">
-        <h2>Giá trị trải nghiệm</h2>
+        <h2>Khám phá cùng chúng tôi</h2>
         <div className="fptu-halloween-grid">
           {values.map((v) => (
-            <div key={v.title} className="fptu-halloween-feature">
+            <div
+              key={v.title}
+              className="fptu-halloween-feature"
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate(v.link)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") navigate(v.link);
+              }}
+            >
               <h3>{v.title}</h3>
               <p>{v.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* NEWS */}
-      <section className="fptu-halloween-section fptu-halloween-section--dark">
-        <div className="fptu-halloween-section__head">
-          <h2>Tin tức & cập nhật</h2>
-          <a href="/news" className="fptu-halloween-link">Xem tất cả</a>
-        </div>
-        <div className="fptu-halloween-news">
-          {news.map((n) => (
-            <a key={n.title} className="fptu-halloween-news__item" href={n.href}>
-              <time>{n.date}</time>
-              <span>{n.title}</span>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* UPCOMING */}
-      <section className="fptu-halloween-section">
-        <h2>Sự kiện sắp diễn ra</h2>
-        <div className="fptu-halloween-agenda">
-          {agenda.map((a) => (
-            <div key={a.day} className="fptu-halloween-agenda__row">
-              <span className="fptu-halloween-agenda__day">{a.day}</span>
-              <span>{a.item}</span>
             </div>
           ))}
         </div>

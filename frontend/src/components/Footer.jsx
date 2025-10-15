@@ -1,17 +1,25 @@
 import React from "react";
 import "./Footer.css";
 import wtm from "../assets/wtm.png";
-import FacebookIcon from '@mui/icons-material/Facebook';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from "@mui/icons-material/Facebook";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import { useNavigate } from "react-router-dom";
 function Footer() {
   const year = new Date().getFullYear();
+  const navigate = useNavigate();
   return (
     <footer className="fpt-footer">
       <div className="fpt-footer__container">
         <div className="fpt-footer__grid">
           <div className="fpt-footer__contact-section">
-            <img src={wtm} alt="FPT Schools" className="fpt-footer__logo" />
+            <img
+              style={{ cursor: "pointer" }}
+              src={wtm}
+              onClick={() => navigate("/")}
+              alt="FPT Schools"
+              className="fpt-footer__logo"
+            />
             <h3 className="fpt-footer__contact-title">THÔNG TIN LIÊN HỆ</h3>
             <div className="fpt-footer__contact-item">
               <span className="fpt-footer__contact-icon">@</span>
@@ -29,17 +37,40 @@ function Footer() {
             </div>
             <h4 className="fpt-footer__social-title">Liên kết mạng xã hội</h4>
             <div className="fpt-header__social">
-              <button className="fpt-header__social-btn fpt-header__social-btn--facebook">
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://www.facebook.com/fptuhalloween",
+                    "_blank"
+                  )
+                }
+                className="fpt-header__social-btn fpt-header__social-btn--facebook"
+              >
                 <FacebookIcon />
               </button>
-              <button className="fpt-header__social-btn fpt-header__social-btn--tiktok">
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://www.facebook.com/fuboardgameclub",
+                    "_blank"
+                  )
+                }
+                className="fpt-header__social-btn fpt-header__social-btn--tiktok"
+              >
                 <InstagramIcon />
               </button>
-              <button className="fpt-header__social-btn fpt-header__social-btn--youtube">
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://www.tiktok.com/@fptu.halloween2025",
+                    "_blank"
+                  )
+                }
+                className="fpt-header__social-btn fpt-header__social-btn--youtube"
+              >
                 <YouTubeIcon />
               </button>
             </div>
-            
           </div>
 
           <div className="fpt-footer__links-grid">
@@ -54,7 +85,6 @@ function Footer() {
               <a href="#" className="fpt-footer__link">
                 Fanpage Sự kiện
               </a>
-             
             </div>
             <div className="fpt-footer__link-group">
               <h4 className="fpt-footer__link-title">Về FPTU Halloween 2025</h4>
@@ -81,7 +111,9 @@ function Footer() {
               </a>
             </div>
             <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">Về FPTU Board Game Club</h4>
+              <h4 className="fpt-footer__link-title">
+                Về FPTU Board Game Club
+              </h4>
               <a href="#" className="fpt-footer__link">
                 Câu chuyện
               </a>

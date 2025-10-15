@@ -11,7 +11,7 @@ const NewsSchema = new Schema(
       default: [],
       validate: {
         validator(arr) {
-          const allowed = ['announcement', 'concept', 'ghost_house', 'sale', 'update', 'general'];
+          const allowed = ['announcement', 'concept', 'ghost_house', 'sale', 'update', 'general, Hot'];
           return arr.every(t => allowed.includes(t));
         },
         message: 'news_type chứa giá trị không hợp lệ'

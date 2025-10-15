@@ -3,55 +3,61 @@ import "./Navbar.css";
 import wtm from "../assets/wtm.png";
 import { Icon, Tooltip } from "@mui/material";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import { useNavigate, useLocation } from "react-router-dom"; // Add useLocation import
 const navigationItems = [
-    {
-      label: "GIỚI THIỆU",
-      href: "#",
-      children: [
-        { label: "Về sự kiện Halloween", href: "#" },
-        { label: "Về các mùa đã qua", href: "#" },
-        { label: "Fanpage Sự kiện", href: "#" },
-      ],
-    },
-    {
-      label: "FPTU HALLOWEEN 2025",
-      href: "#",
-      children: [
-        { label: "Tổng quan sự kiện", href: "#" },
-        { label: "Agenda", href: "#" },
-        { label: "Tin tức", href: "#" },
-      ],
-    },
-    {
-      label: "MUA VÉ NHÀ MA",
-      href: "#",
-      children: [
-        { label: "Hướng dẫm mua vé", href: "#" },
-        { label: "Bảng giá", href: "#" },
-        { label: "Câu hỏi thường gặp", href: "#" },
-      ],
-    },
-    {
-      label: "VỀ CHÚNG TÔI",
-      href: "#",
-      children: [
-        { label: "FPTU Board Game Club", href: "#" },
-        { label: "Câu chuyện", href: "#" },
-        { label: "Hoạt động", href: "#" },
-      ],
-    },
-    {
-      label: "LIÊN HỆ",
-      href: "#",
-    }
-  ];
-  
+  {
+    label: "TRANG CHỦ",
+    href: "/",
+  },
+  {
+    label: "GIỚI THIỆU",
+    href: "#",
+    children: [
+      { label: "Về sự kiện Halloween", href: "/event-page" },
+      { label: "Về các mùa đã qua", href: "/old-event" },
+      { label: "Fanpage Sự kiện", href: "/fanpage" },
+    ],
+  },
+  {
+    label: "FPTU HALLOWEEN 2025",
+    href: "#",
+    children: [
+      { label: "Tổng quan sự kiện", href: "/overall" },
+      // { label: "Thông tin", href: "/agenda" },
+      // { label: "Tin tức", href: "/news" },
+    ],
+  },
+  {
+    label: "ĐĂNG KÝ",
+    href: "#",
+    children: [
+      // { label: "Vé nhà ma", href: "/ticket-ghost" },
+      { label: "Big game", href: "/ticket-game" },
+      // { label: "Cuộc thi hóa trang", href: "/jnbwueoini0" },
+    ],
+  },
+  {
+    label: "VỀ CHÚNG TÔI",
+    href: "#",
+    children: [
+      { label: "FPTU Board Game Club", href: "/fbgc" },
+      // { label: "Fanpage", style: { cursor: "pointer" }, onClick: () => navigate("https://www.facebook.com/fuboardgameclub") },
+      // { label: "Hoạt động", href: "#" },
+    ],
+  },
+  {
+    label: "LIÊN HỆ",
+    href: "/contact-us",
+  },
+];
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const userDropdownRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation(); // Add location hook
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -75,19 +81,34 @@ function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target)
+      ) {
         setShowUserDropdown(false);
       }
     };
 
     if (showUserDropdown) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showUserDropdown]);
+
+  // Helper function to check if link is active
+  const isActive = (path) => {
+    if (path === "#") return false;
+    return location.pathname === path;
+  };
+
+  // Helper function to check if dropdown has active child
+  const hasActiveChild = (children) => {
+    if (!children) return false;
+    return children.some((child) => isActive(child.href));
+  };
 
   return (
     <>
@@ -98,6 +119,7 @@ function Navbar() {
             <div className="fpt-navbar__logo">
               <img
                 src={wtm}
+                onClick={() => navigate("/")}
                 alt="FPTU Halloween"
                 className="fpt-navbar__logo-img"
               />
@@ -114,7 +136,17 @@ function Navbar() {
                 >
                   <a
                     href={item.href}
-                    className="fpt-navbar__nav-link"
+                    className={`fpt-navbar__nav-link ${
+                      isActive(item.href) || hasActiveChild(item.children)
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={(e) => {
+                      if (item.href !== "#") {
+                        e.preventDefault();
+                        navigate(item.href);
+                      }
+                    }}
                   >
                     {item.label}
                     {item.children && (
@@ -127,7 +159,15 @@ function Navbar() {
                         <a
                           key={child.label}
                           href={child.href}
-                          className="fpt-navbar__dropdown-link"
+                          className={`fpt-navbar__dropdown-link ${
+                            isActive(child.href) ? "active" : ""
+                          }`}
+                          onClick={(e) => {
+                            if (child.href !== "#") {
+                              e.preventDefault();
+                              navigate(child.href);
+                            }
+                          }}
                         >
                           {child.label}
                         </a>
@@ -136,13 +176,16 @@ function Navbar() {
                   )}
                 </div>
               ))}
-              <div 
+              <div
                 ref={userDropdownRef}
                 className="fpt-navbar__user-item"
                 onMouseLeave={handleUserMouseLeave}
               >
                 <Tooltip title="Tài khoản">
-                  <button className="fpt-navbar__search-btn" onClick={handleUserClick}>
+                  <button
+                    className="fpt-navbar__search-btn"
+                    onClick={handleUserClick}
+                  >
                     <PermIdentityIcon
                       sx={{
                         fontSize: 25,
@@ -153,16 +196,23 @@ function Navbar() {
                     />
                   </button>
                 </Tooltip>
-                <div className={`fpt-navbar__user-dropdown ${showUserDropdown ? 'show' : ''}`}>
+                <div
+                  className={`fpt-navbar__user-dropdown ${
+                    showUserDropdown ? "show" : ""
+                  }`}
+                >
                   <a href="/login" className="fpt-navbar__dropdown-link">
                     🔐 Đăng nhập
                   </a>
                   <a href="/register" className="fpt-navbar__dropdown-link">
                     📝 Đăng ký
                   </a>
-                  <a href="/forgot-password" className="fpt-navbar__dropdown-link">
+                  {/* <a
+                    href="/forgot-password"
+                    className="fpt-navbar__dropdown-link"
+                  >
                     🔑 Quên mật khẩu
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
@@ -205,7 +255,13 @@ function Navbar() {
                 <a
                   href={item.href}
                   className="fpt-navbar__mobile-link"
-                  onClick={handleDrawerToggle}
+                  onClick={(e) => {
+                    if (item.href !== "#") {
+                      e.preventDefault();
+                      navigate(item.href);
+                    }
+                    handleDrawerToggle();
+                  }}
                 >
                   {item.label}
                 </a>
@@ -216,7 +272,13 @@ function Navbar() {
                         key={child.label}
                         href={child.href}
                         className="fpt-navbar__mobile-sublink"
-                        onClick={handleDrawerToggle}
+                        onClick={(e) => {
+                          if (child.href !== "#") {
+                            e.preventDefault();
+                            navigate(child.href);
+                          }
+                          handleDrawerToggle();
+                        }}
                       >
                         {child.label}
                       </a>
@@ -226,17 +288,32 @@ function Navbar() {
               </div>
             ))}
             <div className="fpt-navbar__mobile-group">
-              <div className="fpt-navbar__mobile-link" style={{ fontWeight: 'bold', color: '#ce0000' }}>
+              <div
+                className="fpt-navbar__mobile-link"
+                style={{ fontWeight: "bold", color: "#ce0000" }}
+              >
                 👤 Tài khoản
               </div>
               <div className="fpt-navbar__mobile-sub">
-                <a href="/login" className="fpt-navbar__mobile-sublink" onClick={handleDrawerToggle}>
+                <a
+                  href="/login"
+                  className="fpt-navbar__mobile-sublink"
+                  onClick={handleDrawerToggle}
+                >
                   🔐 Đăng nhập
                 </a>
-                <a href="/register" className="fpt-navbar__mobile-sublink" onClick={handleDrawerToggle}>
+                <a
+                  href="/register"
+                  className="fpt-navbar__mobile-sublink"
+                  onClick={handleDrawerToggle}
+                >
                   📝 Đăng ký
                 </a>
-                <a href="/forgot-password" className="fpt-navbar__mobile-sublink" onClick={handleDrawerToggle}>
+                <a
+                  href="/forgot-password"
+                  className="fpt-navbar__mobile-sublink"
+                  onClick={handleDrawerToggle}
+                >
                   🔑 Quên mật khẩu
                 </a>
               </div>
