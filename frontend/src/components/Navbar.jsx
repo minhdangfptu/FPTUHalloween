@@ -309,13 +309,13 @@ function Navbar() {
                 >
                   📝 Đăng ký
                 </a>
-                <a
+                {/* <a
                   href="/forgot-password"
                   className="fpt-navbar__mobile-sublink"
                   onClick={handleDrawerToggle}
                 >
                   🔑 Quên mật khẩu
-                </a>
+                </a> */}
               </div>
             </div>
           </div>

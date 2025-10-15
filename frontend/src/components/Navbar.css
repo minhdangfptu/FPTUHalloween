@@ -97,6 +97,10 @@
   padding: 8px;
   border-radius: 4px;
   transition: all 0.2s ease;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10001;
 }
 
 .fpt-navbar__mobile-toggle:hover {
@@ -113,13 +117,17 @@
   height: 100vh;
   z-index: 9999;
   background: rgba(0,0,0,0.5);
-  display: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(.4,0,.2,1);
 }
 
 .fpt-navbar__mobile-drawer--open {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
+/* Nội dung drawer hiệu ứng trượt */
 .fpt-navbar__mobile-content {
   background: #fff;
   width: 80vw;
@@ -131,6 +139,14 @@
   box-shadow: -2px 0 8px rgba(0,0,0,0.15);
   overflow-y: auto;
   padding: 24px 16px;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+.fpt-navbar__mobile-drawer--open .fpt-navbar__mobile-content {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .fpt-navbar__mobile-header {
@@ -151,6 +167,13 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
+  color: #ce0000; /* Đỏ nổi bật */
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.fpt-navbar__mobile-close:hover {
+  color: #222; /* Đậm hơn khi hover */
 }
 
 .fpt-navbar__mobile-link,
@@ -187,13 +210,13 @@
 }
 
 @media (max-width: 480px) {
-  .fpt-navbar__mobile-drawer {
-    width: 280px;
-    right: -280px;
-  }
-  
-  .fpt-navbar__logo-img {
-    height: 40px;
+  .fpt-navbar__mobile-content {
+    width: 100vw;
+    max-width: 100vw;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    padding: 24px 8px;
   }
 }
 
