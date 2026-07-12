@@ -1,0 +1,225 @@
+# ============================================================
+# .cursorrules — AI Assistant Configuration for FPTU Halloween 2025
+# ============================================================
+# Đây là file cấu hình chính, được đọc đầu tiên khi AI khởi động.
+# Phiên bản: 1.0.0 | Ngày tạo: 2026-07-12
+# ============================================================
+
+# ------------------------------------------------------
+# 1. GIỚI THIỆU & VAI TRÒ
+# ------------------------------------------------------
+
+Tên dự án : FPTU Halloween 2025 Website
+Stack     : MERN (MongoDB, Express, React, Node.js)
+Auth      : JWT (JSON Web Token)
+Mục tiêu  : Xây dựng website sự kiện Halloween cho FPT University
+
+Bạn là AI Assistant hoạt động trong dự án này. Nhiệm vụ của bạn là:
+- Viết code sạch, có cấu trúc theo chuẩn MERN.
+- Tuân thủ nguyên tắc DRY, SOLID, KISS.
+- Bảo mật: không bao giờ để lộ JWT secret, API key, hay password.
+- Ưu tiên: đọc file quy tắc trước khi code, dùng skill chuyên biệt khi cần.
+
+---
+
+# ------------------------------------------------------
+# 2. THỨ TỰ ƯU TIÊN ĐỌC FILE
+# ------------------------------------------------------
+
+## Quy tắc BẮT BUỘC — Đọc theo thứ tự ưu tiên:
+
+| Ưu tiên | File cần đọc              | Khi nào đọc                          |
+|---------|----------------------------|--------------------------------------|
+| 1       | `.cursorrules`             | LUÔN luôn đọc khi bắt đầu phiên làm việc |
+| 2       | `.agent/rules/backend.md`  | Khi làm việc với Backend (Node.js / Express) |
+| 3       | `.agent/rules/database.md` | Khi làm việc với MongoDB / Mongoose |
+| 4       | `.agent/rules/frontend.md` | Khi làm việc với Frontend (React) |
+| 5       | `.agent/rules/code-quality.md` | Khi review hoặc viết code bất kỳ |
+| 6       | `.agent/workflows/*.md`    | Khi bắt đầu tính năng mới / debug / deploy |
+
+---
+
+# ------------------------------------------------------
+# 3. SKILL MAPPING — GỌI SKILL THEO TỪ KHÓA
+# ------------------------------------------------------
+
+## Cách gọi skill:
+Khi user gõ từ khóa bên dưới, bạn phải:
+1. Đọc file SKILL.md tương ứng.
+2. Tuân thủ Tuyệt đối các bước trong skill đó.
+3. Không bỏ qua bất kỳ bước nào.
+
+### 3.1. Code Review Skill
+**Từ khóa kích hoạt:**
+- `"review code"`, `"check code"`, `"kiểm tra code"`
+- `"tìm bug"`, `"find bugs"`, `"săn soi code"`
+- `"code audit"`, `"refactor"`, `"dọn code"`
+- `"review my code"`, `"what's wrong with this code"`
+
+**File skill:**
+```
+.agent/skills/code-review/SKILL.md
+```
+
+**Mục đích:** Săm soi code, tìm bug, bắt lỗi N+1 query, check injection, rò rỉ API key.
+
+---
+
+### 3.2. UI/UX Review Skill
+**Từ khóa kích hoạt:**
+- `"review UI"`, `"check UI"`, `"đánh giá giao diện"`
+- `"review UX"`, `"check design"`, `"cải thiện UI"`
+- `"responsive"`, `"check responsiveness"`
+
+**File skill:**
+```
+.agent/skills/review-ui/SKILL.md
+```
+
+**Mục đích:** Check responsive, đánh giá UX/UI, kiểm tra nhất quán Tailwind/CSS.
+
+---
+
+### 3.3. Connect Frontend-Backend Skill
+**Từ khóa kích hoạt:**
+- `"connect FE BE"`, `"kết nối API"`, `"gọi API"`
+- `"integrate"`, `"API integration"`, `"nối API"`
+- `"Axios"`, `"fetch API"`
+
+**File skill:**
+```
+.agent/skills/connect-fe-be/SKILL.md
+```
+
+**Mục đích:** Nối API Node.js sang React, xử lý loading state, catch 401/403 force logout.
+
+---
+
+# ------------------------------------------------------
+# 4. WORKFLOW MAPPING — GỌI WORKFLOW THEO NGỮ CẢNH
+# ------------------------------------------------------
+
+| Ngữ cảnh                     | Workflow file                               |
+|------------------------------|---------------------------------------------|
+| Tạo tính năng mới            | `.agent/workflows/scaffold-feature.md`      |
+| Gặp bug / lỗi                | `.agent/workflows/debug.md`                  |
+| Commit code                  | `.agent/workflows/smart-commit.md`           |
+| Trước khi deploy/push        | `.agent/workflows/pre-deploy.md`             |
+
+---
+
+# ------------------------------------------------------
+# 5. CẤU TRÚC THƯ MỤC DỰ ÁN
+# ------------------------------------------------------
+
+```
+FPTUHalloween2025_Website/
+├── backend/                   # Node.js + Express + MongoDB
+│   └── src/
+│       ├── controllers/       # Xử lý request/response
+│       ├── services/          # Business logic
+│       ├── models/            # Mongoose Schema
+│       ├── routes/            # API Routes
+│       ├── middleware/        # Auth, error handler, validation
+│       ├── config/            # DB config, JWT config
+│       └── utils/             # Helper functions
+│
+├── frontend/                  # React (Vite/CRA)
+│   └── src/
+│       ├── components/        # React components
+│       ├── pages/             # Page components
+│       ├── hooks/             # Custom hooks
+│       ├── services/          # Axios API calls
+│       ├── store/             # State management (Zustand/Redux)
+│       ├── utils/             # Helpers
+│       └── styles/            # CSS/Tailwind config
+│
+├── .agent/                    # AI Agent Configuration (KHÔNG SỬA)
+│   ├── rules/                 # Luật code
+│   │   ├── backend.md
+│   │   ├── database.md
+│   │   ├── frontend.md
+│   │   └── code-quality.md
+│   ├── skills/                # Skill chuyên biệt
+│   │   ├── code-review/
+│   │   ├── review-ui/
+│   │   └── connect-fe-be/
+│   └── workflows/             # Quy trình chuẩn
+│       ├── scaffold-feature.md
+│       ├── debug.md
+│       ├── smart-commit.md
+│       └── pre-deploy.md
+│
+└── .cursorrules               # File này
+```
+
+---
+
+# ------------------------------------------------------
+# 6. QUY TẮC BẢO MẬT TUYỆT ĐỐI
+# ------------------------------------------------------
+
+### 6.1. Cấm tuyệt đối:
+- ❌ KHÔNG bao giờ commit file `.env` hoặc `.env.local`.
+- ❌ KHÔNG để JWT secret, MongoDB URI, API key trong code.
+- ❌ KHÔNG lưu plaintext password — phải dùng `bcryptjs`.
+- ❌ KHÔNG dùng `eval()`, `Function()` với user input.
+- ❌ KHÔNG in secret ra console.log trong production.
+
+### 6.2. Bắt buộc:
+- ✅ Tất cả secret phải đặt trong `.env` và được ignore bởi `.gitignore`.
+- ✅ Tất cả API route phải có middleware xác thực (JWT).
+- ✅ Input từ user phải được validate (dùng Joi, Zod, hoặc express-validator).
+- ✅ Rate limiting trên các endpoint public.
+
+---
+
+# ------------------------------------------------------
+# 7. CONVENTIONAL COMMITS
+# ------------------------------------------------------
+
+Mọi commit message phải tuân theo Conventional Commits:
+
+| Type       | Mô tả ngắn                                      | Ví dụ                              |
+|------------|-------------------------------------------------|------------------------------------|
+| `feat:`    | Thêm tính năng mới                               | `feat: add user auth with JWT`     |
+| `fix:`     | Sửa bug                                         | `fix: resolve login 500 error`     |
+| `chore:`   | Cập nhật config, dependency, không ảnh hưởng code | `chore: update Node version`       |
+| `refactor:`| Viết lại code nhưng không đổi logic             | `refactor: extract auth service`   |
+| `docs:`    | Cập nhật tài liệu                               | `docs: update API endpoints`       |
+| `test:`    | Thêm hoặc sửa unit test                         | `test: add auth middleware tests`  |
+| `style:`   | Format code, không đổi logic                    | `style: format controller files`   |
+
+---
+
+# ------------------------------------------------------
+# 8. NGỮ CẢNH HOẠT ĐỘNG MẶC ĐỊNH
+# ------------------------------------------------------
+
+Khi bạn nhận nhiệm vụ từ user mà KHÔNG chỉ rõ frontend hay backend:
+- Bước 1: Hỏi user họ muốn làm ở phần nào (frontend / backend / cả hai).
+- Bước 2: Nếu làm cả hai, tuân theo workflow `scaffold-feature.md`.
+- Bước 3: Nếu chỉ làm một phần, đọc file rule tương ứng và thực hiện.
+
+---
+
+# ------------------------------------------------------
+# 9. CÁCH SỬ DỤNG FILE NÀY
+# ------------------------------------------------------
+
+## Với AI Assistant:
+1. Đọc file này TRƯỚC KHI làm bất cứ điều gì.
+2. Kiểm tra skill mapping để biết có skill nào phù hợp không.
+3. Kiểm tra workflow mapping để biết có workflow nào cần áp dụng không.
+4. Đọc rule file tương ứng (backend.md, database.md, frontend.md).
+5. Thực hiện code.
+
+## Với Developer:
+- Không sửa file này trừ khi thay đổi cấu trúc dự án.
+- Muốn thêm skill mới: tạo file trong `.agent/skills/<skill-name>/SKILL.md`.
+- Muốn thêm rule mới: tạo file trong `.agent/rules/<rule-name>.md`.
+- Muốn thêm workflow mới: tạo file trong `.agent/workflows/<workflow-name>.md`.
+
+---
+
+**Cuối cùng: Code có trách nhiệm. Deploy có kiểm soát. Commit có ý nghĩa.**

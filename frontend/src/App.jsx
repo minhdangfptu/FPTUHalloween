@@ -47,8 +47,8 @@ export default function App() {
         {/* Authentication pages - không có Header, Navbar, Footer */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/confirm-email" element={<ConfirmEmail />} />
-        <Route path="/complete-register" element={<CompleteRegister />} />
+        {/* <Route path="/confirm-email" element={<ConfirmEmail />} />
+        <Route path="/complete-register" element={<CompleteRegister />} /> */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="*" element={<ErrorPage404 />} />
         <Route path="/staff" element={<StaffHomePage />} />

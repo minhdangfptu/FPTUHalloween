@@ -68,9 +68,6 @@ const startServer = async () => {
     mongoose.connection.db.listCollections().toArray().then(cols => {
       console.log('Collections:', cols.map(c => c.name));
     });
-    mongoose.connection.db.collection('Halloween').countDocuments().then(n => {
-      console.log('Raw count(Halloween):', n);
-    });
     app.listen(config.PORT, () => {
       console.log(`Server is running at http://localhost:${config.PORT}`)
       console.log(`Environment: ${config.NODE_ENV}`)
