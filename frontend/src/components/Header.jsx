@@ -34,7 +34,7 @@ function Header() {
                 onClick={() =>
                   window.open(
                     "https://www.facebook.com/fptuhalloween",
-                    "_blank"
+                    "_blank",
                   )
                 }
                 className="fpt-header__social-btn fpt-header__social-btn--facebook"
@@ -45,23 +45,31 @@ function Header() {
                 onClick={() =>
                   window.open(
                     "https://www.facebook.com/fuboardgameclub",
-                    "_blank"
+                    "_blank",
                   )
                 }
                 className="fpt-header__social-btn fpt-header__social-btn--tiktok"
               >
                 <InstagramIcon sx={{ color: "white" }} />
               </button>
-              <button onClick={() =>
+              <button
+                onClick={() =>
                   window.open(
                     "https://www.tiktok.com/@fptu.halloween2025",
-                    "_blank"
+                    "_blank",
                   )
-                } className="fpt-header__social-btn fpt-header__social-btn--youtube">
+                }
+                className="fpt-header__social-btn fpt-header__social-btn--youtube"
+              >
                 <YouTubeIcon sx={{ color: "white" }} />
               </button>
             </div>
-            <button onClick={() => navigate("/ticket-game")} className="fpt-header__cta-btn">ĐĂNG KÝ</button>
+            <button
+              onClick={() => navigate("/ticket-game")}
+              className="fpt-header__cta-btn"
+            >
+              MUA VÉ NGAY
+            </button>
           </div>
         </div>
       </div>

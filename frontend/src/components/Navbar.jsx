@@ -13,34 +13,35 @@ const navigationItems = [
     label: "GIỚI THIỆU",
     href: "#",
     children: [
-      { label: "Về sự kiện Halloween", href: "/event-page" },
-      { label: "Về các mùa đã qua", href: "/old-event" },
-      { label: "Fanpage Sự kiện", href: "/fanpage" },
+      { label: "Giới thiệu chung", href: "/event-page" },
+      { label: "Đơn vị tổ chức", href: "/old-event" },
     ],
   },
   {
-    label: "FPTU HALLOWEEN 2025",
+    label: "NHÀ MA HALLOWEEN",
     href: "#",
     children: [
-      { label: "Tổng quan sự kiện", href: "/overall" },
+      { label: "Câu chuyện", href: "/overall" },
+      { label: "Mua vé", href: "/overall" },
       // { label: "Thông tin", href: "/agenda" },
       // { label: "Tin tức", href: "/news" },
     ],
   },
-  {
-    label: "ĐĂNG KÝ",
-    href: "#",
-    children: [
-      // { label: "Vé nhà ma", href: "/ticket-ghost" },
-      { label: "Big game", href: "/ticket-game" },
-      // { label: "Cuộc thi hóa trang", href: "/jnbwueoini0" },
-    ],
-  },
+  // {
+  //   label: "ĐĂNG KÝ",
+  //   href: "#",
+  //   children: [
+  //     // { label: "Vé nhà ma", href: "/ticket-ghost" },
+  //     { label: "Big game", href: "/ticket-game" },
+  //     // { label: "Cuộc thi hóa trang", href: "/jnbwueoini0" },
+  //   ],
+  // },
   {
     label: "VỀ CHÚNG TÔI",
     href: "#",
     children: [
-      { label: "FPTU Board Game Club", href: "/fbgc" },
+      { label: "Ban tổ chức FPTU Halloween 2026", href: "/fbgc" },
+      { label: "Cơ cấu tổ chức", href: "/fbgc" },
       // { label: "Fanpage", style: { cursor: "pointer" }, onClick: () => navigate("https://www.facebook.com/fuboardgameclub") },
       // { label: "Hoạt động", href: "#" },
     ],

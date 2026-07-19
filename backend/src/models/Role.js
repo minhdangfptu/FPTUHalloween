@@ -1,23 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const RoleSchema = new mongoose.Schema(
-  {
-    role_name: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-      enum: ['Admin', 'Staff', 'User', 'Guest']
-    },
-    role_description: { type: String, trim: true, default: '' },
-    role_active: { type: Boolean, default: true }
-  },
-  {
-    collection: 'Role',
-    timestamps: { createdAt: 'created_at', updatedAt: 'update_at' }
-  }
-);
+const schema = new mongoose.Schema({
+  roleName: { type: String, required: true },
+  roleDescription: { type: String },
+  roleActive: { type: Boolean, default: true }
+}, { collection: 'Roles' })
 
-
-module.exports = mongoose.models.Role || mongoose.model('Role', RoleSchema)
-console.log('Role model loaded')
+module.exports = mongoose.models.Roles || mongoose.model('Roles', schema)

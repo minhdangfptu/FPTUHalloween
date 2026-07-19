@@ -1,7 +1,10 @@
-const User = require('./User')
-const Role = require('./Role')
-const Halloween = require('./Halloween')
-const Feedback = require('./Feedback')
-const News = require('./News')
-
-module.exports = { User, Role, Halloween, Feedback, News }
+module.exports = {
+  User: require('./User'),
+  Role: require('./Role'),
+  Contact: require('./Contact'),
+  News: require('./News'),
+  RefreshToken: require('./RefreshToken'),
+  Order: require('./Order'),
+  TicketType: require('./TicketType'),
+  UserTicket: require('./UserTicket')
+}

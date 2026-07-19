@@ -22,7 +22,8 @@ const refresh = wrap(async (req, res) => {
 })
 
 const logout = wrap(async (req, res) => {
-  const result = await authSvc.logout()
+  const { refreshToken } = req.body || {}
+  const result = await authSvc.logout(refreshToken)
   return res.json(result)
 })
 

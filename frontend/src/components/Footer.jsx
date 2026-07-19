@@ -41,7 +41,7 @@ function Footer() {
                 onClick={() =>
                   window.open(
                     "https://www.facebook.com/fptuhalloween",
-                    "_blank"
+                    "_blank",
                   )
                 }
                 className="fpt-header__social-btn fpt-header__social-btn--facebook"
@@ -52,7 +52,7 @@ function Footer() {
                 onClick={() =>
                   window.open(
                     "https://www.facebook.com/fuboardgameclub",
-                    "_blank"
+                    "_blank",
                   )
                 }
                 className="fpt-header__social-btn fpt-header__social-btn--tiktok"
@@ -63,7 +63,7 @@ function Footer() {
                 onClick={() =>
                   window.open(
                     "https://www.tiktok.com/@fptu.halloween2025",
-                    "_blank"
+                    "_blank",
                   )
                 }
                 className="fpt-header__social-btn fpt-header__social-btn--youtube"
@@ -93,9 +93,6 @@ function Footer() {
               </a>
               <a href="#" className="fpt-footer__link">
                 Agenda
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Tin tức
               </a>
             </div>
             <div className="fpt-footer__link-group">

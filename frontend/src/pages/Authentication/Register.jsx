@@ -3,6 +3,8 @@ import "./Register.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
+import { useNavigate } from "react-router-dom";
+import { authAPI } from "../../apis/authAPI";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -13,6 +15,9 @@ function Register() {
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [serverMessage, setServerMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -78,13 +83,23 @@ function Register() {
       return;
     }
 
+    setLoading(true);
+    setServerMessage("");
+
     try {
-      // TODO: Gọi API register
-      console.log("Register data:", formData);
-      alert("Đăng ký thành công!");
+      await authAPI.register({
+        email: formData.email,
+        password: formData.password,
+        full_name: formData.full_name,
+        phone_number: formData.phone_number,
+      });
+      setServerMessage("Đăng ký thành công! Đang chuyển về trang đăng nhập...");
+      setTimeout(() => navigate("/login"), 1200);
     } catch (error) {
-      console.error("Register error:", error);
-      alert("Có lỗi xảy ra khi đăng ký");
+      const message = error?.response?.data?.message || error?.message || "Có lỗi xảy ra khi đăng ký";
+      setServerMessage(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -195,8 +210,13 @@ function Register() {
                 )}
                 <div style={{ height: 14 }} />
 
-                <button className="fptu-halloween-register-btn-primary" type="submit">
-                  Đăng ký
+                {serverMessage && (
+                  <div style={{ color: serverMessage.includes("thành công") ? "#2e7d32" : "#d32f2f", marginBottom: 10, fontSize: 14 }}>
+                    {serverMessage}
+                  </div>
+                )}
+                <button className="fptu-halloween-register-btn-primary" type="submit" disabled={loading}>
+                  {loading ? "Đang đăng ký..." : "Đăng ký"}
                 </button>
               </form>
             </div>

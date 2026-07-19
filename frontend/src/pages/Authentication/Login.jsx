@@ -4,12 +4,30 @@ import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
 import { useNavigate } from "react-router-dom";
+import { authAPI } from "../../apis/authAPI";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const onSubmit = (e) => e.preventDefault();
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
+
+    try {
+      await authAPI.login({ email, password });
+      navigate("/");
+    } catch (error) {
+      const message = error?.response?.data?.message || error?.message || "Đăng nhập thất bại";
+      setErrorMessage(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="login-page">
@@ -48,8 +66,11 @@ function Login() {
                   required
                 />
                 <div style={{ height: 14 }} />
-                <button className="btn-primary" type="submit">
-                  Đăng nhập
+                {errorMessage && (
+                  <div style={{ color: "#d32f2f", marginBottom: 8, fontSize: 14 }}>{errorMessage}</div>
+                )}
+                <button className="btn-primary" type="submit" disabled={loading}>
+                  {loading ? "Đang đăng nhập..." : "Đăng nhập"}
                 </button>
                 <div style={{ marginTop: 8, textAlign: "center" }}>
                   <a className="link-muted" href="/forgot-password">
