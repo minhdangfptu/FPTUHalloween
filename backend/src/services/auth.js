@@ -1,119 +1,59 @@
-/* eslint-disable no-unused-vars */
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const nodemailer = require('nodemailer')
-const { User, Role } = require('../models')
+const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
+const { User, Role, RefreshToken, Otp } = require('../models')
+const { sendOtpEmail } = require('../providers/emailProvider')
 
-function getAccessSecret() { return process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || 'dev-access-secret' }
-function getRefreshSecret() { return process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret' }
-
-async function hashPassword(password) { return await bcrypt.hash(password, 10) }
-async function verifyPassword(password, hash) { return await bcrypt.compare(password, hash) }
-
-function signAccessToken(payload, expiresIn = '15m') {
-  return jwt.sign(payload, getAccessSecret(), { algorithm: 'HS256', expiresIn })
+const accessSecret = () => process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || 'dev-access-secret'
+const refreshSecret = () => process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET || 'dev-refresh-secret'
+const hash = value => crypto.createHash('sha256').update(value).digest('hex')
+const normalize = value => String(value || '').trim().toLowerCase()
+const userQuery = (identifier, withPassword = false) => {
+  const value = normalize(identifier)
+  const query = User.findOne({ $or: [{ email: value }, { phone: value }] }).populate('roleId', 'roleName roleActive')
+  return withPassword ? query.select('+password') : query
 }
-function signRefreshToken(payload, expiresIn = '7d') {
-  return jwt.sign(payload, getRefreshSecret(), { algorithm: 'HS256', expiresIn })
+const issueTokens = async user => {
+  const accessToken = jwt.sign({ id: String(user._id), email: user.email, roleId: String(user.roleId?._id || user.roleId) }, accessSecret(), { expiresIn: '15m' })
+  const refreshToken = jwt.sign({ id: String(user._id), tokenId: crypto.randomUUID() }, refreshSecret(), { expiresIn: '7d' })
+  await RefreshToken.create({ userId: user._id, tokenHash: hash(refreshToken), expiresAt: new Date(Date.now() + 7 * 86400000) })
+  return { accessToken, refreshToken }
 }
-function verifyAccessToken(token) { return jwt.verify(token, getAccessSecret()) }
-function verifyRefreshToken(token) { return jwt.verify(token, getRefreshSecret()) }
-
-function sanitizeUser(doc) {
-  if (!doc) return null
-  const { _id, email, full_name, phone_number, role_id, user_status, created_at, update_at } =
-    doc.toObject({ getters: false, virtuals: false })
-  return { _id, email, full_name, phone_number, role_id, user_status, created_at, update_at }
+const issueOtp = async (identifier, purpose) => {
+  const otp = crypto.randomInt(100000, 1000000).toString()
+  await Otp.updateMany({ identifier, purpose, consumedAt: { $exists: false } }, { consumedAt: new Date() })
+  await Otp.create({ identifier, purpose, otpHash: await bcrypt.hash(otp, 10), expiresAt: new Date(Date.now() + 10 * 60000) })
+  await sendOtpEmail(identifier, otp, purpose)
 }
-
-/* -------------------- Refresh token denylist (in-memory) -------------------- */
-// --- added: simple in-memory blacklist with auto-expiry cleanup
-const revokedRefreshTokens = new Set()
-
-function blacklistRefreshToken(token) {
-  try {
-    // Lấy exp để set auto-clean
-    const decoded = jwt.decode(token) || {} // không verify để vẫn cleanup được
-    const nowSec = Math.floor(Date.now() / 1000)
-    const ttlMs = decoded.exp ? Math.max(0, (decoded.exp - nowSec) * 1000) : 0
-
-    revokedRefreshTokens.add(token)
-    if (ttlMs > 0) {
-      setTimeout(() => revokedRefreshTokens.delete(token), ttlMs).unref?.()
-    }
-  } catch (_) {
-    revokedRefreshTokens.add(token)
-  }
+const register = async payload => {
+  const email = normalize(payload.email); const phone = String(payload.phone || '').trim()
+  if (!email || !phone || !payload.password || !payload.fullName) throw new Error('email, phone, password and fullName are required')
+  if (await User.exists({ $or: [{ email }, { phone }] })) throw new Error('Email or phone already exists')
+  const role = await Role.findOne({ roleName: 'User', roleActive: true })
+  if (!role) throw new Error('Default role not found')
+  const user = await User.create({ email, phone, fullName: String(payload.fullName).trim(), password: await bcrypt.hash(payload.password, 10), authProvider: 'local', roleId: role._id })
+  await issueOtp(email, 'register')
+  return { message: 'Register successfully. Please confirm OTP.', otpIdentifier: email, user: user.toJSON() }
 }
-function isRefreshTokenRevoked(token) {
-  return revokedRefreshTokens.has(token)
+const confirmOtp = async ({ identifier, otp, purpose }) => {
+  const record = await Otp.findOne({ identifier: normalize(identifier), purpose, consumedAt: { $exists: false }, expiresAt: { $gt: new Date() } }).select('+otpHash').sort({ createdAt: -1 })
+  if (!record || record.attemptCount >= 5 || !(await bcrypt.compare(String(otp), record.otpHash))) throw new Error('Invalid or expired OTP')
+  record.consumedAt = new Date(); await record.save()
+  const user = await userQuery(identifier)
+  if (!user) throw new Error('User not found')
+  if (purpose === 'register') { user.isVerified = true; await user.save(); return { user: user.toJSON(), ...(await issueTokens(user)) } }
+  return { resetToken: crypto.randomBytes(32).toString('hex') }
 }
-/* --------------------------------------------------------------------------- */
-
-async function register(payload = {}) {
-  const email = String(payload.email || '').trim().toLowerCase()
-  const password = String(payload.password || '')
-  const full_name = String(payload.full_name || '').trim()
-  const phone_number = String(payload.phone_number || '').trim()
-  if (!email || !password || !full_name) throw new Error('Thiếu thông tin bắt buộc')
-  const existed = await User.exists({ email })
-  if (existed) throw new Error('Email đã tồn tại')
-  const role = await Role.findOne({ role_name: 'User', role_active: true })
-  if (!role) throw new Error('Vai trò mặc định không tồn tại')
-  const roleId = role._id
-  const created = await User.create({ email, password: await hashPassword(password), full_name, phone_number, role_id: roleId })
-  return sanitizeUser(created)
+const login = async ({ identifier, password } = {}) => {
+  const loginIdentifier = identifier
+  const user = await userQuery(loginIdentifier, true)
+  if (!user || !user.password || !(await bcrypt.compare(password || '', user.password))) throw new Error('Invalid credentials')
+  if (user.isDisabled || !user.isVerified) throw new Error(user.isDisabled ? 'User account is disabled' : 'Please confirm email before login')
+  return { user: user.toJSON(), ...(await issueTokens(user)) }
 }
-
-async function login(payload = {}) {
-  const email = String(payload.email || '').trim().toLowerCase()
-  const password = String(payload.password || '')
-  if (!email || !password) throw new Error('Thiếu email hoặc mật khẩu')
-  const user = await User.findOne({ email })
-  if (!user) throw new Error('Sai thông tin đăng nhập')
-  if (user.user_status !== 1) throw new Error('Tài khoản không hoạt động')
-  const ok = await verifyPassword(password, user.password)
-  if (!ok) throw new Error('Sai thông tin đăng nhập')
-  const claims = { uid: String(user._id), role: String(user.role_id) }
-  const accessToken = signAccessToken(claims)
-  const refreshToken = signRefreshToken(claims)
-  return { accessToken, refreshToken, user: sanitizeUser(user) }
-}
-
-async function refreshTokens(refreshToken) {
-  if (!refreshToken) throw new Error('Thiếu refresh token')
-
-  if (isRefreshTokenRevoked(refreshToken)) {
-    throw new Error('Refresh token đã bị thu hồi')
-  }
-
-  let decoded
-  try {
-    decoded = verifyRefreshToken(refreshToken)
-  } catch (e) {
-    throw new Error('Refresh token không hợp lệ')
-  }
-
-  blacklistRefreshToken(refreshToken)
-
-  const claims = { uid: String(decoded.uid), role: String(decoded.role) }
-  const accessToken = signAccessToken(claims)
-  const newRefreshToken = signRefreshToken(claims)
-  return { accessToken, refreshToken: newRefreshToken }
-}
-
-async function logout(refreshToken) {
-  if (refreshToken) {
-    blacklistRefreshToken(refreshToken)
-  }
-  return { loggedOut: true }
-}
-
-module.exports = {
-  register,
-  login,
-  refreshTokens,
-  logout,
-  verifyAccessToken,
-  verifyRefreshToken
-}
+const forgotPassword = async ({ identifier } = {}) => { const user = await userQuery(identifier); if (!user) throw new Error('User not found'); await issueOtp(normalize(identifier), 'reset-password'); return { message: 'Reset password OTP sent successfully' } }
+const resetPassword = async ({ identifier, otp, newPassword }) => { await confirmOtp({ identifier, otp, purpose: 'reset-password' }); const user = await userQuery(identifier, true); user.password = await bcrypt.hash(newPassword, 10); await user.save(); await RefreshToken.updateMany({ userId: user._id, revokedAt: { $exists: false } }, { revokedAt: new Date() }); return { message: 'Password reset successfully' } }
+const changePassword = async (id, { currentPassword, newPassword } = {}) => { const user = await User.findById(id).select('+password'); if (!user || !(await bcrypt.compare(currentPassword || '', user.password))) throw new Error('Current password is incorrect'); user.password = await bcrypt.hash(newPassword, 10); await user.save(); await RefreshToken.updateMany({ userId: id, revokedAt: { $exists: false } }, { revokedAt: new Date() }); return { message: 'Password changed successfully' } }
+const refreshTokens = async token => { let payload; try { payload = jwt.verify(token, refreshSecret()) } catch { throw new Error('Invalid or expired refresh token') } const record = await RefreshToken.findOne({ tokenHash: hash(token), revokedAt: { $exists: false }, expiresAt: { $gt: new Date() } }).select('+tokenHash'); if (!record) throw new Error('Invalid or expired refresh token'); const user = await User.findById(payload.id).populate('roleId'); if (!user || user.isDisabled) throw new Error('Invalid or expired refresh token'); record.revokedAt = new Date(); await record.save(); return issueTokens(user) }
+const logout = async token => { if (token) await RefreshToken.findOneAndUpdate({ tokenHash: hash(token), revokedAt: { $exists: false } }, { revokedAt: new Date() }); return { message: 'Logout successfully' } }
+module.exports = { register, confirmOtp, login, forgotPassword, resetPassword, changePassword, refreshTokens, logout, verifyAccessToken: token => jwt.verify(token, accessSecret()) }

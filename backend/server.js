@@ -14,7 +14,7 @@ app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ limit: '10mb', extended: true }))
 
 // Routes
-app.use('/api', routes)
+app.use('/hlw-api-v1', routes)
 
 // Health check
 app.get('/', (req, res) => {
@@ -31,18 +31,18 @@ app.get('/test', (req, res) => {
 })
 
 // Request logging middleware
-app.use((req, res, next) => {
-  console.log(`Request: ${req.method} ${req.url}`)
-  next()
-})
+// app.use((req, res, next) => {
+//   console.log(`Request: ${req.method} ${req.url}`)
+//   next()
+// })
 
 // Validation error handler
 app.use((err, req, res, next) => {
   if (err.type === 'entity.parse.failed') {
-    return res.status(400).json({ message: 'Invalid JSON' })
+    return res.status(400).json({ success: false, statusCode: 400, message: 'Invalid JSON', data: null, meta: null, errors: [err.message] })
   }
   if (err.name === 'ValidationError') {
-    return res.status(400).json({ message: err.message })
+    return res.status(400).json({ success: false, statusCode: 400, message: err.message, data: null, meta: null, errors: [err.message] })
   }
   next(err)
 })
@@ -50,9 +50,14 @@ app.use((err, req, res, next) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err.stack)
-  res.status(500).json({
-    message: 'Something went wrong!',
-    error: config.NODE_ENV === 'development' ? err.message : 'Internal Server Error'
+  const statusCode = err.statusCode || 400
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message: err.message || 'Bad Request',
+    data: null,
+    meta: null,
+    errors: [err.message || 'Bad Request']
   })
 })
 
@@ -65,9 +70,9 @@ const startServer = async () => {
   try {
     await connectDB()
     console.log('DB name:', mongoose.connection.name);
-    mongoose.connection.db.listCollections().toArray().then(cols => {
-      console.log('Collections:', cols.map(c => c.name));
-    });
+    // mongoose.connection.db.listCollections().toArray().then(cols => {
+    //   console.log('Collections:', cols.map(c => c.name));
+    // });
     app.listen(config.PORT, () => {
       console.log(`Server is running at http://localhost:${config.PORT}`)
       console.log(`Environment: ${config.NODE_ENV}`)

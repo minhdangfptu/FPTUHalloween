@@ -6,7 +6,7 @@ function requireAuth(req, res, next) {
     const token = header.startsWith('Bearer ') ? header.slice(7).trim() : ''
     if (!token) return res.status(401).json({ message: 'Missing Authorization header' })
     const decoded = authSvc.verifyAccessToken(token)
-    req.user = { id: String(decoded.uid), role: String(decoded.role) }
+    req.user = { id: String(decoded.id), roleId: String(decoded.roleId || '') }
     return next()
   } catch (e) {
     return res.status(401).json({ message: 'Invalid or expired token' })

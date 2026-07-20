@@ -6,5 +6,6 @@ module.exports = {
   RefreshToken: require('./RefreshToken'),
   Order: require('./Order'),
   TicketType: require('./TicketType'),
-  UserTicket: require('./UserTicket')
+  UserTicket: require('./UserTicket'),
+  Otp: require('./Otp')
 }

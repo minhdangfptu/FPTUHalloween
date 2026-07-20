@@ -18,6 +18,8 @@
     "dev": "nodemon --exec babel-node ./server.js"
   },
   "dependencies": {
+    "@react-email/components": "^0.0.36",
+    "@react-email/render": "^1.1.0",
     "@babel/runtime": "^7.22.10",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
@@ -27,7 +29,10 @@
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.1",
     "morgan": "^1.10.1",
-    "nodemailer": "^7.0.9"
+    "nodemailer": "^7.0.9",
+    "resend": "^6.17.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",
@@ -37,6 +42,7 @@
     "@babel/plugin-transform-runtime": "^7.22.10",
     "@babel/preset-env": "^7.22.10",
     "babel-plugin-module-resolver": "^5.0.0",
+    "baseline-browser-mapping": "^2.10.43",
     "eslint": "^8.47.0",
     "nodemon": "^3.1.10"
   }

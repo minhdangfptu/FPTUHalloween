@@ -19,7 +19,7 @@ function Login() {
     setErrorMessage("");
 
     try {
-      await authAPI.login({ email, password });
+      await authAPI.login({ identifier: email, password });
       navigate("/");
     } catch (error) {
       const message = error?.response?.data?.message || error?.message || "Đăng nhập thất bại";

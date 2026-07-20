@@ -4,7 +4,7 @@ const { config } = require('./environment')
 let cached = global._mongooseCached
 if (!cached) cached = (global._mongooseCached = { conn: null, promise: null })
 
-async function connectDB () {
+async function connectDB() {
   if (!config.MONGODB_URI) {
     console.warn('MONGODB_URI is not set. Skipping DB connection.')
     return null
@@ -22,10 +22,21 @@ async function connectDB () {
   }
 
   cached.conn = await cached.promise
+
+  // Remove the legacy unique index from the old refresh-token schema.
+  // The current schema stores tokenHash instead of token.
+  try {
+    await mongoose.connection.db.collection('RefreshTokens').dropIndex('token_1')
+    console.log('Removed legacy RefreshTokens.token_1 index')
+  } catch (error) {
+    // MongoDB returns index-not-found when the migration has already run.
+    if (error.code !== 27) throw error
+  }
+
   return cached.conn
 }
 
-async function disconnectDB () {
+async function disconnectDB() {
   if (cached.conn) {
     await mongoose.connection.close(false)
     cached.conn = null
