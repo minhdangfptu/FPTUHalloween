@@ -4,6 +4,16 @@ import wtm from "../assets/wtm.png";
 import { Icon, Tooltip } from "@mui/material";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { useNavigate, useLocation } from "react-router-dom"; // Add useLocation import
+import {
+  CircleUserRound,
+  KeyRound,
+  KeyRoundIcon,
+  LogOut,
+  User,
+  WalletCards,
+} from "lucide-react";
+import { authAPI } from "../apis/authAPI";
+import LogoutModal from "./LogoutModal";
 const navigationItems = [
   {
     label: "TRANG CHỦ",
@@ -56,9 +66,48 @@ function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const userDropdownRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation(); // Add location hook
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "null");
+    } catch {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    const syncUser = () => {
+      try {
+        setUser(JSON.parse(localStorage.getItem("user") || "null"));
+      } catch {
+        setUser(null);
+      }
+    };
+    window.addEventListener("storage", syncUser);
+    window.addEventListener("auth:login", syncUser);
+    window.addEventListener("auth:logout", syncUser);
+    return () => {
+      window.removeEventListener("storage", syncUser);
+      window.removeEventListener("auth:login", syncUser);
+      window.removeEventListener("auth:logout", syncUser);
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await authAPI.logout();
+    setUser(null);
+    setShowUserDropdown(false);
+    setShowLogoutModal(false);
+    navigate("/login");
+  };
+
+  const requestLogout = () => {
+    setShowUserDropdown(false);
+    setShowLogoutModal(true);
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -74,10 +123,6 @@ function Navbar() {
 
   const handleUserClick = () => {
     setShowUserDropdown(!showUserDropdown);
-  };
-
-  const handleUserMouseLeave = () => {
-    setShowUserDropdown(false);
   };
 
   useEffect(() => {
@@ -177,11 +222,7 @@ function Navbar() {
                   )}
                 </div>
               ))}
-              <div
-                ref={userDropdownRef}
-                className="fpt-navbar__user-item"
-                onMouseLeave={handleUserMouseLeave}
-              >
+              <div ref={userDropdownRef} className="fpt-navbar__user-item">
                 <Tooltip title="Tài khoản">
                   <button
                     className="fpt-navbar__search-btn"
@@ -202,11 +243,47 @@ function Navbar() {
                     showUserDropdown ? "show" : ""
                   }`}
                 >
-                  <a href="/login" className="fpt-navbar__dropdown-link">
-                    🔐 Đăng nhập
+                  {user && (
+                    <div className="fpt-navbar__account-menu">
+                      <div className="fpt-navbar__account-greeting">
+                        <CircleUserRound size={18} />
+                        <span>
+                          Xin chào {user.fullName || user.name || "bạn"}
+                        </span>
+                      </div>
+                      <a
+                        href="/account"
+                        className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                      >
+                        <WalletCards size={16} /> Tài khoản của bạn
+                      </a>
+                      <a
+                        href="/change-password"
+                        className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                      >
+                        <KeyRound size={16} /> Đổi mật khẩu
+                      </a>
+                      <a
+                        className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                        onClick={requestLogout}
+                      >
+                        <LogOut size={16} /> Đăng xuất
+                      </a>
+                    </div>
+                  )}
+                  <a
+                    href="/login"
+                    style={{ display: user ? "none" : undefined }}
+                    className="fpt-navbar__dropdown-link"
+                  >
+                    Đăng nhập
                   </a>
-                  <a href="/register" className="fpt-navbar__dropdown-link">
-                    📝 Đăng ký
+                  <a
+                    href="/register"
+                    style={{ display: user ? "none" : undefined }}
+                    className="fpt-navbar__dropdown-link"
+                  >
+                    Đăng ký
                   </a>
                   {/* <a
                     href="/forgot-password"
@@ -322,6 +399,11 @@ function Navbar() {
           </div>
         </div>
       </div>
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={handleLogout}
+      />
     </>
   );
 }

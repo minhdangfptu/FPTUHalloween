@@ -5,7 +5,8 @@ const schema = new mongoose.Schema({
   otpHash: { type: String, required: true, select: false },
   expiresAt: { type: Date, required: true },
   attemptCount: { type: Number, default: 0 },
-  consumedAt: { type: Date }
+  consumedAt: { type: Date },
+  resetTokenHash: { type: String, select: false }
 }, { collection: 'Otps', timestamps: true })
 schema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })
 module.exports = mongoose.models.Otps || mongoose.model('Otps', schema)

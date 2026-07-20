@@ -80,6 +80,16 @@
   padding: 8px;
   border-radius: 4px;
   transition: all 0.2s ease;
+  outline: none;
+  box-shadow: none;
+}
+
+.fpt-navbar__search-btn:focus,
+.fpt-navbar__search-btn:focus-visible,
+.fpt-navbar__search-btn:active {
+  outline: none;
+  border: none;
+  box-shadow: none;
 }
 
 .fpt-navbar__search-btn:hover {
@@ -256,6 +266,29 @@
   color: #111;
   text-decoration: none;
   white-space: nowrap;
+}
+
+.fpt-navbar__account-greeting,
+.fpt-navbar__dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fpt-navbar__account-greeting {
+  padding: 10px 12px;
+  color: #555;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.fpt-navbar__logout-button {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
 }
 
 .fpt-navbar__dropdown-link:hover {

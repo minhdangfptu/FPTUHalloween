@@ -23,6 +23,7 @@ import News from "./pages/Halloween2025/News";
 import TicketGhost from "./pages/Ticket/TicketGhost";
 import TicketGame from "./pages/Ticket/TicketGame";
 import FPTUBoardGameClub from "./pages/FPTUBoardGameClub";
+import ChangePassword from "./pages/Authentication/ChangePassword";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -45,9 +46,10 @@ export default function App() {
         {/* Authentication pages - không có Header, Navbar, Footer */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        {/* <Route path="/confirm-email" element={<ConfirmEmail />} />
-        <Route path="/complete-register" element={<CompleteRegister />} /> */}
+        <Route path="/confirm-email" element={<ConfirmEmail />} />
+        <Route path="/complete-register" element={<CompleteRegister />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="*" element={<ErrorPage404 />} />
 
         {/* Normal pages - có Header, Navbar, Footer */}

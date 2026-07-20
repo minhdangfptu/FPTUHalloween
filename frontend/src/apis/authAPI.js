@@ -19,14 +19,36 @@ const clearAuthData = () => {
   localStorage.removeItem('user');
 };
 
+const unwrapResponse = (response) => response.data?.data || response.data;
+
 export const authAPI = {
   login: async (credentials) => {
     const response = await axiosClient.post('/auth/login', credentials);
-    return saveAuthData(response.data);
+    return { ...saveAuthData(unwrapResponse(response)), message: response.data.message };
   },
 
   register: async (payload) => {
     const response = await axiosClient.post('/auth/register', payload);
+    return response.data;
+  },
+
+  confirmOtp: async (payload) => {
+    const response = await axiosClient.post('/auth/confirm-otp', payload);
+    return { ...saveAuthData(unwrapResponse(response)), message: response.data.message };
+  },
+
+  forgotPassword: async (email) => {
+    const response = await axiosClient.post('/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  resetPassword: async (payload) => {
+    const response = await axiosClient.post('/auth/reset-password', payload);
+    return response.data;
+  },
+
+  changePassword: async (payload) => {
+    const response = await axiosClient.patch('/users/me/password', payload);
     return response.data;
   },
 
@@ -54,7 +76,7 @@ export const authAPI = {
 
   refreshToken: async (token) => {
     const response = await axiosClient.post('/auth/refresh', { refreshToken: token });
-    return saveAuthData(response.data);
+    return saveAuthData(unwrapResponse(response));
   },
 };
 

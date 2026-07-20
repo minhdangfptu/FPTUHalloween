@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./ConfirmEmail.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
+import { authAPI } from "../../apis/authAPI";
+import toast, { Toaster } from "react-hot-toast";
+import { translateError, translateSuccess } from "../../utils/translateResponse";
 
 function ConfirmEmail() {
   const [verificationCode, setVerificationCode] = useState("");
@@ -53,6 +56,12 @@ function ConfirmEmail() {
     }
 
     try {
+      const loadingToast = toast.loading("Đang xác thực email...");
+      await authAPI.confirmOtp({ identifier: email, otp: verificationCode, purpose: "register" });
+      toast.success(translateSuccess("Registration successful"), { id: loadingToast });
+      localStorage.removeItem("registerEmail");
+      window.location.href = "/";
+      return;
       // TODO: Gọi API xác thực mã
       console.log("Verification code:", verificationCode);
       console.log("Email:", email);
@@ -65,6 +74,7 @@ function ConfirmEmail() {
       window.location.href = '/login';
     } catch (error) {
       console.error("Verification error:", error);
+      toast.error(translateError(error));
       setErrors({ verificationCode: "Mã xác thực không đúng" });
     }
   };
@@ -105,6 +115,7 @@ function ConfirmEmail() {
 
   return (
     <div className="fptu-halloween-confirm-email-page">
+      <Toaster position="top-center" />
       {/* Cột trái: form */}
       <div className="fptu-halloween-confirm-email-left-pane">
         <div className="fptu-halloween-confirm-email-top">

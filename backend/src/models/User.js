@@ -6,6 +6,8 @@ const schema = new Schema({
   password: { type: String, required: function () { return this.authProvider === 'local' }, select: false },
   phone: { type: String, required: true, unique: true, trim: true },
   fullName: { type: String, trim: true },
+  department: { type: String, default: null, trim: true },
+  department_position: { type: String, default: null, trim: true },
   authProvider: { type: String, enum: ['local', 'google'], default: 'local', required: true },
   roleId: { type: Schema.Types.ObjectId, ref: 'Roles', required: true },
   isVerified: { type: Boolean, default: false },

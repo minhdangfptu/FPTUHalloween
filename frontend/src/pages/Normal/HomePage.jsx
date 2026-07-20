@@ -5,6 +5,7 @@ import halloweensApi from "../../apis/halloweensAPI";
 
 import hero from "../../assets/cover-01.png";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const highlights = [
   {
@@ -49,6 +50,12 @@ export default function HomePage() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
+    if (sessionStorage.getItem("showLoginWelcome") !== "1") return;
+    sessionStorage.removeItem("showLoginWelcome");
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    toast.success(`Xin chào ${user?.fullName || user?.name || "bạn"}!`);
+  }, []);
+  useEffect(() => {
     const fetchHalloweenEvents = async () => {
       try {
         setLoading(true);
@@ -86,6 +93,7 @@ export default function HomePage() {
 
   return (
     <div className="fptu-halloween-page">
+      <Toaster position="top-center" />
       {/* HERO */}
       <section className="fptu-halloween-hero">
         <img src={hero} alt="" className="fptu-halloween-hero__bg" />

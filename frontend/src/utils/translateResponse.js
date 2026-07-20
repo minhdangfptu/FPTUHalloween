@@ -45,6 +45,15 @@ const ERROR_TRANSLATIONS = {
   'Too many login attempts. Please try again after 15 minutes.': 'Đăng nhập thất bại quá nhiều lần. Vui lòng thử lại sau 15 phút.',
   'Too many requests. Please slow down.': 'Yêu cầu quá nhiều. Vui lòng chờ một lát.',
 
+  'Invalid credentials': 'Email hoặc mật khẩu không đúng.',
+  'Current password is incorrect': 'Mật khẩu hiện tại không đúng.',
+  'Google accounts cannot change password here': 'Tài khoản Google không thể đổi mật khẩu tại đây.',
+  'No token provided': 'Vui lòng đăng nhập để tiếp tục.',
+  'Invalid or expired OTP': 'Mã OTP không hợp lệ hoặc đã hết hạn.',
+  'A valid email is required': 'Vui lòng nhập email hợp lệ.',
+  'Email or phone already exists': 'Email hoặc số điện thoại đã tồn tại.',
+  'Network error. Please check your connection.': 'Không thể kết nối máy chủ. Vui lòng kiểm tra mạng.',
+
   // --- CRUD ---
   'Created successfully': 'Tạo thành công.',
   'Updated successfully': 'Cập nhật thành công.',
@@ -126,7 +135,10 @@ const translateSuccess = (message) => {
 };
 
 const SUCCESS_TRANSLATIONS = {
-  'Contact sent successfully': 'Gửi liên hệ thành công.',
+  'Register successfully. Please confirm OTP.': 'Đăng ký thành công. Vui lòng xác thực OTP.',
+  'Reset password OTP sent successfully': 'Mã OTP đặt lại mật khẩu đã được gửi.',
+  'Password reset successfully': 'Đặt lại mật khẩu thành công.',
+  'Contact sent successfully': 'Gửi thông tin thành công.',
   'Created successfully': 'Tạo thành công.',
   'Updated successfully': 'Cập nhật thành công.',
   'Deleted successfully': 'Xóa thành công.',

@@ -54,10 +54,14 @@ const confirmOtp = async ({ identifier, otp, purpose }) => {
     await record.save()
     throw new Error('Invalid or expired OTP')
   }
-  record.consumedAt = new Date(); await record.save()
+  record.consumedAt = new Date()
+  const resetToken = purpose === 'reset-password' ? crypto.randomBytes(32).toString('hex') : null
+  if (resetToken) record.resetTokenHash = hash(resetToken)
+  await record.save()
   const user = await userQuery(identifier)
   if (!user) throw new Error('User not found')
   if (purpose === 'register') { user.isVerified = true; await user.save(); return { user: user.toJSON(), ...(await issueTokens(user)) } }
+  if (resetToken) return { resetToken }
   return { resetToken: crypto.randomBytes(32).toString('hex') }
 }
 const login = async ({ identifier, password } = {}) => {
@@ -75,10 +79,15 @@ const forgotPassword = async ({ email } = {}) => {
   await issueOtp(normalizedEmail, 'reset-password')
   return { message: 'Reset password OTP sent successfully' }
 }
-const resetPassword = async ({ email, otp, newPassword } = {}) => {
+const resetPassword = async ({ email, otp, resetToken, newPassword } = {}) => {
   const normalizedEmail = normalizeEmail(email)
   const password = validatePassword(newPassword, 'New password')
-  await confirmOtp({ identifier: normalizedEmail, otp, purpose: 'reset-password' })
+  if (resetToken) {
+    const tokenRecord = await Otp.findOne({ identifier: normalizedEmail, purpose: 'reset-password', resetTokenHash: hash(resetToken), expiresAt: { $gt: new Date() } }).select('+resetTokenHash')
+    if (!tokenRecord) throw new Error('Invalid or expired reset token')
+  } else {
+    await confirmOtp({ identifier: normalizedEmail, otp, purpose: 'reset-password' })
+  }
   const user = await User.findOne({ email: normalizedEmail }).select('+password')
   if (!user) throw new Error('User not found')
   user.password = await bcrypt.hash(password, 10)

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./ContactUsPage.css";
 import axiosClient from "../../apis/axiosClient";
-import { translateError, translateSuccess } from "../../utils/translateResponse";
+import {
+  translateError,
+  translateSuccess,
+} from "../../utils/translateResponse";
 import toast, { Toaster } from "react-hot-toast";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -20,7 +23,13 @@ function ContactUsPage() {
   useEffect(() => {
     try {
       const user = JSON.parse(localStorage.getItem("user") || "null");
-      if (user) setFormData((prev) => ({ ...prev, receiverName: user.fullName || user.name || "", phone: user.phone || "", email: user.email || "" }));
+      if (user)
+        setFormData((prev) => ({
+          ...prev,
+          receiverName: user.fullName || user.name || "",
+          phone: user.phone || "",
+          email: user.email || "",
+        }));
     } catch {
       // Keep the form empty when local user data is invalid.
     }
@@ -83,17 +92,18 @@ function ContactUsPage() {
       return;
     }
 
-    const loadingToast = toast.loading("Đang gửi liên hệ...");
+    const loadingToast = toast.loading("Đang gửi thông tin...");
     try {
       const response = await axiosClient.post("/contacts", formData);
-      toast.success(translateSuccess(response.data.message), { id: loadingToast });
+      toast.success(translateSuccess(response.data.message), {
+        id: loadingToast,
+      });
       setFormData((prev) => ({ ...prev, topic: "", message: "" }));
       setErrors({});
     } catch (error) {
       toast.error(translateError(error), { id: loadingToast });
     }
     return;
-
   };
 
   return (
@@ -130,7 +140,7 @@ function ContactUsPage() {
                   onClick={() =>
                     window.open(
                       "https://www.facebook.com/fptuhalloween",
-                      "_blank"
+                      "_blank",
                     )
                   }
                   className="fpt-header__social-btn fpt-header__social-btn--facebook"
@@ -141,7 +151,7 @@ function ContactUsPage() {
                   onClick={() =>
                     window.open(
                       "https://www.facebook.com/fuboardgameclub",
-                      "_blank"
+                      "_blank",
                     )
                   }
                   className="fpt-header__social-btn fpt-header__social-btn--tiktok"
@@ -152,7 +162,7 @@ function ContactUsPage() {
                   onClick={() =>
                     window.open(
                       "https://www.tiktok.com/@fptu.halloween2025",
-                      "_blank"
+                      "_blank",
                     )
                   }
                   className="fpt-header__social-btn fpt-header__social-btn--youtube"
@@ -174,7 +184,7 @@ function ContactUsPage() {
                 <div className="fptu-halloween-contact-form-fields">
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                     style={{color:'black'}}
+                      style={{ color: "black" }}
                       type="text"
                       name="receiverName"
                       placeholder="Tên của bạn"
@@ -195,7 +205,7 @@ function ContactUsPage() {
 
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                     style={{color:'black'}}
+                      style={{ color: "black" }}
                       type="phone"
                       name="phone"
                       placeholder="Số điện thoại"
@@ -216,7 +226,7 @@ function ContactUsPage() {
 
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                     style={{color:'black'}}
+                      style={{ color: "black" }}
                       type="email"
                       name="email"
                       placeholder="Email"
@@ -224,12 +234,16 @@ function ContactUsPage() {
                       onChange={handleInputChange}
                       className={`fptu-halloween-contact-form-input ${errors.email ? "fptu-halloween-contact-form-input-error" : ""}`}
                     />
-                    {errors.email && <span className="fptu-halloween-contact-form-error">{errors.email}</span>}
+                    {errors.email && (
+                      <span className="fptu-halloween-contact-form-error">
+                        {errors.email}
+                      </span>
+                    )}
                   </div>
 
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                     style={{color:'black'}}
+                      style={{ color: "black" }}
                       type="text"
                       name="topic"
                       placeholder="Tiêu đề"
@@ -250,7 +264,7 @@ function ContactUsPage() {
 
                   <div className="fptu-halloween-contact-form-group">
                     <textarea
-                    style={{color:'black'}}
+                      style={{ color: "black" }}
                       name="message"
                       placeholder="Nội dung"
                       value={formData.message}
@@ -274,7 +288,7 @@ function ContactUsPage() {
                   type="submit"
                   className="fptu-halloween-contact-form-submit"
                 >
-                  GỬI Ý KIẾN
+                  Gửi ý kiến
                 </button>
               </form>
             </div>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { baseUrl } from '../config';
 
 const axiosClient = axios.create({
-  baseURL: `${baseUrl}/api`,
+  baseURL: `${baseUrl}/hlw-api-v1`,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -69,8 +69,9 @@ axiosClient.interceptors.response.use(
           refreshToken,
         });
 
-        const newAccessToken = res.data.accessToken;
-        const newRefreshToken = res.data.refreshToken;
+        const authData = res.data.data || res.data;
+        const newAccessToken = authData.accessToken;
+        const newRefreshToken = authData.refreshToken;
 
         if (newAccessToken) localStorage.setItem('accessToken', newAccessToken);
         if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);

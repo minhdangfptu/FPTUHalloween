@@ -5,6 +5,8 @@ import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../../apis/authAPI";
+import toast, { Toaster } from "react-hot-toast";
+import { translateError, translateSuccess } from "../../utils/translateResponse";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -85,19 +87,23 @@ function Register() {
 
     setLoading(true);
     setServerMessage("");
+    const loadingToast = toast.loading("Đang đăng ký...");
 
     try {
       await authAPI.register({
         email: formData.email,
         password: formData.password,
-        full_name: formData.full_name,
-        phone_number: formData.phone_number,
+        fullName: formData.full_name,
+        phone: formData.phone_number,
       });
+      localStorage.setItem("registerEmail", formData.email);
+      toast.success(translateSuccess("Register successfully. Please confirm OTP."), { id: loadingToast });
       setServerMessage("Đăng ký thành công! Đang chuyển về trang đăng nhập...");
       setTimeout(() => navigate("/login"), 1200);
     } catch (error) {
       const message = error?.response?.data?.message || error?.message || "Có lỗi xảy ra khi đăng ký";
       setServerMessage(message);
+      toast.error(message, { id: loadingToast });
     } finally {
       setLoading(false);
     }
@@ -105,6 +111,7 @@ function Register() {
 
   return (
     <div className="fptu-halloween-register-page">
+      <Toaster position="top-center" />
       {/* Cột trái: form */}
       <div className="fptu-halloween-register-left-pane">
         <div className="fptu-halloween-register-top">
