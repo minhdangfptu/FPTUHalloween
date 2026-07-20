@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ContactUsPage.css";
+import axiosClient from "../../apis/axiosClient";
+import { translateError, translateSuccess } from "../../utils/translateResponse";
+import toast, { Toaster } from "react-hot-toast";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 
 function ContactUsPage() {
   const [formData, setFormData] = useState({
-    name: "",
-    phone_number: "",
-    subject: "",
-    content: "",
+    receiverName: "",
+    phone: "",
+    email: "",
+    topic: "",
+    message: "",
   });
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      if (user) setFormData((prev) => ({ ...prev, receiverName: user.fullName || user.name || "", phone: user.phone || "", email: user.email || "" }));
+    } catch {
+      // Keep the form empty when local user data is invalid.
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,63 +44,61 @@ function ContactUsPage() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
+    if (!formData.receiverName.trim()) {
       newErrors.name = "Tên là bắt buộc";
     }
 
-    if (!formData.phone_number.trim()) {
+    if (!formData.phone.trim()) {
       newErrors.phone_number = "Số điện thoại là bắt buộc";
-    } else if (!/^[0-9+\-\s()]+$/.test(formData.phone_number)) {
+    } else if (!/^[0-9+\-\s()]+$/.test(formData.phone)) {
       newErrors.phone_number = "Số điện thoại không hợp lệ";
     }
 
-    if (!formData.subject.trim()) {
+    if (!formData.email.trim()) {
+      newErrors.email = "Email là bắt buộc";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email không hợp lệ";
+    }
+
+    if (!formData.topic.trim()) {
       newErrors.subject = "Tiêu đề là bắt buộc";
     }
 
-    if (!formData.content.trim()) {
+    if (!formData.message.trim()) {
       newErrors.content = "Nội dung là bắt buộc";
     }
 
+    if (newErrors.name) newErrors.receiverName = newErrors.name;
+    if (newErrors.phone_number) newErrors.phone = newErrors.phone_number;
+    if (newErrors.subject) newErrors.topic = newErrors.subject;
+    if (newErrors.content) newErrors.message = newErrors.content;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    // Create email content from form data
-    const emailSubject = encodeURIComponent(`[Phản hồi] ${formData.subject}`);
-    const emailBody = encodeURIComponent(
-      `Thông tin người gửi:\n` +
-        `- Tên: ${formData.name}\n` +
-        `- Số điện thoại: ${formData.phone_number}\n\n` +
-        `Nội dung phản hồi:\n${formData.content}`
-    );
+    const loadingToast = toast.loading("Đang gửi liên hệ...");
+    try {
+      const response = await axiosClient.post("/contacts", formData);
+      toast.success(translateSuccess(response.data.message), { id: loadingToast });
+      setFormData((prev) => ({ ...prev, topic: "", message: "" }));
+      setErrors({});
+    } catch (error) {
+      toast.error(translateError(error), { id: loadingToast });
+    }
+    return;
 
-    // Open default email client
-    window.location.href = `mailto:fptuhalloween@gmail.com?subject=${emailSubject}&body=${emailBody}`;
-
-    // Reset form
-    setFormData({
-      name: "",
-      phone_number: "",
-      subject: "",
-      content: "",
-    });
-
-    // Show confirmation
-    alert(
-      "Cảm ơn bạn đã góp ý! Trình email của bạn sẽ được mở để gửi phản hồi."
-    );
   };
 
   return (
     <div className="fptu-halloween-contact-page">
+      <Toaster position="top-right" />
       {/* Header */}
       <header className="fptu-halloween-contact-header">
         <div className="fptu-halloween-contact-banner">
@@ -165,12 +176,12 @@ function ContactUsPage() {
                     <input
                      style={{color:'black'}}
                       type="text"
-                      name="name"
+                      name="receiverName"
                       placeholder="Tên của bạn"
-                      value={formData.name}
+                      value={formData.receiverName}
                       onChange={handleInputChange}
                       className={`fptu-halloween-contact-form-input ${
-                        errors.name
+                        errors.receiverName
                           ? "fptu-halloween-contact-form-input-error"
                           : ""
                       }`}
@@ -186,12 +197,12 @@ function ContactUsPage() {
                     <input
                      style={{color:'black'}}
                       type="phone"
-                      name="phone_number"
+                      name="phone"
                       placeholder="Số điện thoại"
-                      value={formData.phone_number}
+                      value={formData.phone}
                       onChange={handleInputChange}
                       className={`fptu-halloween-contact-form-input ${
-                        errors.phone_number
+                        errors.phone
                           ? "fptu-halloween-contact-form-input-error"
                           : ""
                       }`}
@@ -206,13 +217,26 @@ function ContactUsPage() {
                   <div className="fptu-halloween-contact-form-group">
                     <input
                      style={{color:'black'}}
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className={`fptu-halloween-contact-form-input ${errors.email ? "fptu-halloween-contact-form-input-error" : ""}`}
+                    />
+                    {errors.email && <span className="fptu-halloween-contact-form-error">{errors.email}</span>}
+                  </div>
+
+                  <div className="fptu-halloween-contact-form-group">
+                    <input
+                     style={{color:'black'}}
                       type="text"
-                      name="subject"
+                      name="topic"
                       placeholder="Tiêu đề"
-                      value={formData.subject}
+                      value={formData.topic}
                       onChange={handleInputChange}
                       className={`fptu-halloween-contact-form-input ${
-                        errors.subject
+                        errors.topic
                           ? "fptu-halloween-contact-form-input-error"
                           : ""
                       }`}
@@ -227,13 +251,13 @@ function ContactUsPage() {
                   <div className="fptu-halloween-contact-form-group">
                     <textarea
                     style={{color:'black'}}
-                      name="content"
+                      name="message"
                       placeholder="Nội dung"
-                      value={formData.content}
+                      value={formData.message}
                       onChange={handleInputChange}
                       rows={4}
                       className={`fptu-halloween-contact-form-textarea ${
-                        errors.content
+                        errors.message
                           ? "fptu-halloween-contact-form-input-error"
                           : ""
                       }`}

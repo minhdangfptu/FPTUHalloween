@@ -8,6 +8,16 @@ const accessSecret = () => process.env.JWT_ACCESS_SECRET || process.env.JWT_SECR
 const refreshSecret = () => process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET || 'dev-refresh-secret'
 const hash = value => crypto.createHash('sha256').update(value).digest('hex')
 const normalize = value => String(value || '').trim().toLowerCase()
+const normalizeEmail = email => {
+  const value = normalize(email)
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) throw new Error('A valid email is required')
+  return value
+}
+const validatePassword = (password, field = 'Password') => {
+  const value = String(password || '')
+  if (value.length < 8) throw new Error(`${field} must be at least 8 characters`)
+  return value
+}
 const userQuery = (identifier, withPassword = false) => {
   const value = normalize(identifier)
   const query = User.findOne({ $or: [{ email: value }, { phone: value }] }).populate('roleId', 'roleName roleActive')
@@ -37,7 +47,13 @@ const register = async payload => {
 }
 const confirmOtp = async ({ identifier, otp, purpose }) => {
   const record = await Otp.findOne({ identifier: normalize(identifier), purpose, consumedAt: { $exists: false }, expiresAt: { $gt: new Date() } }).select('+otpHash').sort({ createdAt: -1 })
-  if (!record || record.attemptCount >= 5 || !(await bcrypt.compare(String(otp), record.otpHash))) throw new Error('Invalid or expired OTP')
+  if (!record || record.attemptCount >= 3) throw new Error('Invalid or expired OTP')
+  const validOtp = await bcrypt.compare(String(otp || ''), record.otpHash)
+  if (!validOtp) {
+    record.attemptCount += 1
+    await record.save()
+    throw new Error('Invalid or expired OTP')
+  }
   record.consumedAt = new Date(); await record.save()
   const user = await userQuery(identifier)
   if (!user) throw new Error('User not found')
@@ -51,9 +67,35 @@ const login = async ({ identifier, password } = {}) => {
   if (user.isDisabled || !user.isVerified) throw new Error(user.isDisabled ? 'User account is disabled' : 'Please confirm email before login')
   return { user: user.toJSON(), ...(await issueTokens(user)) }
 }
-const forgotPassword = async ({ identifier } = {}) => { const user = await userQuery(identifier); if (!user) throw new Error('User not found'); await issueOtp(normalize(identifier), 'reset-password'); return { message: 'Reset password OTP sent successfully' } }
-const resetPassword = async ({ identifier, otp, newPassword }) => { await confirmOtp({ identifier, otp, purpose: 'reset-password' }); const user = await userQuery(identifier, true); user.password = await bcrypt.hash(newPassword, 10); await user.save(); await RefreshToken.updateMany({ userId: user._id, revokedAt: { $exists: false } }, { revokedAt: new Date() }); return { message: 'Password reset successfully' } }
-const changePassword = async (id, { currentPassword, newPassword } = {}) => { const user = await User.findById(id).select('+password'); if (!user || !(await bcrypt.compare(currentPassword || '', user.password))) throw new Error('Current password is incorrect'); user.password = await bcrypt.hash(newPassword, 10); await user.save(); await RefreshToken.updateMany({ userId: id, revokedAt: { $exists: false } }, { revokedAt: new Date() }); return { message: 'Password changed successfully' } }
+const forgotPassword = async ({ email } = {}) => {
+  const normalizedEmail = normalizeEmail(email)
+  const user = await User.findOne({ email: normalizedEmail })
+  if (!user) throw new Error('User not found')
+  if (user.authProvider === 'google') throw new Error('This account uses Google login')
+  await issueOtp(normalizedEmail, 'reset-password')
+  return { message: 'Reset password OTP sent successfully' }
+}
+const resetPassword = async ({ email, otp, newPassword } = {}) => {
+  const normalizedEmail = normalizeEmail(email)
+  const password = validatePassword(newPassword, 'New password')
+  await confirmOtp({ identifier: normalizedEmail, otp, purpose: 'reset-password' })
+  const user = await User.findOne({ email: normalizedEmail }).select('+password')
+  if (!user) throw new Error('User not found')
+  user.password = await bcrypt.hash(password, 10)
+  await user.save()
+  await RefreshToken.updateMany({ userId: user._id, revokedAt: { $exists: false } }, { revokedAt: new Date() })
+  return { message: 'Password reset successfully' }
+}
+const changePassword = async (id, { currentPassword, newPassword } = {}) => {
+  const password = validatePassword(newPassword, 'New password')
+  const user = await User.findById(id).select('+password')
+  if (!user || !user.password || !(await bcrypt.compare(currentPassword || '', user.password))) throw new Error('Current password is incorrect')
+  if (user.authProvider === 'google') throw new Error('Google accounts cannot change password here')
+  user.password = await bcrypt.hash(password, 10)
+  await user.save()
+  await RefreshToken.updateMany({ userId: id, revokedAt: { $exists: false } }, { revokedAt: new Date() })
+  return { message: 'Password changed successfully' }
+}
 const refreshTokens = async token => { let payload; try { payload = jwt.verify(token, refreshSecret()) } catch { throw new Error('Invalid or expired refresh token') } const record = await RefreshToken.findOne({ tokenHash: hash(token), revokedAt: { $exists: false }, expiresAt: { $gt: new Date() } }).select('+tokenHash'); if (!record) throw new Error('Invalid or expired refresh token'); const user = await User.findById(payload.id).populate('roleId'); if (!user || user.isDisabled) throw new Error('Invalid or expired refresh token'); record.revokedAt = new Date(); await record.save(); return issueTokens(user) }
 const logout = async token => { if (token) await RefreshToken.findOneAndUpdate({ tokenHash: hash(token), revokedAt: { $exists: false } }, { revokedAt: new Date() }); return { message: 'Logout successfully' } }
 module.exports = { register, confirmOtp, login, forgotPassword, resetPassword, changePassword, refreshTokens, logout, verifyAccessToken: token => jwt.verify(token, accessSecret()) }

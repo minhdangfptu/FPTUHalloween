@@ -208,9 +208,25 @@
 }
 
 .fptu-halloween-contact-form-fields {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 2fr 3fr;
   gap: 16px;
+}
+
+.fptu-halloween-contact-form-group:first-child,
+.fptu-halloween-contact-form-group:nth-child(4),
+.fptu-halloween-contact-form-group:nth-child(5) {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 600px) {
+  .fptu-halloween-contact-form-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .fptu-halloween-contact-form-group {
+    grid-column: 1 / -1;
+  }
 }
 
 .fptu-halloween-contact-form-group {

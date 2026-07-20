@@ -64,7 +64,7 @@ const styles = {
   heading: { color: '#FFFFFF', fontSize: '26px', margin: '0' },
   content: { padding: '32px 28px', textAlign: 'center' },
   description: { color: '#e60000', fontSize: '15px', lineHeight: '24px', margin: '0 0 24px' },
-  otp: { color: '#FFFFFF', backgroundColor: '#e60000', border: '1px solid #e60000', borderRadius: '12px', fontSize: '34px', fontWeight: 'bold', letterSpacing: '9px', padding: '16px 20px', margin: '0 auto 24px' },
+  otp: { color: '#e60000', backgroundColor: '#FFFFFF', border: '1px solid #e60000', borderRadius: '12px', fontSize: '34px', fontWeight: 'bold', letterSpacing: '9px', padding: '16px 20px', margin: '0 auto 24px' },
   note: { color: '#e60000', fontSize: '13px', lineHeight: '20px', margin: '0' },
   hr: { borderColor: '#e60000', margin: '0 28px' },
   footer: { color: '#e60000', fontSize: '12px', textAlign: 'center', padding: '20px 28px', margin: '0' }

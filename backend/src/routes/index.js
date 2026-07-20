@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const authCtrl = require('../controllers/auth')
 const userCtrl = require('../controllers/user')
+const contactCtrl = require('../controllers/contact')
 // const adminCtrl = require('../controllers/admin')
 
 const { requireAuth } = require('../middlewares/auth')
@@ -18,6 +19,9 @@ router.post('/auth/forgot-password', authCtrl.forgotPassword)
 router.post('/auth/reset-password', authCtrl.resetPassword)
 router.post('/auth/refresh', authCtrl.refresh)
 router.post('/auth/logout', authCtrl.logout)
+
+// CONTACTS
+router.post('/contacts', contactCtrl.create)
 
 // USERS
 router.get('/users/me', requireAuth, userCtrl.me)

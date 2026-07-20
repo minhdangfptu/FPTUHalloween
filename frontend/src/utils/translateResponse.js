@@ -126,6 +126,7 @@ const translateSuccess = (message) => {
 };
 
 const SUCCESS_TRANSLATIONS = {
+  'Contact sent successfully': 'Gửi liên hệ thành công.',
   'Created successfully': 'Tạo thành công.',
   'Updated successfully': 'Cập nhật thành công.',
   'Deleted successfully': 'Xóa thành công.',
