@@ -252,7 +252,7 @@ function Navbar() {
                         </span>
                       </div>
                       <a
-                        href="/account"
+                        href="/user-profile"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
                       >
                         <WalletCards size={16} /> Tài khoản của bạn

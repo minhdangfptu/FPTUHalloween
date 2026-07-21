@@ -1,0 +1,50 @@
+.messenger-wrapper {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.messenger-popup {
+  position: absolute;
+  right: 0;
+  bottom: 75px;
+  width: 320px;
+  overflow: hidden;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.popup-header {
+  padding: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #e63946, #ff0000);
+}
+
+.header-info { display: flex; align-items: center; gap: 12px; }
+.page-avatar { flex: 0 0 40px; width: 40px; height: 40px; aspect-ratio: 1; background-color: #fff; border-radius: 50%; object-fit: cover; }
+.page-details h4 { margin: 0 0 4px; font-size: 16px; font-weight: 700; }
+.page-details p { margin: 0; font-size: 12px; opacity: 0.9; }
+.popup-body { min-height: 120px; padding: 20px 16px; background-color: #f9f9f9; }
+.chat-bubble { width: fit-content; max-width: 90%; padding: 12px 16px; color: #1a1a1a; background-color: #e4e6eb; border-radius: 18px 18px 18px 4px; font-size: 14px; line-height: 1.5; }
+.popup-footer { padding: 16px; background-color: #fff; border-top: 1px solid #e8e8e8; }
+.start-chat-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; color: #fff; background-color: #e63946; border-radius: 24px; font-size: 15px; font-weight: 600; text-decoration: none; }
+.start-chat-btn:hover { background-color: #c92f3d; }
+.btn-icon { font-size: 18px; }
+.messenger-fab { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; padding: 0; color: #fff; background: linear-gradient(135deg, #0677FF, #00C6FF); border: 0; border-radius: 50%; cursor: pointer; font-size: 28px; transition: transform 0.2s ease; }
+.messenger-fab svg { display: block; width: 28px; height: 28px; flex: 0 0 28px; }
+.messenger-fab:hover { transform: scale(1.05); }
+.messenger-fab:focus-visible { outline: 3px solid #ffcccc; outline-offset: 3px; }
+
+@media (max-width: 480px) {
+  .messenger-wrapper { right: 16px; bottom: 16px; }
+  .messenger-popup { right: -4px; width: min(320px, calc(100vw - 32px)); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

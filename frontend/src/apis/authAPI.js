@@ -74,6 +74,11 @@ export const authAPI = {
     return response.data;
   },
 
+  updateMe: async (payload) => {
+    const response = await axiosClient.patch('/users/me', payload);
+    return response.data;
+  },
+
   refreshToken: async (token) => {
     const response = await axiosClient.post('/auth/refresh', { refreshToken: token });
     return saveAuthData(unwrapResponse(response));

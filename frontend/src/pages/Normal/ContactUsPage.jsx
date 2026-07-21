@@ -108,7 +108,7 @@ function ContactUsPage() {
 
   return (
     <div className="fptu-halloween-contact-page">
-      <Toaster position="top-right" />
+      <Toaster position="top-center" />
       {/* Header */}
       <header className="fptu-halloween-contact-header">
         <div className="fptu-halloween-contact-banner">
