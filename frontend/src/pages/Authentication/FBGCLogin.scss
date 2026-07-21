@@ -1,0 +1,149 @@
+.fbgc-login-page,
+.fbgc-login-page * {
+  box-sizing: border-box;
+}
+
+.fbgc-login-page {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  background: #f7f7f8;
+  font-family: "Inter", "Roboto", sans-serif;
+}
+.fbgc-login-form-pane {
+  display: flex;
+  flex: 0 0 min(480px, 42vw);
+  flex-direction: column;
+  background: #f7f7f8;
+}
+.fbgc-login-box {
+  width: 460px;
+  max-width: 92%;
+  margin: auto;
+  padding: 16px;
+  text-align: center;
+}
+.fbgc-login-logo {
+  width: 150px;
+  max-width: 80%;
+  height: auto;
+  margin-bottom: 8px;
+  object-fit: contain;
+}
+.fbgc-login-box h1 {
+  margin: 4px 0 6px;
+  color: #111;
+  font-size: 28px;
+  font-weight: 700;
+}
+.fbgc-login-subtitle {
+  margin: 0 0 18px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.fbgc-login-form {
+  width: 360px;
+  max-width: 100%;
+  margin: 12px auto 0;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  text-align: left;
+}
+.fbgc-login-form label {
+  display: block;
+  margin-bottom: 6px;
+  color: #374151;
+  font-size: 14px;
+}
+.fbgc-login-form input {
+  width: 100%;
+  padding: 10px 12px;
+  color: #111 !important;
+  background: #fff !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 6px;
+  outline: none;
+  appearance: none;
+  font: inherit;
+}
+.fbgc-login-form input + label {
+  margin-top: 12px;
+}
+.fbgc-login-form input:hover,
+.fbgc-login-form input:focus {
+  background: #fff !important;
+  border-color: #c7cbd1 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
+}
+.fbgc-login-form input:-webkit-autofill,
+.fbgc-login-form input:-webkit-autofill:hover,
+.fbgc-login-form input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #111 !important;
+  caret-color: #111;
+}
+.fbgc-login-form button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 12px;
+  color: #fff;
+  background: #c60000;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+}
+.fbgc-login-form button:hover {
+  background: #a80000;
+}
+.fbgc-login-form button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.fbgc-back-link {
+  margin-top: 16px;
+  padding: 0;
+  color: #6b7280;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+}
+.fbgc-back-link:hover {
+  color: #c60000;
+}
+.fbgc-login-cover {
+  flex: 1;
+  min-height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 640px) {
+  .fbgc-login-page {
+    display: block;
+  }
+  .fbgc-login-form-pane {
+    width: 100%;
+    min-height: 100vh;
+  }
+  .fbgc-login-box {
+    padding: 16px 14px 28px;
+  }
+  .fbgc-login-logo {
+    width: 300px;
+    max-width: 90%;
+  }
+  .fbgc-login-cover {
+    display: none;
+  }
+}

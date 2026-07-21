@@ -9,11 +9,14 @@ import {
   KeyRound,
   KeyRoundIcon,
   LogOut,
+  Package,
   User,
   WalletCards,
 } from "lucide-react";
 import { authAPI } from "../apis/authAPI";
 import LogoutModal from "./LogoutModal";
+import toast, { Toaster } from "react-hot-toast";
+import { translateSuccess } from "../utils/translateResponse";
 const navigationItems = [
   {
     label: "TRANG CHỦ",
@@ -101,7 +104,8 @@ function Navbar() {
     setUser(null);
     setShowUserDropdown(false);
     setShowLogoutModal(false);
-    navigate("/login");
+    toast.success(translateSuccess("Logout successful"));
+    navigate("/");
   };
 
   const requestLogout = () => {
@@ -158,6 +162,7 @@ function Navbar() {
 
   return (
     <>
+      <Toaster position="top-center" />
       <nav className="fpt-navbar">
         <div className="fpt-navbar__container">
           <div className="fpt-navbar__content">
@@ -222,6 +227,15 @@ function Navbar() {
                   )}
                 </div>
               ))}
+              <Tooltip title="Đơn hàng của bạn">
+                <button
+                  className="fpt-navbar__search-btn"
+                  onClick={() => navigate("/user-profile")}
+                  aria-label="Mở trang đơn hàng"
+                >
+                  <Package size={24} />
+                </button>
+              </Tooltip>
               <div ref={userDropdownRef} className="fpt-navbar__user-item">
                 <Tooltip title="Tài khoản">
                   <button

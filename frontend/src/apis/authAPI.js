@@ -32,6 +32,11 @@ export const authAPI = {
     return response.data;
   },
 
+  googleLogin: async (googlePayload) => {
+    const response = await axiosClient.post('/auth/google', googlePayload);
+    return { ...saveAuthData(unwrapResponse(response)), message: response.data.message };
+  },
+
   confirmOtp: async (payload) => {
     const response = await axiosClient.post('/auth/confirm-otp', payload);
     return { ...saveAuthData(unwrapResponse(response)), message: response.data.message };

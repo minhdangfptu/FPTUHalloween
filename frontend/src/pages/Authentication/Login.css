@@ -125,6 +125,23 @@
   
 }
 
+.google-login-button {
+  display: flex;
+  justify-content: center;
+  width: 360px;
+  max-width: 100%;
+  min-height: 40px;
+}
+
+.google-login-wrapper { position: relative; width: 360px; max-width: 100%; height: 42px; }
+.google-login-wrapper .oauth-btn { position: absolute; inset: 0; width: 100%; z-index: 1; }
+.google-login-overlay { position: absolute; inset: 0; z-index: 2; overflow: hidden; opacity: 0.001; }
+.google-login-overlay > div, .google-login-overlay iframe { width: 100% !important; height: 100% !important; }
+
+/* Use the real Google button as the clickable surface. */
+.google-login-wrapper > div:first-child { display: none; }
+.google-login-wrapper .google-login-overlay { position: static; width: 360px; max-width: 100%; height: 42px; opacity: 1; }
+
 /* Cột phải (ảnh cover lấp đầy phần còn lại) */
 
 /* Mobile: xếp dọc, ẩn hoặc giảm chiều cao ảnh */

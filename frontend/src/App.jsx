@@ -26,6 +26,7 @@ import FPTUBoardGameClub from "./pages/FPTUBoardGameClub";
 import ChangePassword from "./pages/Authentication/ChangePassword";
 import MessengerButton from "./components/MessengerButton";
 import UserProfile from "./pages/Account/UserProfile";
+import FBGCLogin from "./pages/Authentication/FBGCLogin";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -47,6 +48,7 @@ export default function App() {
       <Routes>
         {/* Authentication pages - không có Header, Navbar, Footer */}
         <Route path="/login" element={<Login />} />
+        <Route path="/fbgc-login" element={<FBGCLogin />} />
         <Route path="/register" element={<Register />} />
         <Route path="/confirm-email" element={<ConfirmEmail />} />
         <Route path="/complete-register" element={<CompleteRegister />} />

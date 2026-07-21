@@ -25,6 +25,7 @@ const ERROR_TRANSLATIONS = {
   'Validation failed': 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.',
   'Invalid email address': 'Email không hợp lệ.',
   'Email already exists': 'Email đã được sử dụng. Vui lòng sử dụng email khác.',
+  'Username, email or phone already exists': 'Tên đăng nhập, email hoặc số điện thoại đã tồn tại.',
   'Password must be at least 8 characters': 'Mật khẩu phải có ít nhất 8 ký tự.',
   'Password must contain at least 1 uppercase letter': 'Mật khẩu phải chứa ít nhất 1 chữ hoa.',
   'Password must contain at least 1 number': 'Mật khẩu phải chứa ít nhất 1 số.',
@@ -46,6 +47,10 @@ const ERROR_TRANSLATIONS = {
   'Too many requests. Please slow down.': 'Yêu cầu quá nhiều. Vui lòng chờ một lát.',
 
   'Invalid credentials': 'Email hoặc mật khẩu không đúng.',
+  'Identifier and password are required': 'Vui lòng nhập tên đăng nhập và mật khẩu.',
+  'Google Login is not ready. Please try again in a few seconds.': 'Google chưa sẵn sàng. Vui lòng thử lại sau ít giây.',
+  'Unable to login with Google.': 'Không thể đăng nhập với Google.',
+  'An email account already exists with this email': 'Email này đã được đăng ký bằng tài khoản email. Vui lòng đăng nhập bằng email và mật khẩu. Nếu bạn là FBGCer, hãy đăng nhập với FBGC',
   'Current password is incorrect': 'Mật khẩu hiện tại không đúng.',
   'Google accounts cannot change password here': 'Tài khoản Google không thể đổi mật khẩu tại đây.',
   'No token provided': 'Vui lòng đăng nhập để tiếp tục.',

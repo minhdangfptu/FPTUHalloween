@@ -65,7 +65,7 @@ axiosClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const res = await axios.post(`${baseUrl}/api/auth/refresh`, {
+        const res = await axios.post(`${baseUrl}/hlw-api-v1/auth/refresh`, {
           refreshToken,
         });
 
