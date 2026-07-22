@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import { Dices, Ghost, Mail, MapPin, Phone } from "lucide-react";
 
 function ContactUsPage() {
   const [formData, setFormData] = useState({
@@ -312,7 +313,12 @@ function ContactUsPage() {
 
             <div className="fptu-halloween-contact-info-cards">
               <div className="fptu-halloween-contact-info-card">
-                <div className="fptu-halloween-contact-info-icon">👻</div>
+                <div
+                  className="fptu-halloween-contact-info-icon"
+                  aria-hidden="true"
+                >
+                  <Ghost size={24} />
+                </div>
                 <div className="fptu-halloween-contact-info-content">
                   <h3 className="fptu-halloween-contact-info-title">Fanpage</h3>
                   <p className="fptu-halloween-contact-info-text">
@@ -321,7 +327,12 @@ function ContactUsPage() {
                 </div>
               </div>
               <div className="fptu-halloween-contact-info-card">
-                <div className="fptu-halloween-contact-info-icon">🎲</div>
+                <div
+                  className="fptu-halloween-contact-info-icon"
+                  aria-hidden="true"
+                >
+                  <Dices size={24} />
+                </div>
                 <div className="fptu-halloween-contact-info-content">
                   <h3 className="fptu-halloween-contact-info-title">Fanpage</h3>
                   <p className="fptu-halloween-contact-info-text">
@@ -330,7 +341,12 @@ function ContactUsPage() {
                 </div>
               </div>
               <div className="fptu-halloween-contact-info-card">
-                <div className="fptu-halloween-contact-info-icon">📍</div>
+                <div
+                  className="fptu-halloween-contact-info-icon"
+                  aria-hidden="true"
+                >
+                  <MapPin size={24} />
+                </div>
                 <div className="fptu-halloween-contact-info-content">
                   <h3 className="fptu-halloween-contact-info-title">Địa chỉ</h3>
                   <p className="fptu-halloween-contact-info-text">
@@ -339,7 +355,12 @@ function ContactUsPage() {
                 </div>
               </div>
               <div className="fptu-halloween-contact-info-card">
-                <div className="fptu-halloween-contact-info-icon">✉️</div>
+                <div
+                  className="fptu-halloween-contact-info-icon"
+                  aria-hidden="true"
+                >
+                  <Mail size={24} />
+                </div>
                 <div className="fptu-halloween-contact-info-content">
                   <h3 className="fptu-halloween-contact-info-title">Email</h3>
                   <p className="fptu-halloween-contact-info-text">
@@ -348,25 +369,35 @@ function ContactUsPage() {
                 </div>
               </div>
               <div className="fptu-halloween-contact-info-card">
-                <div className="fptu-halloween-contact-info-icon">📞</div>
+                <div
+                  className="fptu-halloween-contact-info-icon"
+                  aria-hidden="true"
+                >
+                  <Phone size={24} />
+                </div>
                 <div className="fptu-halloween-contact-info-content">
                   <h3 className="fptu-halloween-contact-info-title">
                     Trưởng Ban Tổ Chức
                   </h3>
                   <p className="fptu-halloween-contact-info-text">
-                    Lê Quỳnh Anh - 0355987238
+                    Nguyễn Thảo Vy - 0338263886
                   </p>
                 </div>
               </div>
 
               <div className="fptu-halloween-contact-info-card">
-                <div className="fptu-halloween-contact-info-icon">📞</div>
+                <div
+                  className="fptu-halloween-contact-info-icon"
+                  aria-hidden="true"
+                >
+                  <Phone size={24} />
+                </div>
                 <div className="fptu-halloween-contact-info-content">
                   <h3 className="fptu-halloween-contact-info-title">
-                    Trưởng Ban Đối Ngoại
+                    Trưởng Ban Truyền thông
                   </h3>
                   <p className="fptu-halloween-contact-info-text">
-                    Bùi Thị Mai Anh - 0972679993
+                    Lê Thị Thuỳ - 0947319889
                   </p>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { authAPI } from "../../apis/authAPI";
 import {
@@ -14,6 +15,7 @@ const FBGCLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -61,15 +63,15 @@ const FBGCLogin = () => {
             />
 
             <label htmlFor="fbgc-password">Mật khẩu</label>
-            <input
+            <div className="fbgc-password-field"><input
               id="fbgc-password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Nhập mật khẩu"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"
               required
-            />
+            /><button type="button" className="fbgc-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button></div>
 
             <button type="submit" disabled={isLoading}>
               {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}

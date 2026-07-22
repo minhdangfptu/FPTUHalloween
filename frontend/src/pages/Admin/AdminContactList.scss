@@ -1,0 +1,45 @@
+/* Hallmark · admin list · genre: editorial administration · theme: FPT red */
+.admin-contact-page { min-height: 100vh; }
+.admin-contact-list { flex: 1; min-width: 0; padding: 44px clamp(24px, 5vw, 72px); color: #202124; }
+.admin-contact-list__header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 34px; }
+.admin-contact-list__kicker { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; color: #ce0000; font-size: 13px; font-weight: 700; }
+.admin-contact-list h1 { margin: 0; font-size: clamp(28px, 3vw, 42px); line-height: 1.1; }
+.admin-contact-list__header > div > p:last-child { margin: 12px 0 0; color: #73777d; }
+.admin-contact-list__refresh, .admin-contact-action { display: inline-flex; align-items: center; gap: 7px; color: #ce0000; background: #fff; border: 1px solid #ffd8dd; border-radius: 8px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; }
+.admin-contact-list__refresh { padding: 10px 14px; }
+.admin-contact-list__refresh:disabled { opacity: .55; cursor: wait; }
+.admin-contact-list__card { overflow: hidden; background: #fff; border: 1px solid #e8e9eb; border-radius: 14px; box-shadow: 0 6px 18px #2021240a; }
+.admin-contact-list__summary { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 16px 24px; border-bottom: 1px solid #eeeeef; color: #73777d; font-size: 13px; }
+.admin-contact-list__summary strong { color: #ce0000; font-size: 26px; }
+.admin-contact-list__filters { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; width: auto; margin: 0 0 0 auto; }
+.admin-contact-filter { display: flex; align-items: center; gap: 6px; color: #73777d; font-size: 11px; font-weight: 700; }
+.admin-contact-filter span { white-space: nowrap; }
+.admin-contact-filter select, .admin-contact-filter input { min-height: 34px; box-sizing: border-box; color: #202124; background: #fff; border: 1px solid #e4e6e9; border-radius: 7px; outline: 0; font: inherit; font-weight: 500; }
+.admin-contact-filter select { padding: 0 8px; cursor: pointer; }
+.admin-contact-filter input { width: 180px; padding: 0 8px; }
+.admin-contact-filter--search { padding: 0 9px; color: #92969c; background: #fafafa; border: 1px solid #e4e6e9; border-radius: 7px; }
+.admin-contact-filter--search input { width: 160px; padding: 0; background: transparent; border: 0; }
+.admin-contact-filter select:focus, .admin-contact-filter input:focus { border-color: #ce0000; }
+.admin-contact-list__empty { padding: 64px 24px; color: #73777d; text-align: center; }
+.admin-contact-table-wrap { overflow-x: auto; }
+.admin-contact-pagination { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 14px 18px; border-top: 1px solid #eeeeef; color: #73777d; font-size: 12px; }
+.admin-contact-pagination button { padding: 7px 11px; color: #ce0000; background: #fff; border: 1px solid #ffd8dd; border-radius: 7px; cursor: pointer; font: inherit; font-weight: 700; }
+.admin-contact-pagination button:hover:not(:disabled) { background: #fff4f4; }
+.admin-contact-pagination button:disabled { cursor: not-allowed; opacity: .45; }
+.admin-contact-table { width: 100%; min-width: 1050px; border-collapse: collapse; font-size: 13px; }
+.admin-contact-table th { padding: 14px 18px; color: #73777d; background: #fafafa; font-size: 11px; letter-spacing: .06em; text-align: left; text-transform: uppercase; }
+.admin-contact-table td { padding: 18px; vertical-align: top; border-top: 1px solid #eeeeef; }
+.admin-contact-table__person { display: grid; gap: 6px; min-width: 190px; }
+.admin-contact-table__person > svg { color: #ce0000; }
+.admin-contact-table__person span, .admin-contact-table td small { display: flex; align-items: center; gap: 5px; color: #73777d; font-size: 12px; }
+.admin-contact-table__topic { display: block; max-width: 160px; font-weight: 700; }
+.admin-contact-table td small { margin-top: 10px; }
+.admin-contact-table__message { max-width: 260px; margin: 0; color: #51555a; line-height: 1.5; white-space: pre-wrap; }
+.admin-contact-table__id { max-width: 150px; color: #92969c; overflow-wrap: anywhere; }
+.admin-contact-status { display: inline-flex; padding: 6px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.admin-contact-status.is-done { color: #26734d; background: #eaf7ef; }
+.admin-contact-status.is-pending { color: #9b5d1f; background: #fff3df; }
+.admin-contact-action { padding: 8px 10px; white-space: nowrap; }
+.admin-contact-action:hover, .admin-contact-list__refresh:hover:not(:disabled) { background: #fff4f4; }
+.admin-contact-action:disabled { opacity: .55; cursor: wait; }
+@media (max-width: 760px) { .admin-contact-list { padding: 28px 18px; } .admin-contact-list__header { display: block; } .admin-contact-list__refresh { margin-top: 18px; } .admin-contact-list__filters { align-items: stretch; width: 100%; margin-top: 10px; } .admin-contact-filter, .admin-contact-filter--search { width: 100%; } .admin-contact-filter select, .admin-contact-filter input, .admin-contact-filter--search input { flex: 1; width: auto; } }

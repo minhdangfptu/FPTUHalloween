@@ -1,4 +1,5 @@
 const authSvc = require('../services/auth')
+const { Role } = require('../models')
 
 function requireAuth(req, res, next) {
   try {
@@ -14,10 +15,17 @@ function requireAuth(req, res, next) {
 }
 
 function requireRole(roleName) {
-  return (req, res, next) => {
-    if (!req.user?.role) return res.status(403).json({ message: 'Forbidden' })
-    if (String(req.user.role) !== roleName) return res.status(403).json({ message: 'Forbidden' })
-    return next()
+  return async (req, res, next) => {
+    try {
+      if (!req.user?.roleId) return res.status(403).json({ message: 'Forbidden' })
+      const role = await Role.findOne({ _id: req.user.roleId, roleActive: true }).select('roleName').lean()
+      if (!role || String(role.roleName).toLowerCase() !== String(roleName).toLowerCase()) {
+        return res.status(403).json({ message: 'Forbidden' })
+      }
+      return next()
+    } catch (error) {
+      return next(error)
+    }
   }
 }
 

@@ -10,19 +10,19 @@ function CompleteRegister() {
   useEffect(() => {
     // Lấy email từ URL params hoặc localStorage
     const urlParams = new URLSearchParams(window.location.search);
-    const emailFromParams = urlParams.get('email');
-    const emailFromStorage = localStorage.getItem('registerEmail');
-    setEmail(emailFromParams || emailFromStorage || 'your-email@example.com');
-    
+    const emailFromParams = urlParams.get("email");
+    const emailFromStorage = localStorage.getItem("registerEmail");
+    setEmail(emailFromParams || emailFromStorage || "your-email@example.com");
+
     // Trigger success animation
     setShowAnimation(true);
   }, []);
 
   const handleGoToLogin = () => {
     // Clear registration data from localStorage
-    localStorage.removeItem('registerEmail');
+    localStorage.removeItem("registerEmail");
     // Redirect to login
-    window.location.href = '/login';
+    window.location.href = "/login";
   };
 
   return (
@@ -31,33 +31,39 @@ function CompleteRegister() {
       <div className="fptu-halloween-complete-register-left-pane">
         <div className="fptu-halloween-complete-register-top">
           <div className="fptu-halloween-complete-register-box">
-            <img className="fptu-halloween-complete-register-logo" src={loginImg} alt="FPTU Halloween" />
+            <img
+              className="fptu-halloween-complete-register-logo"
+              src={loginImg}
+              alt="FPTU Halloween"
+            />
             <div className="fptu-halloween-complete-register-panel">
               <div className="fptu-halloween-complete-register-header">
                 {/* Success Icon */}
-                <div className={`fptu-halloween-complete-register-success-icon ${showAnimation ? 'fptu-halloween-complete-register-animate' : ''}`}>
-                  <svg 
-                    width="80" 
-                    height="80" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
+                <div
+                  className={`fptu-halloween-complete-register-success-icon ${showAnimation ? "fptu-halloween-complete-register-animate" : ""}`}
+                >
+                  <svg
+                    width="80"
+                    height="80"
+                    viewBox="0 0 24 24"
+                    fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className="fptu-halloween-complete-register-success-checkmark"
                   >
-                    <circle 
-                      cx="12" 
-                      cy="12" 
-                      r="10" 
-                      stroke="#E63946" 
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="#E63946"
                       strokeWidth="2"
                       fill="none"
                       className="fptu-halloween-complete-register-success-circle"
                     />
-                    <path 
-                      d="M8 12l2 2 4-4" 
-                      stroke="#E63946" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
+                    <path
+                      d="M8 12l2 2 4-4"
+                      stroke="#E63946"
+                      strokeWidth="2"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                       className="fptu-halloween-complete-register-success-check"
                     />
@@ -72,22 +78,25 @@ function CompleteRegister() {
                   Email: <strong>{email}</strong>
                 </p>
                 <p className="fptu-halloween-complete-register-instruction">
-                  Bạn có thể đăng nhập ngay bây giờ để bắt đầu trải nghiệm FPTU Halloween 2025!
+                  Bạn có thể đăng nhập ngay bây giờ để bắt đầu trải nghiệm FPTU
+                  Halloween 2026!
                 </p>
               </div>
 
               <div className="fptu-halloween-complete-register-actions">
-                <button 
-                  className="fptu-halloween-complete-register-btn-primary" 
+                <button
+                  className="fptu-halloween-complete-register-btn-primary"
                   onClick={handleGoToLogin}
                 >
                   Đăng nhập ngay
                 </button>
-                
               </div>
             </div>
 
-            <div style={{ marginTop: 16 }} className="fptu-halloween-complete-register-text-muted">
+            <div
+              style={{ marginTop: 16 }}
+              className="fptu-halloween-complete-register-text-muted"
+            >
               Cần hỗ trợ?{" "}
               <a
                 href="/contact"

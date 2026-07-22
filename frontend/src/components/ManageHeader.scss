@@ -1,0 +1,139 @@
+.manage-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 74px;
+  margin-left: 272px;
+  padding: 0 32px;
+  color: #fff;
+  background: rgb(255 71 71);
+  border-bottom: 1px solid #a80000;
+}
+.manage-header--sidebar-collapsed {
+  margin-left: 72px;
+}
+.manage-header {
+  transition: margin-left 0.25s ease;
+}
+.manage-header__menu-button {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  padding: 0;
+  color: #ffe3e3;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.manage-header__menu-button:hover {
+  color: #fff;
+  background: #ffffff1c;
+}
+.manage-header__title {
+  position: absolute;
+  left: 50%;
+  max-width: calc(100% - 180px);
+  transform: translateX(-50%);
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+}
+.manage-header__account {
+  position: relative;
+}
+.manage-header__user-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0 7px 12px;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.manage-header__user-copy {
+  display: grid;
+  gap: 3px;
+  color: #fff;
+  text-align: right;
+}
+.manage-header__user-copy strong {
+  font-size: 13px;
+}
+.manage-header__user-copy small {
+  color: #ffd6d6;
+  font-size: 11px;
+}
+.manage-header__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  display: grid;
+  width: 220px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px #2021241c;
+}
+.manage-header__greeting,
+.manage-header__dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 9px 10px;
+  color: #555a60;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+}
+.manage-header__greeting {
+  color: #ce0000;
+  border-bottom: 1px solid #eee;
+  border-radius: 0;
+  font-weight: 700;
+}
+.manage-header__dropdown button {
+  cursor: pointer;
+}
+.manage-header__dropdown button:hover {
+  color: #ce0000;
+  background: #fff4f4;
+}
+.manage-header button:focus-visible {
+  outline: 3px solid #ffb3b3;
+  outline-offset: 2px;
+}
+@media (max-width: 760px) {
+  .manage-header {
+    margin-left: 72px;
+    padding: 0 16px;
+  }
+  .manage-header__title {
+    left: 50%;
+    max-width: calc(100% - 120px);
+    overflow: hidden;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .manage-header__user-copy {
+    display: none;
+  }
+  .manage-header__user-button {
+    border-left: 0;
+    padding-left: 0;
+  }
+}

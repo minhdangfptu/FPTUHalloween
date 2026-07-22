@@ -7,7 +7,8 @@ const schema = new Schema({
   phone: { type: String, required: true },
   email: { type: String, required: true },
   topic: { type: String, required: true },
-  message: { type: String, required: true }
+  message: { type: String, required: true },
+  isContactted: { type: Boolean, default: false }
 }, { collection: 'Contacts', timestamps: { createdAt: 'createdAt', updatedAt: false } })
 
 module.exports = mongoose.models.Contacts || mongoose.model('Contacts', schema)

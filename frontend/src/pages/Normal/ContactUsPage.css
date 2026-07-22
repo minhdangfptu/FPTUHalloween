@@ -325,6 +325,12 @@
   flex-shrink: 0;
 }
 
+.fptu-halloween-contact-info-icon svg {
+  display: block;
+  color: #E63946;
+  stroke-width: 2;
+}
+
 .fptu-halloween-contact-info-content {
   flex: 1;
 }

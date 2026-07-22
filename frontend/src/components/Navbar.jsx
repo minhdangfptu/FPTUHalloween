@@ -10,13 +10,19 @@ import {
   KeyRoundIcon,
   LogOut,
   Package,
+  ShoppingBag,
   User,
   WalletCards,
 } from "lucide-react";
 import { authAPI } from "../apis/authAPI";
+import cartAPI from "../apis/cartAPI";
 import LogoutModal from "./LogoutModal";
 import toast, { Toaster } from "react-hot-toast";
 import { translateSuccess } from "../utils/translateResponse";
+import {
+  CART_UPDATED_EVENT,
+  getCartItemCount,
+} from "../utils/flyingToCart";
 const navigationItems = [
   {
     label: "TRANG CHỦ",
@@ -35,7 +41,7 @@ const navigationItems = [
     href: "#",
     children: [
       { label: "Câu chuyện", href: "/overall" },
-      { label: "Mua vé", href: "/overall" },
+      { label: "Mua vé", href: "/tickets" },
       // { label: "Thông tin", href: "/agenda" },
       // { label: "Tin tức", href: "/news" },
     ],
@@ -70,6 +76,7 @@ function Navbar() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [cartQuantity, setCartQuantity] = useState(0);
   const userDropdownRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation(); // Add location hook
@@ -80,6 +87,38 @@ function Navbar() {
       return null;
     }
   });
+  const userRole = String(
+    user?.role?.roleName ||
+      user?.roleName ||
+      user?.role ||
+      user?.roleId?.roleName ||
+      "",
+  ).toLowerCase();
+  const canManageEvents = userRole === "admin" || userRole === "staff";
+
+  useEffect(() => {
+    const loadCartQuantity = async () => {
+      if (!localStorage.getItem("accessToken")) {
+        setCartQuantity(0);
+        return;
+      }
+
+      try {
+        const cart = await cartAPI.get();
+        setCartQuantity(getCartItemCount(cart));
+      } catch {
+        setCartQuantity(0);
+      }
+    };
+
+    const handleCartUpdated = (event) => {
+      setCartQuantity(getCartItemCount(event.detail?.cart));
+    };
+
+    loadCartQuantity();
+    window.addEventListener(CART_UPDATED_EVENT, handleCartUpdated);
+    return () => window.removeEventListener(CART_UPDATED_EVENT, handleCartUpdated);
+  }, [user]);
 
   useEffect(() => {
     const syncUser = () => {
@@ -110,6 +149,7 @@ function Navbar() {
 
   const requestLogout = () => {
     setShowUserDropdown(false);
+    setMobileOpen(false);
     setShowLogoutModal(true);
   };
 
@@ -227,13 +267,35 @@ function Navbar() {
                   )}
                 </div>
               ))}
-              <Tooltip title="Đơn hàng của bạn">
+              {canManageEvents && (
+                <div className="fpt-navbar__nav-item">
+                  <a
+                    href="/staff/ticket-types"
+                    className={`fpt-navbar__nav-link ${
+                      location.pathname.startsWith("/staff") ? "active" : ""
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate("/staff/ticket-types");
+                    }}
+                  >
+                    QUẢN TRỊ
+                  </a>
+                </div>
+              )}
+              <Tooltip title="Giỏ hàng của bạn">
                 <button
                   className="fpt-navbar__search-btn"
-                  onClick={() => navigate("/user-profile")}
-                  aria-label="Mở trang đơn hàng"
+                  onClick={() => navigate("/cart")}
+                  aria-label={`Mở giỏ hàng${cartQuantity ? `, ${cartQuantity} vé` : ""}`}
+                  data-cart-target
                 >
-                  <Package size={24} />
+                  <ShoppingBag size={22} />
+                  {cartQuantity > 0 && (
+                    <span className="fpt-navbar__cart-badge" aria-label={`${cartQuantity} vé trong giỏ hàng`}>
+                      {cartQuantity > 99 ? "99+" : cartQuantity}
+                    </span>
+                  )}
                 </button>
               </Tooltip>
               <div ref={userDropdownRef} className="fpt-navbar__user-item">
@@ -265,6 +327,14 @@ function Navbar() {
                           Xin chào {user.fullName || user.name || "bạn"}
                         </span>
                       </div>
+                      {/* {canManageEvents && (
+                        <a
+                          href="/staff/ticket-types"
+                          className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                        >
+                          Quản trị sự kiện
+                        </a>
+                      )} */}
                       <a
                         href="/user-profile"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
@@ -379,36 +449,80 @@ function Navbar() {
                 )}
               </div>
             ))}
+            {canManageEvents && (
+              <div className="fpt-navbar__mobile-group">
+                <a
+                  href="/staff/ticket-types"
+                  className="fpt-navbar__mobile-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/staff/ticket-types");
+                    handleDrawerToggle();
+                  }}
+                >
+                  QUẢN TRỊ
+                </a>
+              </div>
+            )}
             <div className="fpt-navbar__mobile-group">
-              <div
-                className="fpt-navbar__mobile-link"
-                style={{ fontWeight: "bold", color: "#ce0000" }}
-              >
-                👤 Tài khoản
-              </div>
-              <div className="fpt-navbar__mobile-sub">
-                <a
-                  href="/login"
-                  className="fpt-navbar__mobile-sublink"
-                  onClick={handleDrawerToggle}
-                >
-                  🔐 Đăng nhập
-                </a>
-                <a
-                  href="/register"
-                  className="fpt-navbar__mobile-sublink"
-                  onClick={handleDrawerToggle}
-                >
-                  📝 Đăng ký
-                </a>
-                {/* <a
-                  href="/forgot-password"
-                  className="fpt-navbar__mobile-sublink"
-                  onClick={handleDrawerToggle}
-                >
-                  🔑 Quên mật khẩu
-                </a> */}
-              </div>
+              {user ? (
+                <>
+                  <div
+                    className="fpt-navbar__mobile-link"
+                    style={{ fontWeight: "bold", color: "#ce0000" }}
+                  >
+                    👤 {user.fullName || user.name || "Tài khoản"}
+                  </div>
+                  <div className="fpt-navbar__mobile-sub">
+                    <a
+                      href="/user-profile"
+                      className="fpt-navbar__mobile-sublink"
+                      onClick={handleDrawerToggle}
+                    >
+                      Tài khoản của bạn
+                    </a>
+                    <a
+                      href="/change-password"
+                      className="fpt-navbar__mobile-sublink"
+                      onClick={handleDrawerToggle}
+                    >
+                      Đổi mật khẩu
+                    </a>
+                    <button
+                      type="button"
+                      className="fpt-navbar__mobile-sublink fpt-navbar__mobile-action"
+                      onClick={requestLogout}
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="fpt-navbar__mobile-link"
+                    style={{ fontWeight: "bold", color: "#ce0000" }}
+                  >
+                    👤 Tài khoản
+                  </div>
+                  <div className="fpt-navbar__mobile-sub">
+                    <a
+                      href="/login"
+                      className="fpt-navbar__mobile-sublink"
+                      onClick={handleDrawerToggle}
+                    >
+                      🔐 Đăng nhập
+                    </a>
+                    <a
+                      href="/register"
+                      className="fpt-navbar__mobile-sublink"
+                      onClick={handleDrawerToggle}
+                    >
+                      📝 Đăng ký
+                    </a>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

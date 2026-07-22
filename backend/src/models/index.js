@@ -7,5 +7,6 @@ module.exports = {
   Order: require('./Order'),
   TicketType: require('./TicketType'),
   UserTicket: require('./UserTicket'),
-  Otp: require('./Otp')
+  Otp: require('./Otp'),
+  Cart: require('./Cart')
 }

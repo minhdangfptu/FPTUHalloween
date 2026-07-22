@@ -45,8 +45,8 @@ const parsePosition = (jobTitle) => {
 }
 
 const seedFbgcUsers = async () => {
-  const role = await Role.findOne({ roleName: 'User', roleActive: true })
-  if (!role) throw new Error('Default User role not found')
+  const role = await Role.findOne({ roleName: 'Staff', roleActive: true })
+  if (!role) throw new Error('Default Staff role not found')
 
   const seedEmails = users.map(([, , , , email]) => email)
   const usedNames = new Set(await User.distinct('userName', { email: { $nin: seedEmails }, userName: { $exists: true, $ne: null } }))

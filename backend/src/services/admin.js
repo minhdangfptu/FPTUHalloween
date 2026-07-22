@@ -1,27 +1,40 @@
 const mongoose = require('mongoose')
 const { User, Role } = require('../models')
 
-const { isValidObjectId } = mongoose
-
-function ensureId(id, name = 'id') {
-  if (!isValidObjectId(id)) throw new Error(`Invalid ${name}`)
+const ensureId = id => {
+  if (!mongoose.isValidObjectId(id)) throw new Error('Invalid user ID')
 }
 
-function sanitizeUser(doc) {
+const sanitizeUser = doc => {
   if (!doc) return null
-  const { _id, email, full_name, phone_number, role_id, user_status, created_at, update_at } = doc.toObject({ getters: false, virtuals: false })
-  return { _id, email, full_name, phone_number, role_id, user_status, created_at, update_at }
+  const user = typeof doc.toObject === 'function' ? doc.toObject({ getters: false, virtuals: false }) : doc
+  return {
+    _id: user._id,
+    userName: user.userName,
+    email: user.email,
+    fullName: user.fullName,
+    phone: user.phone,
+    department: user.department,
+    department_position: user.department_position,
+    roleId: user.roleId,
+    isVerified: user.isVerified,
+    isDisabled: user.isDisabled,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt
+  }
 }
 
-async function promoteUserToStaff(userId) {
-  ensureId(userId, 'userId')
-  const staffRole = await Role.findOne({ role_name: 'Staff', role_active: true })
-  if (!staffRole) throw new Error('Vai trò Staff không tồn tại')
-  const updated = await User.findByIdAndUpdate(userId, { role_id: staffRole._id }, { new: true })
-  if (!updated) throw new Error('Người dùng không tồn tại')
+const promoteUserToStaff = async userId => {
+  ensureId(userId)
+  const staffRole = await Role.findOne({ roleName: 'Staff', roleActive: true }).lean()
+  if (!staffRole) throw new Error('Staff role not found')
+  const updated = await User.findByIdAndUpdate(
+    userId,
+    { $set: { roleId: staffRole._id } },
+    { new: true, runValidators: true }
+  ).populate('roleId', 'roleName').lean()
+  if (!updated) throw new Error('User not found')
   return sanitizeUser(updated)
 }
 
 module.exports = { promoteUserToStaff }
-
-

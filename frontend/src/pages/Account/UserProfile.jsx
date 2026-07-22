@@ -59,14 +59,16 @@ export default function UserProfile() {
 
   useEffect(() => {
     const loadProfile = async () => {
+      const loadingToast = toast.loading("Đang tải dữ liệu...");
       try {
         const data = getProfileData(await authAPI.getMe());
         setProfile({ ...EMPTY_PROFILE, ...data });
         setDraft({ ...EMPTY_PROFILE, ...data });
       } catch (error) {
-        toast.error(translateError(error), { id: loadingToast });
+        toast.error(translateError(error));
       } finally {
         setIsLoading(false);
+        toast.dismiss(loadingToast);
       }
     };
     loadProfile();
@@ -139,10 +141,7 @@ export default function UserProfile() {
         </div>
       </div>
       {isLoading ? (
-        <div className="profile-loading">
-          <span />
-          Đang tải dữ liệu...
-        </div>
+        <div className="profile-loading" aria-busy="true" />
       ) : (
         <>
           <section className="profile-overview">

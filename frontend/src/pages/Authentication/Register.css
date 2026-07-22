@@ -125,7 +125,7 @@
 .fptu-halloween-register-page .fptu-halloween-register-form-input {
   background-color: #fff !important;
   color: #111;
-  appearance: none;            /* bỏ style mặc định browser */
+  appearance: none; /* bỏ style mặc định browser */
   -webkit-appearance: none;
   background-clip: padding-box;
 }
@@ -145,14 +145,18 @@
 }
 
 /* ===== Xử lý Chrome Autofill (hay làm nền khác màu) ===== */
-.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill,
-.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill:hover,
-.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill:focus,
-.fptu-halloween-register-page .fptu-halloween-register-form-input:-webkit-autofill:active {
+.fptu-halloween-register-page
+  .fptu-halloween-register-form-input:-webkit-autofill,
+.fptu-halloween-register-page
+  .fptu-halloween-register-form-input:-webkit-autofill:hover,
+.fptu-halloween-register-page
+  .fptu-halloween-register-form-input:-webkit-autofill:focus,
+.fptu-halloween-register-page
+  .fptu-halloween-register-form-input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px #fff inset !important; /* nền trắng */
-  -webkit-text-fill-color: #111 !important;               /* chữ đen */
+  -webkit-text-fill-color: #111 !important; /* chữ đen */
   caret-color: #111 !important;
-  transition: background-color 9999s ease-out 0s;         /* chặn flash */
+  transition: background-color 9999s ease-out 0s; /* chặn flash */
 }
 
 /* Form validation states */
@@ -164,4 +168,41 @@
 .fptu-halloween-register-page .fptu-halloween-register-form-input.error:focus {
   border-color: #dc2626;
   box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+}
+.fptu-halloween-register-page .auth-title {
+  margin: 8px 0 4px;
+  color: #111;
+  font-size: 28px;
+  font-weight: 700;
+}
+.fptu-halloween-register-page .auth-subtitle {
+  margin: 10px 0 12px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.fptu-halloween-register-page .password-field {
+  position: relative;
+}
+.fptu-halloween-register-page
+  .password-field
+  .fptu-halloween-register-form-input {
+  padding-right: 42px;
+}
+.fptu-halloween-register-page .password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: #6b7280;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.fptu-halloween-register-page .password-toggle:hover {
+  color: #111;
 }

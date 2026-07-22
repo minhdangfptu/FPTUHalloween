@@ -87,7 +87,7 @@ function Footer() {
               </a>
             </div>
             <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">Về FPTU Halloween 2025</h4>
+              <h4 className="fpt-footer__link-title">Về FPTU Halloween 2026</h4>
               <a href="#" className="fpt-footer__link">
                 Tổng quan sự kiện
               </a>

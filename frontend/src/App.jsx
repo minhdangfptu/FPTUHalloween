@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import { CssBaseline, CssVarsProvider, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import HomePage from "./pages/Normal/HomePage";
@@ -20,13 +20,26 @@ import Fanpage from "./pages/Introduce/Fanpage";
 import Overall from "./pages/Halloween2025/Overall";
 import Agenda from "./pages/Halloween2025/Agenda";
 import News from "./pages/Halloween2025/News";
-import TicketGhost from "./pages/Ticket/TicketGhost";
-import TicketGame from "./pages/Ticket/TicketGame";
 import FPTUBoardGameClub from "./pages/FPTUBoardGameClub";
 import ChangePassword from "./pages/Authentication/ChangePassword";
 import MessengerButton from "./components/MessengerButton";
 import UserProfile from "./pages/Account/UserProfile";
 import FBGCLogin from "./pages/Authentication/FBGCLogin";
+import ListTicketTypePage from "./pages/Ticket/ListTicketTypePage";
+import TicketDetail from "./pages/Ticket/TicketDetail";
+import Cart from "./pages/Ticket/Cart";
+import Checkout from "./pages/Ticket/Checkout";
+import QRPayment from "./pages/Ticket/QRPayment";
+import CompletePayment from "./pages/Ticket/CompletePayment";
+import StaffTicketTypeList from "./pages/Staff/StaffTicketTypeList";
+import StaffTicketTypeDetail from "./pages/Staff/StaffTicketTypeDetail";
+import ManageHeader from "./components/ManageHeader";
+import AdminContactList from "./pages/Admin/AdminContactList";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminListUser from "./pages/Admin/AdminListUser";
+import AdminOrderList from "./pages/Admin/AdminOrderList";
+import StaffCheckinTicket from "./pages/Staff/StaffCheckinTicket";
+import StaffHomePage from "./pages/Staff/StaffHomePage";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -34,6 +47,16 @@ function Layout({ children }) {
     <>
       <Header />
       <Navbar />
+      {children}
+      <Footer />
+    </>
+  );
+}
+
+function ManageLayout({ children, role = "staff" }) {
+  return (
+    <>
+      <ManageHeader role={role} />
       {children}
       <Footer />
     </>
@@ -74,14 +97,94 @@ export default function App() {
             </Layout>
           }
         />
+        {/* Vé */}
         <Route
-          path="/"
+          path="/tickets"
           element={
             <Layout>
-              <HomePage />
+              <ListTicketTypePage />
             </Layout>
           }
         />
+        <Route
+          path="/tickets/detail/:ticketTypeId"
+          element={
+            <Layout>
+              <TicketDetail />
+            </Layout>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <Layout>
+              <Cart />
+            </Layout>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <Layout>
+              <Checkout />
+            </Layout>
+          }
+        />
+        <Route
+          path="/qr-payment"
+          element={
+            <Layout>
+              <QRPayment />
+            </Layout>
+          }
+        />
+        <Route
+          path="/complete-payment"
+          element={
+            <Layout>
+              <CompletePayment />
+            </Layout>
+          }
+        />
+        <Route
+          path="/staff/ticket-types"
+          element={
+            <ManageLayout role="staff">
+              <StaffTicketTypeList />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/staff/tickets"
+          element={<Navigate to="/staff/ticket-types" replace />}
+        />
+        <Route
+          path="/staff/ticket-types/:ticketTypeId"
+          element={
+            <ManageLayout role="staff">
+              <StaffTicketTypeDetail />
+            </ManageLayout>
+          }
+        />
+        <Route path="/staff" element={<ManageLayout role="staff"><StaffHomePage /></ManageLayout>} />
+        <Route path="/staff/dashboard" element={<ManageLayout role="staff"><StaffHomePage /></ManageLayout>} />
+        <Route
+          path="/admin/contacts"
+          element={
+            <ManageLayout role="admin">
+              <AdminContactList />
+            </ManageLayout>
+          }
+        />
+        <Route path="/admin" element={<ManageLayout role="admin"><AdminDashboard /></ManageLayout>} />
+        <Route path="/admin/dashboard" element={<ManageLayout role="admin"><AdminDashboard /></ManageLayout>} />
+        <Route path="/admin/users" element={<ManageLayout role="admin"><AdminListUser /></ManageLayout>} />
+        <Route path="/admin/orders" element={<ManageLayout role="admin"><AdminOrderList /></ManageLayout>} />
+        <Route path="/admin/check-in" element={<ManageLayout role="admin"><StaffCheckinTicket /></ManageLayout>} />
+        <Route path="/admin/tickets" element={<ManageLayout role="admin"><StaffTicketTypeList /></ManageLayout>} />
+        <Route path="/admin/ticket-types" element={<ManageLayout role="admin"><StaffTicketTypeList /></ManageLayout>} />
+        <Route path="/admin/ticket-types/:ticketTypeId" element={<ManageLayout role="admin"><StaffTicketTypeDetail /></ManageLayout>} />
+        <Route path="/staff/check-in" element={<ManageLayout role="staff"><StaffCheckinTicket /></ManageLayout>} />
         <Route
           path="/about-us"
           element={
@@ -143,22 +246,6 @@ export default function App() {
           element={
             <Layout>
               <News />
-            </Layout>
-          }
-        />
-        <Route
-          path="/ticket-ghost"
-          element={
-            <Layout>
-              <TicketGhost />
-            </Layout>
-          }
-        />
-        <Route
-          path="/ticket-game"
-          element={
-            <Layout>
-              <TicketGame />
             </Layout>
           }
         />
