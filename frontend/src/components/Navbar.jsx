@@ -17,7 +17,7 @@ import {
 import { authAPI } from "../apis/authAPI";
 import cartAPI from "../apis/cartAPI";
 import LogoutModal from "./LogoutModal";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { translateSuccess } from "../utils/translateResponse";
 import {
   CART_UPDATED_EVENT,
@@ -202,7 +202,6 @@ function Navbar() {
 
   return (
     <>
-      <Toaster position="top-center" />
       <nav className="fpt-navbar">
         <div className="fpt-navbar__container">
           <div className="fpt-navbar__content">

@@ -1,6 +1,6 @@
 /* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V4 */
-import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import React, { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import {
   Check,
   Edit3,
@@ -56,8 +56,13 @@ export default function UserProfile() {
   const [draft, setDraft] = useState(EMPTY_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const hasLoadedProfile = useRef(false);
 
   useEffect(() => {
+    // React StrictMode chạy effect hai lần trong development.
+    if (hasLoadedProfile.current) return;
+    hasLoadedProfile.current = true;
+
     const loadProfile = async () => {
       const loadingToast = toast.loading("Đang tải dữ liệu...");
       try {
@@ -117,7 +122,6 @@ export default function UserProfile() {
 
   return (
     <main className="user-profile-page">
-      <Toaster position="top-center" />
       <div className="profile-toolbar">
         <div className="profile-tab">
           <UserRound size={18} /> Chi tiết Người dùng

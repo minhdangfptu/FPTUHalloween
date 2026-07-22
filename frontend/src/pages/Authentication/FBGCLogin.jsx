@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { authAPI } from "../../apis/authAPI";
 import {
   translateError,
@@ -37,7 +37,6 @@ const FBGCLogin = () => {
 
   return (
     <main className="fbgc-login-page">
-      <Toaster position="top-center" />
       <section className="fbgc-login-form-pane">
         <div className="fbgc-login-box">
           <img

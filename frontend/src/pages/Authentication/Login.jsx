@@ -5,7 +5,7 @@ import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../../apis/authAPI";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import {
   translateError,
   translateSuccess,
@@ -98,7 +98,6 @@ function Login() {
 
   return (
     <div className="login-page">
-      <Toaster position="top-center" />
       <div className="left-pane">
         <div className="login-top">
           <div className="login-box">

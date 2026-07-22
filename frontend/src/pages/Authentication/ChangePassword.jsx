@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import wtmLogo from "../../assets/wtm.png";
 import { authAPI } from "../../apis/authAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
@@ -115,7 +115,6 @@ export default function ChangePasswordPage() {
 
   return (
     <main className="cp-page">
-      <Toaster position="top-center" />
       <div className="cp-card">
         {/* Header */}
         <div className="cp-card__header">

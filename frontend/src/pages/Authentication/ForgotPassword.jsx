@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { authAPI } from "../../apis/authAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
 import wtmLogo from "../../assets/wtm.png";
@@ -52,7 +52,6 @@ export default function ForgotPassword() {
 
   return (
     <main className="cp-page fp-page">
-      <Toaster position="top-center" />
       <div className="cp-card">
         <div className="cp-card__header">
           <img className="cp-brand-logo" src={wtmLogo} alt="FPTU Halloween" />

@@ -6,7 +6,7 @@ import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../../apis/authAPI";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import {
   translateError,
   translateSuccess,
@@ -184,7 +184,6 @@ function Register() {
 
   return (
     <div className="fptu-halloween-register-page">
-      <Toaster position="top-center" />
       {/* Cột trái: form */}
       <div className="fptu-halloween-register-left-pane">
         <div className="fptu-halloween-register-top">

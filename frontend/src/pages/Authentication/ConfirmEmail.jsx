@@ -3,7 +3,7 @@ import "./ConfirmEmail.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import { authAPI } from "../../apis/authAPI";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
 
 function ConfirmEmail() {
@@ -115,7 +115,6 @@ function ConfirmEmail() {
 
   return (
     <div className="fptu-halloween-confirm-email-page">
-      <Toaster position="top-center" />
       {/* Cột trái: form */}
       <div className="fptu-halloween-confirm-email-left-pane">
         <div className="fptu-halloween-confirm-email-top">

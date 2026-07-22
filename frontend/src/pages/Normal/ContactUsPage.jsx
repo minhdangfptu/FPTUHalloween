@@ -5,7 +5,7 @@ import {
   translateError,
   translateSuccess,
 } from "../../utils/translateResponse";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
@@ -109,7 +109,6 @@ function ContactUsPage() {
 
   return (
     <div className="fptu-halloween-contact-page">
-      <Toaster position="top-center" />
       {/* Header */}
       <header className="fptu-halloween-contact-header">
         <div className="fptu-halloween-contact-banner">

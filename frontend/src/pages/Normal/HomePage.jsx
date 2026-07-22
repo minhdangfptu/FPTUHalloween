@@ -5,7 +5,7 @@ import halloweensApi from "../../apis/halloweensAPI";
 
 import hero from "../../assets/cover-01.png";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const highlights = [
   {
@@ -93,7 +93,6 @@ export default function HomePage() {
 
   return (
     <div className="fptu-halloween-page">
-      <Toaster position="top-center" />
       {/* HERO */}
       <section className="fptu-halloween-hero">
         <img src={hero} alt="" className="fptu-halloween-hero__bg" />
