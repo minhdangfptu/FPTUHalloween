@@ -1,11 +1,24 @@
 const mongoose = require('mongoose')
 const { Order, UserTicket } = require('../models')
 
+const expirePendingOrders = async () => {
+  const expiredAt = Math.floor(Date.now() / 1000)
+  const result = await Order.updateMany(
+    {
+      orderStatus: 'Pending',
+      'paymentData.expiredAt': { $lte: expiredAt }
+    },
+    { $set: { orderStatus: 'Cancelled' } }
+  )
+  return result.modifiedCount || 0
+}
+
 const ensureId = id => {
   if (!mongoose.isValidObjectId(id)) throw new Error('Invalid order ID')
 }
 
 const getOrders = async ({ page = 1, pageSize = 20, status } = {}) => {
+  await expirePendingOrders()
   const currentPage = Math.max(Number.parseInt(page, 10) || 1, 1)
   const limit = Math.min(Math.max(Number.parseInt(pageSize, 10) || 20, 1), 100)
   const filter = status ? { orderStatus: status } : {}
@@ -33,11 +46,16 @@ const getOrderById = async id => {
 }
 
 const getMyOrders = async userId => {
-  const orders = await Order.find({ userId }).select('-paymentData').sort({ createdAt: -1 }).lean()
-  return orders.map(order => ({
-    ...order,
-    itemCount: order.items.reduce((total, item) => total + Number(item.quantity || 0), 0)
-  }))
+  await expirePendingOrders()
+  const orders = await Order.find({ userId }).sort({ createdAt: -1 }).lean()
+  return orders.map(order => {
+    const { paymentData, ...safeOrder } = order
+    return {
+      ...safeOrder,
+      paymentExpiresAt: paymentData?.expiredAt || null,
+      itemCount: order.items.reduce((total, item) => total + Number(item.quantity || 0), 0)
+    }
+  })
 }
 
 const getMyOrderById = async (userId, id) => {
@@ -67,4 +85,4 @@ const getTicketSalesStatistics = async ({ groupBy = 'type' } = {}) => {
   return { groupBy, totalSold: paidTickets.length, statistics: [...grouped.values()].sort((a, b) => a.key.localeCompare(b.key)) }
 }
 
-module.exports = { getOrders, getOrderById, getMyOrders, getMyOrderById, getTicketSalesStatistics }
+module.exports = { expirePendingOrders, getOrders, getOrderById, getMyOrders, getMyOrderById, getTicketSalesStatistics }

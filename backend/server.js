@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const { config, connectDB, corsConfig } = require('./src/config')
 const routes = require('./src/routes')
 const { default: mongoose } = require('mongoose')
+const { expirePendingOrders } = require('./src/services/adminOrder')
 
 const app = express()
 
@@ -70,6 +71,10 @@ const startServer = async () => {
   try {
     await connectDB()
     console.log('DB name:', mongoose.connection.name);
+    await expirePendingOrders()
+    setInterval(() => {
+      expirePendingOrders().catch(error => console.error('Failed to expire pending orders:', error.message))
+    }, 30 * 1000)
     // mongoose.connection.db.listCollections().toArray().then(cols => {
     //   console.log('Collections:', cols.map(c => c.name));
     // });

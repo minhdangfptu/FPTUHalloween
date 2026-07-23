@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import authAPI from "../../apis/authAPI";
 import cartAPI from "../../apis/cartAPI";
 import { translateError } from "../../utils/translateResponse";
+import LogoutModal from "../../components/LogoutModal";
 import "./Checkout.scss";
 
 const CHECKOUT_KEY = "fptu-halloween-checkout";
@@ -49,6 +50,7 @@ const Checkout = () => {
   const [discountCode, setDiscountCode] = useState("");
   const [discountMessage, setDiscountMessage] = useState("");
   const [customer, setCustomer] = useState(getStoredCustomer);
+  const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
 
   const loadCart = useCallback(async () => {
     const loadingToast = toast.loading("Đang tải thông tin thanh toán...");
@@ -139,10 +141,15 @@ const Checkout = () => {
       toast.error("Vé không còn được bán. Vui lòng quay lại giỏ hàng.");
       return;
     }
+    setShowPaymentConfirmation(true);
+  };
+
+  const continueToPayment = () => {
     localStorage.setItem(
       CHECKOUT_KEY,
       JSON.stringify({ customer, items: cartItems, subtotal, discount, total }),
     );
+    setShowPaymentConfirmation(false);
     navigate("/qr-payment");
   };
 
@@ -320,6 +327,15 @@ const Checkout = () => {
           </aside>
         </div>
       </div>
+      <LogoutModal
+        isOpen={showPaymentConfirmation}
+        onClose={() => setShowPaymentConfirmation(false)}
+        onConfirm={continueToPayment}
+        title="Xác nhận thanh toán"
+        description="Bạn sẽ được chuyển đến màn hình mã QR để hoàn tất thanh toán.<br />Bạn có muốn tiếp tục không?"
+        cancelLabel="Quay lại"
+        confirmLabel="Tiếp tục thanh toán"
+      />
     </main>
   );
 };

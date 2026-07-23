@@ -55,6 +55,23 @@ const formatDate = (value) =>
       )
     : "Chưa cập nhật";
 
+const OrderCountdown = ({ expiresAt }) => {
+  const getRemaining = () => Math.max(0, Number(expiresAt || 0) - Math.floor(Date.now() / 1000));
+  const [remaining, setRemaining] = useState(getRemaining);
+
+  useEffect(() => {
+    const update = () => setRemaining(getRemaining());
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, [expiresAt]);
+
+  if (!expiresAt || remaining <= 0) return <small className="profile-order-expiry profile-order-expiry--expired">Đã hết thời gian</small>;
+  const minutes = Math.floor(remaining / 60);
+  const seconds = remaining % 60;
+  return <small className="profile-order-expiry">Còn lại {minutes}:{String(seconds).padStart(2, "0")}</small>;
+};
+
 export default function UserProfile() {
   const navigate = useNavigate();
   const orderStatusLabels = {
@@ -80,6 +97,7 @@ export default function UserProfile() {
   const [tickets, setTickets] = useState([]);
   const [selectedQrCode, setSelectedQrCode] = useState(null);
   const [orders, setOrders] = useState([]);
+  const [orderStatusFilter, setOrderStatusFilter] = useState("");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const hasLoadedProfile = useRef(false);
 
@@ -142,6 +160,9 @@ export default function UserProfile() {
   };
   const displayName = profile.fullName || "Người dùng FPTU";
   const value = (field) => profile[field] || "Chưa cập nhật";
+  const visibleOrders = orderStatusFilter
+    ? orders.filter((order) => order.orderStatus === orderStatusFilter)
+    : orders;
   const authProviderLabel =
     profile.authProvider === "google"
       ? "Tài khoản Google"
@@ -273,6 +294,16 @@ export default function UserProfile() {
                 <h2>Đơn hàng của bạn</h2>
                 <p>Theo dõi và xem lại các đơn hàng đã đặt.</p>
               </div>
+              <label className="orders-status-filter">
+                <span>Lọc trạng thái</span>
+                <select value={orderStatusFilter} onChange={(event) => setOrderStatusFilter(event.target.value)} aria-label="Lọc trạng thái đơn hàng">
+                  <option value="">Tất cả</option>
+                  <option value="Pending">Chờ thanh toán</option>
+                  <option value="Processing">Đang xử lý</option>
+                  <option value="Paid">Đã thanh toán</option>
+                  <option value="Cancelled">Đã hủy</option>
+                </select>
+              </label>
             </header>
             <div className="orders-table">
               <div className="orders-row orders-row--header">
@@ -283,11 +314,11 @@ export default function UserProfile() {
                 <span>Trạng thái</span>
                 <span>Thao tác</span>
               </div>
-              {orders.length === 0 ? (
+              {visibleOrders.length === 0 ? (
                 <div className="orders-empty">Bạn chưa có đơn hàng nào.</div>
               ) : (
                 <div className="profile-order-list">
-                  {orders.map((order) => (
+                  {visibleOrders.map((order) => (
                     <button
                       className="profile-order-row"
                       type="button"
@@ -322,6 +353,7 @@ export default function UserProfile() {
                       >
                         {orderStatusLabels[order.orderStatus] ||
                           "Chưa xác định"}
+                        {order.orderStatus === "Pending" && <OrderCountdown expiresAt={order.paymentExpiresAt} />}
                       </span>
                       <span
                         className={`profile-order-view ${
