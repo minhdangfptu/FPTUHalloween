@@ -40,6 +40,7 @@ import AdminListUser from "./pages/Admin/AdminListUser";
 import AdminOrderList from "./pages/Admin/AdminOrderList";
 import StaffCheckinTicket from "./pages/Staff/StaffCheckinTicket";
 import StaffHomePage from "./pages/Staff/StaffHomePage";
+import StaffUserTicket from "./pages/Staff/StaffUserTicket";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -185,6 +186,8 @@ export default function App() {
         <Route path="/admin/ticket-types" element={<ManageLayout role="admin"><StaffTicketTypeList /></ManageLayout>} />
         <Route path="/admin/ticket-types/:ticketTypeId" element={<ManageLayout role="admin"><StaffTicketTypeDetail /></ManageLayout>} />
         <Route path="/staff/check-in" element={<ManageLayout role="staff"><StaffCheckinTicket /></ManageLayout>} />
+        <Route path="/staff/purchased-tickets" element={<ManageLayout role="staff"><StaffUserTicket /></ManageLayout>} />
+        <Route path="/admin/purchased-tickets" element={<ManageLayout role="admin"><StaffUserTicket /></ManageLayout>} />
         <Route
           path="/about-us"
           element={

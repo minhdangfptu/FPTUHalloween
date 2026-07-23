@@ -32,7 +32,7 @@ const QRModal = ({ isOpen, onClose, value, title = "Mã QR vé điện tử" }) 
           <X size={20} />
         </button>
         <h2 id="qr-modal-title">{title}</h2>
-        <p>Đưa mã này cho nhân viên để kiểm tra vé.</p>
+        <p>Đưa mã này cho BTC để kiểm tra vé.</p>
         <div className="qr-modal-code">
           <QRCodeCanvas value={String(value)} size={240} includeMargin />
         </div>

@@ -1,19 +1,18 @@
 import React from "react";
 import {
-  Bell,
-  CalendarDays,
+  BadgeCheck,
   CircleUserRound,
-  ClipboardCheck,
-  ClipboardList,
+  ContactRound,
   Home,
   KeyRound,
   LayoutDashboard,
   LogOut,
   Menu,
-  Settings,
-  Ticket,
-  WalletCards,
-  Users,
+  ReceiptText,
+  Tags,
+  TicketCheck,
+  Tickets,
+  UsersRound,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../apis/authAPI";
@@ -26,16 +25,24 @@ import avatar from "../assets/avatar.jpg";
 const MENU_BY_ROLE = {
   admin: [
     { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
-    { id: "check-in", label: "Checkin vé", icon: CalendarDays },
-    { id: "users", label: "Quản lý người dùng", icon: Users },
-    { id: "tickets", label: "Vé", icon: Ticket },
-    { id: "orders", label: "Đơn hàng", icon: Ticket },
-    { id: "contacts", label: "Liên hệ", icon: Users },
+    { id: "check-in", label: "Checkin vé", icon: BadgeCheck },
+    { id: "users", label: "Quản lý người dùng", icon: UsersRound },
+    { id: "tickets", label: "Danh sách loại vé", icon: TicketCheck },
+    {
+      id: "purchased-tickets",
+      label: "Danh sách vé đã mua",
+      icon: Tickets,
+    },
+    { id: "orders", label: "Đơn hàng", icon: ReceiptText },
+    { id: "contacts", label: "Liên hệ", icon: ContactRound },
+    { id: "home", label: "Về trang sự kiện", icon: Home },
   ],
   staff: [
     { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
-    { id: "ticket-types", label: "Loại vé", icon: Ticket },
-    { id: "check-in", label: "Checkin vé", icon: ClipboardCheck },
+    { id: "ticket-types", label: "Danh sách loại vé", icon: TicketCheck },
+    { id: "purchased-tickets", label: "Danh sách vé đã mua", icon: Tickets },
+    { id: "check-in", label: "Checkin vé", icon: BadgeCheck },
+    { id: "home", label: "Về trang sự kiện", icon: Home },
   ],
 };
 
@@ -123,6 +130,8 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
     orders: "/admin/orders",
     contacts: "/admin/contacts",
     "ticket-types": "/staff/ticket-types",
+    "purchased-tickets": resolvedRole === "admin" ? "/admin/purchased-tickets" : "/staff/purchased-tickets",
+    home: "/",
   };
 
   return (
@@ -139,7 +148,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
         <div className="manage-sidebar__brand-copy">
           <strong>FPTU Event</strong>
           <span>
-            {resolvedRole === "admin" ? "Quản trị viên" : "Nhân viên"}
+            {resolvedRole === "admin" ? "Quản trị viên" : "Thành viên"}
           </span>
         </div>
         <button
@@ -198,7 +207,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
               <span>Xin chào {userName}</span>
             </div>
             <button type="button" onClick={() => navigate("/user-profile")}>
-              <WalletCards size={16} /> Tài khoản của bạn
+              <CircleUserRound size={16} /> Tài khoản của bạn
             </button>
             <button type="button" onClick={() => navigate("/change-password")}>
               <KeyRound size={16} /> Đổi mật khẩu
@@ -216,16 +225,6 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
         )}
       </div>
 
-      <div className="manage-sidebar__footer">
-        <button
-          className="manage-sidebar__item"
-          type="button"
-          onClick={() => window.location.assign("/")}
-        >
-          <Home size={20} strokeWidth={1.9} />
-          <span>Về trang sự kiện</span>
-        </button>
-      </div>
       <LogoutModal
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}

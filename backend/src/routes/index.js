@@ -68,8 +68,10 @@ router.get('/payments/payos/:orderCode', requireAuth, payOSCtrl.getPaymentStatus
 router.delete('/payments/payos/:orderCode', requireAuth, payOSCtrl.cancelPayment)
 
 // TEST ONLY: create tickets without payment
+router.get('/tickets', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getList)
 router.get('/tickets/me', requireAuth, userTicketCtrl.getMyTickets)
 router.post('/tickets/test-issue', requireAuth, userTicketCtrl.createTestTickets)
+router.get('/tickets/:id', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getDetail)
 
 // ADMIN ORDER REPORTS
 router.get('/orders/me', requireAuth, adminOrderCtrl.getMyOrders)

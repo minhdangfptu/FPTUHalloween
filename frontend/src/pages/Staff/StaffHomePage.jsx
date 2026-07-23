@@ -5,8 +5,8 @@ const StaffHomePage = () => (
   <ManagePlaceholder
     role="staff"
     activeItem="dashboard"
-    title="Tổng quan nhân viên"
-    description="Khu vực tổng quan dành cho nhân viên vận hành sự kiện."
+    title="Tổng quan Thành viên BTC"
+    description="Khu vực tổng quan dành cho Thành viên BTC vận hành sự kiện."
   />
 );
 

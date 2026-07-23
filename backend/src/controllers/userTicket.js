@@ -22,4 +22,9 @@ const getMyTickets = async (req, res, next) => {
   }
 }
 
-module.exports = { createTestTickets, getMyTickets }
+const wrap = fn => (req, res, next) => Promise.resolve(fn(req)).then(data => res.json({ success: true, data })).catch(next)
+
+const getList = wrap(req => userTicketService.getTickets(req.query))
+const getDetail = wrap(req => userTicketService.getTicketById(req.params.id))
+
+module.exports = { createTestTickets, getMyTickets, getList, getDetail }

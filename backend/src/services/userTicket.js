@@ -50,4 +50,69 @@ const getMyTickets = async userId => UserTicket.find({ userId })
   .sort({ createdAt: -1 })
   .lean()
 
-module.exports = { createTestTickets, getMyTickets }
+const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeId, date } = {}) => {
+  const currentPage = Math.max(Number.parseInt(page, 10) || 1, 1)
+  const limit = Math.min(Math.max(Number.parseInt(pageSize, 10) || 20, 1), 100)
+  const filter = {}
+
+  if (status) filter.ticketStatus = status
+  if (userId) {
+    if (!mongoose.isValidObjectId(userId)) throw new Error('Invalid user ID')
+    filter.userId = userId
+  }
+  if (ticketTypeId) {
+    if (!mongoose.isValidObjectId(ticketTypeId)) throw new Error('Invalid ticket type ID')
+    filter.ticketTypeId = ticketTypeId
+  }
+  if (date) {
+    const ticketDate = Number.parseInt(date, 10)
+    if (!Number.isInteger(ticketDate) || ticketDate < 1 || ticketDate > 31) throw new Error('Invalid ticket date')
+    const ticketTypes = await TicketType.find({ ticketTypeDate: ticketDate }).select('_id').lean()
+    filter.ticketTypeId = { $in: ticketTypes.map(ticketType => ticketType._id) }
+  }
+
+  const [tickets, total, checkedIn] = await Promise.all([
+    UserTicket.find(filter)
+      .populate('userId', 'fullName email phone')
+      .populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketTypeTime')
+      .populate('orderId', 'orderStatus paymentMethod totalAmount payosOrderId')
+      .populate('staffCheckInId', 'fullName email')
+      .sort({ createdAt: -1 })
+      .skip((currentPage - 1) * limit)
+      .limit(limit)
+      .lean(),
+    UserTicket.countDocuments(filter)
+    , UserTicket.countDocuments({ ...filter, ticketStatus: 'Checked' })
+  ])
+
+  return {
+    tickets,
+    pagination: {
+      page: currentPage,
+      pageSize: limit,
+      total,
+      totalPages: Math.ceil(total / limit)
+    },
+    summary: {
+      sold: total,
+      checkedIn,
+      remaining: Math.max(total - checkedIn, 0)
+    }
+  }
+}
+
+const getTicketById = async id => {
+  if (!mongoose.isValidObjectId(id)) throw new Error('Invalid ticket ID')
+
+  const ticket = await UserTicket.findById(id)
+    .populate('userId', 'fullName email phone')
+    .populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketTypeTime')
+    .populate('orderId', 'orderStatus paymentMethod totalAmount payosOrderId items')
+    .populate('staffCheckInId', 'fullName email')
+    .lean()
+
+  if (!ticket) throw new Error('Ticket not found')
+  return ticket
+}
+
+module.exports = { createTestTickets, getMyTickets, getTickets, getTicketById }

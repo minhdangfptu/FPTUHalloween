@@ -14,12 +14,13 @@ function requireAuth(req, res, next) {
   }
 }
 
-function requireRole(roleName) {
+function requireRole(...roleNames) {
   return async (req, res, next) => {
     try {
       if (!req.user?.roleId) return res.status(403).json({ message: 'Forbidden' })
       const role = await Role.findOne({ _id: req.user.roleId, roleActive: true }).select('roleName').lean()
-      if (!role || String(role.roleName).toLowerCase() !== String(roleName).toLowerCase()) {
+      const allowedRoles = roleNames.map(roleName => String(roleName).toLowerCase())
+      if (!role || !allowedRoles.includes(String(role.roleName).toLowerCase())) {
         return res.status(403).json({ message: 'Forbidden' })
       }
       return next()
