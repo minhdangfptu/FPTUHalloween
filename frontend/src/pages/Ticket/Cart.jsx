@@ -23,6 +23,7 @@ const formatPrice = (price) =>
   `${new Intl.NumberFormat("vi-VN").format(price || 0)} VND`;
 
 const getTicketType = (item) => item.ticketType || {};
+const SELECTED_ITEMS_KEY = "fptu-halloween-selected-cart-items";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -30,12 +31,21 @@ const Cart = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pendingAction, setPendingAction] = useState(null);
+  const [selectedTicketTypeIds, setSelectedTicketTypeIds] = useState([]);
 
   const loadCart = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      setCart(await cartAPI.get());
+      const nextCart = await cartAPI.get();
+      setCart(nextCart);
+      const storedIds = JSON.parse(localStorage.getItem(SELECTED_ITEMS_KEY) || "null");
+      const availableIds = (nextCart.items || []).map((item) => String(item.ticketTypeId));
+      setSelectedTicketTypeIds(
+        Array.isArray(storedIds)
+          ? storedIds.filter((id) => availableIds.includes(String(id)))
+          : availableIds,
+      );
     } catch (requestError) {
       setError(translateError(requestError));
     } finally {
@@ -53,10 +63,35 @@ const Cart = () => {
       cartItems.reduce((total, item) => total + Number(item.quantity || 0), 0),
     [cartItems],
   );
-  const hasUnavailableItems = useMemo(
-    () => cartItems.some((item) => getTicketType(item).ticketTypeStatus !== "active" || Number(getTicketType(item).availableQuantity) < 0),
-    [cartItems],
+  const selectedItems = useMemo(
+    () => cartItems.filter((item) => selectedTicketTypeIds.includes(String(item.ticketTypeId))),
+    [cartItems, selectedTicketTypeIds],
   );
+  const selectedTotal = useMemo(
+    () => selectedItems.reduce((total, item) => total + Number(item.subtotal || 0), 0),
+    [selectedItems],
+  );
+  const hasSelectedUnavailableItems = selectedItems.some(
+    (item) => getTicketType(item).ticketTypeStatus !== "active" || Number(getTicketType(item).availableQuantity) < 0,
+  );
+  const allItemsSelected = cartItems.length > 0 && selectedItems.length === cartItems.length;
+
+  const toggleItemSelection = (ticketTypeId) => {
+    const normalizedId = String(ticketTypeId);
+    setSelectedTicketTypeIds((currentIds) => {
+      const nextIds = currentIds.includes(normalizedId)
+        ? currentIds.filter((id) => id !== normalizedId)
+        : [...currentIds, normalizedId];
+      localStorage.setItem(SELECTED_ITEMS_KEY, JSON.stringify(nextIds));
+      return nextIds;
+    });
+  };
+
+  const toggleAllItems = () => {
+    const nextIds = allItemsSelected ? [] : cartItems.map((item) => String(item.ticketTypeId));
+    setSelectedTicketTypeIds(nextIds);
+    localStorage.setItem(SELECTED_ITEMS_KEY, JSON.stringify(nextIds));
+  };
 
   const runMutation = async (actionKey, request, successMessage) => {
     setPendingAction(actionKey);
@@ -64,6 +99,11 @@ const Cart = () => {
       const result = await request();
       if (result?.cart) {
         setCart(result.cart);
+        const remainingIds = selectedTicketTypeIds.filter((id) =>
+          result.cart.items.some((item) => String(item.ticketTypeId) === id),
+        );
+        setSelectedTicketTypeIds(remainingIds);
+        localStorage.setItem(SELECTED_ITEMS_KEY, JSON.stringify(remainingIds));
         notifyCartUpdated(result.cart);
       }
       toast.success(translateSuccess(result?.message || successMessage));
@@ -97,6 +137,8 @@ const Cart = () => {
         await cartAPI.removeItem(item.ticketTypeId);
       }
       setCart({ ...cart, items: [], totalAmount: 0 });
+      setSelectedTicketTypeIds([]);
+      localStorage.removeItem(SELECTED_ITEMS_KEY);
       notifyCartUpdated({ items: [], totalAmount: 0 });
       toast.success("Đã xóa tất cả vé khỏi giỏ hàng.");
     } catch (requestError) {
@@ -170,7 +212,10 @@ const Cart = () => {
               aria-label="Các vé trong giỏ hàng"
             >
               <div className="ticket-cart-items__top">
-                <span>Vé đã chọn</span>
+                <label className="ticket-cart-select-all">
+                  <input type="checkbox" checked={allItemsSelected} onChange={toggleAllItems} />
+                  <span>Chọn tất cả ({selectedItems.length}/{cartItems.length})</span>
+                </label>
                 <button
                   type="button"
                   disabled={pendingAction !== null}
@@ -187,6 +232,14 @@ const Cart = () => {
                 const isPending = pendingAction !== null;
                 return (
                   <article className={`ticket-cart-item${isUnavailable ? " ticket-cart-item--unavailable" : ""}`} key={ticketTypeId}>
+                    <label className="ticket-cart-item__checkbox">
+                      <input
+                        type="checkbox"
+                        checked={selectedTicketTypeIds.includes(String(ticketTypeId))}
+                        onChange={() => toggleItemSelection(ticketTypeId)}
+                        aria-label={`Chọn ${ticketType.ticketTypeName} để thanh toán`}
+                      />
+                    </label>
                     <div
                       className="ticket-cart-item__visual"
                       aria-hidden="true"
@@ -262,8 +315,8 @@ const Cart = () => {
             <aside className="ticket-cart-summary">
               <p className="ticket-cart-summary__label">Tóm tắt đơn hàng</p>
               <div>
-                <span>Tạm tính ({totalQuantity} vé)</span>
-                <strong>{formatPrice(cart.totalAmount)}</strong>
+                <span>Tạm tính ({selectedItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0)} vé)</span>
+                <strong>{formatPrice(selectedTotal)}</strong>
               </div>
               <div>
                 <span>Phí dịch vụ</span>
@@ -271,17 +324,21 @@ const Cart = () => {
               </div>
               <div className="ticket-cart-summary__total">
                 <span>Tổng cộng</span>
-                <strong>{formatPrice(cart.totalAmount)}</strong>
+                <strong>{formatPrice(selectedTotal)}</strong>
               </div>
               <button
                 className="ticket-cart-primary"
                 type="button"
-                disabled={hasUnavailableItems}
-                onClick={() => navigate("/checkout")}
+                disabled={hasSelectedUnavailableItems || selectedItems.length === 0}
+                onClick={() => {
+                  localStorage.setItem(SELECTED_ITEMS_KEY, JSON.stringify(selectedTicketTypeIds));
+                  navigate("/checkout");
+                }}
               >
                 Tiếp tục thanh toán
               </button>
-              {hasUnavailableItems && <p className="ticket-cart-summary__warning">Hãy xóa vé không còn được bán trước khi thanh toán.</p>}
+              {hasSelectedUnavailableItems && <p className="ticket-cart-summary__warning">Hãy bỏ chọn hoặc xóa vé không còn được bán trước khi thanh toán.</p>}
+              {selectedItems.length === 0 && <p className="ticket-cart-summary__warning">Hãy chọn ít nhất một loại vé để thanh toán.</p>}
               <p className="ticket-cart-summary__note">
                 Bạn sẽ được chuyển đến trang xác nhận thanh toán.
               </p>

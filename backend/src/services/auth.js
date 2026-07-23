@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken')
 const { User, Role, RefreshToken, Otp } = require('../models')
 const { sendOtpEmail } = require('../providers/emailProvider')
 
-const accessSecret = () => process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || 'dev-access-secret'
-const refreshSecret = () => process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET || 'dev-refresh-secret'
+const accessSecret = () => process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET
+const refreshSecret = () => process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET
 const hash = value => crypto.createHash('sha256').update(value).digest('hex')
 const normalize = value => String(value || '').trim().toLowerCase()
 const normalizeEmail = email => {

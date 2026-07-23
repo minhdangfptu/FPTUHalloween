@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
   ticketTypeName: { type: String },
   ticketTypePrice: { type: Number },
-  availableQuantity: { type: String, required: true },
+  availableQuantity: { type: Number, required: true, min: 0 },
   totalQuantity: { type: Number, required: true, min: 0 },
   ticketTypeDate: { type: Number, required: true, min: 0 },
   ticketTypeTime: { type: String, required: true, match: /^([01]\d|2[0-3]):[0-5]\d$/ },

@@ -1,5 +1,6 @@
 /* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V4 */
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   Check,
@@ -12,6 +13,8 @@ import {
   X,
 } from "lucide-react";
 import authAPI from "../../apis/authAPI";
+import axiosClient from "../../apis/axiosClient";
+import UserListTicket from "../../components/UserListTicket";
 import {
   translateError,
   translateSuccess,
@@ -52,10 +55,30 @@ const formatDate = (value) =>
     : "Chưa cập nhật";
 
 export default function UserProfile() {
+  const navigate = useNavigate();
+  const orderStatusLabels = {
+    Pending: "Chờ thanh toán",
+    Processing: "Đang xử lý",
+    Paid: "Đã thanh toán",
+    Cancelled: "Đã huỷ",
+  };
+  const handleOrderAction = (order) => {
+    if (order.orderStatus === "Cancelled") return;
+    if (order.orderStatus === "Pending") {
+      localStorage.setItem("fptu-halloween-checkout", JSON.stringify({ customer: { fullName: profile.fullName, email: profile.email, phone: profile.phone }, items: order.items || [], subtotal: order.totalAmount, discount: 0, total: order.totalAmount }));
+      localStorage.setItem("fptu-halloween-payos-payment", JSON.stringify({ orderCode: Number(order.payosOrderId) }));
+      navigate("/qr-payment");
+      return;
+    }
+    setSelectedOrder(order);
+  };
   const [profile, setProfile] = useState(EMPTY_PROFILE);
   const [draft, setDraft] = useState(EMPTY_PROFILE);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [tickets, setTickets] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const hasLoadedProfile = useRef(false);
 
   useEffect(() => {
@@ -66,7 +89,15 @@ export default function UserProfile() {
     const loadProfile = async () => {
       const loadingToast = toast.loading("Đang tải dữ liệu...");
       try {
-        const data = getProfileData(await authAPI.getMe());
+        const [profileResponse, ticketResponse, orderResponse] =
+          await Promise.all([
+            authAPI.getMe(),
+            axiosClient.get("/tickets/me"),
+            axiosClient.get("/orders/me"),
+          ]);
+        const data = getProfileData(profileResponse);
+        setTickets(ticketResponse.data?.data || []);
+        setOrders(orderResponse.data?.data || []);
         setProfile({ ...EMPTY_PROFILE, ...data });
         setDraft({ ...EMPTY_PROFILE, ...data });
       } catch (error) {
@@ -109,7 +140,12 @@ export default function UserProfile() {
   };
   const displayName = profile.fullName || "Người dùng FPTU";
   const value = (field) => profile[field] || "Chưa cập nhật";
-  const authProviderLabel = profile.authProvider === "google" ? "Tài khoản Google" : profile.authProvider === "local" ? "Tài khoản Email" : "Chưa cập nhật";
+  const authProviderLabel =
+    profile.authProvider === "google"
+      ? "Tài khoản Google"
+      : profile.authProvider === "local"
+        ? "Tài khoản Email"
+        : "Chưa cập nhật";
   const details = [
     ["fullName", "Họ và tên"],
     ["email", "Email"],
@@ -245,9 +281,99 @@ export default function UserProfile() {
                 <span>Trạng thái</span>
                 <span>Thao tác</span>
               </div>
-              <div className="orders-empty">Bạn chưa có đơn hàng nào.</div>
+              {orders.length === 0 ? (
+                <div className="orders-empty">Bạn chưa có đơn hàng nào.</div>
+              ) : (
+                <div className="profile-order-list">
+                  {orders.map((order) => (
+                    <button
+                      className="profile-order-row"
+                      type="button"
+                      key={order._id}
+                      onClick={() => handleOrderAction(order)}
+                      disabled={order.orderStatus === "Cancelled"}
+                    >
+                      <span style={{ fontSize: "14px" }}>
+                        #{String(order.payosOrderId || order._id).slice(-8)}
+                      </span>
+                      <span style={{ fontSize: "14px" }}>
+                        {formatDate(order.createdAt)}
+                      </span>
+                      <span style={{ fontSize: "14px" }}>
+                        {order.itemCount || 0} vé
+                      </span>
+                      <strong
+                        className={
+                          order.orderStatus === "Cancelled"
+                            ? "profile-order-total profile-order-total--cancelled"
+                            : "profile-order-total"
+                        }
+                        style={{ fontSize: "14px" }}
+                      >
+                        {new Intl.NumberFormat("vi-VN").format(
+                          order.totalAmount || 0,
+                        )}{" "}
+                        VND
+                      </strong>
+                      <span
+                        className={`profile-order-status profile-order-status--${String(order.orderStatus).toLowerCase()}`}
+                      >
+                        {orderStatusLabels[order.orderStatus] ||
+                          "Chưa xác định"}
+                      </span>
+                      <span
+                        className={`profile-order-view ${
+                          order.orderStatus === "Cancelled"
+                            ? "profile-order-view--disabled"
+                            : ""
+                        }`}
+                      >
+                        {order.orderStatus === "Pending"
+                          ? "Tiếp tục thanh toán"
+                          : "Xem vé"}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
+          <section className="profile-card profile-tickets-card">
+            <div className="section-title">
+              <Package size={23} />
+              <h2>Vé điện tử của bạn</h2>
+            </div>
+            {tickets.length === 0 ? (
+              <p className="profile-tickets-empty">
+                Bạn chưa có vé điện tử nào.
+              </p>
+            ) : (
+              <div className="profile-ticket-list">
+                {tickets.map((ticket) => (
+                  <article className="profile-ticket" key={ticket._id}>
+                    <div>
+                      <strong>
+                        {ticket.ticketTypeId?.ticketTypeName ||
+                          "Vé FPTU Halloween"}
+                      </strong>
+                      <span>Trạng thái: {ticket.ticketStatus}</span>
+                    </div>
+                    <code>{ticket.qrCodeData}</code>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+          {selectedOrder && (
+            <UserListTicket
+              order={selectedOrder}
+              tickets={tickets.filter(
+                (ticket) =>
+                  String(ticket.orderId) === String(selectedOrder._id),
+              )}
+              onClose={() => setSelectedOrder(null)}
+            />
+          )}
         </>
       )}
     </main>

@@ -49,7 +49,7 @@ const sendOtpEmail = async (email, otp, purpose) => {
   const copy = getCopy(purpose)
   const html = await render(React.createElement(OtpEmail, { otp, purpose }))
   return getResend().emails.send({
-    from: process.env.RESEND_FROM_EMAIL || 'FPTU Halloween <noreply@fptuhalloween.io.vn>',
+    from: process.env.RESEND_FROM_EMAIL,
     to: [email],
     subject: copy.subject,
     html

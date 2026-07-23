@@ -74,6 +74,9 @@ const ERROR_TRANSLATIONS = {
   'Quantity must be a positive integer': 'Số lượng phải là số nguyên dương.',
   'Requested quantity exceeds available tickets': 'Số lượng yêu cầu vượt quá số vé còn lại.',
   'Ticket availability is not configured': 'Số lượng vé hiện chưa được cấu hình.',
+  'Cart is empty': 'Giỏ hàng đang trống.',
+  'Some tickets are no longer available': 'Một số vé không còn đủ số lượng.',
+  'Order not found': 'Không tìm thấy đơn hàng.',
 
   // --- CRUD ---
   'Created successfully': 'Tạo thành công.',

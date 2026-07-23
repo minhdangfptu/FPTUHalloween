@@ -12,9 +12,7 @@ import {
 } from "../../utils/translateResponse";
 import { Eye, EyeOff } from "lucide-react";
 
-const GOOGLE_CLIENT_ID =
-  import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-  "791057270396-1ei5hb7f9nmme6vq19vsao9qab8mgi45.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 function Login() {
   const [email, setEmail] = useState("");

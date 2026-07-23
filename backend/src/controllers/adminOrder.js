@@ -4,6 +4,8 @@ const wrap = fn => (req, res, next) => Promise.resolve(fn(req)).then(data => res
 
 const getList = wrap(req => svc.getOrders(req.query))
 const getDetail = wrap(req => svc.getOrderById(req.params.id))
+const getMyOrders = wrap(req => svc.getMyOrders(req.user.id))
+const getMyOrderById = wrap(req => svc.getMyOrderById(req.user.id, req.params.id))
 const getTicketStatistics = wrap(req => svc.getTicketSalesStatistics(req.query))
 
-module.exports = { getList, getDetail, getTicketStatistics }
+module.exports = { getList, getDetail, getMyOrders, getMyOrderById, getTicketStatistics }

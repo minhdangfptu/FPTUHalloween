@@ -7,12 +7,18 @@ const ticketTypeCtrl = require('../controllers/ticketType')
 const cartCtrl = require('../controllers/cart')
 const adminOrderCtrl = require('../controllers/adminOrder')
 const adminCtrl = require('../controllers/admin')
+const payOSCtrl = require('../controllers/payOS')
+const payOSWebhookCtrl = require('../controllers/payOSWebhook')
+const userTicketCtrl = require('../controllers/userTicket')
 // const adminCtrl = require('../controllers/admin')
 
 const { requireAuth, requireRole } = require('../middlewares/auth')
 
 // Health (optional)
 router.get('/_health', (req, res) => res.json({ ok: true }))
+
+// Public endpoint: PayOS calls this URL directly, so it must not use JWT auth.
+router.post('/payos-webhook', payOSWebhookCtrl.handleWebhook)
 
 
 // AUTH
@@ -56,7 +62,18 @@ router.post('/cart/items', requireAuth, cartCtrl.addItem)
 router.patch('/cart/items/:ticketTypeId', requireAuth, cartCtrl.updateItem)
 router.delete('/cart/items/:ticketTypeId', requireAuth, cartCtrl.removeItem)
 
+// PAYOS
+router.post('/payments/payos', requireAuth, payOSCtrl.createPayment)
+router.get('/payments/payos/:orderCode', requireAuth, payOSCtrl.getPaymentStatus)
+router.delete('/payments/payos/:orderCode', requireAuth, payOSCtrl.cancelPayment)
+
+// TEST ONLY: create tickets without payment
+router.get('/tickets/me', requireAuth, userTicketCtrl.getMyTickets)
+router.post('/tickets/test-issue', requireAuth, userTicketCtrl.createTestTickets)
+
 // ADMIN ORDER REPORTS
+router.get('/orders/me', requireAuth, adminOrderCtrl.getMyOrders)
+router.get('/orders/me/:id', requireAuth, adminOrderCtrl.getMyOrderById)
 router.get('/orders', requireAuth, requireRole('Admin'), adminOrderCtrl.getList)
 router.get('/orders/:id', requireAuth, requireRole('Admin'), adminOrderCtrl.getDetail)
 router.get('/statistics/tickets', requireAuth, requireRole('Admin'), adminOrderCtrl.getTicketStatistics)

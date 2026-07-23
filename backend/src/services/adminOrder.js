@@ -20,7 +20,31 @@ const getOrderById = async id => {
   ensureId(id)
   const order = await Order.findById(id).populate('userId', 'fullName email phone').lean()
   if (!order) throw new Error('Order not found')
-  const tickets = await UserTicket.find({ orderId: id }).populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate').lean()
+
+  const tickets = await UserTicket.find({ orderId: id })
+    .populate(
+      'ticketTypeId',
+      'ticketTypeName ticketTypePrice availableQuantity totalQuantity ticketTypeDate ticketTypeTime ticketTypeStatus ticketType3dModel'
+    )
+    .sort({ createdAt: 1 })
+    .lean()
+
+  return { ...order, tickets }
+}
+
+const getMyOrders = async userId => {
+  const orders = await Order.find({ userId }).select('-paymentData').sort({ createdAt: -1 }).lean()
+  return orders.map(order => ({
+    ...order,
+    itemCount: order.items.reduce((total, item) => total + Number(item.quantity || 0), 0)
+  }))
+}
+
+const getMyOrderById = async (userId, id) => {
+  ensureId(id)
+  const order = await Order.findOne({ _id: id, userId }).lean()
+  if (!order) throw new Error('Order not found')
+  const tickets = await UserTicket.find({ orderId: id }).populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketTypeTime').sort({ createdAt: 1 }).lean()
   return { ...order, tickets }
 }
 
@@ -43,4 +67,4 @@ const getTicketSalesStatistics = async ({ groupBy = 'type' } = {}) => {
   return { groupBy, totalSold: paidTickets.length, statistics: [...grouped.values()].sort((a, b) => a.key.localeCompare(b.key)) }
 }
 
-module.exports = { getOrders, getOrderById, getTicketSalesStatistics }
+module.exports = { getOrders, getOrderById, getMyOrders, getMyOrderById, getTicketSalesStatistics }

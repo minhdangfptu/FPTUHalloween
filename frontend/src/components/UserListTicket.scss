@@ -1,0 +1,104 @@
+.user-ticket-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(17 24 39 / 0.55);
+}
+.user-ticket-dialog {
+  width: min(100%, 680px);
+  max-height: min(80vh, 720px);
+  overflow: hidden;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.2);
+}
+.user-ticket-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e1e4e8;
+}
+.user-ticket-dialog__header p {
+  margin: 0 0 0.35rem;
+  color: #e63946;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.user-ticket-dialog__header h2 {
+  margin: 0;
+  color: #171717;
+  font-size: 1.4rem;
+}
+.user-ticket-dialog__header > button {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  color: #596574;
+  background: transparent;
+  border: 0;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+.user-ticket-dialog__header > button:hover {
+  color: #e63946;
+}
+.user-ticket-dialog__body {
+  display: grid;
+  gap: 0.75rem;
+  max-height: calc(min(80vh, 720px) - 100px);
+  overflow: auto;
+  padding: 1.5rem;
+}
+.user-ticket-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e1e4e8;
+  border-radius: 0.7rem;
+}
+.user-ticket-card > div {
+  display: grid;
+  gap: 0.35rem;
+}
+.user-ticket-card span {
+  color: #596574;
+  font-size: 0.8rem;
+}
+.user-ticket-card button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 55%;
+  padding: 0.5rem;
+  color: #e63946;
+  background: #fff6f8;
+  border: 0;
+  border-radius: 0.35rem;
+  cursor: pointer;
+}
+.user-ticket-card code {
+  overflow-wrap: anywhere;
+  font-size: 0.72rem;
+}
+.user-ticket-dialog__empty {
+  margin: 0;
+  color: #596574;
+  text-align: center;
+}
+@media (max-width: 560px) {
+  .user-ticket-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .user-ticket-card button {
+    max-width: 100%;
+  }
+}

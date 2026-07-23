@@ -65,7 +65,7 @@ function Header() {
               </button>
             </div>
             <button
-              onClick={() => navigate("/ticket-game")}
+              onClick={() => navigate("/tickets")}
               className="fpt-header__cta-btn"
             >
               MUA VÉ NGAY

@@ -15,6 +15,7 @@ import { translateError } from "../../utils/translateResponse";
 import "./Checkout.scss";
 
 const CHECKOUT_KEY = "fptu-halloween-checkout";
+const SELECTED_ITEMS_KEY = "fptu-halloween-selected-cart-items";
 const getStoredCustomer = () => {
   try {
     const user = JSON.parse(localStorage.getItem("user") || "null");
@@ -91,10 +92,21 @@ const Checkout = () => {
     };
   }, []);
 
-  const cartItems = cart.items || [];
+  const selectedIds = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem(SELECTED_ITEMS_KEY) || "null");
+    } catch {
+      return null;
+    }
+  }, []);
+  const cartItems = useMemo(() => {
+    const items = cart.items || [];
+    if (!Array.isArray(selectedIds)) return items;
+    return items.filter((item) => selectedIds.includes(String(item.ticketTypeId)));
+  }, [cart.items, selectedIds]);
   const subtotal = useMemo(
-    () => Number(cart.totalAmount || 0),
-    [cart.totalAmount],
+    () => cartItems.reduce((sum, item) => sum + Number(item.subtotal || 0), 0),
+    [cartItems],
   );
   const totalQuantity = useMemo(
     () => cartItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0),

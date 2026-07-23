@@ -58,22 +58,70 @@
   font-size: 0.9rem;
 }
 .qr-payment-card {
+  position: relative;
   padding: clamp(1.25rem, 5vw, 2.5rem);
   background: white;
   border: 1px solid var(--line);
   border-radius: 1rem;
   box-shadow: 0 1.25rem 2.5rem oklch(20% 0.02 260 / 0.08);
 }
+.qr-payment-card--expired > *:not(.qr-payment-expired-overlay) {
+  filter: blur(2px);
+  opacity: .32;
+  pointer-events: none;
+  user-select: none;
+}
+.qr-payment-expired-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: .7rem;
+  padding: 1.5rem;
+  color: var(--ink);
+  text-align: center;
+  background: oklch(98% .006 90 / .82);
+  backdrop-filter: blur(4px);
+}
+.qr-payment-expired-overlay svg,
+.qr-payment-expired-overlay strong {
+  color: var(--red);
+}
+.qr-payment-expired-overlay strong {
+  font-size: 1.3rem;
+}
+.qr-payment-expired-overlay span {
+  color: var(--muted);
+  font-size: .85rem;
+}
+.qr-payment-expired-overlay button {
+  margin-top: .4rem;
+  padding: .8rem 1rem;
+  color: var(--paper);
+  background: var(--red);
+  border: 0;
+  border-radius: .4rem;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
 .qr-payment-code {
   display: grid;
-  width: min(250px, 70vw);
+  width: min(400px, 70vw);
   aspect-ratio: 1;
   margin: 0 auto 2rem;
   padding: 1rem;
   box-sizing: border-box;
   place-items: center;
   background: white;
-  border: 8px solid var(--dark);
+}
+.qr-payment-code img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .qr-payment-pattern {
   display: grid;
@@ -103,6 +151,16 @@
 .qr-payment-amount strong {
   color: var(--red);
   font-size: 1.5rem;
+}
+.qr-payment-countdown {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+.qr-payment-countdown strong {
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
 }
 .qr-payment-instructions {
   margin-top: 2rem;
@@ -171,6 +229,9 @@
 .qr-payment-empty button:hover {
   background: oklch(46% 0.2 28);
 }
+.qr-payment-cancel { width: 100%; margin-top: .7rem; padding: .8rem; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: .4rem; cursor: pointer; font: inherit; font-weight: 700; }
+.qr-payment-cancel:hover { color: var(--red); border-color: var(--red); }
+.qr-payment-cancel:disabled { cursor: not-allowed; opacity: .5; }
 .qr-payment-empty {
   display: grid;
   max-width: 480px;
@@ -234,3 +295,18 @@
     text-align: center;
   }
 }
+.qr-payment-loading__back,
+.qr-payment-loading__line,
+.qr-payment-loading__qr {
+  background: linear-gradient(90deg, oklch(93% .01 260), oklch(98% .006 90), oklch(93% .01 260));
+  background-size: 200% 100%;
+  animation: qr-payment-shimmer 1.4s ease-in-out infinite;
+}
+.qr-payment-loading__back { width: 9rem; height: 1rem; border-radius: .3rem; }
+.qr-payment-loading__card { min-height: 28rem; }
+.qr-payment-loading__qr { width: min(400px, 70vw); aspect-ratio: 1; margin: auto; border-radius: .5rem; }
+.qr-payment-loading__details { display: grid; gap: 1rem; }
+.qr-payment-loading__line { width: 100%; height: 3rem; border-radius: .5rem; }
+.qr-payment-loading__line--wide { height: 5rem; }
+.qr-payment-loading__line--short { width: 70%; }
+@keyframes qr-payment-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
