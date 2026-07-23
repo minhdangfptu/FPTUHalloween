@@ -97,6 +97,9 @@ function Footer() {
             </div>
             <div className="fpt-footer__link-group">
               <h4 className="fpt-footer__link-title">Mua vé nhà ma</h4>
+              <a href="/my-ticket" className="fpt-footer__link">
+                Vé của bạn
+              </a>
               <a href="#" className="fpt-footer__link">
                 Hướng dẫm mua vé
               </a>

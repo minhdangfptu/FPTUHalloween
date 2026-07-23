@@ -30,6 +30,7 @@ const StaffCheckinTicket = () => {
   const location = useLocation();
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
   const scannerRef = useRef(null);
+  const cameraLoadingToastRef = useRef(null);
   const [scannedTickets, setScannedTickets] = useState(readScannedTickets);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [manualCode, setManualCode] = useState("");
@@ -42,13 +43,24 @@ const StaffCheckinTicket = () => {
   };
 
   const stopCamera = () => {
-    if (scannerRef.current) {
-      scannerRef.current.stop().catch(() => {}).finally(() => {
-        scannerRef.current.clear();
-        scannerRef.current = null;
-      });
-    }
+    const scanner = scannerRef.current;
+    scannerRef.current = null;
     setIsCameraOpen(false);
+    if (cameraLoadingToastRef.current?.status === "loading") {
+      toast.dismiss(cameraLoadingToastRef.current.id);
+    }
+    cameraLoadingToastRef.current = null;
+    if (!scanner) return;
+
+    scanner.stop()
+      .catch(() => {})
+      .finally(() => {
+        try {
+          scanner.clear();
+        } catch {
+          // The scanner may already be cleared when the modal closes twice.
+        }
+      });
   };
 
   const previewScan = (code) => {
@@ -84,32 +96,62 @@ const StaffCheckinTicket = () => {
     toast.success("Check-in vé thành công.");
   };
 
-  const openCamera = async () => {
+  const openCamera = () => {
+    if (isCameraOpen || scannerRef.current) return;
     const loadingToast = toast.loading("Đang mở camera check-in...");
-    try {
-      setIsCameraOpen(true);
-      toast.success("Camera đã sẵn sàng. Đưa mã QR vào khung quét.", {
-        id: loadingToast,
-      });
-    } catch (error) {
-      toast.error("Không thể mở camera. Vui lòng cấp quyền camera và dùng HTTPS hoặc localhost.", { id: loadingToast });
-    }
+    cameraLoadingToastRef.current = { id: loadingToast, status: "loading" };
+    setIsCameraOpen(true);
   };
 
   useEffect(() => {
     if (!isCameraOpen) return undefined;
     const scanner = new Html5Qrcode("staff-checkin-reader");
     scannerRef.current = scanner;
-    scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => previewScan(decodedText), () => {}).catch(() => {
-      toast.error("Không thể khởi động camera. Hãy kiểm tra quyền truy cập camera.");
-      stopCamera();
-    });
+    scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => previewScan(decodedText), () => {})
+      .then(() => {
+        if (scannerRef.current !== scanner) {
+          scanner.stop().catch(() => {}).finally(() => {
+            try { scanner.clear(); } catch { /* already cleared */ }
+          });
+          return;
+        }
+        toast.success("Camera đã sẵn sàng. Đưa mã QR vào khung quét.", {
+          id: cameraLoadingToastRef.current?.id,
+        });
+        if (cameraLoadingToastRef.current) {
+          cameraLoadingToastRef.current.status = "success";
+        }
+      })
+      .catch((error) => {
+        if (scannerRef.current !== scanner) return;
+        const errorDetails = [error?.name, error?.message, error?.cause, error]
+          .filter(Boolean)
+          .map(String)
+          .join(" ");
+        const cameraIsBusy = /notreadableerror|trackstarterror|already in use|could not start video source|device busy|camera.*(?:busy|in use)|(?:busy|in use).*camera/i.test(errorDetails);
+        const errorMessage = cameraIsBusy
+          ? "Camera đang được sử dụng ở nơi khác. Hãy đóng ứng dụng hoặc tab đang dùng camera rồi thử lại."
+          : "Không thể khởi động camera. Hãy kiểm tra quyền truy cập camera và cấp quyền cho trình duyệt.";
+        if (cameraLoadingToastRef.current) {
+          cameraLoadingToastRef.current.status = "error";
+        }
+        toast.error(errorMessage, { id: cameraLoadingToastRef.current?.id });
+        stopCamera();
+      });
     return () => {
       if (scannerRef.current === scanner) stopCamera();
     };
   }, [isCameraOpen]);
 
   useEffect(() => () => stopCamera(), []);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") stopCamera();
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, []);
 
   return (
     <div className="staff-manage-layout staff-checkin-page">
@@ -216,7 +258,7 @@ const StaffCheckinTicket = () => {
       )}
 
       {isCameraOpen && (
-        <div className="staff-checkin-camera-modal" role="presentation">
+        <div className="staff-checkin-camera-modal" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) stopCamera(); }}>
           <section
             className="staff-checkin-camera-dialog"
             role="dialog"
@@ -229,6 +271,7 @@ const StaffCheckinTicket = () => {
                 <h2>Đưa mã QR vào khung</h2>
               </div>
               <button
+                className="staff-checkin-camera-dialog__close"
                 type="button"
                 onClick={stopCamera}
                 aria-label="Đóng camera"

@@ -11,6 +11,7 @@ import {
   LogOut,
   Package,
   ShoppingBag,
+  Ticket,
   User,
   WalletCards,
 } from "lucide-react";
@@ -341,6 +342,13 @@ function Navbar() {
                         <WalletCards size={16} /> Tài khoản của bạn
                       </a>
                       <a
+                        href="/my-ticket"
+                        className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                        onClick={(event) => { event.preventDefault(); navigate("/my-ticket"); setShowUserDropdown(false); }}
+                      >
+                        <Ticket size={16} /> Vé của bạn
+                      </a>
+                      <a
                         href="/change-password"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
                       >
@@ -479,6 +487,13 @@ function Navbar() {
                       onClick={handleDrawerToggle}
                     >
                       Tài khoản của bạn
+                    </a>
+                    <a
+                      href="/my-ticket"
+                      className="fpt-navbar__mobile-sublink"
+                      onClick={handleDrawerToggle}
+                    >
+                      Vé của bạn
                     </a>
                     <a
                       href="/change-password"

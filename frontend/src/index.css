@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap");
+
 * {
   box-sizing: border-box;
 }
@@ -34,7 +36,7 @@ html {
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -54,6 +56,174 @@ body {
   min-width: 320px;
   min-height: 100vh;
   box-sizing: border-box;
+  font-family: "Roboto", Arial, sans-serif;
+}
+
+/* Shared ticket-management typography: keep headings readable across system fonts. */
+:where(
+  .ticket-list-page,
+  .ticket-detail-page,
+  .ticket-cart-page,
+  .ticket-checkout-page,
+  .qr-payment-page,
+  .complete-payment-page,
+  .staff-ticket-list,
+  .staff-ticket-detail,
+  .staff-user-ticket-page,
+  .staff-checkin-page
+) {
+  font-family: "Roboto", Arial, sans-serif;
+  font-synthesis: none;
+}
+
+:where(
+  .ticket-list-page,
+  .ticket-detail-page,
+  .ticket-cart-page,
+  .ticket-checkout-page,
+  .qr-payment-page,
+  .complete-payment-page,
+  .staff-ticket-list,
+  .staff-ticket-detail,
+  .staff-user-ticket-page,
+  .staff-checkin-page
+) h1 {
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+
+:where(
+  .ticket-list-page,
+  .ticket-detail-page,
+  .ticket-cart-page,
+  .ticket-checkout-page,
+  .qr-payment-page,
+  .complete-payment-page,
+  .staff-ticket-list,
+  .staff-ticket-detail,
+  .staff-user-ticket-page,
+  .staff-checkin-page
+) h2,
+:where(
+  .ticket-list-page,
+  .ticket-detail-page,
+  .ticket-cart-page,
+  .ticket-checkout-page,
+  .qr-payment-page,
+  .complete-payment-page,
+  .staff-ticket-list,
+  .staff-ticket-detail,
+  .staff-user-ticket-page,
+  .staff-checkin-page
+) h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+:where(
+  .ticket-list-page,
+  .ticket-detail-page,
+  .ticket-cart-page,
+  .ticket-checkout-page,
+  .qr-payment-page,
+  .complete-payment-page,
+  .staff-ticket-list,
+  .staff-ticket-detail,
+  .staff-user-ticket-page,
+  .staff-checkin-page
+) button,
+:where(
+  .ticket-list-page,
+  .ticket-detail-page,
+  .ticket-cart-page,
+  .ticket-checkout-page,
+  .qr-payment-page,
+  .complete-payment-page,
+  .staff-ticket-list,
+  .staff-ticket-detail,
+  .staff-user-ticket-page,
+  .staff-checkin-page
+) input,
+:where(
+  .ticket-list-page,
+  .ticket-detail-page,
+  .ticket-cart-page,
+  .ticket-checkout-page,
+  .qr-payment-page,
+  .complete-payment-page,
+  .staff-ticket-list,
+  .staff-ticket-detail,
+  .staff-user-ticket-page,
+  .staff-checkin-page
+) select {
+  font-family: inherit;
+}
+
+/* Page styles are imported after index.css; keep the shared type scale authoritative. */
+.ticket-list-page h1,
+.ticket-detail-page h1,
+.ticket-cart-page h1,
+.ticket-checkout-page h1,
+.qr-payment-page h1,
+.complete-payment-page h1,
+.staff-ticket-list h1,
+.staff-ticket-detail h1,
+.staff-user-ticket-page h1,
+.staff-checkin-page h1 {
+  font-weight: 700 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.ticket-list-page,
+.ticket-detail-page,
+.ticket-cart-page,
+.ticket-checkout-page,
+.qr-payment-page,
+.complete-payment-page,
+.staff-ticket-list,
+.staff-ticket-detail,
+.staff-user-ticket-page,
+.staff-checkin-page {
+  font-family: "Roboto", Arial, sans-serif !important;
+  font-synthesis: none;
+}
+
+.ticket-list-page button,
+.ticket-detail-page button,
+.ticket-cart-page button,
+.ticket-checkout-page button,
+.qr-payment-page button,
+.complete-payment-page button,
+.staff-ticket-list button,
+.staff-ticket-detail button,
+.staff-user-ticket-page button,
+.staff-checkin-page button {
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.ticket-list-page h2,
+.ticket-detail-page h2,
+.ticket-cart-page h2,
+.ticket-checkout-page h2,
+.qr-payment-page h2,
+.complete-payment-page h2,
+.staff-ticket-list h2,
+.staff-ticket-detail h2,
+.staff-user-ticket-page h2,
+.staff-checkin-page h2,
+.ticket-list-page h3,
+.ticket-detail-page h3,
+.ticket-cart-page h3,
+.ticket-checkout-page h3,
+.qr-payment-page h3,
+.complete-payment-page h3,
+.staff-ticket-list h3,
+.staff-ticket-detail h3,
+.staff-user-ticket-page h3,
+.staff-checkin-page h3 {
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
 }
 
 h1 {

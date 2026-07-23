@@ -17,6 +17,9 @@ import CompleteRegister from "./pages/Authentication/CompleteRegister";
 import OldEvent from "./pages/Introduce/OldEvent";
 import IntroduceEvent from "./pages/Introduce/IntroduceEvent";
 import Fanpage from "./pages/Introduce/Fanpage";
+import DataPolicy from "./pages/Normal/DataPolicy";
+import TermOfUse from "./pages/Normal/TermOfUse";
+import TicketPolicy from "./pages/Normal/TicketPolicy";
 import Overall from "./pages/Halloween2025/Overall";
 import Agenda from "./pages/Halloween2025/Agenda";
 import News from "./pages/Halloween2025/News";
@@ -24,6 +27,7 @@ import FPTUBoardGameClub from "./pages/FPTUBoardGameClub";
 import ChangePassword from "./pages/Authentication/ChangePassword";
 import MessengerButton from "./components/MessengerButton";
 import UserProfile from "./pages/Account/UserProfile";
+import MyTicket from "./pages/Account/MyTicket";
 import FBGCLogin from "./pages/Authentication/FBGCLogin";
 import ListTicketTypePage from "./pages/Ticket/ListTicketTypePage";
 import TicketDetail from "./pages/Ticket/TicketDetail";
@@ -165,6 +169,17 @@ export default function App() {
             <ManageLayout role="staff">
               <StaffTicketTypeDetail />
             </ManageLayout>
+          }
+        />
+        <Route path="/data-policy" element={<Layout><DataPolicy /></Layout>} />
+        <Route path="/terms-of-use" element={<Layout><TermOfUse /></Layout>} />
+        <Route path="/ticket-policy" element={<Layout><TicketPolicy /></Layout>} />
+        <Route
+          path="/my-ticket"
+          element={
+            <Layout>
+              <MyTicket />
+            </Layout>
           }
         />
         <Route path="/staff" element={<ManageLayout role="staff"><StaffHomePage /></ManageLayout>} />
