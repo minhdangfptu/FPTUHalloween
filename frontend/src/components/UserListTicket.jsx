@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Copy, X } from "lucide-react";
+import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import axiosClient from "../apis/axiosClient";
+import QRModal from "./QRModal";
 import "./UserListTicket.scss";
 
 const ticketStatusLabels = { Pending: "Chờ sử dụng", Processing: "Đang xử lý", Checked: "Đã sử dụng", Cancelled: "Đã huỷ" };
@@ -10,6 +11,7 @@ const formatPrice = (value) => `${new Intl.NumberFormat("vi-VN").format(Number(v
 const UserListTicket = ({ order, onClose }) => {
   const [tickets, setTickets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedQrCode, setSelectedQrCode] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -21,11 +23,6 @@ const UserListTicket = ({ order, onClose }) => {
       .finally(() => { if (isMounted) setIsLoading(false); });
     return () => { isMounted = false; };
   }, [order._id]);
-
-  const copyCode = async (code) => {
-    await navigator.clipboard.writeText(code);
-    toast.success("Đã sao chép mã vé.");
-  };
 
   return (
     <div className="user-ticket-modal" role="presentation" onMouseDown={onClose}>
@@ -44,11 +41,16 @@ const UserListTicket = ({ order, onClose }) => {
                 <span>Giá vé: {formatPrice(ticket.ticketTypeId?.ticketTypePrice)}</span>
                 <span>Trạng thái: {ticketStatusLabels[ticket.ticketStatus] || "Chưa xác định"}</span>
               </div>
-              <button type="button" onClick={() => copyCode(ticket.qrCodeData)}><code>{ticket.qrCodeData}</code><Copy size={16} /></button>
+              {ticket.qrCodeData ? (
+                <button type="button" className="user-ticket-qr-button" onClick={() => setSelectedQrCode(ticket.qrCodeData)}>
+                  Xem mã QR
+                </button>
+              ) : <span>Chưa phát hành mã QR</span>}
             </article>
           ))}
         </div>
       </section>
+      <QRModal isOpen={Boolean(selectedQrCode)} value={selectedQrCode} onClose={() => setSelectedQrCode(null)} />
     </div>
   );
 };

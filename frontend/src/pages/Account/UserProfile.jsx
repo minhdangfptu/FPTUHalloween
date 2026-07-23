@@ -15,6 +15,7 @@ import {
 import authAPI from "../../apis/authAPI";
 import axiosClient from "../../apis/axiosClient";
 import UserListTicket from "../../components/UserListTicket";
+import QRModal from "../../components/QRModal";
 import {
   translateError,
   translateSuccess,
@@ -77,6 +78,7 @@ export default function UserProfile() {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [tickets, setTickets] = useState([]);
+  const [selectedQrCode, setSelectedQrCode] = useState(null);
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const hasLoadedProfile = useRef(false);
@@ -358,7 +360,11 @@ export default function UserProfile() {
                       </strong>
                       <span>Trạng thái: {ticket.ticketStatus}</span>
                     </div>
-                    <code>{ticket.qrCodeData}</code>
+                    {ticket.qrCodeData ? (
+                      <button type="button" className="profile-ticket-qr-button" onClick={() => setSelectedQrCode(ticket.qrCodeData)}>
+                        Xem mã QR
+                      </button>
+                    ) : <span>Chưa phát hành mã QR</span>}
                   </article>
                 ))}
               </div>
@@ -374,6 +380,7 @@ export default function UserProfile() {
               onClose={() => setSelectedOrder(null)}
             />
           )}
+          <QRModal isOpen={Boolean(selectedQrCode)} value={selectedQrCode} onClose={() => setSelectedQrCode(null)} />
         </>
       )}
     </main>

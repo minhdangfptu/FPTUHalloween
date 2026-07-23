@@ -524,3 +524,5 @@
   border-color: #e63946 !important;
   box-shadow: 0 0 0 3px #ffe6e6;
 }
+.profile-ticket-qr-button, .admin-order-qr-button { border: 0; border-radius: 8px; padding: 8px 12px; color: #fff; background: #ce0000; font-weight: 700; cursor: pointer; }
+.profile-ticket-qr-button:hover, .admin-order-qr-button:hover { background: #a80000; }

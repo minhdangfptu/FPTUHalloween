@@ -18,6 +18,7 @@ import {
 import toast from "react-hot-toast";
 import orderAPI from "../../apis/orderAPI";
 import ManageSidebar from "../../components/ManageSidebar";
+import QRModal from "../../components/QRModal";
 import { translateError } from "../../utils/translateResponse";
 import "./AdminOrderList.scss";
 
@@ -68,6 +69,7 @@ const AdminOrderList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
+  const [selectedQrCode, setSelectedQrCode] = useState(null);
 
   const loadOrders = useCallback(
     async (page = 1) => {
@@ -418,7 +420,11 @@ const AdminOrderList = () => {
                           {ticket.ticketTypeId?.ticketTypeName || "Loại vé"}
                         </span>
                         <small>
-                          Mã QR: {ticket.qrCodeData || "Chưa phát hành"}
+                          {ticket.qrCodeData ? (
+                            <button type="button" className="admin-order-qr-button" onClick={() => setSelectedQrCode(ticket.qrCodeData)}>
+                              Xem mã QR
+                            </button>
+                          ) : "Chưa phát hành mã QR"}
                         </small>
                         <b>
                           {TICKET_STATUS_LABELS[ticket.ticketStatus] ||
@@ -436,6 +442,7 @@ const AdminOrderList = () => {
           </section>
         </div>
       )}
+      <QRModal isOpen={Boolean(selectedQrCode)} value={selectedQrCode} onClose={() => setSelectedQrCode(null)} />
     </div>
   );
 };
