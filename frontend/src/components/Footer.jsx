@@ -106,7 +106,7 @@ function Footer() {
               <a href="#" className="fpt-footer__link">
                 Bảng giá
               </a>
-              <a href="#" className="fpt-footer__link">
+              <a href="/faq" className="fpt-footer__link">
                 Câu hỏi thường gặp
               </a>
             </div>

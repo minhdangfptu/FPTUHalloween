@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2026-07-24",
+    "macrostructure": "Conversational FAQ",
+    "theme": "event operations",
+    "enrichment": "none",
+    "brief": "Business-grounded FAQ for FPTU Halloween ticket purchase, PayOS payment, QR issuance, check-in and account support."
+  },
+  {
+    "date": "2026-07-24",
+    "macrostructure": "Organization board",
+    "theme": "editorial event operations",
+    "enrichment": "profile card matrix and department index",
+    "brief": "A no-connector organization chart for FPTU Halloween Core Team with member photos, roles and emails."
+  }
+]

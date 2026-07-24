@@ -9,6 +9,7 @@ import Register from "./pages/Authentication/Register";
 import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import AboutUs from "./pages/Normal/AboutUs";
+import BTCFUHLW from "./pages/Normal/BTCFUHLW";
 import ContactUs from "./pages/Normal/ContactUsPage";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
@@ -20,6 +21,7 @@ import Fanpage from "./pages/Introduce/Fanpage";
 import DataPolicy from "./pages/Normal/DataPolicy";
 import TermOfUse from "./pages/Normal/TermOfUse";
 import TicketPolicy from "./pages/Normal/TicketPolicy";
+import FAQ from "./pages/Normal/FAQ";
 import Overall from "./pages/Halloween2025/Overall";
 import Agenda from "./pages/Halloween2025/Agenda";
 import News from "./pages/Halloween2025/News";
@@ -196,6 +198,14 @@ export default function App() {
           }
         />
         <Route
+          path="/faq"
+          element={
+            <Layout>
+              <FAQ />
+            </Layout>
+          }
+        />
+        <Route
           path="/my-ticket"
           element={
             <Layout>
@@ -320,6 +330,14 @@ export default function App() {
           element={
             <Layout>
               <AboutUs />
+            </Layout>
+          }
+        />
+        <Route
+          path="/btc-fuhlw"
+          element={
+            <Layout>
+              <BTCFUHLW />
             </Layout>
           }
         />

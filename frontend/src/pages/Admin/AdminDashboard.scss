@@ -1,7 +1,7 @@
 /* Hallmark · dashboard theme: Ledger Room · editorial operations */
 .dashboard-shell { min-height: 100vh; padding-left: 272px; }
 @media(max-width:760px){.dashboard-shell{padding-left:72px}}
-.admin-dashboard .line-values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding-inline: 2.5%; }
+.admin-dashboard .line-values { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); padding-inline: 2.5%; }
 .admin-dashboard .line-values span:nth-child(2) { text-align: center; }
 .admin-dashboard .line-values span:last-child { text-align: right; }
 .admin-dashboard,.staff-dashboard{--dash-accent:#c90016;--dash-ink:#20242b;--dash-muted:#707782;--dash-line:#e6e2dc;--dash-paper:#f5f2ed;min-height:100vh;background:var(--dash-paper);color:var(--dash-ink)}

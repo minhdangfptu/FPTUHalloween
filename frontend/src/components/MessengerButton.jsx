@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { X } from "lucide-react";
+import { HelpCircle, X } from "lucide-react";
 import { FaFacebookMessenger } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import "./MessengerButton.scss";
 import logo from "../assets/avatar.jpg"; // Thay đường dẫn này bằng đường dẫn thực tế đến logo của dự án
 export default function MessengerButton() {
@@ -36,28 +37,36 @@ export default function MessengerButton() {
               rel="noopener noreferrer"
               className="start-chat-btn"
             >
-              <FaFacebookMessenger
-                className="btn-icon"
-                aria-hidden="true"
-              />
+              <FaFacebookMessenger className="btn-icon" aria-hidden="true" />
               Chat trên Messenger
             </a>
           </div>
         </div>
       )}
 
-      {/* Nút bấm tròn lơ lửng */}
-      <button
-        className="messenger-fab"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Mở khung chat"
-      >
-        {isOpen ? (
-          <X size={28} aria-hidden="true" />
-        ) : (
-          <FaFacebookMessenger size={28} aria-hidden="true" />
-        )}
-      </button>
+      <div className="messenger-fab-stack">
+        {/* Nút bấm tròn lơ lửng */}
+        <button
+          className="messenger-fab"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Mở khung chat"
+        >
+          {isOpen ? (
+            <X size={24} aria-hidden="true" />
+          ) : (
+            <FaFacebookMessenger size={28} aria-hidden="true" />
+          )}
+        </button>
+
+        <Link
+          className="faq-fab"
+          to="/faq"
+          aria-label="Mở trang câu hỏi thường gặp"
+          title="Câu hỏi thường gặp"
+        >
+          <HelpCircle size={28} aria-hidden="true" />
+        </Link>
+      </div>
     </div>
   );
 }

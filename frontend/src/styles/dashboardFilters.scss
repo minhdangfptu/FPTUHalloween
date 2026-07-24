@@ -1,0 +1,38 @@
+.chart-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chart-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--dash-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.chart-filter select {
+  padding: 0.4rem 0.5rem;
+  color: var(--dash-ink);
+  background: #fff;
+  border: 1px solid var(--dash-line);
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+}
+
+.chart-filter select:focus {
+  outline: 2px solid color-mix(in srgb, var(--dash-accent), transparent 70%);
+  outline-offset: 1px;
+}
+
+@media (max-width: 560px) {
+  .chart-card__actions {
+    align-items: flex-end;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+}

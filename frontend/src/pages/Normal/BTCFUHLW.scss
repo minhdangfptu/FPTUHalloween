@@ -1,0 +1,695 @@
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V5 */
+:root {
+  --btc-ink: #141414;
+  --btc-red: #d90429;
+  --btc-red-dark: #9f0320;
+  --btc-paper: #f4f0ea;
+  --btc-card: #fffdfa;
+  --btc-line: rgba(20, 20, 20, 0.16);
+  --btc-shadow: rgba(20, 20, 20, 0.05);
+  --btc-shadow-strong: rgba(20, 20, 20, 0.12);
+  --btc-photo-shade: rgba(20, 20, 20, 0.5);
+  --btc-muted: #6b6864;
+  --btc-font: "Roboto", Arial, sans-serif;
+}
+
+.btc-page {
+  min-height: 100vh;
+  overflow-x: clip;
+  color: var(--btc-ink);
+  background: var(--btc-paper);
+  font-family: var(--btc-font);
+}
+.btc-page h1,
+.btc-page h2,
+.btc-page h3,
+.btc-page p {
+  margin: 0;
+}
+.btc-page h1,
+.btc-page h2 {
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.94;
+}
+.btc-page h1 em,
+.btc-page h2 em {
+  color: var(--btc-red);
+  font-style: normal;
+}
+.btc-hero {
+  padding: clamp(1.6rem, 4vw, 4rem) max(1.25rem, 6vw) clamp(2.4rem, 5.6vw, 5.6rem);
+  background: var(--btc-ink);
+  color: var(--btc-card);
+}
+.btc-hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #f5a2ae;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.btc-hero__eyebrow span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--btc-red);
+}
+.btc-hero__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(16rem, 0.75fr);
+  align-items: end;
+  gap: 3rem;
+  max-width: 80rem;
+  margin: clamp(3.2rem, 7.2vw, 7.2rem) auto 0;
+}
+.btc-kicker {
+  margin-bottom: 1rem !important;
+  color: #f5a2ae;
+  font-size: 0.9rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.btc-hero h1 {
+  font-size: clamp(3.5rem, 8.4vw, 8.6rem);
+}
+.btc-hero__intro {
+  max-width: 28rem;
+  padding-bottom: 0.5rem;
+  color: #d1ceca;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.65;
+}
+.btc-hero__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 80rem;
+  margin: clamp(2.4rem, 5.6vw, 5.6rem) auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  color: #aaa6a2;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+.btc-intro,
+.btc-org,
+.btc-closing {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: clamp(4rem, 8vw, 8rem) max(1.25rem, 4vw);
+}
+.btc-section-label {
+  display: inline-flex;
+  gap: 0.75rem;
+  align-items: center;
+  color: var(--btc-red);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.btc-section-label > span:first-child {
+  color: var(--btc-muted);
+}
+.btc-intro__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.8fr);
+  gap: 3rem;
+  margin-top: 3rem;
+}
+.btc-intro h2,
+.btc-section-heading h2 {
+  font-size: clamp(2.6rem, 5vw, 5.3rem);
+}
+.btc-intro__grid p,
+.btc-closing__aside p {
+  max-width: 34rem;
+  color: #393633;
+  font-size: 1.06rem;
+  line-height: 1.75;
+}
+.btc-group-photo {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 max(1.25rem, 4vw) clamp(4rem, 8vw, 8rem);
+}
+.btc-group-photo__heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.btc-group-photo__heading h2 { font-size: clamp(2.4rem, 4.5vw, 4.8rem); }
+.btc-group-photo figure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--btc-ink);
+  border-radius: 1.5rem;
+}
+.btc-group-photo figure::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(20, 20, 20, .58));
+  content: "";
+  pointer-events: none;
+}
+.btc-group-photo img {
+  display: block;
+  width: 100%;
+  max-height: 36rem;
+  object-fit: cover;
+  object-position: center 62%;
+}
+.btc-group-photo figcaption {
+  position: absolute;
+  z-index: 1;
+  right: 1.2rem;
+  bottom: 1rem;
+  left: 1.2rem;
+  color: var(--btc-card);
+  font-size: .78rem;
+  letter-spacing: .05em;
+}
+.btc-muted {
+  margin-top: 1.3rem !important;
+  color: var(--btc-muted) !important;
+  font-size: 0.95rem !important;
+}
+.btc-org {
+  padding-top: 0;
+}
+.btc-section-heading {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 0.8fr;
+  align-items: end;
+  gap: 2rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--btc-line);
+}
+.btc-section-heading > .btc-section-label {
+  align-self: start;
+}
+.btc-section-heading > p {
+  color: var(--btc-muted);
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+.btc-org__board {
+  margin-top: 2rem;
+  padding: clamp(1.1rem, 2vw, 2rem);
+  background: var(--btc-card);
+  border: 1px solid var(--btc-line);
+}
+.btc-board-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-bottom: 1.3rem;
+  border-bottom: 1px solid var(--btc-line);
+}
+.btc-board-heading__icon {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  color: var(--btc-card);
+  background: var(--btc-red);
+}
+.btc-board-heading span {
+  color: var(--btc-red);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.btc-board-heading h3 {
+  margin-top: 0.15rem;
+  font-size: 1.2rem;
+}
+.btc-board-heading__mark {
+  margin-left: auto;
+  color: var(--btc-muted);
+}
+.btc-person-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  padding-top: 1.2rem;
+}
+.btc-person-card {
+  display: flex;
+  min-width: 0;
+  gap: 0.85rem;
+  padding: 0.8rem;
+  background: #f7f3ed;
+  border: 1px solid transparent;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.btc-person-card:hover {
+  border-color: var(--btc-red);
+}
+.btc-person-card__avatar {
+  flex: 0 0 3.7rem;
+  width: 3.7rem;
+  height: 4.5rem;
+  object-fit: cover;
+  filter: saturate(0.75);
+}
+.btc-person-card__body {
+  min-width: 0;
+}
+.btc-person-card h3 {
+  overflow-wrap: anywhere;
+  font-size: 0.94rem;
+  line-height: 1.25;
+}
+.btc-person-card__role {
+  margin-top: 0.25rem !important;
+  color: var(--btc-red);
+  font-size: 0.73rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.btc-person-card a {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  margin-top: 0.55rem;
+  color: var(--btc-muted);
+  font-size: 0.68rem;
+  line-height: 1.25;
+  text-decoration: none;
+}
+.btc-person-card a span {
+  overflow-wrap: anywhere;
+}
+.btc-person-card a:hover {
+  color: var(--btc-red);
+}
+.btc-departments {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.btc-department {
+  min-height: 8.5rem;
+  padding: 0.8rem;
+  color: var(--btc-card);
+  background: var(--btc-ink);
+}
+.btc-department:nth-child(3n) {
+  background: var(--btc-red);
+}
+.btc-department span {
+  color: #aaa6a2;
+  font-size: 0.7rem;
+}
+.btc-department strong {
+  display: block;
+  margin-top: 2.5rem;
+  font-size: 0.9rem;
+  line-height: 1.1;
+}
+.btc-department small {
+  display: block;
+  margin-top: 0.45rem;
+  color: #aaa6a2;
+  font-size: 0.65rem;
+}
+.btc-closing {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 3rem;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: clamp(5rem, 10vw, 10rem);
+}
+.btc-closing h2 {
+  margin-top: 2rem;
+  font-size: clamp(3rem, 6vw, 6.5rem);
+}
+.btc-closing__aside {
+  align-self: end;
+  max-width: 26rem;
+}
+.btc-closing__aside a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-bottom: 0.35rem;
+  color: var(--btc-red);
+  border-bottom: 1px solid var(--btc-red);
+  font-weight: 700;
+  text-decoration: none;
+}
+.btc-closing__aside a:hover {
+  color: var(--btc-red-dark);
+  border-color: var(--btc-red-dark);
+}
+@media (max-width: 900px) {
+  .btc-section-heading {
+    grid-template-columns: 1fr 1.5fr;
+  }
+  .btc-section-heading > p {
+    grid-column: 2;
+  }
+  .btc-person-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .btc-departments {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .btc-hero__content,
+  .btc-intro__grid,
+  .btc-section-heading,
+  .btc-closing {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .btc-section-heading > p {
+    grid-column: auto;
+  }
+  .btc-hero__meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .btc-group-photo__heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .btc-group-photo figure { border-radius: 1rem; }
+  .btc-group-photo img {
+    min-height: 17rem;
+    object-position: center;
+  }
+  .btc-person-grid {
+    grid-template-columns: 1fr;
+  }
+  .btc-departments {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .btc-department {
+    min-height: 7rem;
+  }
+  .btc-department strong {
+    margin-top: 1.5rem;
+  }
+}
+@media (max-width: 375px) {
+  .btc-hero h1 {
+    font-size: 3.1rem;
+  }
+  .btc-departments {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Profile-card treatment: the photo leads, the operational details follow. */
+.btc-person-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem;
+}
+.btc-person-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.65rem;
+  overflow: hidden;
+  background: var(--btc-card);
+  border: 1px solid var(--btc-line);
+  border-radius: 1.5rem;
+  box-shadow: 0 1rem 2rem var(--btc-shadow);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.btc-person-card:hover {
+  border-color: var(--btc-red);
+  box-shadow: 0 1.2rem 2.5rem var(--btc-shadow-shade);
+}
+.btc-person-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1.25 / 1;
+  border-radius: 1.05rem;
+  background: var(--btc-ink);
+}
+.btc-person-card__media::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 58%, var(--btc-photo-shade));
+  content: "";
+  pointer-events: none;
+}
+.btc-person-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85);
+  transition:
+    transform 0.3s ease,
+    filter 0.3s ease;
+}
+.btc-person-card:hover .btc-person-card__media img {
+  filter: saturate(1);
+  transform: scale(1.04);
+}
+.btc-person-card__media > span {
+  position: absolute;
+  z-index: 1;
+  right: 0.75rem;
+  bottom: 0.65rem;
+  color: var(--btc-card);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.btc-person-card__body {
+  padding: 1.15rem 0.55rem 0.8rem;
+}
+.btc-person-card__eyebrow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  color: var(--btc-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.btc-person-card__eyebrow span:first-child {
+  color: var(--btc-red);
+}
+.btc-person-card h3 {
+  font-size: clamp(1.05rem, 1.55vw, 1.35rem);
+  line-height: 1.15;
+}
+.btc-person-card__role {
+  margin-top: 0.45rem !important;
+  color: var(--btc-red);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.btc-person-card a {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  margin-top: 0.8rem;
+  color: var(--btc-muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.btc-person-card a span {
+  overflow-wrap: anywhere;
+}
+.btc-person-card a:hover {
+  color: var(--btc-red);
+}
+.btc-person-card a.is-pending {
+  cursor: default;
+}
+.btc-person-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto 0.55rem 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--btc-line);
+  color: var(--btc-muted);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.btc-person-card__footer svg {
+  color: var(--btc-red);
+}
+@media (max-width: 900px) {
+  .btc-person-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .btc-person-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .btc-person-card__media {
+    aspect-ratio: 1.35 / 1;
+  }
+}
+
+/* Hierarchy scale: TBTC > HR > Lead > Sublead. */
+.btc-hierarchy {
+  display: grid;
+  gap: 2.3rem;
+  padding-top: 1.5rem;
+}
+.btc-executive-row {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  align-items: start;
+  gap: 2rem;
+}
+.btc-executive-row .btc-person-grid--chair,
+.btc-executive-row .btc-person-grid--hr {
+  justify-items: stretch;
+}
+.btc-executive-row .btc-person-card--chair,
+.btc-executive-row .btc-person-card--hr {
+  width: 100%;
+}
+.btc-level__heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+.btc-level__heading span {
+  color: var(--btc-red);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+.btc-level__heading h3 {
+  color: var(--btc-ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.btc-person-grid--chair,
+.btc-person-grid--hr {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+.btc-person-grid--lead {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.btc-person-grid--sublead {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.btc-person-card--chair {
+  width: min(100%, 46rem);
+}
+.btc-person-card--chair .btc-person-card__media {
+  aspect-ratio: 2.1 / 1;
+}
+.btc-person-card--chair .btc-person-card__body {
+  padding: 1.35rem 1rem 0.95rem;
+}
+.btc-person-card--chair h3 {
+  font-size: clamp(1.45rem, 2.4vw, 2.1rem);
+}
+.btc-person-card--hr {
+  width: min(100%, 34rem);
+}
+.btc-person-card--hr .btc-person-card__media {
+  aspect-ratio: 1.7 / 1;
+}
+.btc-person-card--hr h3 {
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+}
+.btc-person-card--lead .btc-person-card__media {
+  aspect-ratio: 1.15 / 1;
+}
+.btc-person-card--sublead {
+  padding: 0.5rem;
+  border-radius: 1.15rem;
+}
+.btc-person-card--sublead .btc-person-card__media {
+  aspect-ratio: 1.1 / 1;
+  border-radius: 0.8rem;
+}
+.btc-person-card--sublead .btc-person-card__body {
+  padding: 0.85rem 0.35rem 0.55rem;
+}
+.btc-person-card--sublead h3 {
+  font-size: 0.98rem;
+}
+.btc-person-card--sublead .btc-person-card__footer {
+  margin-inline: 0.35rem;
+}
+@media (max-width: 900px) {
+  .btc-person-grid--lead {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .btc-person-grid--sublead {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .btc-executive-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .btc-person-grid--lead,
+  .btc-person-grid--sublead {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .btc-person-card__media,
+  .btc-person-card--chair .btc-person-card__media,
+  .btc-person-card--hr .btc-person-card__media {
+    aspect-ratio: 1.35 / 1;
+  }
+  .btc-person-card--chair,
+  .btc-person-card--hr {
+    width: 100%;
+  }
+}
+
+/* TBTC and HR are peers at the executive level. */
+.btc-executive-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.btc-person-card--chair,
+.btc-person-card--hr {
+  width: 100%;
+}
+.btc-person-card--chair .btc-person-card__media,
+.btc-person-card--hr .btc-person-card__media {
+  aspect-ratio: 1.35 / 1;
+}
+.btc-person-card--chair .btc-person-card__body {
+  padding: 1.15rem 0.55rem 0.8rem;
+}
+.btc-person-card--chair h3,
+.btc-person-card--hr h3 {
+  font-size: clamp(1.05rem, 1.55vw, 1.35rem);
+}

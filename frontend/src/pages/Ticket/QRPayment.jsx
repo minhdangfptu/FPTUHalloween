@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Check, Copy, QrCode, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Copy, QrCode, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import paymentAPI from "../../apis/paymentAPI";
@@ -205,13 +205,14 @@ const QRPayment = () => {
               <ShieldCheck size={17} /> Sau khi chuyển khoản, hệ thống sẽ xác nhận
               và phát hành vé điện tử.
             </div>
-            <button
+            {/* Nút "Tôi đã thanh toán" tạm ẩn; trạng thái được đồng bộ tự động từ PayOS. */}
+            {/* <button
               className="qr-payment-complete"
               type="button"
               onClick={() => window.open(payment.checkoutUrl, "_blank", "noopener,noreferrer")}
             >
               <Check size={18} /> Tôi đã thanh toán
-            </button>
+            </button> */}
             <button className="qr-payment-cancel" type="button" onClick={() => setShowCancelModal(true)} disabled={isCancelling || isExpired}>
               {isCancelling ? "Đang huỷ đơn..." : "Huỷ đơn hàng"}
             </button>

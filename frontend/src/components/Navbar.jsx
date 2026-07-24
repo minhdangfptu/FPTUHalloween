@@ -20,10 +20,7 @@ import cartAPI from "../apis/cartAPI";
 import LogoutModal from "./LogoutModal";
 import toast from "react-hot-toast";
 import { translateSuccess } from "../utils/translateResponse";
-import {
-  CART_UPDATED_EVENT,
-  getCartItemCount,
-} from "../utils/flyingToCart";
+import { CART_UPDATED_EVENT, getCartItemCount } from "../utils/flyingToCart";
 const navigationItems = [
   {
     label: "TRANG CHỦ",
@@ -35,6 +32,7 @@ const navigationItems = [
     children: [
       { label: "Giới thiệu chung", href: "/event-page" },
       { label: "Đơn vị tổ chức", href: "/old-event" },
+      { label: "FBGC", href: "/fbgc" },
     ],
   },
   {
@@ -57,14 +55,14 @@ const navigationItems = [
   //   ],
   // },
   {
-    label: "VỀ CHÚNG TÔI",
-    href: "#",
-    children: [
-      { label: "Ban tổ chức FPTU Halloween 2026", href: "/fbgc" },
-      { label: "Cơ cấu tổ chức", href: "/fbgc" },
-      // { label: "Fanpage", style: { cursor: "pointer" }, onClick: () => navigate("https://www.facebook.com/fuboardgameclub") },
-      // { label: "Hoạt động", href: "#" },
-    ],
+    label: "VỀ BTC FPTU HALLOWEEN",
+    href: "/btc-fuhlw",
+    // children: [
+    //   { label: "Ban tổ chức FPTU Halloween 2026", href: "/fbgc" },
+    //   { label: "Cơ cấu tổ chức", href: "/fbgc" },
+    //   { label: "Fanpage", style: { cursor: "pointer" }, onClick: () => navigate("https://www.facebook.com/fuboardgameclub") },
+    //   { label: "Hoạt động", href: "#" },
+    // ],
   },
   {
     label: "LIÊN HỆ",
@@ -96,6 +94,8 @@ function Navbar() {
       "",
   ).toLowerCase();
   const canManageEvents = userRole === "admin" || userRole === "staff";
+  const managementHome =
+    userRole === "admin" ? "/admin/dashboard" : "/staff/dashboard";
 
   useEffect(() => {
     const loadCartQuantity = async () => {
@@ -118,7 +118,8 @@ function Navbar() {
 
     loadCartQuantity();
     window.addEventListener(CART_UPDATED_EVENT, handleCartUpdated);
-    return () => window.removeEventListener(CART_UPDATED_EVENT, handleCartUpdated);
+    return () =>
+      window.removeEventListener(CART_UPDATED_EVENT, handleCartUpdated);
   }, [user]);
 
   useEffect(() => {
@@ -270,13 +271,16 @@ function Navbar() {
               {canManageEvents && (
                 <div className="fpt-navbar__nav-item">
                   <a
-                    href="/staff/ticket-types"
+                    href={managementHome}
                     className={`fpt-navbar__nav-link ${
-                      location.pathname.startsWith("/staff") ? "active" : ""
+                      location.pathname.startsWith("/staff") ||
+                      location.pathname.startsWith("/admin")
+                        ? "active"
+                        : ""
                     }`}
                     onClick={(e) => {
                       e.preventDefault();
-                      navigate("/staff/ticket-types");
+                      navigate(managementHome);
                     }}
                   >
                     QUẢN TRỊ
@@ -292,7 +296,10 @@ function Navbar() {
                 >
                   <ShoppingBag size={22} />
                   {cartQuantity > 0 && (
-                    <span className="fpt-navbar__cart-badge" aria-label={`${cartQuantity} vé trong giỏ hàng`}>
+                    <span
+                      className="fpt-navbar__cart-badge"
+                      aria-label={`${cartQuantity} vé trong giỏ hàng`}
+                    >
                       {cartQuantity > 99 ? "99+" : cartQuantity}
                     </span>
                   )}
@@ -344,7 +351,11 @@ function Navbar() {
                       <a
                         href="/my-ticket"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
-                        onClick={(event) => { event.preventDefault(); navigate("/my-ticket"); setShowUserDropdown(false); }}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          navigate("/my-ticket");
+                          setShowUserDropdown(false);
+                        }}
                       >
                         <Ticket size={16} /> Vé của bạn
                       </a>
@@ -459,11 +470,11 @@ function Navbar() {
             {canManageEvents && (
               <div className="fpt-navbar__mobile-group">
                 <a
-                  href="/staff/ticket-types"
+                  href={managementHome}
                   className="fpt-navbar__mobile-link"
                   onClick={(e) => {
                     e.preventDefault();
-                    navigate("/staff/ticket-types");
+                    navigate(managementHome);
                     handleDrawerToggle();
                   }}
                 >

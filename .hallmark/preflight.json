@@ -1,0 +1,9 @@
+{
+  "date": "2026-07-24",
+  "fontStack": "Roboto from frontend/src/index.css",
+  "palette": "Existing FPT red, warm paper, ink and muted grey surfaces",
+  "motion": "Motion-cut project; no motion library detected",
+  "spacing": "Existing CSS rem/clamp spacing; FAQ uses local 4pt-aligned tokens",
+  "framework": "React 19 with Vite",
+  "preserved": ["Roboto typography", "FPT red accent", "existing Header/Navbar/Footer chrome", "React Router conventions"]
+}
