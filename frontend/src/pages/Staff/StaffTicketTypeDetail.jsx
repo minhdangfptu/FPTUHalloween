@@ -24,7 +24,7 @@ const toForm = (ticket) => ({
   ticketTypePrice: ticket.ticketTypePrice ?? "",
   availableQuantity: ticket.availableQuantity ?? "",
   totalQuantity: ticket.totalQuantity ?? "",
-  ticketTypeDate: ticket.ticketTypeDate ?? "",
+  ticketTypeDate: ticket.ticketTypeDate ? `2026-10-${String(ticket.ticketTypeDate).padStart(2, "0")}` : "",
   ticketTypeTime: ticket.ticketTypeTime || "",
   ticketType3dModel: ticket.ticketType3dModel || "ghost",
 });
@@ -71,7 +71,7 @@ const StaffTicketTypeDetail = () => {
         ...form,
         ticketTypePrice: Number(form.ticketTypePrice),
         totalQuantity: Number(form.totalQuantity),
-        ticketTypeDate: Number(form.ticketTypeDate),
+        ticketTypeDate: Number(form.ticketTypeDate.split("-")[2]),
       });
       setTicketType(result.ticketType);
       setForm(toForm(result.ticketType));
@@ -136,7 +136,7 @@ const StaffTicketTypeDetail = () => {
               <form className="staff-ticket-detail__edit-form" onSubmit={handleUpdate}>
                 <label>Tên loại vé<input name="ticketTypeName" value={form.ticketTypeName} onChange={updateField} required /></label>
                 <label>Giá vé<input name="ticketTypePrice" type="number" min="0" value={form.ticketTypePrice} onChange={updateField} required /></label>
-                <label>Ngày<input name="ticketTypeDate" type="number" min="1" max="31" value={form.ticketTypeDate} onChange={updateField} required /></label>
+                <label>Ngày<input name="ticketTypeDate" type="date" value={form.ticketTypeDate} onChange={updateField} required /></label>
                 <label>Giờ<input name="ticketTypeTime" type="time" value={form.ticketTypeTime} onChange={updateField} required /></label>
                 <label>Vé còn lại<input name="availableQuantity" type="number" min="0" value={form.availableQuantity} onChange={updateField} required /></label>
                 <label>Tổng số vé<input name="totalQuantity" type="number" min="0" value={form.totalQuantity} onChange={updateField} required /></label>
@@ -155,7 +155,7 @@ const StaffTicketTypeDetail = () => {
                   <em>{ticketType.ticketType3dModel || "Mô hình 3D vé Nhà Ma"}</em>
                 </div>
                 <div className="staff-ticket-detail__info">
-                  <div><CalendarDays size={19} /><span><small>Ngày tham gia</small><strong>Ngày {ticketType.ticketTypeDate} tháng 10, 2025</strong></span></div>
+                    <div><CalendarDays size={19} /><span><small>Ngày tham gia</small><strong>Ngày {ticketType.ticketTypeDate} tháng 10, 2026</strong></span></div>
                   <div><Clock3 size={19} /><span><small>Thời gian</small><strong>{ticketType.ticketTypeTime || "Đang cập nhật"}</strong></span></div>
                   <div><Users size={19} /><span><small>Tổng số lượng</small><strong>{ticketType.totalQuantity || "Đang cập nhật"} vé</strong></span></div>
                   <div><ShieldCheck size={19} /><span><small>Trạng thái</small><strong>{ticketType.ticketTypeStatus === "active" ? "Đang mở bán" : "Tạm ngưng"}</strong></span></div>

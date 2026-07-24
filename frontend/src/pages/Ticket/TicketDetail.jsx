@@ -140,7 +140,7 @@ const TicketDetail = () => {
                 <span>
                   <small>Ngày tham gia</small>
                   <strong>
-                    Ngày {ticketType.ticketTypeDate} tháng 10, 2025
+                    Ngày {ticketType.ticketTypeDate} tháng 10, 2026
                   </strong>
                 </span>
               </div>

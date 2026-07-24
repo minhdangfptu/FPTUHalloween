@@ -71,6 +71,8 @@ router.delete('/payments/payos/:orderCode', requireAuth, payOSCtrl.cancelPayment
 router.get('/tickets', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getList)
 router.get('/tickets/me', requireAuth, userTicketCtrl.getMyTickets)
 router.post('/tickets/test-issue', requireAuth, userTicketCtrl.createTestTickets)
+router.get('/tickets/qr', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getByQrCode)
+router.post('/tickets/check-in', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.checkIn)
 router.get('/tickets/:id', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getDetail)
 
 // ADMIN ORDER REPORTS

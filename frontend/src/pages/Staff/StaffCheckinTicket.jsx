@@ -13,28 +13,32 @@ import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import { Html5Qrcode } from "html5-qrcode";
 import ManageSidebar from "../../components/ManageSidebar";
+import ticketAPI from "../../apis/ticketAPI";
+import { translateError } from "../../utils/translateResponse";
 import successSound from "../../assets/success_sound.mp3";
 import "./StaffCheckinTicket.scss";
-
-const STORAGE_KEY = "fptu-checkin-scanned-tickets";
-
-const readScannedTickets = () => {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  } catch {
-    return [];
-  }
-};
 
 const StaffCheckinTicket = () => {
   const location = useLocation();
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
   const scannerRef = useRef(null);
   const cameraLoadingToastRef = useRef(null);
-  const [scannedTickets, setScannedTickets] = useState(readScannedTickets);
+  const [scannedTickets, setScannedTickets] = useState([]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [manualCode, setManualCode] = useState("");
   const [pendingTicket, setPendingTicket] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const today = new Date().getDate();
+    // The list endpoint is restricted to staff/admin and already returns populated ticket data.
+    ticketAPI
+      .getCheckedInTickets({ status: "Checked", date: today, pageSize: 100 })
+      .then(({ data }) =>
+        setScannedTickets(data.data?.tickets || data.tickets || []),
+      )
+      .catch(() => {});
+  }, []);
 
   const playScanBeep = () => {
     const audio = new Audio(successSound);
@@ -52,7 +56,8 @@ const StaffCheckinTicket = () => {
     cameraLoadingToastRef.current = null;
     if (!scanner) return;
 
-    scanner.stop()
+    scanner
+      .stop()
       .catch(() => {})
       .finally(() => {
         try {
@@ -63,37 +68,54 @@ const StaffCheckinTicket = () => {
       });
   };
 
-  const previewScan = (code) => {
+  const previewScan = async (code) => {
     const normalizedCode = String(code || "").trim();
     if (!normalizedCode) {
       toast.error("Vui lòng cung cấp mã QR hợp lệ.");
       return;
     }
-    if (scannedTickets.some((ticket) => ticket.code === normalizedCode)) {
-      toast.error("Vé này đã được quét trước đó.");
-      return;
+    try {
+      const { data } = await ticketAPI.getByQrCode(normalizedCode);
+      const ticket = data.data || data;
+      const today = new Date().getDate();
+      const checkInBlockReason = ticket.ticketStatus !== "Pending"
+        ? "already-used"
+        : Number(ticket.ticketTypeId?.ticketTypeDate) !== today
+          ? "wrong-date"
+          : null;
+      setPendingTicket({
+        ...ticket,
+        code: ticket.qrCodeData,
+        customerName: ticket.userId?.fullName || "Khách tham gia",
+        customerEmail: ticket.userId?.email || "—",
+        customerPhone: ticket.userId?.phone || "—",
+        ticketName: ticket.ticketTypeId?.ticketTypeName || "Vé FPTU Halloween",
+        canCheckIn: !checkInBlockReason,
+        checkInBlockReason,
+      });
+      playScanBeep();
+      stopCamera();
+    } catch (error) {
+      toast.error(translateError(error));
     }
-
-    const nextTicket = {
-      code: normalizedCode,
-      scannedAt: new Date().toISOString(),
-      customerName: "Khách tham gia",
-      customerEmail: "Thông tin sẽ được tải từ backend",
-      ticketName: "Vé FPTU Halloween",
-    };
-    playScanBeep();
-    setPendingTicket(nextTicket);
-    stopCamera();
   };
 
-  const confirmScan = () => {
-    if (!pendingTicket) return;
-    const nextTickets = [pendingTicket, ...scannedTickets];
-    setScannedTickets(nextTickets);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextTickets));
-    setManualCode("");
-    setPendingTicket(null);
-    toast.success("Check-in vé thành công.");
+  const confirmScan = async () => {
+    const isBlockedTicket = ["wrong-date", "already-used"].includes(pendingTicket?.checkInBlockReason);
+    if (!pendingTicket || isBlockedTicket || !pendingTicket.canCheckIn || isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      const { data } = await ticketAPI.checkIn(pendingTicket.code);
+      const checkedTicket = data.data || data;
+      setScannedTickets((tickets) => [checkedTicket, ...tickets]);
+      setManualCode("");
+      setPendingTicket(null);
+      toast.success("Check-in vé thành công.");
+    } catch (error) {
+      toast.error(translateError(error));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const openCamera = () => {
@@ -107,12 +129,25 @@ const StaffCheckinTicket = () => {
     if (!isCameraOpen) return undefined;
     const scanner = new Html5Qrcode("staff-checkin-reader");
     scannerRef.current = scanner;
-    scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, (decodedText) => previewScan(decodedText), () => {})
+    scanner
+      .start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => previewScan(decodedText),
+        () => {},
+      )
       .then(() => {
         if (scannerRef.current !== scanner) {
-          scanner.stop().catch(() => {}).finally(() => {
-            try { scanner.clear(); } catch { /* already cleared */ }
-          });
+          scanner
+            .stop()
+            .catch(() => {})
+            .finally(() => {
+              try {
+                scanner.clear();
+              } catch {
+                /* already cleared */
+              }
+            });
           return;
         }
         toast.success("Camera đã sẵn sàng. Đưa mã QR vào khung quét.", {
@@ -128,7 +163,10 @@ const StaffCheckinTicket = () => {
           .filter(Boolean)
           .map(String)
           .join(" ");
-        const cameraIsBusy = /notreadableerror|trackstarterror|already in use|could not start video source|device busy|camera.*(?:busy|in use)|(?:busy|in use).*camera/i.test(errorDetails);
+        const cameraIsBusy =
+          /notreadableerror|trackstarterror|already in use|could not start video source|device busy|camera.*(?:busy|in use)|(?:busy|in use).*camera/i.test(
+            errorDetails,
+          );
         const errorMessage = cameraIsBusy
           ? "Camera đang được sử dụng ở nơi khác. Hãy đóng ứng dụng hoặc tab đang dùng camera rồi thử lại."
           : "Không thể khởi động camera. Hãy kiểm tra quyền truy cập camera và cấp quyền cho trình duyệt.";
@@ -152,6 +190,11 @@ const StaffCheckinTicket = () => {
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
+
+  const isConfirmDisabled = !pendingTicket
+    || !pendingTicket.canCheckIn
+    || ["wrong-date", "already-used"].includes(pendingTicket.checkInBlockReason)
+    || isSubmitting;
 
   return (
     <div className="staff-manage-layout staff-checkin-page">
@@ -185,7 +228,7 @@ const StaffCheckinTicket = () => {
             <span>Lượt quét gần nhất</span>
             <strong>
               {scannedTickets[0]
-                ? new Date(scannedTickets[0].scannedAt).toLocaleTimeString(
+                ? new Date(scannedTickets[0].checkedInAt).toLocaleTimeString(
                     "vi-VN",
                   )
                 : "—"}
@@ -223,19 +266,19 @@ const StaffCheckinTicket = () => {
           ) : (
             <div className="staff-checkin-list">
               {scannedTickets.map((ticket) => (
-                <article key={`${ticket.code}-${ticket.scannedAt}`}>
+                <article key={`${ticket.qrCodeData || ticket.code}-${ticket.checkedInAt || ticket.scannedAt}`}>
                   <div className="staff-checkin-ticket-icon">
                     <Ticket size={19} />
                   </div>
                   <div className="staff-checkin-ticket-copy">
-                    <strong>{ticket.code}</strong>
+                    <strong>{ticket.qrCodeData}</strong>
                     <span>
                       <UserRound size={14} /> Khách tham gia
                     </span>
                   </div>
                   <time>
                     <Clock3 size={14} />{" "}
-                    {new Date(ticket.scannedAt).toLocaleString("vi-VN")}
+                    {new Date(ticket.checkedInAt).toLocaleString("vi-VN")}
                   </time>
                   <CheckCircle2 className="staff-checkin-ticket-ok" size={19} />
                 </article>
@@ -247,18 +290,107 @@ const StaffCheckinTicket = () => {
 
       {pendingTicket && (
         <div className="staff-checkin-ticket-modal" role="presentation">
-          <section className="staff-checkin-ticket-dialog" role="dialog" aria-modal="true" aria-label="Thông tin vé">
-            <button className="staff-checkin-ticket-dialog__close" type="button" onClick={() => setPendingTicket(null)} aria-label="Đóng"><X size={20} /></button>
-            <p className="staff-checkin-eyebrow"><CheckCircle2 size={16} /> Đã nhận diện mã QR</p>
+          <section
+            className="staff-checkin-ticket-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Thông tin vé"
+          >
+            <button
+              className="staff-checkin-ticket-dialog__close"
+              type="button"
+              onClick={() => setPendingTicket(null)}
+              aria-label="Đóng"
+            >
+              <X size={20} />
+            </button>
+            <p className="staff-checkin-eyebrow">
+              <CheckCircle2 size={16} /> Đã nhận diện mã QR
+            </p>
             <h2>Thông tin vé</h2>
-            <div className="staff-checkin-ticket-details"><div><span>Mã vé</span><strong>{pendingTicket.code}</strong></div><div><span>Khách tham gia</span><strong>{pendingTicket.customerName}</strong><small>{pendingTicket.customerEmail}</small></div><div><span>Loại vé</span><strong>{pendingTicket.ticketName}</strong></div></div>
-            <div className="staff-checkin-ticket-dialog__actions"><button type="button" onClick={() => setPendingTicket(null)}>Hủy</button><button type="button" onClick={confirmScan}><CheckCircle2 size={17} /> Xác nhận check-in</button></div>
+            <div className="staff-checkin-ticket-dialog__columns">
+              <div className="staff-checkin-ticket-dialog__info">
+            <div className="staff-checkin-ticket-details">
+              <div>
+                <span>Mã vé</span>
+                <strong>{pendingTicket.code}</strong>
+              </div>
+              <div>
+                <span>Khách tham gia</span>
+                <strong>{pendingTicket.customerName}</strong>
+                <small>{pendingTicket.customerEmail}</small>
+                <small>Số điện thoại: {pendingTicket.customerPhone}</small>
+              </div>
+              <div>
+                <span>Loại vé</span>
+                <strong>{pendingTicket.ticketName}</strong>
+              </div>
+              {!pendingTicket.canCheckIn && (
+                <small>
+                  Vé chỉ được check-in đúng ngày ghi trên vé hoặc vé đã được sử
+                  dụng.
+                </small>
+              )}
+            </div>
+              </div>
+              <div className="staff-checkin-ticket-dialog__guidance">
+            {!pendingTicket.canCheckIn && (
+              <div className={`staff-checkin-ticket-alert staff-checkin-ticket-alert--${pendingTicket.checkInBlockReason}`} role="alert">
+                <strong>{pendingTicket.checkInBlockReason === "wrong-date" ? "Vé chưa đúng ngày sử dụng" : "Vé đã hết hiệu lực check-in"}</strong>
+                <span>{pendingTicket.checkInBlockReason === "wrong-date" ? "Vé này chỉ được check-in vào đúng ngày sự kiện ghi trên vé." : "Vé này đã được check-in hoặc không còn ở trạng thái có thể sử dụng."}</span>
+              </div>
+            )}
+            <div className="staff-checkin-ticket-notes">
+              <strong>Lưu ý</strong>
+              <ul>
+                <li>
+                  Đối chiếu tên và số điện thoại với khách trước khi xác nhận.
+                </li>
+                <li>
+                  Chỉ check-in vé đúng ngày sự kiện, không xác nhận vé đã sử
+                  dụng.
+                </li>
+                <li>
+                  Nếu thông tin không khớp, giữ vé ở trạng thái chờ và báo
+                  trưởng ban/điều phối.
+                </li>
+              </ul>
+            </div>
+              </div>
+            </div>
+            <div className="staff-checkin-ticket-dialog__actions">
+              <button type="button" onClick={() => setPendingTicket(null)}>
+                Hủy
+              </button>
+              <button
+                className={isConfirmDisabled ? "is-disabled" : ""}
+                type="button"
+                onClick={(event) => {
+                  if (isConfirmDisabled) {
+                    event.preventDefault();
+                    return;
+                  }
+                  confirmScan();
+                }}
+                disabled={isConfirmDisabled}
+                aria-disabled={isConfirmDisabled}
+              >
+                <CheckCircle2 size={17} />{" "}
+                {isSubmitting ? "Đang xử lý..." : "Xác nhận check-in"}
+              </button>
+            </div>
           </section>
         </div>
       )}
 
       {isCameraOpen && (
-        <div className="staff-checkin-camera-modal" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) stopCamera(); }}>
+        <div
+          className="staff-checkin-camera-modal"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) stopCamera();
+          }}
+        >
           <section
             className="staff-checkin-camera-dialog"
             role="dialog"

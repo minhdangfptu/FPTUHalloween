@@ -48,7 +48,7 @@ const markOrderAsPaid = async order => {
           userId: order.userId,
           orderId: order._id,
           ticketTypeId: item.ticketTypeId,
-          qrCodeData: `FPTU-TICKET-${crypto.randomUUID()}`,
+          qrCodeData: `FPTUHalloween-2026-${crypto.randomUUID()}`,
           ticketStatus: 'Pending'
         })), { session })
       }

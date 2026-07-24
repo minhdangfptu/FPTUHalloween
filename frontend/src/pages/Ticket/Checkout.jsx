@@ -183,7 +183,7 @@ const Checkout = () => {
           <ArrowLeft size={17} /> Quay lại giỏ vé
         </button>
         <header className="checkout-heading">
-          <p>FPTU Halloween 2025</p>
+          <p>FPTU Halloween 2026</p>
           <h1>Xác nhận đơn hàng</h1>
           <span>Bước 1 / 2</span>
         </header>
@@ -296,7 +296,7 @@ const Checkout = () => {
                     {ticketType.ticketTypeStatus !== "active" && <p className="checkout-ticket__unavailable">Vé không còn được bán</p>}
                     <p>
                       <CalendarDays size={14} /> Ngày{" "}
-                      {ticketType.ticketTypeDate} tháng 10, 2025
+                      {ticketType.ticketTypeDate} tháng 10, 2026
                     </p>
                     <p>
                       <Clock3 size={14} /> {ticketType.ticketTypeTime}

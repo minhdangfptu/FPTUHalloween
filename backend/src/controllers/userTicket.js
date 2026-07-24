@@ -26,5 +26,7 @@ const wrap = fn => (req, res, next) => Promise.resolve(fn(req)).then(data => res
 
 const getList = wrap(req => userTicketService.getTickets(req.query))
 const getDetail = wrap(req => userTicketService.getTicketById(req.params.id))
+const getByQrCode = wrap(req => userTicketService.getTicketByQrCode(req.query.code))
+const checkIn = wrap(req => userTicketService.checkInByQrCode(req.body?.code, req.user.id))
 
-module.exports = { createTestTickets, getMyTickets, getList, getDetail }
+module.exports = { createTestTickets, getMyTickets, getList, getDetail, getByQrCode, checkIn }

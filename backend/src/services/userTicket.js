@@ -26,7 +26,7 @@ const createTestTickets = async (userId, ticketTypeId, quantity = 1) => {
     userId,
     orderId: testOrder._id,
     ticketTypeId,
-    qrCodeData: `FPTU-TICKET-${crypto.randomUUID()}`,
+    qrCodeData: `FPTUHalloween-2026-${crypto.randomUUID()}`,
     ticketStatus: 'Pending'
   }))
 
@@ -115,4 +115,35 @@ const getTicketById = async id => {
   return ticket
 }
 
-module.exports = { createTestTickets, getMyTickets, getTickets, getTicketById }
+const getTicketByQrCode = async qrCodeData => {
+  const ticket = await UserTicket.findOne({ qrCodeData: String(qrCodeData || '').trim() })
+    .populate('userId', 'fullName email phone')
+    .populate('ticketTypeId', 'ticketTypeName ticketTypeDate ticketTypeTime')
+    .lean()
+  if (!ticket) throw Object.assign(new Error('Ticket not found'), { statusCode: 404 })
+  return ticket
+}
+
+const checkInByQrCode = async (qrCodeData, staffId) => {
+  const ticket = await getTicketByQrCode(qrCodeData)
+  const today = new Date().getDate()
+  const ticketDate = Number(ticket.ticketTypeId?.ticketTypeDate)
+
+  if (ticket.ticketStatus !== 'Pending') {
+    throw Object.assign(new Error('Ticket has already been checked in'), { statusCode: 409 })
+  }
+  if (ticketDate !== today) {
+    throw Object.assign(new Error('Ticket can only be checked in on its ticket date'), { statusCode: 400 })
+  }
+
+  const checkedTicket = await UserTicket.findOneAndUpdate(
+    { _id: ticket._id, ticketStatus: 'Pending' },
+    { $set: { ticketStatus: 'Checked', checkedInAt: new Date(), staffCheckInId: staffId } },
+    { new: true }
+  ).populate('userId', 'fullName email phone').populate('ticketTypeId', 'ticketTypeName ticketTypeDate ticketTypeTime').lean()
+
+  if (!checkedTicket) throw Object.assign(new Error('Ticket has already been checked in'), { statusCode: 409 })
+  return checkedTicket
+}
+
+module.exports = { createTestTickets, getMyTickets, getTickets, getTicketById, getTicketByQrCode, checkInByQrCode }

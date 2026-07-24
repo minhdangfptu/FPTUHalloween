@@ -36,7 +36,7 @@ const UserListTicket = ({ order, onClose }) => {
             <article className="user-ticket-card" key={ticket._id}>
               <div>
                 <strong>{ticket.ticketTypeId?.ticketTypeName || "Vé FPTU Halloween"}</strong>
-                <span>Ngày: {ticket.ticketTypeId?.ticketTypeDate ? `${ticket.ticketTypeId.ticketTypeDate} tháng 10, 2025` : "Chưa cập nhật"}</span>
+                <span>Ngày: {ticket.ticketTypeId?.ticketTypeDate ? `${ticket.ticketTypeId.ticketTypeDate} tháng 10, 2026` : "Chưa cập nhật"}</span>
                 <span>Giờ: {ticket.ticketTypeId?.ticketTypeTime || "Chưa cập nhật"}</span>
                 <span>Giá vé: {formatPrice(ticket.ticketTypeId?.ticketTypePrice)}</span>
                 <span>Trạng thái: {ticketStatusLabels[ticket.ticketStatus] || "Chưa xác định"}</span>

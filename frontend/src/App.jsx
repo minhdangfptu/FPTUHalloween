@@ -43,7 +43,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminListUser from "./pages/Admin/AdminListUser";
 import AdminOrderList from "./pages/Admin/AdminOrderList";
 import StaffCheckinTicket from "./pages/Staff/StaffCheckinTicket";
-import StaffHomePage from "./pages/Staff/StaffHomePage";
+import StaffHomePage from "./pages/Staff/StaffDashboardPage";
 import StaffUserTicket from "./pages/Staff/StaffUserTicket";
 
 // Layout component cho các trang có Header, Navbar và Footer
@@ -171,9 +171,30 @@ export default function App() {
             </ManageLayout>
           }
         />
-        <Route path="/data-policy" element={<Layout><DataPolicy /></Layout>} />
-        <Route path="/terms-of-use" element={<Layout><TermOfUse /></Layout>} />
-        <Route path="/ticket-policy" element={<Layout><TicketPolicy /></Layout>} />
+        <Route
+          path="/data-policy"
+          element={
+            <Layout>
+              <DataPolicy />
+            </Layout>
+          }
+        />
+        <Route
+          path="/terms-of-use"
+          element={
+            <Layout>
+              <TermOfUse />
+            </Layout>
+          }
+        />
+        <Route
+          path="/ticket-policy"
+          element={
+            <Layout>
+              <TicketPolicy />
+            </Layout>
+          }
+        />
         <Route
           path="/my-ticket"
           element={
@@ -182,8 +203,22 @@ export default function App() {
             </Layout>
           }
         />
-        <Route path="/staff" element={<ManageLayout role="staff"><StaffHomePage /></ManageLayout>} />
-        <Route path="/staff/dashboard" element={<ManageLayout role="staff"><StaffHomePage /></ManageLayout>} />
+        <Route
+          path="/staff"
+          element={
+            <ManageLayout role="staff">
+              <StaffHomePage />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/staff/dashboard"
+          element={
+            <ManageLayout role="staff">
+              <StaffHomePage />
+            </ManageLayout>
+          }
+        />
         <Route
           path="/admin/contacts"
           element={
@@ -192,17 +227,94 @@ export default function App() {
             </ManageLayout>
           }
         />
-        <Route path="/admin" element={<ManageLayout role="admin"><AdminDashboard /></ManageLayout>} />
-        <Route path="/admin/dashboard" element={<ManageLayout role="admin"><AdminDashboard /></ManageLayout>} />
-        <Route path="/admin/users" element={<ManageLayout role="admin"><AdminListUser /></ManageLayout>} />
-        <Route path="/admin/orders" element={<ManageLayout role="admin"><AdminOrderList /></ManageLayout>} />
-        <Route path="/admin/check-in" element={<ManageLayout role="admin"><StaffCheckinTicket /></ManageLayout>} />
-        <Route path="/admin/tickets" element={<ManageLayout role="admin"><StaffTicketTypeList /></ManageLayout>} />
-        <Route path="/admin/ticket-types" element={<ManageLayout role="admin"><StaffTicketTypeList /></ManageLayout>} />
-        <Route path="/admin/ticket-types/:ticketTypeId" element={<ManageLayout role="admin"><StaffTicketTypeDetail /></ManageLayout>} />
-        <Route path="/staff/check-in" element={<ManageLayout role="staff"><StaffCheckinTicket /></ManageLayout>} />
-        <Route path="/staff/purchased-tickets" element={<ManageLayout role="staff"><StaffUserTicket /></ManageLayout>} />
-        <Route path="/admin/purchased-tickets" element={<ManageLayout role="admin"><StaffUserTicket /></ManageLayout>} />
+        <Route
+          path="/admin"
+          element={
+            <ManageLayout role="admin">
+              <AdminDashboard />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ManageLayout role="admin">
+              <AdminDashboard />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ManageLayout role="admin">
+              <AdminListUser />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/orders"
+          element={
+            <ManageLayout role="admin">
+              <AdminOrderList />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/check-in"
+          element={
+            <ManageLayout role="admin">
+              <StaffCheckinTicket />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/tickets"
+          element={
+            <ManageLayout role="admin">
+              <StaffTicketTypeList />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/ticket-types"
+          element={
+            <ManageLayout role="admin">
+              <StaffTicketTypeList />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/ticket-types/:ticketTypeId"
+          element={
+            <ManageLayout role="admin">
+              <StaffTicketTypeDetail />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/staff/check-in"
+          element={
+            <ManageLayout role="staff">
+              <StaffCheckinTicket />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/staff/purchased-tickets"
+          element={
+            <ManageLayout role="staff">
+              <StaffUserTicket />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/purchased-tickets"
+          element={
+            <ManageLayout role="admin">
+              <StaffUserTicket />
+            </ManageLayout>
+          }
+        />
         <Route
           path="/about-us"
           element={

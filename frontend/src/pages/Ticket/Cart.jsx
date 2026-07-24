@@ -272,7 +272,7 @@ const Cart = () => {
                       <div className="ticket-cart-item__meta">
                         <span>
                           <CalendarDays size={15} /> Ngày{" "}
-                          {ticketType.ticketTypeDate} tháng 10, 2025
+                          {ticketType.ticketTypeDate} tháng 10, 2026
                         </span>
                         <span>
                           <Clock3 size={15} />{" "}

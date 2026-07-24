@@ -52,6 +52,8 @@
 
 .staff-ticket-detail header {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   margin-bottom: 2rem;
 }
 
@@ -61,7 +63,8 @@
   right: 0;
 }
 
-.staff-ticket-detail__header-actions { position: absolute; top: 0; right: 0; display: flex; align-items: center; gap: .6rem; }
+.staff-ticket-detail__header-actions { position: static; display: flex; align-items: center; justify-content: flex-end; gap: .6rem; margin-bottom: 1rem; order: -1; }
+.staff-ticket-detail header h1 { min-width: 0; overflow: hidden; padding-bottom: .12em; text-overflow: ellipsis; white-space: nowrap; line-height: 1.12; }
 .staff-ticket-detail__action { display: inline-flex; align-items: center; gap: .4rem; padding: .65rem .85rem; color: #fff; background: var(--staff-red); border: 0; border-radius: .55rem; font-weight: 700; cursor: pointer; }
 .staff-ticket-detail__action--secondary { color: var(--staff-red); background: #fff; border: 1px solid var(--staff-red); }
 .staff-ticket-detail__action:disabled { opacity: .55; cursor: not-allowed; }

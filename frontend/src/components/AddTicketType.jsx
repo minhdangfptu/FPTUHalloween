@@ -45,7 +45,8 @@ const AddTicketType = ({ onCreated }) => {
         ...form,
         ticketTypePrice: Number(form.ticketTypePrice),
         totalQuantity: Number(form.totalQuantity),
-        ticketTypeDate: Number(form.ticketTypeDate),
+        // Backend stores the event day as a number; the UI uses a date picker.
+        ticketTypeDate: Number(form.ticketTypeDate.split("-")[2]),
       });
       toast.success(translateSuccess(result.message || "Created successfully"), { id: loadingToast });
       setForm(EMPTY_FORM);
@@ -73,7 +74,7 @@ const AddTicketType = ({ onCreated }) => {
             <div className="add-ticket-type__fields">
               <label>Tên loại vé<input name="ticketTypeName" value={form.ticketTypeName} onChange={updateField} required /></label>
               <label>Giá vé<input name="ticketTypePrice" type="number" min="0" value={form.ticketTypePrice} onChange={updateField} required /></label>
-              <label>Ngày<input name="ticketTypeDate" type="number" min="1" max="31" value={form.ticketTypeDate} onChange={updateField} required /></label>
+              <label>Ngày<input name="ticketTypeDate" type="date" value={form.ticketTypeDate} onChange={updateField} required /></label>
               <label>Giờ<input name="ticketTypeTime" type="time" value={form.ticketTypeTime} onChange={updateField} required /></label>
               <label>Số vé còn lại<input name="availableQuantity" type="number" min="0" value={form.availableQuantity} onChange={updateField} required /></label>
               <label>Tổng số vé<input name="totalQuantity" type="number" min="0" value={form.totalQuantity} onChange={updateField} required /></label>

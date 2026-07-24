@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { CalendarDays, Clock3, Eye, Search, Ticket } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import ManageSidebar from "../../components/ManageSidebar";
 import AddTicketType from "../../components/AddTicketType";
@@ -22,7 +22,8 @@ const getStoredRole = () => {
 
 const StaffTicketTypeList = () => {
   const navigate = useNavigate();
-  const isAdmin = getStoredRole() === "admin";
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin/") || getStoredRole() === "admin";
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -37,8 +38,9 @@ const StaffTicketTypeList = () => {
     setError(null);
     try {
       const result = await ticketTypeAPI.getList({ page: 1, pageSize: 100 });
-      setTicketTypes(result.ticketTypes || []);
-      setTotalTicketTypes(result.pagination?.total ?? result.ticketTypes?.length ?? 0);
+      const nextTicketTypes = Array.isArray(result?.ticketTypes) ? result.ticketTypes : [];
+      setTicketTypes(nextTicketTypes);
+      setTotalTicketTypes(result?.pagination?.total ?? nextTicketTypes.length);
     } catch (requestError) {
       setError(translateError(requestError));
       toast.error(translateError(requestError));
@@ -55,7 +57,7 @@ const StaffTicketTypeList = () => {
   const visibleTickets = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
     return ticketTypes.filter((ticketType) => {
-      const isSoldOut = Number(ticketType.availableQuantity) < 0;
+      const isSoldOut = Number(ticketType.availableQuantity) <= 0;
       const matchesDate = activeFilter === "all" || String(ticketType.ticketTypeDate) === activeFilter;
       const matchesStatus = statusFilter === "all"
         || (statusFilter === "active" && ticketType.ticketTypeStatus === "active" && !isSoldOut)
@@ -67,7 +69,7 @@ const StaffTicketTypeList = () => {
 
   return (
     <div className="staff-manage-layout">
-      <ManageSidebar role="staff" activeItem="ticket-types" />
+      <ManageSidebar role={isAdmin ? "admin" : "staff"} activeItem="ticket-types" />
       <main className="staff-ticket-list">
         <header className="staff-ticket-list__header">
           <div>
@@ -112,7 +114,7 @@ const StaffTicketTypeList = () => {
         ) : (
           <section className="staff-ticket-list__grid" aria-label="Danh sách loại vé">
             {visibleTickets.map((ticketType, index) => (
-              <article className={`staff-ticket-card${Number(ticketType.availableQuantity) < 0 ? " staff-ticket-card--sold-out" : ""}`} key={ticketType._id}>
+              <article className={`staff-ticket-card${Number(ticketType.availableQuantity) <= 0 ? " staff-ticket-card--sold-out" : ""}`} key={ticketType._id}>
                 <div className="staff-ticket-card__visual">
                   <div className="staff-ticket-card__visual-orbit" />
                   <span>{String(index + 1).padStart(2, "0")}</span>
@@ -122,11 +124,11 @@ const StaffTicketTypeList = () => {
                   <div className="staff-ticket-card__title">
                     <h2>{ticketType.ticketTypeName}</h2>
                     <span className="staff-ticket-card__status">
-                      <i /> {Number(ticketType.availableQuantity) < 0 ? "Đã bán hết" : ticketType.ticketTypeStatus === "active" ? "Đang mở bán" : "Tạm ngưng"}
+                      <i /> {Number(ticketType.availableQuantity) <= 0 ? "Đã bán hết" : ticketType.ticketTypeStatus === "active" ? "Đang mở bán" : "Tạm ngưng"}
                     </span>
                   </div>
                   <div className="staff-ticket-card__meta">
-                    <span><CalendarDays size={16} /> Ngày {ticketType.ticketTypeDate}/10/2025</span>
+                    <span><CalendarDays size={16} /> Ngày {ticketType.ticketTypeDate}/10/2026</span>
                     <span><Clock3 size={16} /> {ticketType.ticketTypeTime || "Đang cập nhật"}</span>
                   </div>
                   <div className="staff-ticket-card__bottom">
