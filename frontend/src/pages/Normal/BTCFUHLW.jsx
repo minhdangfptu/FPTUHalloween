@@ -4,6 +4,16 @@ import { ArrowUpRight, Mail, ShieldCheck, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import coverArt from "../../assets/cover-01.png";
 import groupPhoto from "../../assets/cover.jpg";
+import baoKk from "../../assets/core/baokk.jpg";
+import chiBm from "../../assets/core/chibm.jpg";
+import chiHk from "../../assets/core/chihk.jpg";
+import duongNt from "../../assets/core/duongnt.jpg";
+import haPhuong from "../../assets/core/haphuong.jpg";
+import hien from "../../assets/core/hien.jpg";
+import leThiThuy from "../../assets/core/lethithuy.jfif";
+import minhDd from "../../assets/core/minhdd.jpg";
+import thanhThuy from "../../assets/core/thanhthuy.jpg";
+import vietTrung from "../../assets/core/viettrung.JPG";
 import "./BTCFUHLW.scss";
 
 const coreTeam = [
@@ -22,6 +32,7 @@ const coreTeam = [
     name: "Nguyễn Hà Phương",
     role: "Phó ban Nhà Ma",
     email: "nguyenhaphuong3009@gmail.com",
+    image: haPhuong,
   },
   {
     name: "Trương Bá Hoàng",
@@ -33,11 +44,13 @@ const coreTeam = [
     name: "Lê Thị Thủy",
     role: "Trưởng ban Truyền Thông",
     email: "lethithuy15072005@gmail.com",
+    image: leThiThuy,
   },
   {
     name: "Phùng Thị Thanh Thúy",
     role: "Phó ban Truyền Thông",
     email: "phungthithanhthuy30102007@gmail.com",
+    image: thanhThuy,
   },
   {
     name: "Nguyễn Hương Ly",
@@ -53,6 +66,7 @@ const coreTeam = [
     name: "Nguyễn Việt Trung",
     role: "Trưởng ban Hậu Cần",
     email: "ngviettrung0803@gmail.com",
+    image: vietTrung,
   },
   {
     name: "Nguyễn Huy Phước",
@@ -68,31 +82,37 @@ const coreTeam = [
     name: "Bùi Mai Chi",
     role: "Trưởng ban Take Care",
     email: "chi141005@gmail.com",
+    image: chiBm,
   },
   {
     name: "Trịnh Hiền",
     role: "Phó ban Take Care",
     email: "trinhhien0702@gmail.com",
+    image: hien,
   },
   {
     name: "Đặng Đình Minh",
     role: "Trưởng ban Media",
     email: "minhdangdinh261004@gmail.com",
+    image: minhDd,
   },
   {
     name: "Hoàng Khánh Chi",
     role: "Trưởng ban Design",
     email: "khankhichibd2005@gmail.com",
+    image: chiHk,
   },
   {
     name: "Khuất Kim Bảo",
     role: "Phó ban Design",
     email: "kimbao20040@gmail.com",
+    image: baoKk,
   },
   {
     name: "Nguyễn Thế Dương",
     role: "Phó ban Design",
     email: "nguyentheduong3110@gmail.com",
+    image: duongNt,
   },
 ];
 
@@ -139,7 +159,14 @@ const hierarchyLevels = [
 const PersonCard = ({ person, index, level }) => (
   <article className={`btc-person-card btc-person-card--${level}`}>
     <div className="btc-person-card__media">
-      <img src={coverArt} alt={`Ảnh đại diện của ${person.name}`} />
+      <img
+        src={person.image || coverArt}
+        alt={`Ảnh đại diện của ${person.name}`}
+        onError={(event) => {
+          event.currentTarget.onerror = null;
+          event.currentTarget.src = coverArt;
+        }}
+      />
       <span>{String(index + 1).padStart(2, "0")}</span>
     </div>
     <div className="btc-person-card__body">
