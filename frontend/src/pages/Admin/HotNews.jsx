@@ -231,7 +231,10 @@ const HotNews = () => {
           </div>
         </header>
 
-        <section className="hot-news-workbench" aria-labelledby="hot-news-list-title">
+        <section
+          className="hot-news-workbench"
+          aria-labelledby="hot-news-list-title"
+        >
           <div className="hot-news-workbench__head">
             <div>
               <p className="hot-news-workbench__label">Danh sách hiện tại</p>
@@ -260,7 +263,9 @@ const HotNews = () => {
             <div className="hot-news-empty">
               <Megaphone size={24} />
               <h3>Chưa có thông báo nào.</h3>
-              <p>Thêm thông báo đầu tiên để cập nhật nhanh cho người tham dự.</p>
+              <p>
+                Thêm thông báo đầu tiên để cập nhật nhanh cho người tham dự.
+              </p>
               <button
                 className="hot-news-button hot-news-button--primary"
                 type="button"
@@ -278,11 +283,15 @@ const HotNews = () => {
                   </div>
                   <div className="hot-news-row__body">
                     <div className="hot-news-row__meta">
-                      <span className={`hot-news-status ${item.isActive ? "is-active" : "is-inactive"}`}>
-                        <Power size={13} /> {item.isActive ? "Đang hiển thị" : "Đang tắt"}
+                      <span
+                        className={`hot-news-status ${item.isActive ? "is-active" : "is-inactive"}`}
+                      >
+                        <Power size={13} />{" "}
+                        {item.isActive ? "Đang hiển thị" : "Đang tắt"}
                       </span>
                       <span>
-                        <Clock3 size={13} /> {formatDate(item.updatedAt || item.createdAt)}
+                        <Clock3 size={13} />{" "}
+                        {formatDate(item.updatedAt || item.createdAt)}
                       </span>
                     </div>
                     <p className="hot-news-row__content">{item.content}</p>
@@ -347,7 +356,9 @@ const HotNews = () => {
             </button>
           </div>
           <label className="hot-news-field">
-            <span>Nội dung thông báo</span>
+            <span>
+              Nội dung thông báo (Hạn chế dùng icon và hạn chế viết hoa)
+            </span>
             <textarea
               name="content"
               value={form.content}
@@ -361,7 +372,9 @@ const HotNews = () => {
             <small id="hot-news-content-help">Tối đa 500 ký tự.</small>
           </label>
           <label className="hot-news-field">
-            <span>Liên kết <em>(không bắt buộc)</em></span>
+            <span>
+              Liên kết <em>(không bắt buộc)</em>
+            </span>
             <input
               name="link"
               type="url"
@@ -389,7 +402,11 @@ const HotNews = () => {
               type="submit"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Đang lưu…" : editingId ? "Lưu thay đổi" : "Thêm thông báo"}
+              {isSubmitting
+                ? "Đang lưu…"
+                : editingId
+                  ? "Lưu thay đổi"
+                  : "Thêm thông báo"}
             </button>
           </div>
         </form>

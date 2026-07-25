@@ -1,9 +1,9 @@
 /* Hallmark · admin list · genre: editorial administration · theme: FPT red */
-.admin-contact-page { min-height: 100vh; }
+.admin-contact-page { min-height: 100vh; background: #f5f2ed; }
 .admin-contact-list { flex: 1; min-width: 0; padding: 44px clamp(24px, 5vw, 72px); color: #202124; }
 .admin-contact-list__header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 34px; }
 .admin-contact-list__kicker { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; color: #ce0000; font-size: 13px; font-weight: 700; }
-.admin-contact-list h1 { margin: 0; font-size: clamp(28px, 3vw, 42px); line-height: 1.1; }
+.admin-contact-list h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: .95; letter-spacing: -.07em; }
 .admin-contact-list__header > div > p:last-child { margin: 12px 0 0; color: #73777d; }
 .admin-contact-list__refresh, .admin-contact-action { display: inline-flex; align-items: center; gap: 7px; color: #ce0000; background: #fff; border: 1px solid #ffd8dd; border-radius: 8px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; }
 .admin-contact-list__refresh { padding: 10px 14px; }

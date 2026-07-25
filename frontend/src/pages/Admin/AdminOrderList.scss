@@ -1,6 +1,7 @@
 /* Hallmark · macrostructure: Operations Desk · tone: editorial administration · anchor hue: FPT red */
 .admin-order-page {
   min-height: 100vh;
+  background: #f5f2ed;
 }
 .admin-order-list {
   flex: 1;
@@ -26,9 +27,9 @@
 }
 .admin-order-list h1 {
   margin: 0;
-  font-size: clamp(30px, 3vw, 44px);
-  line-height: 1.05;
-  letter-spacing: -0.045em;
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  line-height: .95;
+  letter-spacing: -.07em;
 }
 .admin-order-list__header p:last-child {
   margin: 12px 0 0;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import wtm from "../assets/wtm.png";
-import { Icon, Tooltip } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { useNavigate, useLocation } from "react-router-dom"; // Add useLocation import
 import {
@@ -30,16 +30,19 @@ const navigationItems = [
     label: "GIỚI THIỆU",
     href: "#",
     children: [
-      { label: "Giới thiệu chung", href: "/event-page" },
-      { label: "Đơn vị tổ chức", href: "/old-event" },
-      { label: "FBGC", href: "/fbgc" },
+      { label: "Giới thiệu chung", href: "/introduce-hlw26" },
+      { label: "Về CLB FPTU Board Game", href: "/fbgc" },
+      {
+        label: "Về PDP - Chương trình Phát triển Cá nhân FPTU Hà Nội",
+        href: "/pdp",
+      },
     ],
   },
   {
     label: "NHÀ MA HALLOWEEN",
     href: "#",
     children: [
-      { label: "Câu chuyện", href: "/overall" },
+      { label: "Câu chuyện", href: "/haunted-ghost" },
       { label: "Mua vé", href: "/tickets" },
       // { label: "Thông tin", href: "/agenda" },
       // { label: "Tin tức", href: "/news" },
@@ -489,7 +492,8 @@ function Navbar() {
                     className="fpt-navbar__mobile-link"
                     style={{ fontWeight: "bold", color: "#ce0000" }}
                   >
-                    👤 {user.fullName || user.name || "Tài khoản"}
+                    <User size={18} aria-hidden="true" />
+                    {user.fullName || user.name || "Tài khoản"}
                   </div>
                   <div className="fpt-navbar__mobile-sub">
                     <a
@@ -528,7 +532,8 @@ function Navbar() {
                     className="fpt-navbar__mobile-link"
                     style={{ fontWeight: "bold", color: "#ce0000" }}
                   >
-                    👤 Tài khoản
+                    <User size={18} aria-hidden="true" />
+                    Tài khoản
                   </div>
                   <div className="fpt-navbar__mobile-sub">
                     <a

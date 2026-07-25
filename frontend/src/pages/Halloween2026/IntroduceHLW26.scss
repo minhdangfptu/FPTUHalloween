@@ -1,0 +1,912 @@
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 */
+/* Hallmark · macrostructure: cover note → fact index → season ledger */
+.introduce-hlw26 {
+  --ink: #20242c;
+  --muted: #687180;
+  --paper: #fbfaf8;
+  --line: #e4ddd8;
+  --red: #d71920;
+  min-height: 100vh;
+  overflow-x: clip;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Roboto", sans-serif;
+}
+.introduce-hlw26__hero {
+  position: relative;
+  display: flex;
+  align-items: end;
+  min-height: 610px;
+  padding: 5rem max(16px, calc((100% - 1168px) / 2)) 4rem;
+  color: #fff;
+  background-position: center;
+  background-size: cover;
+  isolation: isolate;
+}
+.introduce-hlw26__hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgb(10 10 14 / 86%), rgb(10 10 14 / 30%));
+}
+.introduce-hlw26__hero-content {
+  max-width: 680px;
+}
+.introduce-hlw26__eyebrow,
+.introduce-hlw26__section-mark {
+  color: var(--red);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.introduce-hlw26__hero h1 {
+  margin: 1rem 0 1.5rem;
+  font-size: clamp(4rem, 10vw, 9rem);
+  line-height: 0.82;
+  letter-spacing: -0.085em;
+}
+.introduce-hlw26__hero h1 span {
+  color: #f04b4f;
+}
+.introduce-hlw26__hero-content > p:not(.introduce-hlw26__eyebrow) {
+  max-width: 440px;
+  color: #e7e7e9;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.introduce-hlw26__scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+  color: #fff;
+  border-bottom: 1px solid rgb(255 255 255 / 60%);
+  text-decoration: none;
+  font-weight: 800;
+}
+.introduce-hlw26__scroll svg {
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .introduce-hlw26__scroll:hover svg,
+  .introduce-hlw26__scroll:focus-visible svg {
+    transform: translateY(0.2rem);
+  }
+}
+.introduce-hlw26__year {
+  position: absolute;
+  right: max(16px, calc((100% - 1168px) / 2));
+  top: 5rem;
+  color: rgb(255 255 255 / 20%);
+  font-size: clamp(8rem, 20vw, 18rem);
+  font-weight: 900;
+  letter-spacing: -0.1em;
+  line-height: 0.75;
+}
+.introduce-hlw26__overview,
+.introduce-hlw26__facts,
+.introduce-hlw26__seasons {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 16px;
+}
+.introduce-hlw26__overview {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.35fr) minmax(0, 1fr);
+  gap: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.introduce-hlw26__section-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.introduce-hlw26__overview h2,
+.introduce-hlw26__seasons h2 {
+  margin: 0.3rem 0 1.25rem;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  line-height: 0.9;
+  letter-spacing: -0.075em;
+}
+.introduce-hlw26__overview h2 span {
+  color: var(--red);
+}
+.introduce-hlw26__overview p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+.introduce-hlw26__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.introduce-hlw26__fact {
+  min-height: 230px;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+.introduce-hlw26__fact > span {
+  color: var(--red);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+.introduce-hlw26__fact h3 {
+  margin: 2.5rem 0 0.7rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.035em;
+}
+.introduce-hlw26__fact p {
+  max-width: 480px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.introduce-hlw26__seasons {
+  border-top: 1px solid var(--line);
+}
+.introduce-hlw26__seasons-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 1rem;
+}
+.introduce-hlw26__seasons-head .introduce-hlw26__section-mark {
+  grid-column: 1/-1;
+}
+.introduce-hlw26__seasons h2 {
+  margin: 0;
+}
+.introduce-hlw26__seasons-head > p {
+  max-width: 280px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.introduce-hlw26__season-list {
+  margin-top: 3rem;
+  border-top: 1px solid var(--line);
+}
+.introduce-hlw26__season {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.introduce-hlw26__season span {
+  color: var(--red);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.introduce-hlw26__season strong {
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  letter-spacing: -0.03em;
+}
+.introduce-hlw26__season svg {
+  color: var(--red);
+}
+@media (max-width: 700px) {
+  .introduce-hlw26__hero {
+    min-height: 560px;
+    padding: 4rem 12px 3rem;
+  }
+  .introduce-hlw26__year {
+    right: 12px;
+    top: 4rem;
+    font-size: 8rem;
+  }
+  .introduce-hlw26__overview {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 3rem 12px;
+  }
+  .introduce-hlw26__facts {
+    grid-template-columns: 1fr;
+    padding: 3rem 12px;
+  }
+  .introduce-hlw26__seasons {
+    padding: 3rem 12px;
+  }
+  .introduce-hlw26__seasons-head {
+    grid-template-columns: 1fr;
+  }
+  .introduce-hlw26__season {
+    grid-template-columns: 42px 1fr auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .introduce-hlw26__scroll svg {
+    transition: none;
+  }
+}
+
+@media (max-width: 1128px) {
+  .introduce-hlw26__season,
+  .introduce-hlw26__season:nth-child(even) {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 390px !important;
+    box-sizing: border-box;
+  }
+
+  .introduce-hlw26__season-thumb,
+  .introduce-hlw26__season:nth-child(even) .introduce-hlw26__season-thumb {
+    flex: 0 0 auto;
+    order: 1 !important;
+    width: 100% !important;
+    height: 180px !important;
+    min-height: 180px !important;
+  }
+
+  .introduce-hlw26__season-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    object-fit: cover;
+  }
+
+  .introduce-hlw26__season > div:nth-child(2),
+  .introduce-hlw26__season:nth-child(even) > div:nth-child(2) {
+    order: 2 !important;
+    flex: 1;
+    gap: .15rem;
+    padding: 1.1rem 1rem 1.25rem;
+  }
+
+  .introduce-hlw26__season strong {
+    margin-bottom: .35rem;
+    font-size: 1.2rem;
+    line-height: 1.15;
+  }
+
+  .introduce-hlw26__season small {
+    line-height: 1.45;
+  }
+}
+
+.introduce-hlw26__coming-soon {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(135deg, #24242a, #4b1118);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.introduce-hlw26__season-thumb .introduce-hlw26__coming-soon {
+  display: grid !important;
+  color: #fff !important;
+}
+@media (max-width: 480px) {
+  .introduce-hlw26__hero,
+  .introduce-hlw26__overview,
+  .introduce-hlw26__facts,
+  .introduce-hlw26__seasons {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .introduce-hlw26__hero h1 {
+    font-size: 4.3rem;
+  }
+  .introduce-hlw26__year {
+    right: 10px;
+  }
+}
+
+.introduce-hlw26__season-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+  border-top: 0;
+}
+.introduce-hlw26__season {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0;
+  min-width: 0;
+  padding: 0;
+  color: inherit;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  text-decoration: none;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+.introduce-hlw26__season:hover {
+  color: var(--ink);
+  border-color: #f0a6a8;
+  box-shadow: 0 12px 28px rgb(32 36 44 / 10%);
+  transform: translateY(-3px);
+}
+.introduce-hlw26__season-thumb {
+  overflow: hidden;
+  width: 100%;
+  height: 210px;
+  border-radius: 0;
+  background: #25252a;
+}
+.introduce-hlw26__season-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+.introduce-hlw26__season:hover img {
+  transform: scale(1.06);
+}
+.introduce-hlw26__season > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.25rem 1.25rem 1.4rem;
+}
+.introduce-hlw26__season span,
+.introduce-hlw26__season small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.introduce-hlw26__season span {
+  margin-bottom: 0.5rem;
+  color: var(--red);
+  font-weight: 800;
+}
+.introduce-hlw26__season strong {
+  display: block;
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  letter-spacing: -0.035em;
+}
+.introduce-hlw26__season small {
+  margin-top: 0.55rem;
+}
+.introduce-hlw26__season svg {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.35rem;
+  color: var(--red);
+}
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list {
+    grid-template-columns: 1fr;
+  }
+  .introduce-hlw26__season-thumb {
+    height: 190px;
+  }
+}
+
+.introduce-hlw26__season-list {
+  position: relative;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+  padding: 0;
+  border-top: 0;
+}
+.introduce-hlw26__season-list::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  content: "";
+  background: var(--line);
+  transform: translateX(-50%);
+}
+.introduce-hlw26__season {
+  width: calc(50% - 2rem);
+  min-height: 0;
+}
+.introduce-hlw26__season:nth-child(even) {
+  margin-left: auto;
+}
+.introduce-hlw26__season::after {
+  position: absolute;
+  top: 2rem;
+  right: -2.35rem;
+  width: 9px;
+  height: 9px;
+  content: "";
+  background: var(--red);
+  border: 3px solid var(--paper);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--red);
+}
+.introduce-hlw26__season:nth-child(even)::after {
+  right: auto;
+  left: -2.35rem;
+}
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list {
+    gap: 1.25rem;
+    padding-left: 1.25rem;
+  }
+  .introduce-hlw26__season-list::before {
+    left: 0;
+    transform: none;
+  }
+  .introduce-hlw26__season,
+  .introduce-hlw26__season:nth-child(even) {
+    width: 100%;
+    margin-left: 0;
+  }
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    top: 2rem;
+    right: auto;
+    left: -1.55rem;
+  }
+}
+
+/* Horizontal archive timeline: 2023 → 2026. */
+.introduce-hlw26__season-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 3rem;
+  padding: 2rem 0 0;
+  border-top: 0;
+}
+.introduce-hlw26__season-list::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: var(--line);
+}
+.introduce-hlw26__season {
+  width: auto;
+  min-height: 0;
+}
+.introduce-hlw26__season:nth-child(even) {
+  margin-left: 0;
+}
+.introduce-hlw26__season::after,
+.introduce-hlw26__season:nth-child(even)::after {
+  top: -2.35rem;
+  right: auto;
+  left: 1.5rem;
+  width: 9px;
+  height: 9px;
+  content: "";
+  background: var(--red);
+  border: 3px solid var(--paper);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--red);
+}
+.introduce-hlw26__season small + small {
+  margin-top: 0.35rem;
+}
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 2rem 0 0.5rem;
+    scroll-snap-type: x proximity;
+  }
+  .introduce-hlw26__season-list::before {
+    right: 0;
+    left: 0;
+  }
+  .introduce-hlw26__season,
+  .introduce-hlw26__season:nth-child(even) {
+    flex: 0 0 min(82vw, 300px);
+    scroll-snap-align: start;
+  }
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    top: -2.35rem;
+    left: 1.5rem;
+  }
+}
+
+/* Central horizontal timeline with alternating event notes. */
+.introduce-hlw26__season-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(160px, 1fr));
+  gap: 1rem;
+  min-height: 530px;
+  padding: 0;
+  overflow: visible;
+}
+.introduce-hlw26__season-list::before {
+  top: 250px;
+  height: 2px;
+  background: #8796f0;
+}
+.introduce-hlw26__season {
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: auto;
+  min-height: 0;
+  margin-top: 0;
+  padding: 0 0 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+  box-shadow: none;
+  transform: none;
+}
+.introduce-hlw26__season:nth-child(even) {
+  margin-top: 290px;
+}
+.introduce-hlw26__season:hover {
+  border: 0;
+  box-shadow: none;
+  transform: none;
+}
+.introduce-hlw26__season::after,
+.introduce-hlw26__season:nth-child(even)::after {
+  top: 242px;
+  left: 50%;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  background: var(--paper);
+  border: 4px solid #22c7e5;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #22c7e5;
+  transform: translateX(-50%);
+}
+.introduce-hlw26__season-thumb {
+  order: 3;
+  width: 100%;
+  height: 92px;
+  border-radius: 0.65rem;
+}
+.introduce-hlw26__season > div:nth-child(2) {
+  order: 2;
+  padding: 0;
+}
+.introduce-hlw26__season > div:nth-child(2)::before {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #4361ee;
+  font-size: 1.35rem;
+  font-weight: 900;
+  content: attr(data-year);
+}
+.introduce-hlw26__season span {
+  color: #4361ee;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+.introduce-hlw26__season strong {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+.introduce-hlw26__season small {
+  font-size: 0.72rem;
+}
+.introduce-hlw26__season svg {
+  position: absolute;
+  top: 234px;
+  right: auto;
+  left: calc(50% + 18px);
+  color: var(--red);
+}
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list {
+    display: flex;
+    min-height: 0;
+    gap: 1rem;
+    padding: 2rem 0 0.5rem;
+    overflow-x: auto;
+  }
+  .introduce-hlw26__season,
+  .introduce-hlw26__season:nth-child(even) {
+    flex: 0 0 230px;
+    margin-top: 0;
+    scroll-snap-align: start;
+  }
+  .introduce-hlw26__season-list::before {
+    top: 1.2rem;
+  }
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    top: 0.75rem;
+    left: 1.5rem;
+  }
+  .introduce-hlw26__season svg {
+    top: 0.55rem;
+    left: 3rem;
+  }
+}
+
+/* Timeline surface and connector repair. */
+.introduce-hlw26__season-list {
+  padding: 2rem 1.5rem 3rem;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 365px,
+      #aab4ee 365px,
+      #aab4ee 367px,
+      transparent 367px
+    ),
+    #fff;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+.introduce-hlw26__season-list::before {
+  top: 365px;
+  right: 1.5rem;
+  left: 1.5rem;
+  z-index: 3;
+  height: 2px;
+  background: #aab4ee;
+}
+.introduce-hlw26__season {
+  z-index: 1;
+}
+.introduce-hlw26__season::after,
+.introduce-hlw26__season:nth-child(even)::after {
+  z-index: 2;
+  border: 0;
+  border-radius: 0;
+  background: #aab4ee;
+  box-shadow: none;
+}
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list {
+    padding: 2rem 1rem 0.5rem;
+  }
+  .introduce-hlw26__season-list::before {
+    top: 1.2rem;
+    right: 1rem;
+    left: 1rem;
+  }
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    top: 0;
+    left: 1.5rem;
+  }
+}
+
+/* Final timeline treatment: editorial labels and connector lines, no node circles. */
+.introduce-hlw26__season span {
+  display: none;
+}
+.introduce-hlw26__season strong {
+  margin-bottom: 0.55rem;
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+.introduce-hlw26__season:nth-child(even) .introduce-hlw26__season-thumb {
+  order: 1;
+}
+.introduce-hlw26__season:nth-child(even) > div:nth-child(2) {
+  order: 2;
+}
+.introduce-hlw26__season::after,
+.introduce-hlw26__season:nth-child(even)::after {
+  z-index: 0;
+}
+.introduce-hlw26__season-thumb,
+.introduce-hlw26__season > div:nth-child(2) {
+  position: relative;
+  z-index: 1;
+}
+.introduce-hlw26__season-list {
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 298px,
+      var(--red) 298px,
+      var(--red) 300px,
+      transparent 300px
+    ),
+    #fff;
+}
+.introduce-hlw26__season-list::before {
+  top: 298px;
+  background: var(--red);
+}
+.introduce-hlw26__season::after,
+.introduce-hlw26__season:nth-child(even)::after {
+  background: var(--red);
+}
+
+@media (max-width: 1128px) {
+  .introduce-hlw26__season-list {
+    background: #fff !important;
+  }
+
+  .introduce-hlw26__season-list::before,
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    display: none !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .introduce-hlw26__season,
+  .introduce-hlw26__season:nth-child(even) {
+    box-shadow: 0 8px 20px rgb(32 36 44 / 8%);
+  }
+
+  .introduce-hlw26__season-thumb {
+    height: 180px;
+  }
+
+  .introduce-hlw26__season > div:nth-child(2) {
+    gap: .15rem;
+    padding: 1.1rem 1rem 1.25rem;
+  }
+
+  .introduce-hlw26__season strong {
+    margin-bottom: .35rem;
+    font-size: 1.25rem;
+    line-height: 1.15;
+  }
+
+  .introduce-hlw26__season small {
+    line-height: 1.45;
+  }
+}
+
+/* Medium screens: keep the archive compact as a connected card grid. */
+@media (min-width: 701px) and (max-width: 1128px) {
+  .introduce-hlw26__season-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-height: 0;
+    gap: 1rem;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid var(--line);
+  }
+
+  .introduce-hlw26__season-list::before,
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    display: none;
+  }
+
+  .introduce-hlw26__season,
+  .introduce-hlw26__season:nth-child(even) {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+}
+
+/* Small screens: vertical archive from 2020 to 2026. */
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    min-height: 0;
+    padding: 1rem;
+    overflow: visible;
+    background: #fff;
+    border: 1px solid var(--line);
+  }
+
+  .introduce-hlw26__season-list::before,
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    display: none;
+  }
+
+  .introduce-hlw26__season,
+  .introduce-hlw26__season:nth-child(even) {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+}
+.introduce-hlw26__season-list::before {
+  top: 250px;
+  height: 1px;
+  background: #aab4ee;
+}
+.introduce-hlw26__season::after,
+.introduce-hlw26__season:nth-child(even)::after {
+  top: 174px;
+  left: 50%;
+  width: 1px;
+  height: 76px;
+  border: 0;
+  border-radius: 0;
+  background: #aab4ee;
+  box-shadow: none;
+  transform: translateX(-50%);
+}
+.introduce-hlw26__season:nth-child(even)::after {
+  top: auto;
+  bottom: 174px;
+  height: 76px;
+}
+.introduce-hlw26__season svg {
+  top: 232px;
+  left: calc(50% + 12px);
+}
+@media (max-width: 700px) {
+  .introduce-hlw26__season-list::before {
+    top: 1.2rem;
+  }
+  .introduce-hlw26__season::after,
+  .introduce-hlw26__season:nth-child(even)::after {
+    top: 0;
+    bottom: auto;
+    left: 1.5rem;
+    height: 2rem;
+  }
+  .introduce-hlw26__season svg {
+    top: 0.55rem;
+    left: 3rem;
+  }
+  .introduce-hlw26__season strong {
+    font-size: 1.2rem;
+  }
+}
+
+/* Final alignment override for the red timeline connectors. */
+.introduce-hlw26__season-list {
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 282px,
+      var(--red) 282px,
+      var(--red) 284px,
+      transparent 284px
+    ),
+    #fff;
+}
+.introduce-hlw26__season-list::before {
+  top: 282px;
+  height: 2px;
+  background: var(--red);
+}
+.introduce-hlw26__season::after,
+.introduce-hlw26__season:nth-child(even)::after {
+  background: var(--red);
+}

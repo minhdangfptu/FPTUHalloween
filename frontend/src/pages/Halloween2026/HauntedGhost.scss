@@ -1,0 +1,460 @@
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R4 V5 */
+/* Hallmark · macrostructure: field notes → film still → ticket ledger */
+.haunted-ghost-page {
+  --ink: #20242c;
+  --muted: #687180;
+  --paper: #fbfaf8;
+  --line: #e4ddd8;
+  --red: #d71920;
+  min-height: 100vh;
+  overflow-x: clip;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Roboto", sans-serif;
+}
+.haunted-ghost-hero {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4.5rem 16px 3.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.haunted-ghost-kicker,
+.haunted-ghost-section-label {
+  color: var(--red);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.haunted-ghost-kicker {
+  margin: 0 0 1rem;
+}
+.haunted-ghost-hero h1 {
+  margin: 0;
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  line-height: 0.83;
+  letter-spacing: -0.08em;
+}
+.haunted-ghost-hero h1 span {
+  color: var(--red);
+}
+.haunted-ghost-hero__intro {
+  max-width: 34rem;
+  margin: 1.5rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.haunted-ghost-hero__stamp {
+  display: grid;
+  place-items: center;
+  width: 138px;
+  aspect-ratio: 1;
+  border: 1px solid var(--red);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+}
+.haunted-ghost-hero__stamp strong {
+  font-size: 2.25rem;
+  letter-spacing: -0.08em;
+}
+.haunted-ghost-hero__stamp span {
+  margin-top: -1.5rem;
+  color: var(--red);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+}
+.haunted-ghost-story,
+.haunted-ghost-trailer,
+.haunted-ghost-tickets {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 16px;
+}
+.haunted-ghost-story {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.35fr) minmax(0, 1fr);
+  gap: 2rem;
+}
+.haunted-ghost-story h2,
+.haunted-ghost-trailer h2,
+.haunted-ghost-heading h2 {
+  margin: 0.3rem 0 1rem;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+}
+.haunted-ghost-story p,
+.haunted-ghost-trailer p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.06rem;
+  line-height: 1.8;
+}
+.haunted-ghost-trailer {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+.haunted-ghost-trailer__visual {
+  display: grid;
+  min-height: 310px;
+  place-items: center;
+  align-content: center;
+  gap: 1rem;
+  color: #fff;
+  background: linear-gradient(135deg, #25252a, #111114);
+  border-radius: 1rem;
+}
+.haunted-ghost-trailer__visual svg {
+  color: var(--red);
+}
+.haunted-ghost-trailer__visual span {
+  color: #c9c9cc;
+  font-size: 0.82rem;
+}
+.haunted-ghost-trailer__copy {
+  align-self: center;
+}
+.haunted-ghost-tickets {
+  border-top: 1px solid var(--line);
+}
+.haunted-ghost-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.haunted-ghost-heading h2 {
+  margin-bottom: 0;
+}
+.haunted-ghost-heading p {
+  max-width: 260px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.haunted-ghost-ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.haunted-ghost-ticket {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.4rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+.haunted-ghost-ticket__topline,
+.haunted-ghost-ticket__meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.haunted-ghost-ticket__topline {
+  color: var(--red);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.haunted-ghost-ticket h3 {
+  margin: 0.7rem 0 0;
+  font-size: 1.25rem;
+}
+.haunted-ghost-ticket > strong {
+  color: var(--red);
+  font-size: 1.35rem;
+}
+.haunted-ghost-ticket__meta {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.4rem 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.haunted-ghost-ticket button,
+.haunted-ghost-state button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+  color: #fff;
+  background: var(--red);
+  border: 0;
+  border-radius: 0.55rem;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+.haunted-ghost-ticket button:hover,
+.haunted-ghost-state button:hover {
+  background: #b9151b;
+  transform: translateY(-1px);
+}
+.haunted-ghost-state {
+  padding: 3rem 1rem;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  text-align: center;
+}
+.haunted-ghost-state--error {
+  color: var(--red);
+}
+.haunted-ghost-state button {
+  margin-left: 0.75rem;
+}
+@media (max-width: 700px) {
+  .haunted-ghost-hero {
+    align-items: start;
+    flex-direction: column;
+    padding-top: 3rem;
+  }
+  .haunted-ghost-hero__stamp {
+    width: 96px;
+  }
+  .haunted-ghost-story,
+  .haunted-ghost-trailer {
+    grid-template-columns: 1fr;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  .haunted-ghost-trailer__visual {
+    min-height: 240px;
+  }
+  .haunted-ghost-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+  .haunted-ghost-hero,
+  .haunted-ghost-story,
+  .haunted-ghost-trailer,
+  .haunted-ghost-tickets {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .haunted-ghost-hero,
+  .haunted-ghost-story,
+  .haunted-ghost-trailer,
+  .haunted-ghost-tickets {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .haunted-ghost-hero h1 {
+    font-size: 3.6rem;
+  }
+}
+
+.haunted-ghost-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: #fff;
+}
+.haunted-ghost-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  text-align: left;
+}
+.haunted-ghost-table__caption {
+  padding: 1rem 1.1rem;
+  color: var(--ink);
+  background: #fff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: left;
+  caption-side: top;
+}
+
+.haunted-ghost-hero {
+  position: relative;
+  max-width: none;
+  min-height: 480px;
+  padding-right: max(16px, calc((100% - 1168px) / 2));
+  padding-left: max(16px, calc((100% - 1168px) / 2));
+  color: #fff;
+  background-position: center;
+  background-size: cover;
+  isolation: isolate;
+}
+.haunted-ghost-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background: linear-gradient(90deg, rgb(12 12 16 / 84%), rgb(12 12 16 / 34%));
+}
+.haunted-ghost-rules {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 16px;
+  border-top: 1px solid var(--line);
+}
+.haunted-ghost-rules__image {
+  overflow: hidden;
+  min-height: 360px;
+  border-radius: 1rem;
+}
+.haunted-ghost-rules__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+}
+.haunted-ghost-rules__image {
+  grid-column: 2;
+  grid-row: 1;
+}
+.haunted-ghost-rules__copy {
+  grid-column: 1;
+  grid-row: 1;
+}
+.haunted-ghost-rules__copy h2 {
+  margin: 0.3rem 0 1.5rem;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+}
+.haunted-ghost-rules__copy ul {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.haunted-ghost-rules__copy li {
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.haunted-ghost-rules__copy li::before {
+  position: absolute;
+  top: 0.7em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  content: "";
+  background: var(--red);
+  border-radius: 50%;
+}
+@media (max-width: 700px) {
+  .haunted-ghost-hero {
+    min-height: 420px;
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+  .haunted-ghost-rules {
+    grid-template-columns: 1fr;
+    padding: 3rem 12px;
+  }
+  .haunted-ghost-rules__image,
+  .haunted-ghost-rules__copy {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .haunted-ghost-rules__image,
+  .haunted-ghost-rules__image img {
+    min-height: 260px;
+  }
+}
+@media (max-width: 480px) {
+  .haunted-ghost-hero,
+  .haunted-ghost-rules {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+.haunted-ghost-table th,
+.haunted-ghost-table td {
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.haunted-ghost-table thead th {
+  color: var(--muted);
+  background: #f5f2ed;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.haunted-ghost-table tbody tr:last-child th,
+.haunted-ghost-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.haunted-ghost-table tbody tr:hover {
+  background: #fff9f8;
+}
+.haunted-ghost-table tbody th {
+  min-width: 180px;
+  font-size: 0.95rem;
+}
+.haunted-ghost-table tbody th span {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.haunted-ghost-table tbody th span svg {
+  color: var(--red);
+}
+.haunted-ghost-table tbody th small {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+.haunted-ghost-table__price {
+  color: var(--red);
+  font-weight: 800;
+  white-space: nowrap;
+}
+.haunted-ghost-table__action {
+  text-align: right;
+}
+.haunted-ghost-table__action button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 42px;
+  padding: 0.65rem 0.9rem;
+  color: #fff;
+  background: var(--red);
+  border: 0;
+  border-radius: 0.55rem;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+.haunted-ghost-table__action button:hover {
+  background: #b9151b;
+}

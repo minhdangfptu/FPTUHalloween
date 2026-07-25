@@ -77,85 +77,91 @@ body {
 }
 
 :where(
-  .ticket-list-page,
-  .ticket-detail-page,
-  .ticket-cart-page,
-  .ticket-checkout-page,
-  .qr-payment-page,
-  .complete-payment-page,
-  .staff-ticket-list,
-  .staff-ticket-detail,
-  .staff-user-ticket-page,
-  .staff-checkin-page
-) h1 {
+    .ticket-list-page,
+    .ticket-detail-page,
+    .ticket-cart-page,
+    .ticket-checkout-page,
+    .qr-payment-page,
+    .complete-payment-page,
+    .staff-ticket-list,
+    .staff-ticket-detail,
+    .staff-user-ticket-page,
+    .staff-checkin-page
+  )
+  h1 {
   font-weight: 700;
   letter-spacing: -0.035em;
 }
 
 :where(
-  .ticket-list-page,
-  .ticket-detail-page,
-  .ticket-cart-page,
-  .ticket-checkout-page,
-  .qr-payment-page,
-  .complete-payment-page,
-  .staff-ticket-list,
-  .staff-ticket-detail,
-  .staff-user-ticket-page,
-  .staff-checkin-page
-) h2,
+    .ticket-list-page,
+    .ticket-detail-page,
+    .ticket-cart-page,
+    .ticket-checkout-page,
+    .qr-payment-page,
+    .complete-payment-page,
+    .staff-ticket-list,
+    .staff-ticket-detail,
+    .staff-user-ticket-page,
+    .staff-checkin-page
+  )
+  h2,
 :where(
-  .ticket-list-page,
-  .ticket-detail-page,
-  .ticket-cart-page,
-  .ticket-checkout-page,
-  .qr-payment-page,
-  .complete-payment-page,
-  .staff-ticket-list,
-  .staff-ticket-detail,
-  .staff-user-ticket-page,
-  .staff-checkin-page
-) h3 {
+    .ticket-list-page,
+    .ticket-detail-page,
+    .ticket-cart-page,
+    .ticket-checkout-page,
+    .qr-payment-page,
+    .complete-payment-page,
+    .staff-ticket-list,
+    .staff-ticket-detail,
+    .staff-user-ticket-page,
+    .staff-checkin-page
+  )
+  h3 {
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
 :where(
-  .ticket-list-page,
-  .ticket-detail-page,
-  .ticket-cart-page,
-  .ticket-checkout-page,
-  .qr-payment-page,
-  .complete-payment-page,
-  .staff-ticket-list,
-  .staff-ticket-detail,
-  .staff-user-ticket-page,
-  .staff-checkin-page
-) button,
+    .ticket-list-page,
+    .ticket-detail-page,
+    .ticket-cart-page,
+    .ticket-checkout-page,
+    .qr-payment-page,
+    .complete-payment-page,
+    .staff-ticket-list,
+    .staff-ticket-detail,
+    .staff-user-ticket-page,
+    .staff-checkin-page
+  )
+  button,
 :where(
-  .ticket-list-page,
-  .ticket-detail-page,
-  .ticket-cart-page,
-  .ticket-checkout-page,
-  .qr-payment-page,
-  .complete-payment-page,
-  .staff-ticket-list,
-  .staff-ticket-detail,
-  .staff-user-ticket-page,
-  .staff-checkin-page
-) input,
+    .ticket-list-page,
+    .ticket-detail-page,
+    .ticket-cart-page,
+    .ticket-checkout-page,
+    .qr-payment-page,
+    .complete-payment-page,
+    .staff-ticket-list,
+    .staff-ticket-detail,
+    .staff-user-ticket-page,
+    .staff-checkin-page
+  )
+  input,
 :where(
-  .ticket-list-page,
-  .ticket-detail-page,
-  .ticket-cart-page,
-  .ticket-checkout-page,
-  .qr-payment-page,
-  .complete-payment-page,
-  .staff-ticket-list,
-  .staff-ticket-detail,
-  .staff-user-ticket-page,
-  .staff-checkin-page
-) select {
+    .ticket-list-page,
+    .ticket-detail-page,
+    .ticket-cart-page,
+    .ticket-checkout-page,
+    .qr-payment-page,
+    .complete-payment-page,
+    .staff-ticket-list,
+    .staff-ticket-detail,
+    .staff-user-ticket-page,
+    .staff-checkin-page
+  )
+  select {
   font-family: inherit;
 }
 
@@ -249,8 +255,6 @@ button:hover {
   :root {
     color: #213547;
     background-color: #ffffff;
-  }
-  a:hover {
   }
   button {
     background-color: #f9f9f9;

@@ -4,6 +4,7 @@ import {
   CalendarDays,
   Check,
   Clock3,
+  MapPin,
   ShoppingBag,
   Ticket,
 } from "lucide-react";
@@ -18,6 +19,8 @@ const FEATURES = [
   "Vé điện tử cá nhân",
   "Dùng trong ngày sự kiện",
 ];
+
+const HAUNTED_HOUSE_LOCATION = "Sảnh Toà nhà Delta (trước thư viện)";
 
 const ListTicketTypePage = () => {
   const [activeFilter, setActiveFilter] = useState("all");
@@ -50,9 +53,15 @@ const ListTicketTypePage = () => {
   const visibleTickets = useMemo(
     () =>
       activeFilter === "all"
-        ? ticketTypes.filter(({ ticketTypeStatus, availableQuantity }) => ticketTypeStatus === "active" && Number(availableQuantity) >= 0)
+        ? ticketTypes.filter(
+            ({ ticketTypeStatus, availableQuantity }) =>
+              ticketTypeStatus === "active" && Number(availableQuantity) >= 0,
+          )
         : ticketTypes.filter(
-            ({ ticketTypeDate, ticketTypeStatus, availableQuantity }) => ticketTypeStatus === "active" && Number(availableQuantity) >= 0 && String(ticketTypeDate) === activeFilter,
+            ({ ticketTypeDate, ticketTypeStatus, availableQuantity }) =>
+              ticketTypeStatus === "active" &&
+              Number(availableQuantity) >= 0 &&
+              String(ticketTypeDate) === activeFilter,
           ),
     [activeFilter, ticketTypes],
   );
@@ -172,6 +181,10 @@ const ListTicketTypePage = () => {
                     <span>
                       <CalendarDays size={16} />
                       Ngày {ticketType.ticketTypeDate} tháng 10, 2026
+                    </span>
+                    <span>
+                      <MapPin size={16} />
+                      {HAUNTED_HOUSE_LOCATION}
                     </span>
                     <span>
                       <Ticket size={16} />

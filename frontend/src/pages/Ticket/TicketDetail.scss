@@ -186,6 +186,9 @@
   padding: var(--space-lg) var(--space-md) var(--space-lg) 0;
   color: var(--detail-red);
 }
+.ticket-detail-info-grid__location {
+  grid-column: 1 / -1;
+}
 .ticket-detail-info-grid span {
   display: grid;
   gap: 0.3rem;

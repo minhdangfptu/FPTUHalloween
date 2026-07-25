@@ -34,15 +34,15 @@ export default defineConfig([
       'no-multiple-empty-lines': 1, // Warn on multiple empty lines
       'space-before-blocks': ['error', 'always'], // Require space before blocks
       'object-curly-spacing': [1, 'always'], // Require spaces inside curly braces
-      'indent': ['warn', 2], // Use 2 spaces for indentation
-      'semi': [1, 'never'], //Khong su dung dau cham phay
-      'quotes': ['warn', 'single'], //Dung ''
+      'indent': 0, // Do not lint indentation
+      'semi': 0, // Do not lint semicolon usage
+      'quotes': 0, // Do not lint quote style
       'array-bracket-spacing': 1,
       'linebreak-style': 0,
       'no-unexpected-multiline': 'warn',
       'keyword-spacing': 1,
-      'comma-dangle': 1,
-      'comma-spacing': 1,
+      'comma-dangle': 0, // Do not lint trailing commas
+      'comma-spacing': 0, // Do not lint comma spacing
       'arrow-spacing': 1,
       "no-restricted-imports": [
         "error",

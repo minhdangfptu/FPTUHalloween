@@ -25,13 +25,15 @@ import FAQ from "./pages/Normal/FAQ";
 import Overall from "./pages/Halloween2025/Overall";
 import Agenda from "./pages/Halloween2025/Agenda";
 import News from "./pages/Halloween2025/News";
-import FPTUBoardGameClub from "./pages/FPTUBoardGameClub";
+import FPTUBoardGameClub from "./pages/Halloween2026/FPTUBoardGameClub";
 import ChangePassword from "./pages/Authentication/ChangePassword";
 import MessengerButton from "./components/MessengerButton";
 import UserProfile from "./pages/Account/UserProfile";
 import MyTicket from "./pages/Account/MyTicket";
 import FBGCLogin from "./pages/Authentication/FBGCLogin";
 import ListTicketTypePage from "./pages/Ticket/ListTicketTypePage";
+import HauntedGhost from "./pages/Halloween2026/HauntedGhost";
+import IntroduceHLW26 from "./pages/Halloween2026/IntroduceHLW26";
 import TicketDetail from "./pages/Ticket/TicketDetail";
 import Cart from "./pages/Ticket/Cart";
 import Checkout from "./pages/Ticket/Checkout";
@@ -48,6 +50,7 @@ import HotNews from "./pages/Admin/HotNews";
 import StaffCheckinTicket from "./pages/Staff/StaffCheckinTicket";
 import StaffHomePage from "./pages/Staff/StaffDashboardPage";
 import StaffUserTicket from "./pages/Staff/StaffUserTicket";
+import PDP from "./pages/Halloween2026/PDP";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -236,6 +239,30 @@ export default function App() {
             <ManageLayout role="admin">
               <AdminContactList />
             </ManageLayout>
+          }
+        />
+        <Route
+          path="/haunted-ghost"
+          element={
+            <Layout>
+              <HauntedGhost />
+            </Layout>
+          }
+        />
+        <Route
+          path="/introduce-hlw26"
+          element={
+            <Layout>
+              <IntroduceHLW26 />
+            </Layout>
+          }
+        />
+        <Route
+          path="/pdp"
+          element={
+            <Layout>
+              <PDP />
+            </Layout>
           }
         />
         <Route

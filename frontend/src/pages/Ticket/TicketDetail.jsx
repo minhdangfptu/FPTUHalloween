@@ -4,6 +4,7 @@ import {
   CalendarDays,
   Check,
   Clock3,
+  MapPin,
   Minus,
   Plus,
   ShieldCheck,
@@ -15,12 +16,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import cartAPI from "../../apis/cartAPI";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
-import { translateError, translateSuccess } from "../../utils/translateResponse";
+import {
+  translateError,
+  translateSuccess,
+} from "../../utils/translateResponse";
 import { flyToCart, notifyCartUpdated } from "../../utils/flyingToCart";
 import "./TicketDetail.scss";
 
 const formatPrice = (price) =>
   `${new Intl.NumberFormat("vi-VN").format(price || 0)} VND`;
+
+const HAUNTED_HOUSE_LOCATION = "Sảnh Toà nhà Delta (trước thư viện)";
 
 const TicketDetail = () => {
   const navigate = useNavigate();
@@ -67,7 +73,9 @@ const TicketDetail = () => {
       const result = await cartAPI.addItem(ticketType._id, quantity);
       notifyCartUpdated(result?.cart);
       flyToCart(sourceElement);
-      toast.success(translateSuccess(result?.message || "Item added to cart successfully"));
+      toast.success(
+        translateSuccess(result?.message || "Item added to cart successfully"),
+      );
       navigate("/cart");
     } catch (requestError) {
       toast.error(translateError(requestError));
@@ -169,6 +177,13 @@ const TicketDetail = () => {
                   <strong>{isActive ? "Đang mở bán" : "Tạm ngưng"}</strong>
                 </span>
               </div>
+              <div className="ticket-detail-info-grid__location">
+                <MapPin size={19} />
+                <span>
+                  <small>Địa điểm Nhà Ma</small>
+                  <strong>{HAUNTED_HOUSE_LOCATION}</strong>
+                </span>
+              </div>
             </div>
 
             <div className="ticket-detail-includes">
@@ -241,7 +256,8 @@ const TicketDetail = () => {
               disabled={!isActive || isAddingToCart}
               onClick={addToCart}
             >
-              <ShoppingBag size={18} /> {isAddingToCart ? "Đang thêm..." : "Thêm vào giỏ hàng"}
+              <ShoppingBag size={18} />{" "}
+              {isAddingToCart ? "Đang thêm..." : "Thêm vào giỏ hàng"}
             </button>
             <p className="ticket-detail-note">
               Bạn sẽ được chuyển đến bước xác nhận đơn hàng sau khi chọn mua.

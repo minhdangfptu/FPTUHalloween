@@ -1,0 +1,547 @@
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
+/* Hallmark · genre: editorial · macrostructure: Long Document · theme: FPTU paper · enrichment: none · nav: inherited · footer: inherited */
+.fptu-club-page {
+  --club-ink: oklch(22% 0.02 260);
+  --club-muted: oklch(48% 0.025 260);
+  --club-paper: oklch(98% 0.008 70);
+  --club-surface: oklch(100% 0.001 70);
+  --club-line: oklch(89% 0.015 55);
+  --club-red: #e60000;
+  --club-red-soft: oklch(64% 0.16 28);
+  --club-dark: oklch(11% 0.02 260);
+  --club-focus: oklch(40% 0.18 300);
+  --club-hero-lede: oklch(93% 0.01 70);
+  --club-overlay-line: oklch(100% 0.001 70 / 0.6);
+  --club-hero-number: oklch(100% 0.001 70 / 0.18);
+  --club-shadow: 0 16px 40px oklch(22% 0.02 260 / 0.12);
+  --club-overlay: linear-gradient(
+    90deg,
+    oklch(11% 0.02 260 / 0.9),
+    oklch(11% 0.02 260 / 0.32)
+  );
+  --club-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --club-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --club-body: "Roboto", sans-serif;
+  --club-display: "Roboto", sans-serif;
+  min-width: 0;
+  min-height: 100vh;
+  overflow-x: clip;
+  color: var(--club-ink);
+  background: var(--club-paper);
+  font-family: var(--club-body);
+}
+
+.fptu-club-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: min(680px, 80svh);
+  padding: 5rem max(1rem, calc((100% - 1168px) / 2)) 4rem;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--club-surface);
+  background-position: center;
+  background-size: cover;
+}
+
+.fptu-club-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--club-overlay);
+}
+
+.fptu-club-hero-content {
+  max-width: 960px;
+  min-width: 0;
+}
+
+.fptu-club-eyebrow,
+.fptu-club-section-mark,
+.fptu-club-contact-mark,
+.fptu-club-brand-kicker {
+  color: var(--club-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.fptu-club-eyebrow {
+  margin: 0;
+  color: var(--club-red-soft);
+}
+
+.fptu-club-hero h1 {
+  max-width: 960px;
+  margin: 2rem 0 1.5rem;
+  color: var(--club-surface);
+  font-family: var(--club-display);
+  font-size: clamp(3.35rem, 9vw, 8rem);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.085em;
+  line-height: 0.84;
+  overflow-wrap: anywhere;
+}
+
+.fptu-club-hero h1 span {
+  display: block;
+  color: var(--club-red-soft);
+}
+
+.fptu-club-hero-lede {
+  max-width: 450px;
+  margin: 0;
+  color: var(--club-hero-lede);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.fptu-club-scroll-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+  color: var(--club-surface);
+  border-bottom: 1px solid var(--club-overlay-line);
+  text-decoration: none;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.fptu-club-scroll-link svg {
+  transition: transform 220ms var(--club-ease-out);
+}
+
+.fptu-club-hero-year {
+  position: absolute;
+  top: 5rem;
+  right: max(1rem, calc((100% - 1168px) / 2));
+  color: var(--club-hero-number);
+  font-family: var(--club-display);
+  font-size: clamp(8rem, 20vw, 18rem);
+  font-weight: 900;
+  letter-spacing: -0.1em;
+  line-height: 0.75;
+  pointer-events: none;
+}
+
+.fptu-club-profile {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1rem 6rem;
+  border-bottom: 1px solid var(--club-line);
+}
+
+.fptu-club-section-mark,
+.fptu-club-contact-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fptu-club-section-mark {
+  margin-bottom: 1.5rem;
+}
+
+.fptu-club-profile-main {
+  min-width: 0;
+  margin-top: 1.5rem;
+}
+
+.fptu-club-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--club-line);
+}
+
+.fptu-club-avatar {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  width: 5.5rem;
+  height: 5.5rem;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid var(--club-line);
+  border-radius: 50%;
+  color: var(--club-surface);
+  background: var(--club-dark);
+  font-family: var(--club-display);
+  font-size: 2.25rem;
+  font-weight: 900;
+}
+
+.fptu-club-avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fptu-club-brand-copy {
+  min-width: 0;
+}
+
+.fptu-club-brand-kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.62rem;
+}
+
+.fptu-club-brand h2 {
+  margin: 0;
+  color: var(--club-ink);
+  font-family: var(--club-display);
+  font-size: clamp(1.5rem, 3vw, 2.35rem);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+.fptu-club-brand-copy > p:last-child {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.7rem 0 0;
+  color: var(--club-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.fptu-club-content-layout {
+  display: grid;
+  gap: 3rem;
+  margin-top: 2.5rem;
+}
+
+.fptu-club-story {
+  min-width: 0;
+}
+
+.fptu-club-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--club-line);
+  border-bottom: 1px solid var(--club-line);
+}
+
+.fptu-club-tabs button {
+  position: relative;
+  min-height: 3rem;
+  padding: 0.65rem 0.4rem;
+  border: 0;
+  color: var(--club-muted);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.fptu-club-tabs button::after {
+  position: absolute;
+  right: 0.4rem;
+  bottom: -1px;
+  left: 0.4rem;
+  height: 2px;
+  content: "";
+  background: var(--club-red);
+  opacity: 0;
+  transform: scaleX(0.35);
+  transform-origin: center;
+  transition:
+    transform 220ms var(--club-ease-out),
+    opacity 220ms var(--club-ease-out);
+}
+
+.fptu-club-tabs button.is-active {
+  color: var(--club-red);
+}
+
+.fptu-club-tabs button.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.fptu-club-tabs button:focus-visible,
+.fptu-club-scroll-link:focus-visible,
+.fptu-club-contact a:focus-visible {
+  outline: 3px solid var(--club-focus);
+  outline-offset: 3px;
+}
+
+.fptu-club-panel {
+  max-width: 68ch;
+  padding-top: 2rem;
+  color: var(--club-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.fptu-club-panel p {
+  margin: 0;
+}
+
+.fptu-club-panel p + p {
+  margin-top: 1.35rem;
+}
+
+.fptu-club-panel h3 {
+  margin: 0 0 0.8rem;
+  color: var(--club-ink);
+  font-family: var(--club-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.fptu-club-panel .fptu-club-lede {
+  color: var(--club-ink);
+  font-size: clamp(1.08rem, 2vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.55;
+}
+
+.fptu-club-stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--club-line);
+}
+
+.fptu-club-stat-row strong,
+.fptu-club-stat-row span {
+  display: block;
+}
+
+.fptu-club-stat-row strong {
+  color: var(--club-red);
+  font-family: var(--club-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.fptu-club-stat-row span {
+  margin-top: 0.4rem;
+  color: var(--club-muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.fptu-club-image-frame {
+  margin: 1.75rem 0 0;
+}
+
+.fptu-club-image-frame img {
+  display: block;
+  width: 100%;
+  max-height: 26rem;
+  border: 1px solid var(--club-line);
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.fptu-club-image-frame figcaption {
+  margin-top: 0.55rem;
+  color: var(--club-muted);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.fptu-club-achievement-gallery {
+  display: grid;
+  gap: 1rem;
+}
+
+.fptu-club-weekly-gallery {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 40rem) {
+  .fptu-club-achievement-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fptu-club-weekly-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.fptu-club-empty-state {
+  padding: 2rem 0;
+  border-top: 1px solid var(--club-line);
+  border-bottom: 1px solid var(--club-line);
+}
+
+.fptu-club-empty-state > span {
+  color: var(--club-red);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.fptu-club-empty-state h3 {
+  margin-top: 1rem;
+}
+
+.fptu-club-contact {
+  min-width: 0;
+  padding-top: 0.25rem;
+}
+
+.fptu-club-contact h3 {
+  margin: 1.5rem 0;
+  color: var(--club-ink);
+  font-family: var(--club-display);
+  font-size: 1.6rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+
+.fptu-club-contact dl {
+  margin: 0;
+}
+
+.fptu-club-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--club-line);
+}
+
+.fptu-club-contact-item > svg {
+  flex: 0 0 auto;
+  margin-top: 0.15rem;
+  color: var(--club-red);
+}
+
+.fptu-club-contact-item dt {
+  color: var(--club-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.fptu-club-contact-item dd {
+  margin: 0.35rem 0 0;
+  color: var(--club-ink);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.fptu-club-contact a {
+  color: var(--club-ink);
+  text-decoration-color: var(--club-red);
+  text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fptu-club-scroll-link:hover svg {
+    transform: translateY(0.2rem);
+  }
+
+  .fptu-club-contact a:hover {
+    color: var(--club-red);
+  }
+}
+
+@media (min-width: 40rem) {
+  .fptu-club-tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .fptu-club-tabs button {
+    padding-inline: 0.6rem;
+  }
+}
+
+@media (min-width: 60rem) {
+  .fptu-club-profile {
+    display: block;
+  }
+
+  .fptu-club-profile-main {
+    margin-top: 0;
+  }
+
+  .fptu-club-content-layout {
+    grid-template-columns: minmax(0, 1.4fr) minmax(15rem, 0.7fr);
+    gap: 3.5rem;
+  }
+
+  .fptu-club-contact {
+    padding-top: 0;
+    padding-left: 2rem;
+    border-left: 1px solid var(--club-line);
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .fptu-club-hero {
+    min-height: 560px;
+    padding: 4rem 0.75rem 3rem;
+  }
+
+  .fptu-club-hero-year {
+    top: 4rem;
+    right: 0.75rem;
+    font-size: 8rem;
+  }
+
+  .fptu-club-profile {
+    padding: 3rem 0.75rem 4rem;
+  }
+
+  .fptu-club-brand {
+    align-items: flex-start;
+  }
+
+  .fptu-club-avatar {
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 1.8rem;
+  }
+
+  .fptu-club-stat-row {
+    gap: 0.65rem;
+  }
+
+  .fptu-club-stat-row strong {
+    font-size: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fptu-club-page *,
+  .fptu-club-page *::before,
+  .fptu-club-page *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+}

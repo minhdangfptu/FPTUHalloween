@@ -1,6 +1,7 @@
 /* Hallmark · admin directory · genre: editorial administration · theme: FPT red */
 .admin-user-page {
   min-height: 100vh;
+  background: #f5f2ed;
 }
 .admin-user-list {
   flex: 1;
@@ -26,8 +27,9 @@
 }
 .admin-user-list h1 {
   margin: 0;
-  font-size: clamp(28px, 3vw, 42px);
-  line-height: 1.1;
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  line-height: .95;
+  letter-spacing: -.07em;
 }
 .admin-user-list__header > div > p:last-child {
   margin: 12px 0 0;

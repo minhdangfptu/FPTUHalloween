@@ -132,10 +132,7 @@ function ContactUsPage() {
                 phát triển sự kiện ngày càng tốt hơn.
               </p>
 
-              <div
-                className="fptu-halloween-contact-social"
-                style={{ display: "flex", gap: "12px" }}
-              >
+              <div className="fptu-halloween-contact-social">
                 <button
                   onClick={() =>
                     window.open(
@@ -184,9 +181,9 @@ function ContactUsPage() {
                 <div className="fptu-halloween-contact-form-fields">
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                      style={{ color: "black" }}
                       type="text"
                       name="receiverName"
+                      aria-label="Tên của bạn"
                       placeholder="Tên của bạn"
                       value={formData.receiverName}
                       onChange={handleInputChange}
@@ -205,9 +202,9 @@ function ContactUsPage() {
 
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                      style={{ color: "black" }}
-                      type="phone"
+                      type="tel"
                       name="phone"
+                      aria-label="Số điện thoại"
                       placeholder="Số điện thoại"
                       value={formData.phone}
                       onChange={handleInputChange}
@@ -226,9 +223,9 @@ function ContactUsPage() {
 
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                      style={{ color: "black" }}
                       type="email"
                       name="email"
+                      aria-label="Email"
                       placeholder="Email"
                       value={formData.email}
                       onChange={handleInputChange}
@@ -243,9 +240,9 @@ function ContactUsPage() {
 
                   <div className="fptu-halloween-contact-form-group">
                     <input
-                      style={{ color: "black" }}
                       type="text"
                       name="topic"
+                      aria-label="Tiêu đề"
                       placeholder="Tiêu đề"
                       value={formData.topic}
                       onChange={handleInputChange}
@@ -264,8 +261,8 @@ function ContactUsPage() {
 
                   <div className="fptu-halloween-contact-form-group">
                     <textarea
-                      style={{ color: "black" }}
                       name="message"
+                      aria-label="Nội dung"
                       placeholder="Nội dung"
                       value={formData.message}
                       onChange={handleInputChange}

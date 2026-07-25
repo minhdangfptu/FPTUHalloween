@@ -1,30 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./OldEvent.css";
-import {
-  Container,
-  Box,
-  TextField,
-  Typography,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Chip,
-  InputAdornment,
-  Button,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import { useNavigate } from "react-router-dom";
+import { ArrowDown, CalendarDays, X } from "lucide-react";
+import cover from "../../assets/cover-01.png";
+import event2020 from "../../assets/hlw/2020.jpg";
+import event2022 from "../../assets/hlw/2022.jpg";
+import event2023 from "../../assets/hlw/2023.jpg";
+import event2024 from "../../assets/hlw/2024.jpg";
+import event2025 from "../../assets/hlw/2025.jpg";
 
 const eventsData = [
   {
-    id: 1,
-    title: "FPTU Halloween 2025",
+    id: 6,
+    title: "FPTU Halloween 2026",
     status: "Sắp diễn ra",
     statusColor: "success",
+    date: "Đang cập nhật",
+    description:
+      "Thông tin concept Halloween FPTU 2026 sẽ được Ban tổ chức cập nhật trong thời gian tới.",
+    image: null,
+  },
+  {
+    id: 1,
+    title: "FPTU Halloween 2025",
+    status: "Đã kết thúc",
+    statusColor: "error",
     date: "28/10 - 31/10/2025",
     // --- Bắt đầu chỉnh sửa ---
     description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟓]: 𝐖𝐈𝐒𝐇𝐁𝐎𝐔𝐍𝐃
@@ -104,12 +105,12 @@ Trong buổi tối 31/10 tới đây, BTC sẽ đưa bạn đến với Fear Cor
     date: "30/10 - 31/10/2020",
     description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟎]: 𝐓𝐇𝐄 𝐇𝐀𝐔𝐍𝐓𝐄𝐃 𝐅𝐎𝐑𝐄𝐒𝐓
 
-💥🎃  ̼B̼O̼M̼ ̼T̼Ấ̼N̼ ̼H̼A̼L̼L̼O̼W̼E̼E̼N̼ ̼2̼0̼2̼0̼  🎃💥
+💥🎃 ̼B̼O̼M̼ ̼T̼Ấ̼N̼ ̼H̼A̼L̼L̼O̼W̼E̼E̼N̼ ̼2̼0̼2̼0̼ 🎃💥
 
 🕸️ 𝐺𝑢̛𝑜̛𝑛𝑔 𝑘𝑖𝑎 𝑛𝑔𝑢̛̣ 𝑜̛̉ 𝑡𝑟𝑒̂𝑛 𝑡𝑢̛𝑜̛̀𝑛𝑔 
 𝑁𝑔ℎ𝑒 𝑛𝑜́𝑖 𝑡𝑟𝑢̛𝑜̛̀𝑛𝑔 𝐹 𝑐𝑜́ 𝑔𝑖̀ ℎ𝑎𝑦 ℎ𝑜 
-🕸️  𝐾𝑖̀ 𝑏𝑖́, 𝑚𝑎 𝑚𝑖̣, 𝑛ℎ𝑖𝑒̂̀𝑢 𝑡𝑟𝑜̀ 
-𝐿𝑎̂̀𝑛 đ𝑎̂̀𝑢 𝑥𝑢𝑎̂́𝑡 ℎ𝑖𝑒̣̂𝑛, 𝑛𝑔𝑢̛𝑜̛̀𝑖 𝑛𝑔𝑢̛𝑜̛̀𝑖 đ𝑒̂̀𝑢 𝑚𝑜𝑛𝑔  
+🕸️ 𝐾𝑖̀ 𝑏𝑖́, 𝑚𝑎 𝑚𝑖̣, 𝑛ℎ𝑖𝑒̂̀𝑢 𝑡𝑟𝑜̀
+𝐿𝑎̂̀𝑛 đ𝑎̂̀𝑢 𝑥𝑢𝑎̂́𝑡 ℎ𝑖𝑒̣̂𝑛, 𝑛𝑔𝑢̛𝑜̛̀𝑖 𝑛𝑔𝑢̛𝑜̛̀𝑖 đ𝑒̂̀𝑢 𝑚𝑜𝑛𝑔
 
 Nghe nói từ xưa đến nay, mảnh đất xa xôi nội thành này vẫn luôn chứa đựng nhiều bí ẩn, với những câu chuyện kinh dị có thật, các hiện tượng lạ được lan truyền gieo rắc nỗi sợ hãi cho thần dân nơi đây 😰. Nhưng giờ bạn sẽ không chỉ được nghe, mà còn được trải nghiệm nỗi sợ hãi một cách chân thật nhất và thử thách lòng can đảm với sự kiện kinh dị đậm chất FPTU lần này. 
 
@@ -121,201 +122,341 @@ Nghe nói từ xưa đến nay, mảnh đất xa xôi nội thành này vẫn lu
   },
 ];
 
+const EVENT_IMAGES = {
+  1: event2025,
+  2: event2024,
+  3: event2023,
+  4: event2022,
+  5: event2020,
+};
+
+const EVENT_DETAILS = {
+  6: {
+    year: "2026",
+    time: "Đang cập nhật",
+    location: "Đang cập nhật",
+    scale: "Đang cập nhật",
+    concept: "Đang cập nhật",
+  },
+  1: {
+    year: "2025",
+    time: "28/10 - 31/10/2025",
+    location: "Đường 30m Đại học FPT Hà Nội (Nhà ma trong tòa Delta)",
+    scale: "Đang cập nhật",
+    concept: "Wishbound",
+  },
+  2: {
+    year: "2024",
+    time: "29/10 - 31/10/2024",
+    location: "Đang cập nhật",
+    scale: "Đang cập nhật",
+    concept: "U Linh Ký",
+  },
+  3: {
+    year: "2023",
+    time: "30/10 - 31/10/2023",
+    location: "Đang cập nhật",
+    scale: "Đang cập nhật",
+    concept: "Haunted Fest",
+  },
+  4: {
+    year: "2022",
+    time: "31/10/2022",
+    location: "Sân trước tòa nhà Delta",
+    scale: "Đang cập nhật",
+    concept: "Fear Corner",
+  },
+  5: {
+    year: "2020",
+    time: "30/10 - 31/10/2020",
+    location: "Đang cập nhật",
+    scale: "Đang cập nhật",
+    concept: "The Haunted Forest",
+  },
+};
+
+const archivedEvents = eventsData.map((event) => ({
+  ...event,
+  ...EVENT_DETAILS[event.id],
+  image: EVENT_IMAGES[event.id] || event.image,
+}));
+
+const handleSectionScroll = (event) => {
+  event.preventDefault();
+
+  const targetId = event.currentTarget.getAttribute("href");
+  const target = targetId ? document.querySelector(targetId) : null;
+
+  target?.scrollIntoView({
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+    block: "start",
+  });
+};
+
+const getDescriptionBlocks = (description = "") =>
+  description
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
 export default function OldEvent() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-  const filteredEvents = eventsData.filter((event) =>
-    event.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const dialogRef = useRef(null);
+
+  const openEvent = (event) => setSelectedEvent(event);
+  const closeEvent = () => setSelectedEvent(null);
+  const handleCardKeyDown = (event, keyEvent) => {
+    if (keyEvent.key !== "Enter" && keyEvent.key !== " ") return;
+
+    keyEvent.preventDefault();
+    openEvent(event);
+  };
+
+  useEffect(() => {
+    const eventYear = window.location.hash.replace("#halloween-", "");
+    const hashEvent = archivedEvents.find((event) =>
+      event.title.endsWith(eventYear),
+    );
+
+    if (hashEvent) setSelectedEvent(hashEvent);
+  }, []);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (selectedEvent && !dialog.open) {
+      dialog.showModal();
+    }
+
+    if (!selectedEvent && dialog.open) {
+      dialog.close();
+    }
+  }, [selectedEvent]);
 
   return (
-    <Box>
-      <header className="fptu-halloween-contact-header">
-        <div className="fptu-halloween-contact-banner">
-          <h1 className="fptu-halloween-contact-banner-title">
-            CÁC MÙA SỰ KIỆN FPTU HALLOWEEN
+    <main className="old-event-page">
+      <section
+        className="old-event-hero"
+        style={{ backgroundImage: `url(${cover})` }}
+      >
+        <div className="old-event-hero-overlay" />
+        <div className="old-event-hero-content">
+          <p className="old-event-eyebrow">FPTU HALLOWEEN · ARCHIVE</p>
+          <h1>
+            Những mùa lễ hội,
+            <br />
+            <span>những thế giới khác.</span>
           </h1>
+          <p className="old-event-hero-lede">
+            Một kho lưu trữ những concept đã tạo nên ký ức Halloween FPTU.
+          </p>
+          <a
+            className="old-event-scroll-link"
+            href="#archive"
+            onClick={handleSectionScroll}
+          >
+            Xem kho lưu trữ <ArrowDown size={16} aria-hidden="true" />
+          </a>
         </div>
-      </header>
-      <Box sx={{ bgcolor: "#f5f5f5", minHeight: "100vh", py: 4 }}>
-        <Container maxWidth="lg">
-          {/* Search Bar */}
-          <Box sx={{ mb: 4, display: "flex", justifyContent: "center" }}>
-            <TextField
-              padding="10px"
-              size="small"
-              fullWidth
-              placeholder="Tìm kiếm sự kiện..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: "text.secondary" }} />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{
-                maxWidth: 600,
-                "& .MuiOutlinedInput-root": {
-                  bgcolor: "white",
-                  borderRadius: 2,
-                  "& fieldset": {
-                    borderColor: "#e0e0e0",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#E63946",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#E63946",
-                  },
-                },
-              }}
-            />
-          </Box>
+        <div className="old-event-hero-year" aria-hidden="true">
+          20—
+        </div>
+      </section>
 
-          {/* Events Section */}
-          <Box>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: {
-                  xs: "1fr",
-                  sm: "repeat(2, 1fr)",
-                  md: "repeat(3, 1fr)",
-                },
-                gap: 3,
-                width: "100%",
-              }}
-            >
-              {filteredEvents.map((event) => (
-                <Card
-                  key={event.id} // Thêm key prop để React hoạt động hiệu quả
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    borderRadius: 3,
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
-                    transition: "transform 0.3s, box-shadow 0.3s",
-                    bgcolor: "white",
-                    "&:hover": {
-                      transform: "translateY(-6px)",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                    },
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={event.image}
-                    alt={event.title}
-                    sx={{
-                      bgcolor: "#e0e0e0",
-                      borderRadius: "12px 12px 0 0",
-                      objectFit: "cover",
-                    }}
-                  />
-                  <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: 700,
-                        mb: 2,
-                        color: "#333",
-                        fontSize: "1.1rem",
-                      }}
-                    >
-                      {event.title}
-                    </Typography>
+      <section
+        className="old-event-archive"
+        id="archive"
+        aria-labelledby="old-event-archive-title"
+      >
+        <div className="old-event-section-mark">
+          <CalendarDays size={18} aria-hidden="true" /> Dấu mốc
+        </div>
+        <div className="old-event-archive-main">
+          <h2 id="old-event-archive-title">
+            Từ khu rừng ma
+            <br />
+            <span>đến thị trấn điều ước.</span>
+          </h2>
+          <p className="old-event-archive-lede">
+            Chọn một mùa Halloween để đọc lại concept và câu chuyện phía sau sự
+            kiện.
+          </p>
 
-                    <Box
-                      sx={{ display: "flex", gap: 1, mb: 2, flexWrap: "wrap" }}
-                    >
-                      <Chip
-                        label={event.status}
-                        color={event.statusColor}
-                        size="small"
-                        sx={{
-                          fontWeight: 500,
-                          fontSize: "0.75rem",
-                          height: 24,
-                          borderRadius: 2,
-                        }}
-                      />
-                      <Chip
-                        label={event.date}
-                        size="small"
-                        sx={{
-                          bgcolor: "#f0f0f0",
-                          color: "#666",
-                          fontWeight: 500,
-                          fontSize: "0.75rem",
-                          height: 24,
-                          borderRadius: 2,
-                        }}
-                      />
-                    </Box>
-
-                    {/* --- Bắt đầu chỉnh sửa quan trọng --- */}
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: "#666",
-                        lineHeight: 1.6,
-                        fontSize: "0.9rem",
-                        // Thêm thuộc tính này để hiển thị xuống dòng
-                        whiteSpace: "pre-line",
-                      }}
-                    >
-                      {event.description}
-                    </Typography>
-                    {/* --- Kết thúc chỉnh sửa quan trọng --- */}
-                  </CardContent>
-                </Card>
-              ))}
-              <Box
-                sx={{
-                  gridColumn: "1 / -1",
-                  display: "flex",
-                  justifyContent: "center",
-                  mt: 2,
-                  mb: 2,
-                }}
+          <div className="old-event-grid" aria-live="polite">
+            {archivedEvents.map((event) => (
+              <article
+                className="old-event-card"
+                key={event.id}
+                role="button"
+                tabIndex={0}
+                aria-haspopup="dialog"
+                aria-expanded={selectedEvent?.id === event.id}
+                aria-label={`Đọc concept ${event.title}`}
+                onClick={() => openEvent(event)}
+                onKeyDown={(keyEvent) => handleCardKeyDown(event, keyEvent)}
               >
-                <Button
-                  onClick={() => {
-                    navigate ("/fanpage");
-                  }}
-                  variant="outlined"
-                  startIcon={<FacebookIcon />}
-                  sx={{
-                    borderRadius: 2,
-                    borderColor: "#E63946",
-                    color: "white",
-                    backgroundColor: "#E63946",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                    textTransform: "none",
-                    borderWidth: 2,
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      backgroundColor: "#E63946",
-                      color: "white",
-                      boxShadow: "0 4px 12px rgba(230, 57, 70, 0.3)",
-                    },
-                    "&:active": {
-                      transform: "translateY(0)",
-                    },
-                  }}
-                >
-                  Fanpage Sự kiện
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-        </Container>
-      </Box>
-    </Box>
+                <div className="old-event-card-image-wrap">
+                  {event.image ? (
+                    <img
+                      className="old-event-card-image"
+                      src={event.image}
+                      alt={`${event.title} thumbnail`}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="old-event-coming-soon">Coming soon</span>
+                  )}
+                  <span className="old-event-card-year">
+                    {event.title.replace("FPTU Halloween ", "")}
+                  </span>
+                </div>
+                <div className="old-event-card-content">
+                  <div className="old-event-card-topline">
+                    <span
+                      className={`old-event-card-status old-event-card-status--${event.statusColor}`}
+                    >
+                      {event.status}
+                    </span>
+                  </div>
+                  <h3>{event.title}</h3>
+                  <div
+                    className="old-event-card-details"
+                    aria-label={`Thông tin ${event.title}`}
+                  >
+                    <div className="old-event-card-detail">
+                      <span>Năm</span>
+                      <strong>{event.year}</strong>
+                    </div>
+                    <div className="old-event-card-detail">
+                      <span>Thời gian</span>
+                      <strong>{event.time}</strong>
+                    </div>
+                    <div className="old-event-card-detail old-event-card-detail--wide">
+                      <span>Địa điểm</span>
+                      <strong>{event.location}</strong>
+                    </div>
+                    <div className="old-event-card-detail">
+                      <span>Quy mô</span>
+                      <strong>{event.scale}</strong>
+                    </div>
+                    <div className="old-event-card-detail">
+                      <span>Concept</span>
+                      <strong>{event.concept}</strong>
+                    </div>
+                  </div>
+                  <span className="old-event-card-link">
+                    {event.image ? (
+                      <>
+                        Đọc concept <ArrowDown size={16} aria-hidden="true" />
+                      </>
+                    ) : (
+                      "Coming soon"
+                    )}
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <dialog
+        ref={dialogRef}
+        className="old-event-dialog"
+        aria-labelledby="old-event-dialog-title"
+        aria-describedby="old-event-dialog-description"
+        onCancel={(event) => {
+          event.preventDefault();
+          closeEvent();
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) closeEvent();
+        }}
+      >
+        {selectedEvent && (
+          <div className="old-event-dialog-shell">
+            <div className="old-event-dialog-header">
+              <div>
+                <p className="old-event-dialog-kicker">
+                  Concept archive · {selectedEvent.year}
+                </p>
+                <h2 id="old-event-dialog-title">{selectedEvent.title}</h2>
+                <p className="old-event-dialog-concept">
+                  Concept · {selectedEvent.concept}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="old-event-dialog-close"
+                aria-label="Đóng concept"
+                onClick={closeEvent}
+              >
+                <X size={20} aria-hidden="true" />
+              </button>
+            </div>
+            <div
+              className={`old-event-dialog-visual${
+                selectedEvent.year === "2020"
+                  ? " old-event-dialog-visual--square"
+                  : ""
+              }`}
+            >
+              {selectedEvent.image ? (
+                <img src={selectedEvent.image} alt="" />
+              ) : (
+                <span className="old-event-coming-soon">Coming soon</span>
+              )}
+            </div>
+            <div className="old-event-dialog-meta">
+              <span
+                className={`old-event-card-status old-event-card-status--${selectedEvent.statusColor}`}
+              >
+                {selectedEvent.status}
+              </span>
+              <span>{selectedEvent.time}</span>
+            </div>
+            <div className="old-event-dialog-facts">
+              <div className="old-event-dialog-fact">
+                <span>Địa điểm</span>
+                <strong>{selectedEvent.location}</strong>
+              </div>
+              <div className="old-event-dialog-fact">
+                <span>Quy mô</span>
+                <strong>{selectedEvent.scale}</strong>
+              </div>
+            </div>
+            <div
+              id="old-event-dialog-description"
+              className="old-event-description"
+            >
+              {getDescriptionBlocks(selectedEvent.description).map(
+                (block, index) => (
+                  <p
+                    className={
+                      index === 0 ? "old-event-description-lead" : undefined
+                    }
+                    key={`${selectedEvent.id}-description-${index}`}
+                  >
+                    {block}
+                  </p>
+                ),
+              )}
+            </div>
+            <div className="old-event-dialog-actions">
+              <button
+                type="button"
+                className="old-event-dialog-action"
+                onClick={closeEvent}
+              >
+                Đóng concept
+              </button>
+            </div>
+          </div>
+        )}
+      </dialog>
+    </main>
   );
 }

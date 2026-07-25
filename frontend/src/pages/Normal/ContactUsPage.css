@@ -295,10 +295,14 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  min-width: 0;
 }
 
 .fptu-halloween-contact-map-iframe {
+  display: block;
   width: 100%;
+  max-width: 100%;
   height: 300px;
   border: none;
 }
@@ -323,6 +327,19 @@
   font-size: 24px;
   color: #E63946;
   flex-shrink: 0;
+}
+
+/* Keep the embedded map inside the same rounded surface on every viewport. */
+.fptu-halloween-contact-map {
+  border-radius: 1rem;
+}
+
+.fptu-halloween-contact-map-iframe {
+  width: 100% !important;
+  height: clamp(240px, 30vw, 320px);
+  margin: 0;
+  border: 0 !important;
+  vertical-align: top;
 }
 
 .fptu-halloween-contact-info-icon svg {
@@ -544,4 +561,144 @@
   .fptu-halloween-contact-banner-title {
     font-size: 20px;
   }
+}
+
+/* Contact page visual language: editorial ticket surfaces and compact controls. */
+.fptu-halloween-contact-page {
+  --contact-ink: #20242c;
+  --contact-muted: #687180;
+  --contact-paper: #fbfaf8;
+  --contact-line: #e4ddd8;
+  --contact-red: #d71920;
+  min-height: 100vh;
+  overflow-x: clip;
+  color: var(--contact-ink);
+  background: var(--contact-paper);
+  font-family: "Roboto", sans-serif;
+}
+
+.fptu-halloween-contact-header {
+  min-height: 250px;
+  display: grid;
+  place-items: end start;
+  background-position: center 42%;
+}
+
+.fptu-halloween-contact-banner {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 2rem 16px 3rem;
+  text-align: left;
+}
+
+.fptu-halloween-contact-banner-title {
+  max-width: 820px;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: .95;
+  letter-spacing: -.045em;
+  text-align: left;
+}
+
+.fptu-halloween-contact-main { padding: 2rem 0 5rem; }
+
+.fptu-halloween-contact-container {
+  max-width: 1200px;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 1.1fr);
+  gap: 2.5rem;
+  padding: 0 16px;
+}
+
+.fptu-halloween-contact-form-card,
+.fptu-halloween-contact-map,
+.fptu-halloween-contact-info-card {
+  border: 1px solid var(--contact-line);
+  border-radius: 1rem;
+  box-shadow: none;
+}
+
+.fptu-halloween-contact-form-card {
+  height: 100%;
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+.fptu-halloween-contact-form-title {
+  margin-bottom: .6rem;
+  font-size: 1.75rem;
+  letter-spacing: -.025em;
+}
+.fptu-halloween-contact-form-description,
+.fptu-halloween-contact-info-text { color: var(--contact-muted); }
+.fptu-halloween-contact-form-description { margin-bottom: 1rem; }
+
+.fptu-halloween-contact-social { display: flex; gap: .75rem; margin-bottom: 1.25rem; }
+.fptu-halloween-contact-social .fpt-header__social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: .75rem;
+}
+
+.fptu-halloween-contact-form-fields { gap: 1rem; }
+.fptu-halloween-contact-form-input,
+.fptu-halloween-contact-form-textarea {
+  min-height: 48px;
+  border: 1px solid var(--contact-line);
+  border-radius: .5rem;
+  color: var(--contact-ink) !important;
+  background: #fff;
+}
+.fptu-halloween-contact-form-textarea { min-height: 120px; }
+.fptu-halloween-contact-form-input:focus,
+.fptu-halloween-contact-form-textarea:focus {
+  border-color: var(--contact-red);
+  box-shadow: 0 0 0 3px rgba(215, 25, 32, .12);
+}
+
+.fptu-halloween-contact-form-submit {
+  min-height: 48px;
+  padding: .75rem 1.5rem;
+  border-radius: .6rem;
+  background: var(--contact-red);
+  transition: background-color .2s ease, transform .2s ease;
+}
+.fptu-halloween-contact-form-submit:hover { background: #b9151b; transform: translateY(-1px); }
+
+.fptu-halloween-contact-info-section {
+  height: 100%;
+  gap: 1rem;
+}
+.fptu-halloween-contact-info-cards {
+  flex: 1;
+  grid-auto-rows: 1fr;
+  gap: .75rem;
+}
+.fptu-halloween-contact-info-card { padding: 1rem; }
+.fptu-halloween-contact-info-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: .65rem;
+  background: #fff0f0;
+}
+
+@media (max-width: 768px) {
+  .fptu-halloween-contact-banner,
+  .fptu-halloween-contact-container {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .fptu-halloween-contact-header { min-height: 210px; }
+  .fptu-halloween-contact-banner { padding-bottom: 2rem; }
+  .fptu-halloween-contact-main { padding-top: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+  .fptu-halloween-contact-banner,
+  .fptu-halloween-contact-container {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .fptu-halloween-contact-banner-title { font-size: 2.35rem; }
+  .fptu-halloween-contact-form-submit { width: 100%; }
 }

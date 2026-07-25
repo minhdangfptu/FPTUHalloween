@@ -1,6 +1,6 @@
 /* Hallmark · macrostructure: Operations Desk · tone: editorial administration · anchor hue: FPT red */
 .staff-user-ticket-page {
-  --ticket-paper: oklch(98% 0.006 90);
+  --ticket-paper: #f5f2ed;
   --ticket-ink: oklch(21% 0.025 260);
   --ticket-muted: oklch(52% 0.025 260);
   --ticket-line: oklch(86% 0.018 260);
@@ -27,10 +27,10 @@
 }
 .user-ticket-header h1 {
   margin: 0.45rem 0 0.65rem;
-  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
   font-weight: 900;
   letter-spacing: -0.055em;
-  line-height: 1;
+  line-height: .95;
 }
 .user-ticket-header p:last-child {
   max-width: 640px;
