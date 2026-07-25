@@ -1,257 +1,361 @@
-// src/pages/HomePage.jsx
-import React, { useState, useEffect, use } from "react";
-import "./HomePage.css";
-import halloweensApi from "../../apis/halloweensAPI";
-
-import hero from "../../assets/cover-01.png";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import heroImage from "../../assets/cover-01.png";
+import pdpLogo from "../../assets/pdp_avatar.jpg";
+import fptuLogo from "../../assets/logo fptu.webp";
+import fbgcLogo from "../../assets/fbgc.png";
+import wtmLogo from "../../assets/wtm.png";
+import "./HomePage.scss";
+
+const EVENT_DATE = new Date("2026-10-31T18:00:00+07:00").getTime();
+
+const getCountdown = () => {
+  const difference = Math.max(EVENT_DATE - Date.now(), 0);
+  const totalSeconds = Math.floor(difference / 1000);
+
+  return {
+    days: Math.floor(totalSeconds / 86400),
+    hours: Math.floor((totalSeconds % 86400) / 3600),
+    minutes: Math.floor((totalSeconds % 3600) / 60),
+    seconds: totalSeconds % 60,
+    complete: difference === 0,
+  };
+};
 
 const highlights = [
   {
-    title: "Nhà Ma – Wishbound",
-    desc: "Trải nghiệm lời nguyền điều ước.",
-    img: hero,
+    number: "01",
+    title: "Nhà ma",
+    description:
+      "Một tuyến trải nghiệm nhập vai, nơi mỗi cánh cửa mở ra một lớp chuyện mới.",
+    tone: "dark",
   },
-  { title: "Main Stage", desc: "Âm nhạc – DJ – Lightshow.", img: hero },
   {
-    title: "Cosplay & Parade",
-    desc: "Hóa thân & diễu hành chủ đề.",
-    img: hero,
+    number: "02",
+    title: "Game zone",
+    description:
+      "Game sân khấu, big game, minigame và những thử thách kéo mọi người vào cuộc.",
+    tone: "red",
+  },
+  {
+    number: "03",
+    title: "Cosplay",
+    description:
+      "Hóa thân theo chủ đề năm và bước vào một đêm Halloween có dấu ấn riêng.",
+    tone: "violet",
+  },
+  {
+    number: "04",
+    title: "Photobooth",
+    description:
+      "Một góc lưu lại outfit, hội bạn và những khoảnh khắc không lặp lại.",
+    tone: "paper",
+  },
+  {
+    number: "05",
+    title: "Main stage",
+    description:
+      "Tiết mục, khách mời và nhịp sân khấu được xếp thành một đêm diễn liền mạch.",
+    tone: "orange",
+  },
+  {
+    number: "06",
+    title: "Lucky draw",
+    description:
+      "Quà tặng và những bất ngờ nhỏ khép lại hành trình của bạn tại lễ hội.",
+    tone: "ink",
   },
 ];
 
-const values = [
+const timeline = [
   {
-    title: "FPTU Halloween",
-    desc: "Sự kiện Halloween lớn nhất FPTU.",
-    link: "/overall",
+    time: "01",
+    title: "Mở cổng",
+    description: "Đón khách, check-in và nhận thông tin hành trình.",
   },
   {
-    title: "FPTU Board Game Club",
-    desc: "CLB Tổ chức sự kiện Halloween",
-    link: "/fbgc",
+    time: "02",
+    title: "Khám phá",
+    description: "Nhà ma, game zone, photobooth và các hoạt động bên lề.",
   },
   {
-    title: "Tin tức mới nhất",
-    desc: "Cập nhật tin tức về sự kiện",
-    link: "/news",
+    time: "03",
+    title: "Lên sân khấu",
+    description: "Tiết mục, khách mời và những màn tương tác theo chủ đề.",
   },
   {
-    title: "Liên hệ và phản hồi",
-    desc: "Phản hồi với chúng tôi",
-    link: "/contact-us",
+    time: "04",
+    title: "Khép đêm",
+    description: "Lucky draw, quà tặng và lời hẹn cho mùa Halloween tiếp theo.",
   },
+];
+
+const sponsors = [
+  { key: "pdp", label: "PDP", image: pdpLogo, alt: "Logo PDP" },
+  { key: "fptu", label: "FPTU", image: fptuLogo, alt: "Logo FPT University" },
+  { key: "fbgc", label: "FBGC", image: fbgcLogo, alt: "Logo FPTU Board Game Club" },
+  { key: "hlw26", label: "HLW26", image: wtmLogo, alt: "Logo FPTU Halloween 2026" },
+];
+
+const countdownItems = [
+  ["days", "Ngày"],
+  ["hours", "Giờ"],
+  ["minutes", "Phút"],
+  ["seconds", "Giây"],
 ];
 
 export default function HomePage() {
-  const [halloweenEvents, setHalloweenEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(getCountdown);
+
+  const handleExploreClick = (event) => {
+    event.preventDefault();
+    const target = document.getElementById("home-intro");
+    if (!target) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  };
+
   useEffect(() => {
     if (sessionStorage.getItem("showLoginWelcome") !== "1") return;
     sessionStorage.removeItem("showLoginWelcome");
     const user = JSON.parse(localStorage.getItem("user") || "null");
     toast.success(`Xin chào ${user?.fullName || user?.name || "bạn"}!`);
   }, []);
-  useEffect(() => {
-    const fetchHalloweenEvents = async () => {
-      try {
-        setLoading(true);
-        const data = await halloweensApi.listAllHalloween();
-        console.log(data);
-        // Xử lý cấu trúc API với field items
-        if (data && Array.isArray(data.items)) {
-          setHalloweenEvents(data.items);
-        } else if (Array.isArray(data)) {
-          setHalloweenEvents(data);
-        } else if (data && Array.isArray(data.data)) {
-          // Nếu API trả về { data: [...] }
-          setHalloweenEvents(data.data);
-        } else if (data && Array.isArray(data.events)) {
-          // Nếu API trả về { events: [...] }
-          setHalloweenEvents(data.events);
-        } else {
-          // Nếu data không phải array, sử dụng fallback
-          console.warn("API returned non-array data:", data);
-          setHalloweenEvents(highlights);
-        }
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching halloween events:", err);
-        setError("Không thể tải dữ liệu sự kiện Halloween");
-        // Fallback to static data if API fails
-        setHalloweenEvents(highlights);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchHalloweenEvents();
+  useEffect(() => {
+    const timer = window.setInterval(() => setCountdown(getCountdown()), 1000);
+    return () => window.clearInterval(timer);
   }, []);
 
   return (
-    <div className="fptu-halloween-page">
-      {/* HERO */}
-      <section className="fptu-halloween-hero">
-        <img src={hero} alt="" className="fptu-halloween-hero__bg" />
-        <div className="fptu-halloween-hero__overlay" />
-        <div className="fptu-halloween-hero__content">
-          <h1>FPTU HALLOWEEN 2025 WISHBOUND</h1>
-          <p>Nơi hòa quyện của niềm vui và nỗi sợ.</p>
-          <div className="fptu-halloween-hero__cta">
-            <a
-              href="/event-page"
-              className="fptu-halloween-btn fptu-halloween-btn--primary"
-            >
-              Khám phá
-            </a>
-            <a
-              href="/ticket-game"
-              className="fptu-halloween-btn fptu-halloween-btn--ghost"
-            >
-              Mua vé ngay
-            </a>
-          </div>
-        </div>
+    <main className="home-page">
+      <section
+        className="home-hero"
+        aria-label="Hero banner FPTU Halloween 2026"
+      >
+        <img
+          className="home-hero__image"
+          src={heroImage}
+          alt="Không gian FPTU Halloween"
+        />
       </section>
 
-      {/* VIDEO SECTION */}
-      <section className="fptu-halloween-video-section">
-        <div className="fptu-halloween-video-container">
-          <div className="fptu-halloween-video-content">
-            <div className="fptu-halloween-video-column">
-              <div className="fptu-halloween-video-wrapper">
-                <div className="fptu-halloween-video-embed">
-                  <iframe
-                    src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1481935782850269%2F&show_text=false&width=560&t=0&autoplay=1&mute=1"
-                    width="100%"
-                    height="420"
-                    style={{
-                      border: "none",
-                      overflow: "hidden",
-                      borderRadius: "16px",
-                    }}
-                    scrolling="no"
-                    frameBorder="0"
-                    allowFullScreen={true}
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    title="FPTU Halloween Video"
-                    className="fptu-halloween-video-embed-iframe"
-                  ></iframe>
-                </div>
-              </div>
-            </div>
-
-            <div className="fptu-halloween-video-description">
-              <h2>FPTU Halloween 2025</h2>
-              <p className="fptu-halloween-video-subtitle">
-                Mỗi đêm, vào ngày 31/10 hằng năm, giữa màn sương dày đặc, thị
-                trấn ma quái 𝐖𝐢𝐬𝐡𝐛𝐨𝐮𝐧𝐝 xuất hiện rồi biến mất như chưa từng tồn
-                tại…. Nhưng năm nay, sau hàng thế kỷ ẩn mình, cái tên bao năm ám
-                ảnh thị trấn hóa ra chỉ là một mặt nạ khác của Joker - thực thể
-                tàn nhẫn chỉ sống để đánh tráo điều ước, nuốt chửng linh hồn và
-                biến hy vọng thành lời nguyền. Lúc ấy, ở nơi trung tâm thi trấn
-                mới rõ hình Quán rượu cổ, nơi mọi điều ước đều có giá, mọi “quy
-                tắc trò chơi” chỉ để dẫn dắt những ván đấu chết chóc do hắn bày
-                ra.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* HIGHLIGHTS */}
-      {/* <section className="fptu-halloween-section">
-        <h2>Các sự kiện Halloween từng tổ chức tại FPTU</h2>
-        {loading ? (
-          <div className="fptu-halloween-loading">
-            <p>Đang tải dữ liệu...</p>
-          </div>
-        ) : error ? (
-          <div className="fptu-halloween-error">
-            <p>{error}</p>
-          </div>
-        ) : (
-          <div className="fptu-halloween-cards" style={{ cursor: "pointer" }}>
-            {Array.isArray(halloweenEvents) && halloweenEvents.length > 0 ? (
-              halloweenEvents.map((event, index) => (
-                <article
-                  key={event._id || event.id || index}
-                  className="fptu-halloween-card"
-                >
-                  <img
-                    src={event.event_image_url || hero}
-                    alt={event.event_name || event.title}
-                  />
-                  <div className="fptu-halloween-card__body">
-                    <h3>{event.event_name || event.title || event.name}</h3>
-                    <p>
-                      {event.event_description ||
-                        event.description ||
-                        event.desc}
-                    </p>
-                    <div className="fptu-halloween-card__details">
-                      {event.event_concept && (
-                        <div className="fptu-halloween-card__concept">
-                          <span>🎭 {event.event_concept}</span>
-                        </div>
-                      )}
-                      {event.event_start_time && (
-                        <div className="fptu-halloween-card__date">
-                          <span>
-                            📅{" "}
-                            {new Date(
-                              event.event_start_time
-                            ).toLocaleDateString("vi-VN")}
-                          </span>
-                        </div>
-                      )}
-                      {event.event_location && (
-                        <div className="fptu-halloween-card__location">
-                          <span>📍 {event.event_location}</span>
-                        </div>
-                      )}
-                      {event.event_year && (
-                        <div className="fptu-halloween-card__year">
-                          <span>🗓️ Năm {event.event_year}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </article>
-              ))
-            ) : (
-              <div className="fptu-halloween-no-data">
-                <p>Không có dữ liệu sự kiện Halloween</p>
-              </div>
-            )}
-          </div>
-        )}
-      </section> */}
-
-      {/* CORE VALUES */}
-      <section className="fptu-halloween-section">
-        <h2>Khám phá cùng chúng tôi</h2>
-        <div className="fptu-halloween-grid">
-          {values.map((v) => (
+      <section className="home-hero-copy" aria-labelledby="home-hero-title">
+        <div className="home-hero-copy__inner">
+          <div className="home-hero__masthead">
+            <span>FPTU HALLOWEEN</span>
             <div
-              key={v.title}
-              className="fptu-halloween-feature"
-              role="button"
-              tabIndex={0}
-              onClick={() => navigate(v.link)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") navigate(v.link);
-              }}
+              className="home-lockup"
+              aria-label="FPT University, PDP, FPTU Board Game Club và FPTU Halloween 2026"
             >
-              <h3>{v.title}</h3>
-              <p>{v.desc}</p>
+              <span className="home-lockup__mark home-lockup__mark--university">
+                FPT UNIVERSITY
+              </span>
+              <span className="home-lockup__mark home-lockup__mark--pdp">
+                PDP
+              </span>
+              <span className="home-lockup__mark home-lockup__mark--fbgc">
+                FBGC
+              </span>
+              <span className="home-lockup__mark home-lockup__mark--hlw">
+                HLW26
+              </span>
             </div>
+            <span>2026 / FPTU HÀ NỘI</span>
+          </div>
+          <p className="home-eyebrow">THEME OF THE YEAR · COMING SOON</p>
+          <h1 id="home-hero-title">
+            AI SỢ THÌ ĐI VỀ
+            <span>Hòa Lạc không ngủ.</span>
+          </h1>
+          <p className="home-hero__lede">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Một mùa
+            Halloween mới đang được mở khóa tại FPTU Hà Nội.
+          </p>
+          <div className="home-hero__actions">
+            <button
+              className="home-button home-button--primary"
+              type="button"
+              onClick={() => navigate("/tickets")}
+            >
+              Mua vé
+            </button>
+            <a
+              className="home-button home-button--quiet"
+              href="#home-intro"
+              onClick={handleExploreClick}
+            >
+              Xem sự kiện <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="home-countdown-section"
+        aria-labelledby="home-countdown-title"
+      >
+        <div className="home-countdown">
+          <div className="home-countdown__heading">
+            <p id="home-countdown-title" className="home-countdown__label">
+              COUNTDOWN D-DAY
+            </p>
+            <span>
+              {countdown.complete ? "Đã đến ngày diễn ra" : "Thời gian còn lại"}
+            </span>
+          </div>
+          <div className="home-countdown__grid" aria-live="polite">
+            {countdownItems.map(([key, label]) => (
+              <div className="home-countdown__unit" key={key}>
+                <strong>{String(countdown[key]).padStart(2, "0")}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="home-section home-intro"
+        id="home-intro"
+        aria-labelledby="home-intro-title"
+      >
+        <div className="home-section__head">
+          <p className="home-eyebrow">01 · CONCEPT NOTE</p>
+          <h2 id="home-intro-title">
+            Một concept đủ gần để chạm vào, đủ lạ để nhớ.
+          </h2>
+        </div>
+        <div className="home-intro__body">
+          <p className="home-intro__lead">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. FPTU
+            Halloween 2026 là nơi câu chuyện, âm nhạc và những cuộc gặp bất ngờ
+            cùng tồn tại trong một đêm.
+          </p>
+          <p>
+            Chọn một lối đi, nhập vai theo cách của bạn và để những chi tiết nhỏ
+            dẫn đường. Nội dung năm nay sẽ được cập nhật dần trong thời gian
+            tới.
+          </p>
+        </div>
+      </section>
+
+      <section
+        className="home-section home-highlights"
+        aria-labelledby="home-highlights-title"
+      >
+        <div className="home-section__head home-section__head--line">
+          <p className="home-eyebrow">02 · THE NIGHT MAP</p>
+          <h2 id="home-highlights-title">Điểm nổi bật</h2>
+          <p>Những điểm dừng tạo nên toàn bộ nhịp điệu của đêm hội.</p>
+        </div>
+        <div className="home-highlights__list">
+          {highlights.map((item) => (
+            <article
+              className={`home-highlight home-highlight--${item.tone}`}
+              key={item.number}
+            >
+              <span className="home-highlight__number">{item.number}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+              <span className="home-highlight__arrow" aria-hidden="true">
+                ↗
+              </span>
+            </article>
           ))}
         </div>
       </section>
-    </div>
+
+      <section
+        className="home-section home-timeline"
+        aria-labelledby="home-timeline-title"
+      >
+        <div className="home-section__head">
+          <p className="home-eyebrow">03 · RUN OF SHOW</p>
+          <h2 id="home-timeline-title">Timeline chương trình</h2>
+        </div>
+        <div className="home-timeline__layout">
+          <p className="home-timeline__note">
+            Lịch trình chi tiết sẽ được công bố khi chương trình hoàn tất các
+            mốc chuẩn bị.
+          </p>
+          <ol className="home-timeline__list">
+            {timeline.map((item) => (
+              <li key={item.time}>
+                <span>{item.time}</span>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section
+        className="home-section home-map-section"
+        aria-labelledby="home-map-title"
+      >
+        <div className="home-section__head">
+          <p className="home-eyebrow">04 · FIND YOUR WAY</p>
+          <h2 id="home-map-title">Map preview</h2>
+        </div>
+        <div className="home-map">
+          <div className="home-map__grid" aria-hidden="true" />
+          <span
+            className="home-map__route home-map__route--one"
+            aria-hidden="true"
+          />
+          <span
+            className="home-map__route home-map__route--two"
+            aria-hidden="true"
+          />
+          <span className="home-map__point home-map__point--main">
+            MAIN GATE
+          </span>
+          <span className="home-map__point home-map__point--house">NHÀ MA</span>
+          <span className="home-map__point home-map__point--stage">STAGE</span>
+          <span className="home-map__caption">
+            Sơ đồ minh họa · cập nhật sau
+          </span>
+        </div>
+      </section>
+
+      <section
+        className="home-section home-sponsors"
+        aria-labelledby="home-sponsors-title"
+      >
+        <div className="home-section__head home-section__head--compact">
+          <p className="home-eyebrow">05 · WITH SUPPORT FROM</p>
+          <h2 id="home-sponsors-title">Nhà tài trợ</h2>
+        </div>
+        <div className="home-sponsors__row">
+          {sponsors.map((sponsor) => (
+            <div className={`home-sponsor home-sponsor--${sponsor.key}`} key={sponsor.label}>
+              {sponsor.image ? (
+                <img src={sponsor.image} alt={sponsor.alt} />
+              ) : (
+                <span>{sponsor.label}</span>
+              )}
+            </div>
+          ))}
+        </div>
+        <p className="home-sponsors__note">
+          Lorem ipsum dolor sit amet. Danh sách đối tác đồng hành sẽ được cập
+          nhật.
+        </p>
+      </section>
+    </main>
   );
 }

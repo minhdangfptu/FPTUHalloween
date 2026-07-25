@@ -1,229 +1,375 @@
-/* ====== Agenda Component Styles ====== */
-.fptu-halloween-agenda-container {
+/* Hallmark · macrostructure: Map / Diagram · tone: editorial · anchor hue: warm red · theme: Riso · enrichment: none · nav: inherited · footer: inherited */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 */
+
+:root {
+  --agenda-ink: oklch(22% 0.025 265);
+  --agenda-ink-soft: oklch(35% 0.025 265);
+  --agenda-muted: oklch(51% 0.025 265);
+  --agenda-paper: oklch(97% 0.012 70);
+  --agenda-paper-quiet: oklch(94% 0.018 70);
+  --agenda-paper-deep: oklch(90% 0.025 65);
+  --agenda-red: oklch(55% 0.205 28);
+  --agenda-red-soft: oklch(92% 0.055 25);
+  --agenda-line: oklch(84% 0.025 65);
+  --agenda-line-strong: oklch(70% 0.045 40);
+  --agenda-white: oklch(99% 0.005 70);
+  --agenda-hero-mid: oklch(22% 0.025 265 / 0.88);
+  --agenda-hero-light: oklch(22% 0.025 265 / 0.38);
+  --agenda-year: oklch(99% 0.005 70 / 0.14);
+  --agenda-focus: oklch(62% 0.18 28);
+  --agenda-body: "Roboto", ui-sans-serif, sans-serif;
+  --agenda-space-xs: 0.5rem;
+  --agenda-space-sm: 0.75rem;
+  --agenda-space-md: 1rem;
+  --agenda-space-lg: 1.5rem;
+  --agenda-space-xl: 2.5rem;
+  --agenda-space-2xl: 4rem;
+  --agenda-space-3xl: 6rem;
+  --agenda-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --agenda-dur-short: 220ms;
+  --agenda-dur-long: 420ms;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+.fptu-halloween-agenda-page {
+  min-width: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  overflow-x: clip;
+  color: var(--agenda-ink);
+  background: var(--agenda-paper);
+  font-family: var(--agenda-body);
 }
 
-.fptu-halloween-agenda-header {
-  background-image: url('../../assets/cover-01.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
-  position: relative;
-  padding: 40px 20px;
-  text-align: center;
+.fptu-halloween-agenda-page *,
+.fptu-halloween-agenda-page *::before,
+.fptu-halloween-agenda-page *::after {
+  box-sizing: border-box;
 }
 
-.fptu-halloween-agenda-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
-
-.fptu-halloween-agenda-banner {
-  position: relative;
-  z-index: 2;
-}
-
-.fptu-halloween-agenda-banner-title {
-  font-size: 2rem;
-  font-weight: 800;
+.fptu-halloween-agenda-page h1,
+.fptu-halloween-agenda-page h2,
+.fptu-halloween-agenda-page h3,
+.fptu-halloween-agenda-page p,
+.fptu-halloween-agenda-page figure {
+  min-width: 0;
   margin: 0;
-  background: white;
-  background-clip: text;
 }
 
-.fptu-halloween-agenda-content {
-  padding: 60px 20px;
-  max-width: 1400px;
-  margin: 0 auto;
+.fptu-halloween-agenda-page h1,
+.fptu-halloween-agenda-page h2,
+.fptu-halloween-agenda-page h3 {
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+.fptu-halloween-agenda-hero {
+  position: relative;
+  display: flex;
+  min-height: clamp(22rem, 56vw, 36rem);
+  align-items: end;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--agenda-white);
+  background: var(--agenda-ink);
+}
+
+.fptu-halloween-agenda-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--agenda-ink) 0%, var(--agenda-hero-mid) 42%, var(--agenda-hero-light) 100%),
+    linear-gradient(135deg, var(--agenda-red-soft), var(--agenda-ink));
+  content: "";
+}
+
+.fptu-halloween-agenda-hero__inner {
+  width: min(100%, 1200px);
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--agenda-space-xl) var(--agenda-space-md) var(--agenda-space-2xl);
+}
+
+.fptu-halloween-agenda-kicker,
+.fptu-halloween-agenda-section-label,
+.fptu-halloween-agenda-document__slot {
+  color: var(--agenda-red);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.fptu-halloween-agenda-hero .fptu-halloween-agenda-kicker {
+  color: var(--agenda-red-soft);
+}
+
+.fptu-halloween-agenda-hero__title {
+  max-width: 9ch;
+  margin-top: var(--agenda-space-lg) !important;
+  font-family: var(--agenda-body);
+  font-size: clamp(3.5rem, 11vw, 8rem);
+  font-weight: 700;
+  letter-spacing: -0.07em;
+  line-height: 0.83;
+}
+
+.fptu-halloween-agenda-hero__title span,
+.fptu-halloween-agenda-section-head h2 span {
+  color: var(--agenda-red);
+}
+
+.fptu-halloween-agenda-hero__summary {
+  max-width: 45ch;
+  margin-top: var(--agenda-space-xl) !important;
+  color: var(--agenda-paper-quiet);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.fptu-halloween-agenda-hero__year {
+  position: absolute;
+  right: max(var(--agenda-space-md), calc((100% - 1200px) / 2));
+  top: var(--agenda-space-xl);
+  color: var(--agenda-year);
+  font-size: clamp(8rem, 22vw, 18rem);
+  font-weight: 900;
+  letter-spacing: -0.12em;
+  line-height: 0.7;
+  pointer-events: none;
+}
+
+.fptu-halloween-agenda-main {
+  width: min(100%, 1200px);
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--agenda-space-3xl) var(--agenda-space-md) var(--agenda-space-3xl);
+}
+
+.fptu-halloween-agenda-documents {
+  min-width: 0;
+}
+
+.fptu-halloween-agenda-section-head {
+  padding-bottom: var(--agenda-space-xl);
+  border-bottom: 1px solid var(--agenda-line);
+}
+
+.fptu-halloween-agenda-section-head__copy {
+  min-width: 0;
+}
+
+.fptu-halloween-agenda-section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--agenda-space-xs);
+}
+
+.fptu-halloween-agenda-section-label::before {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1px;
+  background: var(--agenda-red);
+  content: "";
+}
+
+.fptu-halloween-agenda-section-head h2 {
+  max-width: 14ch;
+  margin-top: var(--agenda-space-md) !important;
+  font-family: var(--agenda-body);
+  font-size: clamp(2.25rem, 6vw, 5.5rem);
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+}
+
+.fptu-halloween-agenda-section-head__copy > p:last-child {
+  max-width: 52ch;
+  margin-top: var(--agenda-space-lg) !important;
+  color: var(--agenda-muted);
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 .fptu-halloween-agenda-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: var(--agenda-space-xl);
   align-items: start;
+  padding-top: var(--agenda-space-2xl);
 }
 
-.fptu-halloween-agenda-column {
-  display: flex;
-  flex-direction: column;
+.fptu-halloween-agenda-document {
+  min-width: 0;
+  animation: agenda-document-enter var(--agenda-dur-long) var(--agenda-ease-out) both;
 }
 
-.fptu-halloween-agenda-card {
-  background: white;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(230, 57, 70, 0.1);
-  /* transition: all 0.3s ease; */
+.fptu-halloween-agenda-document--map {
+  margin-top: var(--agenda-space-2xl);
+  animation-delay: 90ms;
+}
+
+.fptu-halloween-agenda-document__frame {
   position: relative;
+  display: grid;
+  min-width: 0;
+  aspect-ratio: 210 / 297;
+  place-items: center;
   overflow: hidden;
+  border: 1px solid var(--agenda-line-strong);
+  background: var(--agenda-paper-quiet);
 }
 
-.fptu-halloween-agenda-card::before {
-  content: '';
+.fptu-halloween-agenda-document__frame::before,
+.fptu-halloween-agenda-document__frame::after {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #E63946, #ff6b7a, #E63946);
+  inset: var(--agenda-space-sm);
+  border: 1px solid var(--agenda-line);
+  content: "";
+  pointer-events: none;
 }
 
-.fptu-halloween-agenda-card:hover {
-  /* transform: translateY(-8px); */
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+.fptu-halloween-agenda-document__frame::after {
+  inset: 0;
+  border: 0;
+  opacity: 0.5;
+  background-image: linear-gradient(135deg, transparent 49.8%, var(--agenda-line) 50%, transparent 50.2%);
+  background-size: 100% 100%;
 }
 
-.fptu-halloween-agenda-card-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #E63946;
-  margin-bottom: 25px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.fptu-halloween-agenda-a4-frame {
+.fptu-halloween-agenda-document__placeholder {
   position: relative;
-  width: 100%;
-  aspect-ratio: 210/297; /* A4 ratio */
-  background: #f8f9fa;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  z-index: 1;
+  display: grid;
+  width: min(70%, 17rem);
+  gap: var(--agenda-space-sm);
+  justify-items: center;
+  padding: var(--agenda-space-xl) var(--agenda-space-md);
+  border-block: 1px solid var(--agenda-red);
+  color: var(--agenda-ink-soft);
+  text-align: center;
 }
 
-.fptu-halloween-agenda-a4-frame:hover {
-  transform: scale(1.02);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-}
-
-.fptu-halloween-agenda-image {
+.fptu-halloween-agenda-document__image {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: all 0.3s ease;
+  object-fit: contain;
 }
 
-.fptu-halloween-agenda-a4-frame:hover .fptu-halloween-agenda-image {
-  transform: scale(1.05);
+.fptu-halloween-agenda-document__number {
+  color: var(--agenda-red);
+  font-family: var(--agenda-body);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 0.8;
 }
 
-.fptu-halloween-agenda-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: all 0.3s ease;
-  border-radius: 10px;
+.fptu-halloween-agenda-document__placeholder-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
-.fptu-halloween-agenda-a4-frame:hover .fptu-halloween-agenda-overlay {
-  opacity: 1;
+.fptu-halloween-agenda-document__slot {
+  color: var(--agenda-muted);
+  font-family: var(--agenda-body);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  overflow-wrap: anywhere;
 }
 
-.fptu-halloween-agenda-download-btn {
-  background: linear-gradient(45deg, #E63946, #ff6b7a);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+.fptu-halloween-agenda-document__caption {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: var(--agenda-space-md);
+  padding-top: var(--agenda-space-md);
+  border-top: 1px solid var(--agenda-line);
 }
 
-.fptu-halloween-agenda-download-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(230, 57, 70, 0.6);
-  background: linear-gradient(45deg, #d32f2f, #e53935);
+.fptu-halloween-agenda-document__caption > span {
+  color: var(--agenda-red);
+  font-family: var(--agenda-body);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
 }
 
-/* ====== Responsive Design ====== */
-@media (max-width: 1024px) {
+.fptu-halloween-agenda-document__caption h3 {
+  font-size: 1.25rem;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.fptu-halloween-agenda-document__caption p {
+  margin-top: var(--agenda-space-xs) !important;
+  color: var(--agenda-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .fptu-halloween-agenda-document__frame {
+    transition: transform var(--agenda-dur-short) var(--agenda-ease-out);
+  }
+
+  .fptu-halloween-agenda-document__frame:hover {
+    transform: translateY(-0.25rem);
+  }
+}
+
+@media (min-width: 48rem) {
+  .fptu-halloween-agenda-hero__inner,
+  .fptu-halloween-agenda-main {
+    padding-inline: 2rem;
+  }
+
+  .fptu-halloween-agenda-hero__inner {
+    padding-bottom: 5rem;
+  }
+}
+
+@media (max-width: 47.99rem) {
   .fptu-halloween-agenda-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--agenda-space-2xl);
   }
-  
-  .fptu-halloween-agenda-a4-frame {
-    aspect-ratio: 210/297; /* Maintain A4 ratio */
-    max-width: 400px;
-    margin: 0 auto;
+
+  .fptu-halloween-agenda-document--map {
+    margin-top: 0;
   }
 }
 
-@media (max-width: 768px) {
-  .fptu-halloween-agenda-header {
-    padding: 60px 20px;
+@media (max-width: 30rem) {
+  .fptu-halloween-agenda-hero__inner,
+  .fptu-halloween-agenda-main {
+    padding-inline: var(--agenda-space-md);
   }
-  
-  .fptu-halloween-agenda-banner-title {
-    font-size: 2.2rem;
+
+  .fptu-halloween-agenda-hero__title {
+    font-size: clamp(3.1rem, 17vw, 5rem);
   }
-  
-  .fptu-halloween-agenda-content {
-    padding: 40px 15px;
+
+  .fptu-halloween-agenda-hero__year {
+    right: var(--agenda-space-md);
+    top: 1.5rem;
   }
-  
-  .fptu-halloween-agenda-card {
-    padding: 20px;
-  }
-  
-  .fptu-halloween-agenda-card-title {
-    font-size: 1.5rem;
-  }
-  
-  .fptu-halloween-agenda-a4-frame {
-    aspect-ratio: 210/297;
-    max-width: 350px;
+
+  .fptu-halloween-agenda-document__caption {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--agenda-space-xs);
   }
 }
 
-@media (max-width: 480px) {
-  .fptu-halloween-agenda-banner-title {
-    font-size: 1.8rem;
-  }
-  
-  .fptu-halloween-agenda-a4-frame {
-    aspect-ratio: 210/297;
-    max-width: 300px;
-  }
-  
-  .fptu-halloween-agenda-download-btn {
-    padding: 10px 20px;
-    font-size: 0.9rem;
-  }
-}
-
-/* ====== Animations ====== */
-@keyframes fptu-halloween-agenda-fadeInUp {
+@keyframes agenda-document-enter {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(0.5rem);
   }
   to {
     opacity: 1;
@@ -231,36 +377,30 @@
   }
 }
 
-.fptu-halloween-agenda-card {
-  animation: fptu-halloween-agenda-fadeInUp 0.6s ease-out;
+@media (prefers-reduced-motion: reduce) {
+  .fptu-halloween-agenda-document {
+    animation: none;
+  }
+
+  .fptu-halloween-agenda-document__frame {
+    transition-duration: 150ms;
+  }
 }
 
-.fptu-halloween-agenda-card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-/* ====== Print Styles ====== */
 @media print {
-  .fptu-halloween-agenda-container {
-    background: white;
+  .fptu-halloween-agenda-hero {
+    min-height: auto;
+    color: var(--agenda-ink);
+    background: var(--agenda-paper);
   }
-  
-  .fptu-halloween-agenda-header {
-    background: white;
-    color: black;
-  }
-  
-  .fptu-halloween-agenda-header::before {
+
+  .fptu-halloween-agenda-hero::before,
+  .fptu-halloween-agenda-hero__year {
     display: none;
   }
-  
-  .fptu-halloween-agenda-card {
-    box-shadow: none;
-    border: 1px solid #ccc;
-  }
-  
-  .fptu-halloween-agenda-a4-frame {
-    box-shadow: none;
-    border: 1px solid #ccc;
+
+  .fptu-halloween-agenda-hero__inner,
+  .fptu-halloween-agenda-main {
+    padding-block: var(--agenda-space-xl);
   }
 }

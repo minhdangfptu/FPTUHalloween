@@ -1,54 +1,114 @@
 import React from "react";
 import "./Agenda.css";
 
+const agendaDocuments = [
+  {
+    id: "schedule",
+    index: "01",
+    title: "Lịch trình sự kiện",
+    description: "Khung placeholder cho ảnh lịch trình chương trình.",
+    slotLabel: "AGENDASCHEDULEIMAGE",
+    image: null,
+  },
+  {
+    id: "map",
+    index: "02",
+    title: "Sơ đồ sự kiện",
+    description: "Khung placeholder cho ảnh sơ đồ khu vực sự kiện.",
+    slotLabel: "AGENDAMAPIMAGE",
+    image: null,
+  },
+];
+
 function Agenda() {
   return (
-    <div className="fptu-halloween-agenda-container">
-      <header className="fptu-halloween-contact-header">
-        <div className="fptu-halloween-contact-banner">
-          <h1 className="fptu-halloween-contact-banner-title">
-            AGENDA - SƠ ĐỒ SỰ KIỆN
+    <div className="fptu-halloween-agenda-page">
+      <header className="fptu-halloween-agenda-hero">
+        <div className="fptu-halloween-agenda-hero__inner">
+          <p className="fptu-halloween-agenda-kicker">
+            FPTU HALLOWEEN 2025 / WISHBOUND
+          </p>
+          <h1 className="fptu-halloween-agenda-hero__title">
+            Lịch trình
+            <br />
+            <span> sự kiện.</span>
           </h1>
+          <p className="fptu-halloween-agenda-hero__summary">
+            Hai tài liệu để bạn định vị thời gian, không gian và những điểm chạm
+            quan trọng của đêm Halloween.
+          </p>
         </div>
+        <p className="fptu-halloween-agenda-hero__year" aria-hidden="true">
+          HLW26
+        </p>
       </header>
-      
-      <div className="fptu-halloween-agenda-content">
-        <div className="fptu-halloween-agenda-grid">
-          {/* Cột trái: Agenda */}
-          <div className="fptu-halloween-agenda-column">
-            <div className="fptu-halloween-agenda-card">
-              <h2 className="fptu-halloween-agenda-card-title">
-                📅 Lịch trình sự kiện
+
+      <main className="fptu-halloween-agenda-main">
+        <section
+          className="fptu-halloween-agenda-documents"
+          aria-labelledby="agenda-documents-title"
+        >
+          <div className="fptu-halloween-agenda-section-head">
+            <div className="fptu-halloween-agenda-section-head__copy">
+              <p className="fptu-halloween-agenda-section-label">
+                Tài liệu sự kiện
+              </p>
+              <h2 id="agenda-documents-title">
+                Mọi điểm chạm,
+                <span> trên cùng một trang.</span>
               </h2>
-              <div className="fptu-halloween-agenda-a4-frame">
-                <img 
-                  src="https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/484283385_624560113765882_92212265454988108_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFlOr6JKwL06S9ApGO3gSrmVc02ONLzEKFVzTY40vMQoaUjgsNvEEV3jVfO6-RWJW5ZzMj_AnkCNSyv7wesnrJn&_nc_ohc=ogq1uE7uqsMQ7kNvwHIYvaB&_nc_oc=AdmfJzG6CcmgC6e5p_4kUoXeMW2EENeDEij7r8V49xYpTpvxGXzS74xNYnZrSE5hm-w&_nc_zt=23&_nc_ht=scontent.fhan2-3.fna&_nc_gid=eSBIwYn_CNv-pFQSH1A2Uw&oh=00_Afe2f-URObizv_FW2189tUrYyoZZ_WNjDmbHeQR7A1HubA&oe=68F40B44" 
-                  alt="Agenda Schedule"
-                  className="fptu-halloween-agenda-image"
-                />
-                
-              </div>
+              <p>
+                Lịch trình và sơ đồ sẽ được cập nhật trực tiếp vào hai khung bên
+                dưới khi ảnh chính thức sẵn sàng.
+              </p>
             </div>
           </div>
 
-          {/* Cột phải: Sơ đồ sự kiện */}
-          <div className="fptu-halloween-agenda-column">
-            <div className="fptu-halloween-agenda-card">
-              <h2 className="fptu-halloween-agenda-card-title">
-                🗺️ Sơ đồ sự kiện
-              </h2>
-              <div className="fptu-halloween-agenda-a4-frame">
-                <img 
-                  src="https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/484536117_624561393765754_6621730184879740259_n.jpg?stp=dst-jpg_s720x720_tt6&_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHAh9ytn1yCsUpTKY3AMNtPM1iyJZeTfTEzWLIll5N9MRQ2V2lr1GnshQXKw146tezP6ydEyPLsVliaI2c6vxTU&_nc_ohc=J2BJsCflo5QQ7kNvwHQa_vi&_nc_oc=Adla8SuDFg4rxLC0YBhN9yS2GYUlB4dZk5AtzfuBf6ViJp2R0UFgIiOFFXK2t_ZYSzE&_nc_zt=23&_nc_ht=scontent.fhan2-3.fna&_nc_gid=rpRldtRiWRFg_5J4H_YJ4w&oh=00_AffDycgW6jkhw2xTBFTZJsNhB42-zhAV9DfpsWzfFNCZNQ&oe=68F3DC16" 
-                  alt="Event Map"
-                  className="fptu-halloween-agenda-image"
-                />
-                
-              </div>
-            </div>
+          <div className="fptu-halloween-agenda-grid">
+            {agendaDocuments.map((document) => (
+              <figure
+                className={`fptu-halloween-agenda-document fptu-halloween-agenda-document--${document.id}`}
+                key={document.id}
+              >
+                <div
+                  className="fptu-halloween-agenda-document__frame"
+                  data-image-slot={document.slotLabel}
+                >
+                  {document.image ? (
+                    <img
+                      src={document.image}
+                      alt={document.title}
+                      width="210"
+                      height="297"
+                      loading="lazy"
+                      className="fptu-halloween-agenda-document__image"
+                    />
+                  ) : (
+                    <div className="fptu-halloween-agenda-document__placeholder">
+                      <span className="fptu-halloween-agenda-document__number">
+                        {document.index}
+                      </span>
+                      <span className="fptu-halloween-agenda-document__placeholder-label">
+                        Ảnh sẽ được thêm vào
+                      </span>
+                      <span className="fptu-halloween-agenda-document__slot">
+                        {document.slotLabel}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <figcaption className="fptu-halloween-agenda-document__caption">
+                  <span>{document.index} / 02</span>
+                  <div>
+                    <h3>{document.title}</h3>
+                    <p>{document.description}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 }

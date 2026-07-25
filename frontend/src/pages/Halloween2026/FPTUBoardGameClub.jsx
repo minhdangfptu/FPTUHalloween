@@ -163,14 +163,6 @@ export default function FPTUBoardGameClub() {
                       sinh hoạt vào thứ 5 hàng tuần, từ 19h30 đến 21h30 tại Sân
                       Băng.
                     </p>
-                    <figure className="fptu-club-image-frame">
-                      <img
-                        src={clubData.weeklyImage}
-                        alt="Sinh hoạt hàng tuần của FPTU Board Game Club"
-                        loading="lazy"
-                      />
-                      <figcaption>Thứ 5 · 19h30–21h30 · Sân Băng</figcaption>
-                    </figure>
                     <div className="fptu-club-weekly-gallery">
                       <figure className="fptu-club-image-frame">
                         <img

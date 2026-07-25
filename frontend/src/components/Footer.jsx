@@ -1,26 +1,81 @@
-import React from "react";
+// eslint-disable-next-line no-unused-vars -- React Router Link is rendered in the footer groups below.
+import { Link } from "react-router-dom";
 import "./Footer.css";
 import wtm from "../assets/wtm.png";
+// eslint-disable-next-line no-unused-vars -- icon is rendered in the social anchors below.
 import FacebookIcon from "@mui/icons-material/Facebook";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import { useNavigate } from "react-router-dom";
+
+const linkGroups = [
+  {
+    title: "Khám phá",
+    links: [
+      ["Trang chủ", "/"],
+      ["Giới thiệu Halloween 2026", "/introduce-hlw26"],
+      ["Câu chuyện nhà ma", "/haunted-ghost"],
+      ["Lưu trữ các mùa Halloween", "/old-event"],
+    ],
+  },
+  {
+    title: "Về sự kiện",
+    links: [
+      ["Giới thiệu sự kiện", "/event-page"],
+      ["Tổng quan sự kiện", "/overall"],
+      ["Timeline / Agenda", "/agenda"],
+      // ["Tin tức", "/news"],
+    ],
+  },
+  {
+    title: "Vé & hỗ trợ",
+    links: [
+      ["Mua vé", "/tickets"],
+      ["Vé của tôi", "/my-ticket"],
+      ["Câu hỏi thường gặp", "/faq"],
+      ["Liên hệ", "/contact-us"],
+    ],
+  },
+  {
+    title: "Ban tổ chức",
+    links: [
+      ["Đội Core Sự kiện", "/btc-fuhlw"],
+      ["PDP FPTU Hà Nội", "/pdp"],
+      ["FPTU Board Game Club", "/fbgc"],
+      ["Fanpage", "/fanpage"],
+    ],
+  },
+  {
+    title: "Pháp lý",
+    links: [
+      ["Chính sách dữ liệu", "/data-policy"],
+      ["Điều khoản sử dụng", "/terms-of-use"],
+      ["Chính sách vé", "/ticket-policy"],
+    ],
+  },
+  {
+    title: "Tài khoản",
+    links: [
+      ["Đăng nhập", "/login"],
+      ["Đăng ký", "/register"],
+      ["Hồ sơ cá nhân", "/user-profile"],
+    ],
+  },
+];
+
 function Footer() {
   const year = new Date().getFullYear();
-  const navigate = useNavigate();
+
   return (
     <footer className="fpt-footer">
       <div className="fpt-footer__container">
         <div className="fpt-footer__grid">
           <div className="fpt-footer__contact-section">
-            <img
-              style={{ cursor: "pointer" }}
-              src={wtm}
-              onClick={() => navigate("/")}
-              alt="FPT Schools"
-              className="fpt-footer__logo"
-            />
-            <h3 className="fpt-footer__contact-title">THÔNG TIN LIÊN HỆ</h3>
+            <Link to="/" aria-label="Về trang chủ FPTU Halloween">
+              <img
+                src={wtm}
+                alt="FPTU Halloween"
+                className="fpt-footer__logo"
+              />
+            </Link>
+            <h3 className="fpt-footer__contact-title">Thông tin liên hệ</h3>
             <div className="fpt-footer__contact-item">
               <span className="fpt-footer__contact-icon">@</span>
               <p className="fpt-footer__contact-text">
@@ -28,125 +83,64 @@ function Footer() {
               </p>
             </div>
             <div className="fpt-footer__contact-item">
-              <span className="fpt-footer__contact-icon">📍</span>
+              <span className="fpt-footer__contact-icon">⌖</span>
               <p className="fpt-footer__contact-text">
                 Trường Đại học FPT
                 <br />
                 Khu CNC Hòa Lạc, Km29 Đại lộ Thăng Long, Hà Nội
               </p>
             </div>
-            <h4 className="fpt-footer__social-title">Liên kết mạng xã hội</h4>
+            <h4 className="fpt-footer__social-title">Kết nối với chúng tôi</h4>
             <div className="fpt-header__social">
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://www.facebook.com/fptuhalloween",
-                    "_blank",
-                  )
-                }
+              <a
+                href="https://www.facebook.com/fptuhalloween"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook FPTU Halloween"
                 className="fpt-header__social-btn fpt-header__social-btn--facebook"
               >
                 <FacebookIcon />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://www.facebook.com/fuboardgameclub",
-                    "_blank",
-                  )
-                }
+              </a>
+              <a
+                href="https://www.facebook.com/fuboardgameclub"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook FPTU Board Game Club"
                 className="fpt-header__social-btn fpt-header__social-btn--tiktok"
               >
-                <InstagramIcon />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://www.tiktok.com/@fptu.halloween2025",
-                    "_blank",
-                  )
-                }
+                <FacebookIcon />
+              </a>
+              <a
+                href="https://www.tiktok.com/@fptu.halloween2025"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="TikTok FPTU Halloween"
                 className="fpt-header__social-btn fpt-header__social-btn--youtube"
               >
-                <YouTubeIcon />
-              </button>
+                <span aria-hidden="true">T</span>
+              </a>
             </div>
           </div>
 
           <div className="fpt-footer__links-grid">
-            <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">Giới thiệu</h4>
-              <a href="#" className="fpt-footer__link">
-                Về sự kiện Halloween
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Về các mùa đã qua
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Fanpage Sự kiện
-              </a>
-            </div>
-            <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">Về FPTU Halloween 2026</h4>
-              <a href="#" className="fpt-footer__link">
-                Tổng quan sự kiện
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Agenda
-              </a>
-            </div>
-            <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">Mua vé nhà ma</h4>
-              <a href="/my-ticket" className="fpt-footer__link">
-                Vé của bạn
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Hướng dẫm mua vé
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Bảng giá
-              </a>
-              <a href="/faq" className="fpt-footer__link">
-                Câu hỏi thường gặp
-              </a>
-            </div>
-            <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">
-                Về FPTU Board Game Club
-              </h4>
-              <a href="#" className="fpt-footer__link">
-                Câu chuyện
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Hoạt động
-              </a>
-            </div>
-            <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">Tin tức</h4>
-              <a href="#" className="fpt-footer__link">
-                Tin nổi bật
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Tin gần đây
-              </a>
-            </div>
-            <div className="fpt-footer__link-group">
-              <h4 className="fpt-footer__link-title">Liên hệ</h4>
-              <a href="#" className="fpt-footer__link">
-                Đóng góp ý kiến
-              </a>
-              <a href="#" className="fpt-footer__link">
-                Liên hệ
-              </a>
-            </div>
+            {linkGroups.map((group) => (
+              <div className="fpt-footer__link-group" key={group.title}>
+                <h4 className="fpt-footer__link-title">{group.title}</h4>
+                {group.links.map(([label, href]) => (
+                  <Link className="fpt-footer__link" to={href} key={href}>
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </div>
       <hr className="fpt-footer__divider" />
       <div className="fpt-footer__copyright">
-        Phát triển bởi Măng Định hẹ hẹ
-        <br /> Bản quyền © 2019-{year} thuộc về FPTU Board Game Club. Bảo lưu
-        mọi quyền.
+        Phát triển bởi đội ngũ FPTU Halloween
+        <br />
+        Bản quyền © 2019-{year}. Bảo lưu mọi quyền.
       </div>
     </footer>
   );

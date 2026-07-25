@@ -137,7 +137,7 @@ export default function IntroduceHLW26() {
           <h2 id="overview-title">
             Một sự kiện
             <br />
-            <span>bùng nổ nhất nhì sứ FU.</span>
+            <span>bùng nổ nhất nhì xứ FU.</span>
           </h2>
           <p>
             Lễ hội Halloween tại Đại học FPT là sự kiện thường niên bùng nổ –
@@ -189,7 +189,9 @@ export default function IntroduceHLW26() {
                 {season.image ? (
                   <img src={season.image} alt={`${season.title} thumbnail`} />
                 ) : (
-                  <span className="introduce-hlw26__coming-soon">Coming soon</span>
+                  <span className="introduce-hlw26__coming-soon">
+                    Coming soon
+                  </span>
                 )}
               </div>
               <div>

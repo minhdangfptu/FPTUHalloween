@@ -3,7 +3,7 @@
 import { useState } from "react";
 // eslint-disable-next-line no-unused-vars -- namespace icons are rendered as JSX member components.
 import * as PdpIcons from "lucide-react";
-import pdpAvatar from "../../assets/pdp_avatar.jpg";
+import pdpAvatar from "../../assets/pdp_avatar_to.jpg";
 import pdpHeroImage from "../../assets/pdp_thubnail.jpg";
 import "./PDP.scss";
 

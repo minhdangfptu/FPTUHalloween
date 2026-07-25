@@ -687,9 +687,24 @@
     padding-left: 12px;
   }
 
+  .fptu-halloween-contact-container {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
   .fptu-halloween-contact-header { min-height: 210px; }
   .fptu-halloween-contact-banner { padding-bottom: 2rem; }
   .fptu-halloween-contact-main { padding-top: 1.25rem; }
+  .fptu-halloween-contact-form-fields { grid-template-columns: 1fr; }
+  .fptu-halloween-contact-form-group { grid-column: 1 / -1; }
+  .fptu-halloween-contact-info-section { height: auto; }
+  .fptu-halloween-contact-info-cards {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+  }
+  .fptu-halloween-contact-map-iframe {
+    height: clamp(220px, 58vw, 300px);
+  }
 }
 
 @media (max-width: 480px) {
