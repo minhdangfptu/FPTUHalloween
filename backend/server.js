@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
 const express = require('express')
+const http = require('http')
 const morgan = require('morgan')
+const { Server } = require('socket.io')
 const { config, connectDB, corsConfig } = require('./src/config')
 const routes = require('./src/routes')
 const { default: mongoose } = require('mongoose')
 const { expirePendingOrders } = require('./src/services/adminOrder')
+const { initializeStaffChatSocket } = require('./src/sockets/staffChat')
 
 const app = express()
+const httpServer = http.createServer(app)
 
 // Middleware
 app.use(corsConfig)
@@ -67,6 +71,15 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' })
 })
 
+const io = new Server(httpServer, {
+  cors: {
+    origin: config.CORS_ORIGINS.length > 0 ? config.CORS_ORIGINS : true,
+    credentials: config.CORS_CREDENTIALS
+  }
+})
+
+initializeStaffChatSocket(io)
+
 const startServer = async () => {
   try {
     await connectDB()
@@ -78,7 +91,7 @@ const startServer = async () => {
     // mongoose.connection.db.listCollections().toArray().then(cols => {
     //   console.log('Collections:', cols.map(c => c.name));
     // });
-    app.listen(config.PORT, () => {
+    httpServer.listen(config.PORT, () => {
       console.log(`Server is running at http://localhost:${config.PORT}`)
       console.log(`Environment: ${config.NODE_ENV}`)
     })

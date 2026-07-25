@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Menu } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./ManageHeader.scss";
 
 const ManageHeader = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(() => Number(localStorage.getItem("staffChatUnreadCount") || 0));
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleSidebarToggle = (event) => setIsSidebarCollapsed(event.detail);
     window.addEventListener("manage-sidebar-toggle", handleSidebarToggle);
     return () => window.removeEventListener("manage-sidebar-toggle", handleSidebarToggle);
   }, []);
+
+  useEffect(() => { const syncUnread = () => setUnreadCount(Number(localStorage.getItem("staffChatUnreadCount") || 0)); window.addEventListener("staff-chat:unread", syncUnread); return () => window.removeEventListener("staff-chat:unread", syncUnread); }, []);
 
   return (
     <>
@@ -18,6 +24,7 @@ const ManageHeader = () => {
           <Menu size={21} />
         </button>
         <p className="manage-header__title">Hệ thống quản lý và điều hành sự kiện FPTU Halloween Online</p>
+        <button className="manage-header__notification" type="button" aria-label="Thông báo tin nhắn chưa đọc" onClick={() => { localStorage.setItem("staffChatUnreadCount", "0"); setUnreadCount(0); navigate(location.pathname.startsWith("/admin") ? "/admin/chat" : "/staff/chat"); }}><Bell size={21} />{unreadCount > 0 && <span>{unreadCount > 99 ? "99+" : unreadCount}</span>}</button>
       </header>
     </>
   );

@@ -9,6 +9,7 @@ import {
   LogOut,
   Menu,
   Megaphone,
+  MessagesSquare,
   ReceiptText,
   Tags,
   TicketCheck,
@@ -26,6 +27,7 @@ import avatar from "../assets/avatar.jpg";
 const MENU_BY_ROLE = {
   admin: [
     { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
+    { id: "chat", label: "HolaWeen Chat", icon: MessagesSquare },
     { id: "check-in", label: "Checkin vé", icon: BadgeCheck },
     { id: "users", label: "Quản lý người dùng", icon: UsersRound },
     { id: "tickets", label: "Danh sách loại vé", icon: TicketCheck },
@@ -41,6 +43,7 @@ const MENU_BY_ROLE = {
   ],
   staff: [
     { id: "dashboard", label: "Tổng quan", icon: LayoutDashboard },
+    { id: "chat", label: "HolaWeen Chat", icon: MessagesSquare },
     { id: "ticket-types", label: "Danh sách loại vé", icon: TicketCheck },
     { id: "purchased-tickets", label: "Danh sách vé đã mua", icon: Tickets },
     { id: "check-in", label: "Checkin vé", icon: BadgeCheck },
@@ -125,6 +128,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
   const defaultRoutes = {
     dashboard:
       resolvedRole === "admin" ? "/admin/dashboard" : "/staff/dashboard",
+    chat: resolvedRole === "admin" ? "/admin/chat" : "/staff/chat",
     "check-in":
       resolvedRole === "admin" ? "/admin/check-in" : "/staff/check-in",
     users: "/admin/users",
@@ -133,7 +137,10 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
     contacts: "/admin/contacts",
     "hot-news": "/admin/hot-news",
     "ticket-types": "/staff/ticket-types",
-    "purchased-tickets": resolvedRole === "admin" ? "/admin/purchased-tickets" : "/staff/purchased-tickets",
+    "purchased-tickets":
+      resolvedRole === "admin"
+        ? "/admin/purchased-tickets"
+        : "/staff/purchased-tickets",
     home: "/",
   };
 

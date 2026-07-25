@@ -36,6 +36,7 @@
   color: #fff;
   background: #ffffff1c;
 }
+.manage-header__notification { position:relative; display:grid; width:38px; height:38px; place-items:center; margin-left:auto; border:0; border-radius:50%; color:#fff; background:transparent; cursor:pointer; }.manage-header__notification:hover { background:#ffffff1c; }.manage-header__notification span { position:absolute; top:-5px; right:-7px; min-width:20px; height:20px; padding:0 5px; border:2px solid #fff; border-radius:99px; color:#d72f38; background:#fff; box-shadow:0 2px 6px #7d101855; font-size:10px; font-weight:800; line-height:16px; text-align:center; }
 .manage-header__title {
   position: absolute;
   left: 50%;

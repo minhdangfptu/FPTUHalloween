@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route, useLocation } from "react-router-dom";
 import { CssBaseline, CssVarsProvider, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import HomePage from "./pages/Normal/HomePage";
@@ -51,6 +51,7 @@ import StaffCheckinTicket from "./pages/Staff/StaffCheckinTicket";
 import StaffHomePage from "./pages/Staff/StaffDashboardPage";
 import StaffUserTicket from "./pages/Staff/StaffUserTicket";
 import PDP from "./pages/Halloween2026/PDP";
+import ChatPage from "./pages/Chat/ChatPage";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -72,6 +73,13 @@ function ManageLayout({ children, role = "staff" }) {
       <Footer />
     </>
   );
+}
+
+function ConditionalMessengerButton() {
+  const { pathname } = useLocation();
+  const isManagementPage = pathname.startsWith("/admin") || pathname.startsWith("/staff");
+
+  return isManagementPage ? null : <MessengerButton />;
 }
 
 export default function App() {
@@ -289,6 +297,8 @@ export default function App() {
             </ManageLayout>
           }
         />
+        <Route path="/admin/chat" element={<ManageLayout role="admin"><ChatPage role="admin" /></ManageLayout>} />
+        <Route path="/staff/chat" element={<ManageLayout role="staff"><ChatPage role="staff" /></ManageLayout>} />
         <Route
           path="/admin/users"
           element={
@@ -442,7 +452,7 @@ export default function App() {
           }
         />
       </Routes>
-      <MessengerButton />
+      <ConditionalMessengerButton />
     </BrowserRouter>
     // </CssVarsProvider>
   );

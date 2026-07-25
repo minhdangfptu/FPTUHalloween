@@ -9,5 +9,7 @@ module.exports = {
   UserTicket: require('./UserTicket'),
   Otp: require('./Otp'),
   Cart: require('./Cart'),
-  HotNews: require('./HotNews')
+  HotNews: require('./HotNews'),
+  ChatConversation: require('./ChatConversation'),
+  ChatMessage: require('./ChatMessage')
 }

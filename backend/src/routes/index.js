@@ -11,6 +11,7 @@ const hotNewsCtrl = require('../controllers/hotNews')
 const payOSCtrl = require('../controllers/payOS')
 const payOSWebhookCtrl = require('../controllers/payOSWebhook')
 const userTicketCtrl = require('../controllers/userTicket')
+const staffChatRoute = require('./staffChat')
 // const adminCtrl = require('../controllers/admin')
 
 const { requireAuth, requireRole } = require('../middlewares/auth')
@@ -90,6 +91,9 @@ router.get('/orders', requireAuth, requireRole('Admin'), adminOrderCtrl.getList)
 router.get('/orders/:id', requireAuth, requireRole('Admin'), adminOrderCtrl.getDetail)
 router.get('/statistics/tickets', requireAuth, requireRole('Admin'), adminOrderCtrl.getTicketStatistics)
 router.patch('/admin/users/:id/promote-staff', requireAuth, requireRole('Admin'), adminCtrl.promoteUserToStaff)
+
+// STAFF CHAT
+router.use('/staff-chat', staffChatRoute)
 
 
 // Các nhóm khác (roles/users/feedback/news) bạn có thể thêm sau
