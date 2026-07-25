@@ -8,5 +8,6 @@ module.exports = {
   TicketType: require('./TicketType'),
   UserTicket: require('./UserTicket'),
   Otp: require('./Otp'),
-  Cart: require('./Cart')
+  Cart: require('./Cart'),
+  HotNews: require('./HotNews')
 }

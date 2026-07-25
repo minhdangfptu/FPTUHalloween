@@ -1,0 +1,80 @@
+.bouncy-accordion {
+  width: 100%;
+}
+
+.bouncy-accordion__item {
+  overflow: hidden;
+  border: 1px solid rgb(0 0 0 / 12%);
+  color: inherit;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+}
+
+.bouncy-accordion__trigger {
+  display: flex;
+  width: 100%;
+  min-height: 54px;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0 1.25rem;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+
+.bouncy-accordion__trigger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+.bouncy-accordion__trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.bouncy-accordion__icon,
+.bouncy-accordion__chevron {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+}
+
+.bouncy-accordion__icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.bouncy-accordion__title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bouncy-accordion__chevron {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.bouncy-accordion__content {
+  overflow: hidden;
+}
+
+.bouncy-accordion__description-wrapper {
+  padding: 0 1.25rem 1.25rem;
+}
+
+.bouncy-accordion__description {
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+}

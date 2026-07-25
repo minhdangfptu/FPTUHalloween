@@ -44,6 +44,7 @@ import AdminContactList from "./pages/Admin/AdminContactList";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminListUser from "./pages/Admin/AdminListUser";
 import AdminOrderList from "./pages/Admin/AdminOrderList";
+import HotNews from "./pages/Admin/HotNews";
 import StaffCheckinTicket from "./pages/Staff/StaffCheckinTicket";
 import StaffHomePage from "./pages/Staff/StaffDashboardPage";
 import StaffUserTicket from "./pages/Staff/StaffUserTicket";
@@ -234,6 +235,14 @@ export default function App() {
           element={
             <ManageLayout role="admin">
               <AdminContactList />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/hot-news"
+          element={
+            <ManageLayout role="admin">
+              <HotNews />
             </ManageLayout>
           }
         />

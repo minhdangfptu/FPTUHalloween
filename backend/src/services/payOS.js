@@ -66,9 +66,6 @@ const createPayment = async (userId, checkoutData = {}) => {
   if (checkoutData.existingOrderCode) {
     const existingOrder = await Order.findOne({ userId, payosOrderId: String(checkoutData.existingOrderCode) })
     if (existingOrder) {
-      const requestedIds = Array.isArray(checkoutData.selectedTicketTypeIds)
-        ? checkoutData.selectedTicketTypeIds.map(String).sort()
-        : null
       const requestedItems = Array.isArray(checkoutData.selectedTicketTypeIds)
         ? checkoutData.selectedTicketTypeIds.map(String).sort()
         : null

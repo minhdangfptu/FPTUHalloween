@@ -1,0 +1,28 @@
+.scroll-velocity,
+.scroll-velocity__viewport {
+  width: 100%;
+}
+
+.scroll-velocity__viewport {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.scroll-velocity__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.scroll-velocity__copy {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 2.5rem;
+}

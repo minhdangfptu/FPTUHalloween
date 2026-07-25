@@ -7,6 +7,7 @@ const ticketTypeCtrl = require('../controllers/ticketType')
 const cartCtrl = require('../controllers/cart')
 const adminOrderCtrl = require('../controllers/adminOrder')
 const adminCtrl = require('../controllers/admin')
+const hotNewsCtrl = require('../controllers/hotNews')
 const payOSCtrl = require('../controllers/payOS')
 const payOSWebhookCtrl = require('../controllers/payOSWebhook')
 const userTicketCtrl = require('../controllers/userTicket')
@@ -37,6 +38,13 @@ router.get('/contacts', requireAuth, requireRole('Admin'), contactCtrl.getList)
 router.get('/contacts/:id', requireAuth, requireRole('Admin'), contactCtrl.getDetail)
 router.delete('/contacts/:id', requireAuth, requireRole('Admin'), contactCtrl.remove)
 router.patch('/contacts/:id/status', requireAuth, requireRole('Admin'), contactCtrl.updateStatus)
+
+// HOT NEWS
+router.get('/hot-news/active', hotNewsCtrl.getActiveList)
+router.get('/hot-news', requireAuth, requireRole('Admin'), hotNewsCtrl.getList)
+router.post('/hot-news', requireAuth, requireRole('Admin'), hotNewsCtrl.create)
+router.put('/hot-news/:id', requireAuth, requireRole('Admin'), hotNewsCtrl.update)
+router.patch('/hot-news/:id/status', requireAuth, requireRole('Admin'), hotNewsCtrl.changeStatus)
 
 // USERS
 router.get('/users/me', requireAuth, userCtrl.me)

@@ -4,7 +4,6 @@ import {
   ArrowUpRight,
   CalendarDays,
   CheckCircle2,
-  ChevronDown,
   Clock3,
   CreditCard,
   HelpCircle,
@@ -17,6 +16,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { BouncyAccordion } from "../../components/ui/bouncy-accordion";
 import "./FAQ.scss";
 
 const faqGroups = [
@@ -192,7 +192,7 @@ const FAQ = () => (
       <div className="faq-layout">
         <aside className="faq-rail" aria-label="Thông tin nhanh">
           <p className="faq-rail__label">Trước khi bạn hỏi</p>
-          <h2>Đêm hội, rõ ràng từ đầu.</h2>
+          <h2>Những điều cần lưu ý trước giờ G</h2>
           <p className="faq-rail__intro">
             Lưu lại ba điều này để hành trình mua vé và vào cổng diễn ra gọn
             gàng.
@@ -243,26 +243,25 @@ const FAQ = () => (
                   <h2 id={`faq-${group.id}`}>{group.label}</h2>
                 </div>
               </header>
-              <div className="faq-question-list">
-                {group.questions.map((item, index) => (
-                  <details
-                    className="faq-item"
-                    key={item.question}
-                    open={index === 0}
-                  >
-                    <summary>
-                      <span className="faq-item__icon">{item.icon}</span>
-                      <span className="faq-item__question">
-                        {item.question}
-                      </span>
-                      <ChevronDown className="faq-item__chevron" size={17} />
-                    </summary>
-                    <div className="faq-item__answer">
-                      <p>{item.answer}</p>
-                    </div>
-                  </details>
-                ))}
-              </div>
+              <BouncyAccordion
+                className="faq-question-list"
+                defaultValue={`${group.id}-0`}
+                items={group.questions.map((item, index) => ({
+                  id: `${group.id}-${index}`,
+                  title: item.question,
+                  icon: item.icon,
+                  description: <p>{item.answer}</p>,
+                }))}
+                classNames={{
+                  item: "faq-item",
+                  trigger: "faq-item__trigger",
+                  icon: "faq-item__icon",
+                  title: "faq-item__question",
+                  chevron: "faq-item__chevron",
+                  content: "faq-item__content",
+                  description: "faq-item__answer",
+                }}
+              />
             </section>
           ))}
         </div>

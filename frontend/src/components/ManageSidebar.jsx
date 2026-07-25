@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
+  Megaphone,
   ReceiptText,
   Tags,
   TicketCheck,
@@ -35,6 +36,7 @@ const MENU_BY_ROLE = {
     },
     { id: "orders", label: "Đơn hàng", icon: ReceiptText },
     { id: "contacts", label: "Liên hệ", icon: ContactRound },
+    { id: "hot-news", label: "Thêm thông báo", icon: Megaphone },
     { id: "home", label: "Về trang sự kiện", icon: Home },
   ],
   staff: [
@@ -129,6 +131,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
     tickets: "/admin/tickets",
     orders: "/admin/orders",
     contacts: "/admin/contacts",
+    "hot-news": "/admin/hot-news",
     "ticket-types": "/staff/ticket-types",
     "purchased-tickets": resolvedRole === "admin" ? "/admin/purchased-tickets" : "/staff/purchased-tickets",
     home: "/",

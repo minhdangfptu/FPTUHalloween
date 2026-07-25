@@ -20,17 +20,18 @@
   width: 60px;
   height: 60px;
   color: #fff;
-  background: #e63946;
+  background: linear-gradient(135deg, #e63946, #ff6b6b);
   border-radius: 50%;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.18);
   text-decoration: none;
   transition:
     transform 0.2s ease,
-    background-color 0.2s ease;
+    background 0.2s ease;
 }
 
 .faq-fab:hover {
-  background: #c92f3d;
+  background: linear-gradient(135deg, #c92f3d, #e65353);
+  transform: scale(1.05);
 }
 .faq-fab:active {
   transform: translateY(1px);
