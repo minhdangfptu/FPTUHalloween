@@ -8,6 +8,7 @@ import {
   Users,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { DashboardSkeleton } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import orderAPI from "../../apis/orderAPI";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -117,6 +118,7 @@ const AdminDashboard = () => {
           </button>
         </header>
 
+        {loading ? <DashboardSkeleton /> : <>
         <section className="dashboard-metrics">
           <Metric
             icon={<CircleDollarSign />}
@@ -212,6 +214,7 @@ const AdminDashboard = () => {
             </div>
           </ChartCard>
         </section>
+        </>}
 
         {/* <section className="dashboard-wide">
         <ChartCard title="Doanh thu theo ngày tạo đơn" eyebrow="ĐƯỜNG · DÒNG TIỀN">

@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import {
   Check,
   Edit3,
@@ -204,7 +206,12 @@ export default function UserProfile() {
         </div>
       </div>
       {isLoading ? (
-        <div className="profile-loading" aria-busy="true" />
+        <div className="profile-loading" aria-busy="true">
+          <Skeleton circle width={92} height={92} />
+          <Skeleton width={220} height={24} />
+          <Skeleton width={280} />
+          <Skeleton width="70%" height={120} />
+        </div>
       ) : (
         <>
           <section className="profile-overview">

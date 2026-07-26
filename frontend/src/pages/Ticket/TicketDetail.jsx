@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { DetailSkeleton } from "../../components/LoadingSkeletons";
 import cartAPI from "../../apis/cartAPI";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import {
@@ -88,7 +89,7 @@ const TicketDetail = () => {
   if (isLoading) {
     return (
       <main className="ticket-detail-page">
-        <div className="ticket-detail-state" aria-busy="true" />
+        <DetailSkeleton />
       </main>
     );
   }

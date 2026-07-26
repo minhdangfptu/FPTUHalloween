@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { SkeletonRows } from "./LoadingSkeletons";
 import toast from "react-hot-toast";
 import axiosClient from "../apis/axiosClient";
 import QRModal from "./QRModal";
@@ -32,7 +33,7 @@ const UserListTicket = ({ order, onClose }) => {
           <button type="button" aria-label="Đóng" onClick={onClose}><X size={20} /></button>
         </header>
         <div className="user-ticket-dialog__body">
-          {isLoading ? <p className="user-ticket-dialog__empty">Đang tải danh sách vé...</p> : tickets.length === 0 ? <p className="user-ticket-dialog__empty">Chưa có vé được phát hành cho đơn hàng này.</p> : tickets.map((ticket) => (
+          {isLoading ? <SkeletonRows rows={3} columns={2} /> : tickets.length === 0 ? <p className="user-ticket-dialog__empty">Chưa có vé được phát hành cho đơn hàng này.</p> : tickets.map((ticket) => (
             <article className="user-ticket-card" key={ticket._id}>
               <div>
                 <strong>{ticket.ticketTypeId?.ticketTypeName || "Vé FPTU Halloween"}</strong>

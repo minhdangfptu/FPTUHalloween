@@ -10,6 +10,7 @@ import {
   UserRound,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { SkeletonRows } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import ManageSidebar from "../../components/ManageSidebar";
 import {
@@ -167,7 +168,7 @@ const AdminContactList = () => {
             </div>
           </div>
           {isLoading ? (
-            <div className="admin-contact-list__empty" aria-busy="true" />
+            <SkeletonRows rows={6} columns={5} />
           ) : contacts.length === 0 ? (
             <div className="admin-contact-list__empty">
               Chưa có liên hệ nào.

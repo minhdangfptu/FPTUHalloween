@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { SkeletonRows } from "../../components/LoadingSkeletons";
 import orderAPI from "../../apis/orderAPI";
 import ManageSidebar from "../../components/ManageSidebar";
 import QRModal from "../../components/QRModal";
@@ -245,9 +246,7 @@ const AdminOrderList = () => {
           </div>
 
           {isLoading ? (
-            <div className="admin-order-empty" aria-busy="true">
-              Đang đồng bộ dữ liệu đơn hàng...
-            </div>
+            <SkeletonRows rows={7} columns={7} />
           ) : visibleOrders.length === 0 ? (
             <div className="admin-order-empty">
               Không tìm thấy đơn hàng phù hợp.

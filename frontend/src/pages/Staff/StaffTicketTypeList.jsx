@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { CalendarDays, Clock3, Eye, Search, Ticket } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { SkeletonCards } from "../../components/LoadingSkeletons";
 import ManageSidebar from "../../components/ManageSidebar";
 import AddTicketType from "../../components/AddTicketType";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
@@ -103,7 +104,7 @@ const StaffTicketTypeList = () => {
         </div>
 
         {isLoading ? (
-          <div className="staff-ticket-list__state" aria-busy="true" />
+          <SkeletonCards count={3} />
         ) : error ? (
           <div className="staff-ticket-list__state">
             <p>{error}</p>

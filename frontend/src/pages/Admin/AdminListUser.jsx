@@ -9,6 +9,7 @@ import {
   UserRound,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { SkeletonRows } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import ManageSidebar from "../../components/ManageSidebar";
 import AdminUserDetail from "../../components/AdminUserDetail";
@@ -236,7 +237,7 @@ const AdminListUser = () => {
                 </select>
               </label>
               <label className="admin-user-filter">
-                <span>Position</span>
+                <span>Vị trí</span>
                 <select
                   value={positionFilter}
                   onChange={(event) => setPositionFilter(event.target.value)}
@@ -265,7 +266,7 @@ const AdminListUser = () => {
             </div>
           </div>
           {isLoading ? (
-            <div className="admin-user-list__empty" aria-busy="true" />
+            <SkeletonRows rows={7} columns={6} />
           ) : users.length === 0 ? (
             <div className="admin-user-list__empty">
               Chưa có người dùng nào.

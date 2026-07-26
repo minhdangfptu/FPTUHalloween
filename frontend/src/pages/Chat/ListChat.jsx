@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import React from "react";
+import { ChatListSkeleton } from "../../components/LoadingSkeletons";
 import "./ListChat.scss";
 
 const getId = (item) => item?._id || item?.id;
@@ -33,6 +34,7 @@ const ListChat = ({
   onSearchChange,
   searchResults = [],
   isSearching = false,
+  isLoading = false,
   onSelectConversation,
   onSelectUser,
   activeId,
@@ -141,7 +143,7 @@ const ListChat = ({
         </div>
       ) : (
         <div className="chat-list__items">
-          {conversations.map((conversation) => {
+          {isLoading ? <ChatListSkeleton /> : conversations.map((conversation) => {
             const itemId = getId(conversation);
             const participant = conversation.members?.find(
               (item) => getId(item) !== String(currentUserId),

@@ -7,23 +7,23 @@ const expirePendingOrders = async () => {
     { orderStatus: 'Pending', stockReserved: { $ne: true } },
     { $set: { orderStatus: 'Cancelled' } }
   )
-  const expiredOrders = await Order.find({
+  const expiredOrderFilter = {
     orderStatus: 'Pending',
     stockReserved: true,
     $or: [{ 'paymentData.expiredAt': { $lte: expiredAt } }, { reservationExpiresAt: { $lte: new Date() } }]
-  }).select('items').lean()
-  const result = await Order.updateMany(
-    {
-      orderStatus: 'Pending',
-      stockReserved: true,
-      $or: [{ 'paymentData.expiredAt': { $lte: expiredAt } }, { reservationExpiresAt: { $lte: new Date() } }]
-    },
-    { $set: { orderStatus: 'Cancelled', stockReserved: false } }
-  )
-  await Promise.all(expiredOrders.flatMap(order => (order.items || []).map(item =>
+  }
+  const expiredOrderCandidates = await Order.find(expiredOrderFilter).select('_id').lean()
+  const cancelledOrders = (await Promise.all(expiredOrderCandidates.map(order =>
+    Order.findOneAndUpdate(
+      { _id: order._id, ...expiredOrderFilter },
+      { $set: { orderStatus: 'Cancelled', stockReserved: false } },
+      { new: true }
+    ).select('items').lean()
+  ))).filter(Boolean)
+  await Promise.all(cancelledOrders.flatMap(order => (order.items || []).map(item =>
     TicketType.findByIdAndUpdate(item.ticketTypeId, { $inc: { availableQuantity: Number(item.quantity) } })
   )))
-  return (legacyResult.modifiedCount || 0) + (result.modifiedCount || 0)
+  return (legacyResult.modifiedCount || 0) + cancelledOrders.length
 }
 
 const ensureId = id => {

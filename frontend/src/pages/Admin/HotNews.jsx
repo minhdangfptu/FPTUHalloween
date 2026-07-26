@@ -11,6 +11,8 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import ManageSidebar from "../../components/ManageSidebar";
 import hotNewsAPI from "../../apis/hotNewsAPI";
 import {
@@ -248,7 +250,11 @@ const HotNews = () => {
           {isLoading ? (
             <div className="hot-news-skeleton" aria-busy="true">
               {[0, 1, 2].map((item) => (
-                <div className="hot-news-skeleton__row" key={item} />
+                <div className="hot-news-skeleton__row" key={item}>
+                  <Skeleton height={22} width="8%" />
+                  <Skeleton height={22} width="42%" />
+                  <Skeleton height={22} width="18%" />
+                </div>
               ))}
             </div>
           ) : loadError ? (

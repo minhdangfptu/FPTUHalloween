@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ArrowRight, CalendarDays, Clock3, MapPin, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import { translateError } from "../../utils/translateResponse";
 import coverImage from "../../assets/cover-01.png";
@@ -136,7 +138,7 @@ const HauntedGhost = () => {
         </header>
         {isLoading ? (
           <div className="haunted-ghost-state" aria-busy="true">
-            Đang tải vé...
+            <Skeleton count={4} height={24} />
           </div>
         ) : error ? (
           <div className="haunted-ghost-state haunted-ghost-state--error">

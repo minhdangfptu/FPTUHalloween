@@ -7,6 +7,7 @@ import {
   ScanLine,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { DashboardSkeleton } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import ManageSidebar from "../../components/ManageSidebar";
 import { translateError } from "../../utils/translateResponse";
@@ -129,6 +130,7 @@ const StaffDashboardPage = () => {
           </button>
         </header>
 
+        {loading ? <DashboardSkeleton /> : <>
         <section className="dashboard-metrics">
           <Metric
             icon={<CheckCircle2 />}
@@ -221,6 +223,7 @@ const StaffDashboardPage = () => {
             </div>
           </ChartCard>
         </section>
+        </>}
 
         {/* <section className="dashboard-wide">
         <ChartCard title="Check-in theo mốc giờ" eyebrow="ĐƯỜNG · NHỊP CA TRỰC">

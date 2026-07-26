@@ -82,11 +82,22 @@ function ConditionalMessengerButton() {
   return isManagementPage ? null : <MessengerButton />;
 }
 
+function ScrollToTop() {
+  const { pathname, search } = useLocation();
+
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname, search]);
+
+  return null;
+}
+
 export default function App() {
   return (
     // <CssVarsProvider theme={theme}>
     //   <CssBaseline />
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Authentication pages - không có Header, Navbar, Footer */}
         <Route path="/login" element={<Login />} />

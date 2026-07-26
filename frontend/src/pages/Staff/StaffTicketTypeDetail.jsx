@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, CalendarDays, Check, Clock3, Edit3, ShieldCheck, Ticket, Users } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { DetailSkeleton } from "../../components/LoadingSkeletons";
 import ManageSidebar from "../../components/ManageSidebar";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
@@ -115,7 +116,7 @@ const StaffTicketTypeDetail = () => {
         </button>
 
         {isLoading ? (
-          <div className="staff-ticket-detail__state" aria-busy="true" />
+          <DetailSkeleton />
         ) : error || !ticketType ? (
           <div className="staff-ticket-detail__state">
             <p>{error || "Không tìm thấy loại vé."}</p>

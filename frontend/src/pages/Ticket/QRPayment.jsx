@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Copy, QrCode, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import paymentAPI from "../../apis/paymentAPI";
 import { translateError } from "../../utils/translateResponse";
 import { notifyCartUpdated } from "../../utils/flyingToCart";
@@ -141,7 +143,7 @@ const QRPayment = () => {
       </main>
     );
   if (isLoading)
-    return <main className="qr-payment-page"><div className="qr-payment-shell qr-payment-loading" aria-busy="true" aria-live="polite"><div className="qr-payment-loading__back" /><header className="qr-payment-heading"><p><QrCode size={16} /> Bước 2 / 2</p><h1>Đang tạo mã thanh toán...</h1><span>Vui lòng chờ trong giây lát.</span></header><section className="qr-payment-card qr-payment-loading__card"><div className="qr-payment-loading__qr" /><div className="qr-payment-loading__details"><div className="qr-payment-loading__line qr-payment-loading__line--wide" /><div className="qr-payment-loading__line" /><div className="qr-payment-loading__line" /><div className="qr-payment-loading__line qr-payment-loading__line--short" /></div></section></div></main>;
+    return <main className="qr-payment-page"><div className="qr-payment-shell" aria-busy="true" aria-live="polite"><Skeleton width={140} height={18} /><Skeleton width="48%" height={42} /><Skeleton width="68%" /><section className="qr-payment-card qr-payment-loading__card"><Skeleton height={300} width="min(400px, 70vw)" /><div className="qr-payment-loading__details"><Skeleton height={48} /><Skeleton height={48} /><Skeleton height={48} /><Skeleton height={48} /></div></section></div></main>;
 
   if (!payment)
     return <main className="qr-payment-page"><div className="qr-payment-empty"><QrCode size={34} /><h1>Không thể tạo thanh toán</h1><button type="button" onClick={() => navigate("/checkout")}>Thử lại</button></div></main>;

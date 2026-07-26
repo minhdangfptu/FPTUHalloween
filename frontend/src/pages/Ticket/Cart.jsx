@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { CartSkeleton } from "../../components/LoadingSkeletons";
 import cartAPI from "../../apis/cartAPI";
 import {
   translateError,
@@ -152,7 +153,7 @@ const Cart = () => {
   if (isLoading) {
     return (
       <main className="ticket-cart-page">
-        <div className="ticket-cart-state" aria-busy="true" />
+        <CartSkeleton />
       </main>
     );
   }

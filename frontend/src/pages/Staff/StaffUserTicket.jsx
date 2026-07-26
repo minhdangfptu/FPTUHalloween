@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { SkeletonRows } from "../../components/LoadingSkeletons";
 import ticketAPI from "../../apis/ticketAPI";
 import ManageSidebar from "../../components/ManageSidebar";
 import { translateError } from "../../utils/translateResponse";
@@ -213,11 +214,7 @@ const StaffUserTicket = () => {
               </thead>
               <tbody>
                 {loading ? (
-                  <tr>
-                    <td colSpan="5" className="user-ticket-empty">
-                      Đang tải danh sách vé...
-                    </td>
-                  </tr>
+                  <tr><td colSpan="5"><SkeletonRows rows={5} columns={5} /></td></tr>
                 ) : visibleTickets.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="user-ticket-empty">

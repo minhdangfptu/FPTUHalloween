@@ -1,0 +1,19 @@
+.app-skeleton-table { display: grid; gap: 12px; padding: 18px; }
+.app-skeleton-table__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: center; }
+.app-skeleton-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; padding: 16px; }
+.app-skeleton-card { display: grid; gap: 10px; padding: 14px; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; }
+.app-skeleton-dashboard { display: grid; gap: 20px; }
+.app-skeleton-dashboard__metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.app-skeleton-dashboard__metric { display: grid; gap: 10px; min-height: 130px; padding: 20px; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; }
+.app-skeleton-dashboard__charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.app-skeleton-chat-list { display: grid; gap: 12px; padding: 12px; }
+.app-skeleton-chat-list__row { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; }
+.app-skeleton-chat-list__row > div { display: grid; flex: 1; gap: 6px; }
+.app-skeleton-chat-messages { display: grid; gap: 12px; padding: 20px 14px; }
+.app-skeleton-chat-messages__right { justify-self: end; }
+.app-skeleton-cart, .app-skeleton-detail { display: grid; gap: 18px; padding: 24px; }
+.app-skeleton-cart__layout { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, .8fr); gap: 18px; }
+@media (max-width: 720px) {
+  .app-skeleton-dashboard__metrics, .app-skeleton-dashboard__charts, .app-skeleton-cart__layout { grid-template-columns: 1fr; }
+  .app-skeleton-table__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

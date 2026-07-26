@@ -3,6 +3,7 @@ import React from "react";
 import { io } from "socket.io-client";
 import toast from "react-hot-toast";
 import ManageSidebar from "../../components/ManageSidebar";
+import { ChatMessagesSkeleton } from "../../components/LoadingSkeletons";
 import { staffChatAPI } from "../../apis/staffChatAPI";
 import { baseUrl } from "../../config";
 import ListChat from "./ListChat";
@@ -39,6 +40,7 @@ const ChatPage = ({ role = "staff" }) => {
   const [draft, setDraft] = React.useState("");
   const [typing, setTyping] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
   const [showGroupModal, setShowGroupModal] = React.useState(false);
@@ -269,6 +271,7 @@ const ChatPage = ({ role = "staff" }) => {
     setQuery("");
     const conversationId = idOf(conversation);
     const loading = toast.loading("Đang tải tin nhắn...");
+    setIsLoadingMessages(true);
     try {
       const data = await staffChatAPI.getMessages(conversationId);
       setMessages(Array.isArray(data) ? data : data?.messages || []);
@@ -287,6 +290,8 @@ const ChatPage = ({ role = "staff" }) => {
         error?.response?.data?.message || "Không thể mở cuộc trò chuyện",
         { id: loading },
       );
+    } finally {
+      setIsLoadingMessages(false);
     }
   };
   const selectUser = async (user) => {
@@ -477,6 +482,7 @@ const ChatPage = ({ role = "staff" }) => {
           onSelectConversation={selectConversation}
           onSelectUser={selectUser}
           activeId={idOf(active)}
+          isLoading={isLoading}
         />
         <section className="chat-thread">
           <header className="chat-thread__header">
@@ -527,7 +533,7 @@ const ChatPage = ({ role = "staff" }) => {
                 className="chat-thread__messages"
                 ref={messagesContainerRef}
               >
-                {messages.map((message) => {
+                {isLoadingMessages ? <ChatMessagesSkeleton /> : messages.map((message) => {
                   const mine =
                     idOf(message.sender) === meId ||
                     idOf(message.senderId) === meId;

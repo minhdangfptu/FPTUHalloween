@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { CalendarDays, CircleAlert, Clock3, QrCode, Ticket, UserRound } from "lucide-react";
 import toast from "react-hot-toast";
+import { SkeletonCards } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import QRModal from "../../components/QRModal";
 import "./MyTicket.scss";
@@ -54,7 +55,7 @@ const MyTicket = () => {
           <option value="cancelled">Đã huỷ</option>
         </select>
       </section>
-      {isLoading ? <div className="my-ticket-state">Đang tải vé của bạn...</div> : filteredTickets.length === 0 ? (
+      {isLoading ? <SkeletonCards count={3} /> : filteredTickets.length === 0 ? (
         <div className="my-ticket-state"><CircleAlert size={25} /><strong>Chưa có vé phù hợp</strong><span>Vé đã mua sẽ xuất hiện tại đây.</span></div>
       ) : (
         <section className="my-ticket-list">

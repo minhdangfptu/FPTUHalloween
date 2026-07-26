@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { CartSkeleton } from "../../components/LoadingSkeletons";
 import authAPI from "../../apis/authAPI";
 import cartAPI from "../../apis/cartAPI";
 import { translateError } from "../../utils/translateResponse";
@@ -156,7 +157,7 @@ const Checkout = () => {
   if (isLoading)
     return (
       <main className="ticket-checkout-page">
-        <div className="ticket-checkout-state" aria-busy="true" />
+        <CartSkeleton />
       </main>
     );
   if (error)

@@ -1,11 +1,22 @@
 const buckets = new Map()
+const BUCKET_CLEANUP_INTERVAL_MS = 60 * 1000
+
+const cleanupExpiredBuckets = () => {
+  const now = Date.now()
+  for (const [key, bucket] of buckets.entries()) {
+    if (bucket.expiresAt <= now) buckets.delete(key)
+  }
+}
+
+const cleanupTimer = setInterval(cleanupExpiredBuckets, BUCKET_CLEANUP_INTERVAL_MS)
+if (typeof cleanupTimer.unref === 'function') cleanupTimer.unref()
 
 const createRateLimiter = ({ windowMs, max, message, scope }) => (req, res, next) => {
   const key = `${req.ip}:${scope}`
   const now = Date.now()
   const current = buckets.get(key)
   const bucket = !current || now - current.startedAt >= windowMs
-    ? { startedAt: now, count: 0 }
+    ? { startedAt: now, expiresAt: now + windowMs, count: 0 }
     : current
 
   bucket.count += 1

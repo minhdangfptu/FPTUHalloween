@@ -6,6 +6,23 @@ const { Cart, Order, TicketType, User, UserTicket } = require('../models')
 const payos = new PayOS()
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173'
 const PAYMENT_EXPIRY_SECONDS = 15 * 60
+const ORDER_SAVE_MAX_ATTEMPTS = 3
+const ORDER_SAVE_RETRY_DELAY_MS = 250
+
+const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds))
+
+const saveOrderWithRetry = async order => {
+  let lastError
+  for (let attempt = 1; attempt <= ORDER_SAVE_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      return await order.save()
+    } catch (error) {
+      lastError = error
+      if (attempt < ORDER_SAVE_MAX_ATTEMPTS) await wait(ORDER_SAVE_RETRY_DELAY_MS * attempt)
+    }
+  }
+  throw lastError
+}
 
 const reserveTicketStock = async items => {
   const reserved = []
@@ -28,6 +45,15 @@ const reserveTicketStock = async items => {
 
 const restoreTicketStock = async items => {
   await Promise.all(items.map(item => TicketType.findByIdAndUpdate(item.ticketTypeId, { $inc: { availableQuantity: item.quantity } })))
+}
+
+const cancelReservedOrder = async order => {
+  const cancelledOrder = await Order.findOneAndUpdate(
+    { _id: order._id, orderStatus: 'Pending', stockReserved: true },
+    { $set: { orderStatus: 'Cancelled', stockReserved: false } },
+    { new: true }
+  ).lean()
+  if (cancelledOrder) await restoreTicketStock(cancelledOrder.items)
 }
 
 const createOrderCode = () => {
@@ -134,14 +160,13 @@ const createPayment = async (userId, checkoutData = {}) => {
     })
     order.paymentData = paymentLink
     order.reservationExpiresAt = reservationExpiresAt
-    await order.save()
+    await saveOrderWithRetry(order)
     return { orderId: order._id, ...paymentLink }
   } catch (error) {
-    await restoreTicketStock(items)
     if (order) {
-      order.orderStatus = 'Cancelled'
-      order.stockReserved = false
-      await order.save()
+      await cancelReservedOrder(order)
+    } else {
+      await restoreTicketStock(items)
     }
     if (error?.code === 11000) throw new Error('Payment order code already exists. Please try again')
     throw error

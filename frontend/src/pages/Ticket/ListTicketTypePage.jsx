@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { SkeletonCards } from "../../components/LoadingSkeletons";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import { translateError } from "../../utils/translateResponse";
 import "./ListTicketTypePage.scss";
@@ -131,7 +132,7 @@ const ListTicketTypePage = () => {
           </div>
         </div>
         {isLoading ? (
-          <div className="ticket-list-state" aria-busy="true" />
+          <SkeletonCards count={3} />
         ) : error ? (
           <div className="ticket-list-state">
             <p>{error}</p>
