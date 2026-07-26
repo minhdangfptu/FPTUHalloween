@@ -47,6 +47,7 @@ const AddTicketType = ({ onCreated }) => {
         totalQuantity: Number(form.totalQuantity),
         // Backend stores the event day as a number; the UI uses a date picker.
         ticketTypeDate: Number(form.ticketTypeDate.split("-")[2]),
+        ticketEventDate: form.ticketTypeDate,
       });
       toast.success(translateSuccess(result.message || "Created successfully"), { id: loadingToast });
       setForm(EMPTY_FORM);

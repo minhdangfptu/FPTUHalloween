@@ -15,11 +15,13 @@ const COPY_COUNT = 2
 function ParallaxText({
   children,
   baseVelocity = 100,
-  className
+  className,
+  startFromRight = false,
 }) {
   const baseX = useMotionValue(0)
   const prefersReducedMotion = useReducedMotion()
   const trackRef = useRef(null)
+  const viewportRef = useRef(null)
   const loopWidth = useRef(0)
 
   useLayoutEffect(() => {
@@ -28,6 +30,9 @@ function ParallaxText({
 
     const measureTrack = () => {
       loopWidth.current = track.scrollWidth / COPY_COUNT
+      if (startFromRight && viewportRef.current && !prefersReducedMotion) {
+        baseX.set(viewportRef.current.clientWidth)
+      }
     }
 
     measureTrack()
@@ -35,7 +40,7 @@ function ParallaxText({
     resizeObserver.observe(track)
 
     return () => resizeObserver.disconnect()
-  }, [])
+  }, [baseX, prefersReducedMotion, startFromRight])
 
   useAnimationFrame((_, delta) => {
     if (prefersReducedMotion || loopWidth.current <= 0) return
@@ -46,7 +51,7 @@ function ParallaxText({
   })
 
   return (
-    <div className="scroll-velocity__viewport">
+    <div ref={viewportRef} className="scroll-velocity__viewport">
       <motion.div
         ref={trackRef}
         className={cn('scroll-velocity__track', className)}
@@ -70,13 +75,15 @@ function ParallaxText({
 export function ScrollBasedVelocity({
   text,
   default_velocity = 60,
-  className
+  className,
+  startFromRight = false,
 }) {
   return (
     <section className="scroll-velocity">
       <ParallaxText
         baseVelocity={default_velocity}
         className={className}
+        startFromRight={startFromRight}
       >
         {text}
       </ParallaxText>

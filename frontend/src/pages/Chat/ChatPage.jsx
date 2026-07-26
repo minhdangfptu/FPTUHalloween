@@ -12,7 +12,7 @@ const idOf = (value) => value?._id || value?.id || value;
 const nameOf = (value) =>
   value?.name || value?.fullName || value?.userName || "Cuộc trò chuyện";
 const initialsOf = (name) =>
-  name
+  String(name || "?")
     .split(" ")
     .slice(-2)
     .map((part) => part[0])
@@ -25,6 +25,7 @@ const currentUser = () => {
     return null;
   }
 };
+const CHAT_AUTH_RETRY_DELAY_MS = 300;
 
 const ChatPage = ({ role = "staff" }) => {
   const [conversations, setConversations] = React.useState([]);
@@ -34,10 +35,12 @@ const ChatPage = ({ role = "staff" }) => {
   const [messages, setMessages] = React.useState([]);
   const [query, setQuery] = React.useState("");
   const [results, setResults] = React.useState([]);
+  const [isSearching, setIsSearching] = React.useState(false);
   const [draft, setDraft] = React.useState("");
   const [typing, setTyping] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
   const [showGroupModal, setShowGroupModal] = React.useState(false);
   const [editingGroup, setEditingGroup] = React.useState(null);
   const [showConversationInfo, setShowConversationInfo] = React.useState(false);
@@ -50,24 +53,78 @@ const ChatPage = ({ role = "staff" }) => {
   const socketRef = React.useRef(null);
   const activeRef = React.useRef(null);
   const conversationsRef = React.useRef([]);
+  const messagesContainerRef = React.useRef(null);
   const typingTimer = React.useRef(null);
   const me = React.useMemo(currentUser, []);
   const meId = idOf(me);
-  React.useEffect(() => { activeRef.current = active; }, [active]);
-  React.useEffect(() => { conversationsRef.current = conversations; }, [conversations]);
-  React.useEffect(() => { const unreadCount = conversations.filter((conversation) => { const memberState = conversation.memberStates?.find((state) => String(state.userId) === String(meId)); return conversation.lastMessageAt && (!memberState?.lastReadAt || new Date(conversation.lastMessageAt) > new Date(memberState.lastReadAt)) && idOf(active) !== idOf(conversation); }).length; localStorage.setItem("staffChatUnreadCount", String(unreadCount)); window.dispatchEvent(new CustomEvent("staff-chat:unread")); }, [conversations, active, meId]);
+  React.useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
+  React.useEffect(() => {
+    const handleSidebarToggle = (event) =>
+      setIsSidebarCollapsed(Boolean(event.detail));
+    window.addEventListener("manage-sidebar-toggle", handleSidebarToggle);
+    return () =>
+      window.removeEventListener("manage-sidebar-toggle", handleSidebarToggle);
+  }, []);
+  React.useEffect(() => {
+    conversationsRef.current = conversations;
+  }, [conversations]);
+  React.useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return undefined;
+    const frameId = window.requestAnimationFrame(() => {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    });
+    return () => window.cancelAnimationFrame(frameId);
+  }, [messages, active]);
+  React.useEffect(() => {
+    const unreadCount = conversations.filter((conversation) => {
+      const memberState = conversation.memberStates?.find(
+        (state) => String(state.userId) === String(meId),
+      );
+      return (
+        conversation.lastMessageAt &&
+        (!memberState?.lastReadAt ||
+          new Date(conversation.lastMessageAt) >
+            new Date(memberState.lastReadAt)) &&
+        idOf(active) !== idOf(conversation)
+      );
+    }).length;
+    localStorage.setItem("staffChatUnreadCount", String(unreadCount));
+    window.dispatchEvent(new CustomEvent("staff-chat:unread"));
+  }, [conversations, active, meId]);
   const addMessage = React.useCallback(
-    (message) =>
+    (message) => {
+      if (!message?.content || !idOf(message)) return;
       setMessages((items) =>
         items.some((item) => idOf(item) === idOf(message))
           ? items
           : [...items, message],
-      ),
+      );
+    },
     [],
   );
   const markConversationReadLocally = (conversationId) => {
     const readAt = new Date().toISOString();
-    setConversations((items) => items.map((item) => idOf(item) === String(conversationId) ? { ...item, memberStates: [...(item.memberStates || []).filter((state) => String(state.userId) !== String(meId)), { userId: meId, lastReadAt: readAt }] } : item));
+    setConversations((items) =>
+      items.map((item) =>
+        idOf(item) === String(conversationId)
+          ? {
+              ...item,
+              memberStates: [
+                ...(item.memberStates || []).filter(
+                  (state) => String(state.userId) !== String(meId),
+                ),
+                { userId: meId, lastReadAt: readAt },
+              ],
+            }
+          : item,
+      ),
+    );
   };
 
   React.useEffect(() => {
@@ -76,10 +133,23 @@ const ChatPage = ({ role = "staff" }) => {
       const loading = toast.loading("Đang tải cuộc trò chuyện...");
       setIsLoading(true);
       try {
-        const [conversationData, groupData] = await Promise.all([
-          staffChatAPI.getConversations(),
-          staffChatAPI.getGroups(),
-        ]);
+        let chatData;
+        try {
+          chatData = await Promise.all([
+            staffChatAPI.getConversations(),
+            staffChatAPI.getGroups(),
+          ]);
+        } catch (error) {
+          if (error?.response?.status !== 401) throw error;
+          await new Promise((resolve) =>
+            setTimeout(resolve, CHAT_AUTH_RETRY_DELAY_MS),
+          );
+          chatData = await Promise.all([
+            staffChatAPI.getConversations(),
+            staffChatAPI.getGroups(),
+          ]);
+        }
+        const [conversationData, groupData] = chatData;
         if (mounted) {
           setConversations(
             Array.isArray(conversationData)
@@ -107,12 +177,19 @@ const ChatPage = ({ role = "staff" }) => {
   }, []);
   React.useEffect(() => {
     const timer = setTimeout(async () => {
-      if (query.trim().length < 2) return setResults([]);
+      if (query.trim().length < 2) {
+        setResults([]);
+        setIsSearching(false);
+        return;
+      }
+      setIsSearching(true);
       try {
         const data = await staffChatAPI.searchUsers(query.trim());
         setResults(Array.isArray(data) ? data : data?.users || []);
       } catch {
         toast.error("Không thể tìm kiếm staff");
+      } finally {
+        setIsSearching(false);
       }
     }, 350);
     return () => clearTimeout(timer);
@@ -125,9 +202,37 @@ const ChatPage = ({ role = "staff" }) => {
       transports: ["websocket", "polling"],
     });
     socketRef.current = socket;
-    socket.on("connect", () => { const joinedIds = new Set(conversationsRef.current.map((conversation) => String(idOf(conversation)))); const activeId = idOf(activeRef.current); if (activeId) joinedIds.add(String(activeId)); joinedIds.forEach((conversationId) => socket.emit("conversation:join", { conversationId })); });
-    socket.on("connect_error", () => toast.error("Không thể kết nối realtime chat"));
-    socket.on("message:new", (message) => { if (idOf(message.conversationId) === idOf(activeRef.current)) addMessage(message); setConversations((items) => items.map((item) => idOf(item) === idOf(message.conversationId) ? { ...item, lastMessagePreview: message.content, lastMessageAt: message.createdAt } : item)); });
+    socket.on("connect", () => {
+      const joinedIds = new Set(
+        conversationsRef.current.map((conversation) =>
+          String(idOf(conversation)),
+        ),
+      );
+      const activeId = idOf(activeRef.current);
+      if (activeId) joinedIds.add(String(activeId));
+      joinedIds.forEach((conversationId) =>
+        socket.emit("conversation:join", { conversationId }),
+      );
+    });
+    socket.on("connect_error", () =>
+      toast.error("Không thể kết nối realtime chat"),
+    );
+    socket.on("message:new", (message) => {
+      if (idOf(message.conversationId) === idOf(activeRef.current))
+        addMessage(message);
+      setConversations((items) =>
+        items.map((item) =>
+          idOf(item) === idOf(message.conversationId)
+            ? {
+                ...item,
+                lastMessagePreview: message.content,
+                lastMessageAt: message.createdAt,
+                lastMessageSender: message.sender,
+              }
+            : item,
+        ),
+      );
+    });
     socket.on("presence:list", (items = []) =>
       setPresence(
         Object.fromEntries(
@@ -149,7 +254,13 @@ const ChatPage = ({ role = "staff" }) => {
       socketRef.current = null;
     };
   }, [addMessage, meId]);
-  React.useEffect(() => { const socket = socketRef.current; if (!socket?.connected || !conversations.length) return; conversations.forEach((conversation) => socket.emit("conversation:join", { conversationId: idOf(conversation) })); }, [conversations]);
+  React.useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket?.connected || !conversations.length) return;
+    conversations.forEach((conversation) =>
+      socket.emit("conversation:join", { conversationId: idOf(conversation) }),
+    );
+  }, [conversations]);
   const selectConversation = async (conversation) => {
     setActive(conversation);
     activeRef.current = conversation;
@@ -162,7 +273,14 @@ const ChatPage = ({ role = "staff" }) => {
       const data = await staffChatAPI.getMessages(conversationId);
       setMessages(Array.isArray(data) ? data : data?.messages || []);
       toast.success("Đã mở cuộc trò chuyện", { id: loading });
-      socketRef.current?.emit("conversation:join", { conversationId }, (ack) => { if (!ack?.ok) toast.error(ack?.message || "Không thể tham gia đoạn chat"); });
+      socketRef.current?.emit(
+        "conversation:join",
+        { conversationId },
+        (ack) => {
+          if (!ack?.ok)
+            toast.error(ack?.message || "Không thể tham gia đoạn chat");
+        },
+      );
       socketRef.current?.emit("conversation:read", { conversationId });
     } catch (error) {
       toast.error(
@@ -256,7 +374,25 @@ const ChatPage = ({ role = "staff" }) => {
       });
     }
   };
-  const leaveGroup = async () => { if (!active) return; const loading = toast.loading("Đang rời nhóm..."); try { await staffChatAPI.removeGroupMember(idOf(active), meId); setConversations((items) => items.filter((item) => idOf(item) !== idOf(active))); setGroups((items) => items.filter((item) => idOf(item) !== idOf(active))); setActive(null); setShowConversationInfo(false); setConfirmLeaveGroup(false); toast.success("Đã rời nhóm", { id: loading }); } catch (error) { toast.error(error?.response?.data?.message || "Không thể rời nhóm", { id: loading }); } };
+  const leaveGroup = async () => {
+    if (!active) return;
+    const loading = toast.loading("Đang rời nhóm...");
+    try {
+      await staffChatAPI.removeGroupMember(idOf(active), meId);
+      setConversations((items) =>
+        items.filter((item) => idOf(item) !== idOf(active)),
+      );
+      setGroups((items) => items.filter((item) => idOf(item) !== idOf(active)));
+      setActive(null);
+      setShowConversationInfo(false);
+      setConfirmLeaveGroup(false);
+      toast.success("Đã rời nhóm", { id: loading });
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Không thể rời nhóm", {
+        id: loading,
+      });
+    }
+  };
   const sendMessage = (event) => {
     event.preventDefault();
     const content = draft.trim();
@@ -267,15 +403,35 @@ const ChatPage = ({ role = "staff" }) => {
       "message:send",
       { conversationId: idOf(active), content },
       (response) => {
-        if (response?.error) toast.error(response.error);
-        else {
-          addMessage(response?.data || response);
+        if (response?.ok === false || response?.error) {
+          toast.error(response.message || response.error);
+        } else {
+          const sentMessage = response?.message || response?.data || response;
+          if (!sentMessage?.content || !idOf(sentMessage)) {
+            toast.error("Không nhận được tin nhắn từ máy chủ");
+            return;
+          }
+          addMessage(sentMessage);
+          setConversations((items) =>
+            items.map((item) =>
+              idOf(item) === idOf(active)
+                ? {
+                    ...item,
+                    lastMessagePreview: sentMessage.content,
+                    lastMessageAt: sentMessage.createdAt,
+                    lastMessageSender: sentMessage.sender,
+                  }
+                : item,
+            ),
+          );
           setDraft("");
         }
       },
     );
     socketRef.current.emit("typing:stop", { conversationId: idOf(active) });
-    socketRef.current.emit("conversation:read", { conversationId: idOf(active) });
+    socketRef.current.emit("conversation:read", {
+      conversationId: idOf(active),
+    });
     markConversationReadLocally(idOf(active));
   };
   const handleDraft = (event) => {
@@ -304,7 +460,7 @@ const ChatPage = ({ role = "staff" }) => {
     <>
       <ManageSidebar role={role} activeItem="chat" />
       <main
-        className={`chat-page ${mobileOpen ? "chat-page--conversation-open" : ""}`}
+        className={`chat-page ${mobileOpen ? "chat-page--conversation-open" : ""} ${isSidebarCollapsed ? "chat-page--sidebar-collapsed" : ""}`}
       >
         <ListChat
           conversations={conversations}
@@ -317,6 +473,7 @@ const ChatPage = ({ role = "staff" }) => {
           searchQuery={query}
           onSearchChange={setQuery}
           searchResults={results}
+          isSearching={isSearching}
           onSelectConversation={selectConversation}
           onSelectUser={selectUser}
           activeId={idOf(active)}
@@ -347,7 +504,7 @@ const ChatPage = ({ role = "staff" }) => {
                   ? typing
                     ? "Đang nhập..."
                     : active.type === "group"
-                      ? "Nhóm staff"
+                      ? "Nhóm tin nhắn sự kiện"
                       : activeOnline
                         ? "Đang hoạt động"
                         : "Ngoại tuyến"
@@ -366,7 +523,10 @@ const ChatPage = ({ role = "staff" }) => {
           </header>
           {active ? (
             <>
-              <div className="chat-thread__messages">
+              <div
+                className="chat-thread__messages"
+                ref={messagesContainerRef}
+              >
                 {messages.map((message) => {
                   const mine =
                     idOf(message.sender) === meId ||
@@ -376,6 +536,11 @@ const ChatPage = ({ role = "staff" }) => {
                       className={`chat-bubble-row ${mine ? "chat-bubble-row--mine" : ""}`}
                       key={idOf(message)}
                     >
+                      {!mine && (
+                        <span className="chat-bubble__avatar" aria-hidden="true">
+                          {initialsOf(nameOf(message.sender))}
+                        </span>
+                      )}
                       <div className="chat-bubble">
                         <span>{message.content}</span>
                         <small>
@@ -420,8 +585,107 @@ const ChatPage = ({ role = "staff" }) => {
           )}
         </section>
       </main>
-      {showConversationInfo && active && <div className="chat-modal-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setShowConversationInfo(false)}><div className="chat-modal chat-info-modal"><div className="chat-modal__heading"><div><span className="chat-list__eyebrow">CONVERSATION INFO</span><h2>{active.type === "group" ? active.name : activeName}</h2></div><button type="button" onClick={() => setShowConversationInfo(false)} aria-label="Đóng">×</button></div>{active.type === "group" ? <><p className="chat-info-modal__description">{active.description || "Nhóm trao đổi nội bộ"}</p><strong>Thành viên ({active.members?.length || 0})</strong><div className="chat-info-modal__member-list">{active.members?.map((member) => <div className="chat-info-modal__member" key={idOf(member)}><span className="chat-avatar">{initialsOf(nameOf(member))}</span><span><strong>{nameOf(member)}</strong><small>@{member.userName || "staff"}</small></span></div>)}</div><button className="chat-info-modal__leave" type="button" onClick={() => setConfirmLeaveGroup(true)}>Rời nhóm</button></> : <div className="chat-info-modal__profile"><div className="chat-avatar">{initialsOf(activeName)}</div><strong>{activeName}</strong><span>@{activeMember?.userName || "staff"}</span><small>{activeMember?.role || "Staff"}</small></div>}</div></div>}
-      {confirmLeaveGroup && <div className="chat-modal-backdrop" role="presentation"><div className="chat-modal chat-confirm-modal" style={{ boxSizing: "border-box", width: "min(390px, calc(100vw - 32px))" }}><h2>Rời nhóm?</h2><p>Bạn sẽ không còn nhận được tin nhắn trong nhóm này.</p><div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "8px", width: "100%" }}><button type="button" onClick={() => setConfirmLeaveGroup(false)}>Huỷ</button><button type="button" onClick={leaveGroup} style={{ display: "inline-flex", visibility: "visible", opacity: 1, color: "#fff", background: "#ff4747" }}>Rời nhóm</button></div></div></div>}
+      {showConversationInfo && active && (
+        <div
+          className="chat-modal-backdrop"
+          role="presentation"
+          onMouseDown={(event) =>
+            event.target === event.currentTarget &&
+            setShowConversationInfo(false)
+          }
+        >
+          <div className="chat-modal chat-info-modal">
+            <div className="chat-modal__heading">
+              <div>
+                <span className="chat-list__eyebrow">Thông tin đoạn chat</span>
+                <h2>{active.type === "group" ? active.name : activeName}</h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowConversationInfo(false)}
+                aria-label="Đóng"
+              >
+                ×
+              </button>
+            </div>
+            {active.type === "group" ? (
+              <>
+                <p className="chat-info-modal__description">
+                  {active.description || "Nhóm trao đổi nội bộ"}
+                </p>
+                <strong>Thành viên ({active.members?.length || 0})</strong>
+                <div className="chat-info-modal__member-list">
+                  {active.members?.map((member) => (
+                    <div className="chat-info-modal__member" key={idOf(member)}>
+                      <span className="chat-avatar">
+                        {initialsOf(nameOf(member))}
+                      </span>
+                      <span>
+                        <strong>{nameOf(member)}</strong>
+                        <small>@{member.userName || "staff"}</small>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  className="chat-info-modal__leave"
+                  type="button"
+                  onClick={() => setConfirmLeaveGroup(true)}
+                >
+                  Rời nhóm
+                </button>
+              </>
+            ) : (
+              <div className="chat-info-modal__profile">
+                <div className="chat-avatar">{initialsOf(activeName)}</div>
+                <strong>{activeName}</strong>
+                <span>@{activeMember?.userName || "staff"}</span>
+                <small>{activeMember?.role || "Staff"}</small>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {confirmLeaveGroup && (
+        <div className="chat-modal-backdrop" role="presentation">
+          <div
+            className="chat-modal chat-confirm-modal"
+            style={{
+              boxSizing: "border-box",
+              width: "min(390px, calc(100vw - 32px))",
+            }}
+          >
+            <h2>Rời nhóm?</h2>
+            <p>Bạn sẽ không còn nhận được tin nhắn trong nhóm này.</p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: "8px",
+                width: "100%",
+              }}
+            >
+              <button type="button" onClick={() => setConfirmLeaveGroup(false)}>
+                Huỷ
+              </button>
+              <button
+                type="button"
+                onClick={leaveGroup}
+                style={{
+                  display: "inline-flex",
+                  visibility: "visible",
+                  opacity: 1,
+                  color: "#fff",
+                  background: "#ff4747",
+                }}
+              >
+                Rời nhóm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showGroupModal && (
         <div
           className="chat-modal-backdrop"

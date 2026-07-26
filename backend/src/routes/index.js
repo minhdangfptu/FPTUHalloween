@@ -15,6 +15,7 @@ const staffChatRoute = require('./staffChat')
 // const adminCtrl = require('../controllers/admin')
 
 const { requireAuth, requireRole } = require('../middlewares/auth')
+const { ticketRateLimiter, paymentRateLimiter } = require('../middlewares/rateLimiter')
 
 // Health (optional)
 router.get('/_health', (req, res) => res.json({ ok: true }))
@@ -72,16 +73,15 @@ router.patch('/cart/items/:ticketTypeId', requireAuth, cartCtrl.updateItem)
 router.delete('/cart/items/:ticketTypeId', requireAuth, cartCtrl.removeItem)
 
 // PAYOS
-router.post('/payments/payos', requireAuth, payOSCtrl.createPayment)
+router.post('/payments/payos', paymentRateLimiter, requireAuth, payOSCtrl.createPayment)
 router.get('/payments/payos/:orderCode', requireAuth, payOSCtrl.getPaymentStatus)
 router.delete('/payments/payos/:orderCode', requireAuth, payOSCtrl.cancelPayment)
 
 // TEST ONLY: create tickets without payment
 router.get('/tickets', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getList)
 router.get('/tickets/me', requireAuth, userTicketCtrl.getMyTickets)
-router.post('/tickets/test-issue', requireAuth, userTicketCtrl.createTestTickets)
-router.get('/tickets/qr', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getByQrCode)
-router.post('/tickets/check-in', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.checkIn)
+router.get('/tickets/qr', ticketRateLimiter, requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getByQrCode)
+router.post('/tickets/check-in', ticketRateLimiter, requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.checkIn)
 router.get('/tickets/:id', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getDetail)
 
 // ADMIN ORDER REPORTS

@@ -17,6 +17,7 @@ const ticketTypes = Object.entries(SCHEDULE).flatMap(([date, times]) =>
     availableQuantity: String(TICKET_QUANTITY),
     totalQuantity: TICKET_QUANTITY,
     ticketTypeDate: Number(date),
+    ticketEventDate: new Date(`2026-10-${String(date).padStart(2, '0')}T00:00:00+07:00`),
     ticketTypeTime: time,
     ticketTypeStatus: 'active',
     ticketType3dModel: TICKET_MODEL,

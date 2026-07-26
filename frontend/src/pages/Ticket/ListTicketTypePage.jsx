@@ -55,12 +55,12 @@ const ListTicketTypePage = () => {
       activeFilter === "all"
         ? ticketTypes.filter(
             ({ ticketTypeStatus, availableQuantity }) =>
-              ticketTypeStatus === "active" && Number(availableQuantity) >= 0,
+              ticketTypeStatus === "active" && Number(availableQuantity) > 0,
           )
         : ticketTypes.filter(
             ({ ticketTypeDate, ticketTypeStatus, availableQuantity }) =>
               ticketTypeStatus === "active" &&
-              Number(availableQuantity) >= 0 &&
+              Number(availableQuantity) > 0 &&
               String(ticketTypeDate) === activeFilter,
           ),
     [activeFilter, ticketTypes],

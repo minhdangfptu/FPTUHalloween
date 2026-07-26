@@ -7,7 +7,34 @@ const payos = new PayOS()
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173'
 const PAYMENT_EXPIRY_SECONDS = 15 * 60
 
-const createOrderCode = () => Number(`${Date.now()}`.slice(-9))
+const reserveTicketStock = async items => {
+  const reserved = []
+  try {
+    for (const item of items) {
+      const ticketType = await TicketType.findOneAndUpdate(
+        { _id: item.ticketTypeId, ticketTypeStatus: 'active', $expr: { $gte: ['$availableQuantity', item.quantity] } },
+        { $inc: { availableQuantity: -item.quantity } },
+        { new: true }
+      )
+      if (!ticketType) throw new Error('Some tickets are no longer available')
+      reserved.push(item)
+    }
+    return reserved
+  } catch (error) {
+    await restoreTicketStock(reserved)
+    throw error
+  }
+}
+
+const restoreTicketStock = async items => {
+  await Promise.all(items.map(item => TicketType.findByIdAndUpdate(item.ticketTypeId, { $inc: { availableQuantity: item.quantity } })))
+}
+
+const createOrderCode = () => {
+  const timestampPart = String(Date.now()).slice(-7)
+  const randomPart = String(Math.floor(Math.random() * 100)).padStart(2, '0')
+  return Number(`${timestampPart}${randomPart}`)
+}
 
 const markOrderAsPaid = async order => {
   if (order.orderStatus === 'Paid') return order
@@ -26,24 +53,6 @@ const markOrderAsPaid = async order => {
       }
       processedOrder = lockedOrder
       for (const item of processedOrder.items) {
-        const updatedTicketType = await TicketType.findOneAndUpdate(
-          {
-            _id: item.ticketTypeId,
-            $expr: {
-              $gte: [{ $convert: { input: '$availableQuantity', to: 'int', onError: -1, onNull: -1 } }, item.quantity]
-            }
-          },
-          [{
-            $set: {
-              availableQuantity: {
-                $subtract: [{ $convert: { input: '$availableQuantity', to: 'int', onError: 0, onNull: 0 } }, item.quantity]
-              }
-            }
-          }],
-          { new: true, session }
-        )
-        if (!updatedTicketType) throw new Error('Some tickets are no longer available')
-
         await UserTicket.insertMany(Array.from({ length: item.quantity }, () => ({
           userId: order.userId,
           orderId: order._id,
@@ -53,6 +62,7 @@ const markOrderAsPaid = async order => {
         })), { session })
       }
       processedOrder.orderStatus = 'Paid'
+      processedOrder.stockReserved = false
       await processedOrder.save({ session })
       await Cart.findOneAndUpdate({ userId: processedOrder.userId }, { $set: { items: [] } }, { session })
     })
@@ -107,29 +117,35 @@ const createPayment = async (userId, checkoutData = {}) => {
   const user = await User.findById(userId).select('fullName email phone').lean()
   if (!user) throw new Error('User not found')
 
-  const paymentLink = await payos.paymentRequests.create({
-    orderCode,
-    amount,
-    description: `FPTU Halloween ${orderCode}`.slice(0, 25),
-    expiredAt: Math.floor(Date.now() / 1000) + PAYMENT_EXPIRY_SECONDS,
-    returnUrl: `${FRONTEND_URL}/complete-payment?orderCode=${orderCode}`,
-    cancelUrl: `${FRONTEND_URL}/qr-payment?cancelled=true`,
-    buyerName: user.fullName,
-    buyerEmail: user.email,
-    buyerPhone: user.phone,
-    items: items.map(item => ({ name: item.name, quantity: item.quantity, price: item.price }))
-  })
+  await reserveTicketStock(items)
 
-  const order = await Order.create({
-    userId,
-    items,
-    totalAmount: amount,
-    paymentMethod: 'PayOS',
-    paymentData: paymentLink,
-    payosOrderId: String(orderCode)
-  })
+  const reservationExpiresAt = new Date(Date.now() + PAYMENT_EXPIRY_SECONDS * 1000)
+  let order
 
-  return { orderId: order._id, ...paymentLink }
+  try {
+    order = await Order.create({ userId, items, totalAmount: amount, paymentMethod: 'PayOS', paymentData: { reservationExpiresAt }, payosOrderId: String(orderCode), stockReserved: true, reservationExpiresAt })
+    const paymentLink = await payos.paymentRequests.create({
+      orderCode, amount, description: `FPTU Halloween ${orderCode}`.slice(0, 25),
+      expiredAt: Math.floor(reservationExpiresAt.getTime() / 1000),
+      returnUrl: `${FRONTEND_URL}/complete-payment?orderCode=${orderCode}`,
+      cancelUrl: `${FRONTEND_URL}/qr-payment?cancelled=true`, buyerName: user.fullName,
+      buyerEmail: user.email, buyerPhone: user.phone,
+      items: items.map(item => ({ name: item.name, quantity: item.quantity, price: item.price }))
+    })
+    order.paymentData = paymentLink
+    order.reservationExpiresAt = reservationExpiresAt
+    await order.save()
+    return { orderId: order._id, ...paymentLink }
+  } catch (error) {
+    await restoreTicketStock(items)
+    if (order) {
+      order.orderStatus = 'Cancelled'
+      order.stockReserved = false
+      await order.save()
+    }
+    if (error?.code === 11000) throw new Error('Payment order code already exists. Please try again')
+    throw error
+  }
 }
 
 const getPaymentStatus = async (userId, orderCode) => {
@@ -137,9 +153,9 @@ const getPaymentStatus = async (userId, orderCode) => {
   if (!order) throw new Error('Order not found')
   const payment = await payos.paymentRequests.get(Number(orderCode))
   if (payment.status === 'PAID') await markOrderAsPaid(order)
-  if (['EXPIRED', 'CANCELLED'].includes(payment.status) && order.orderStatus === 'Pending') {
-    order.orderStatus = 'Cancelled'
-    await order.save()
+  if (['EXPIRED', 'CANCELLED'].includes(payment.status)) {
+    const cancelledOrder = await Order.findOneAndUpdate({ _id: order._id, orderStatus: 'Pending', stockReserved: true }, { $set: { orderStatus: 'Cancelled', stockReserved: false } }, { new: true })
+    if (cancelledOrder) await restoreTicketStock(cancelledOrder.items)
   }
   return { orderId: order._id, orderCode: Number(orderCode), status: payment.status }
 }
@@ -157,8 +173,8 @@ const cancelPayment = async (userId, orderCode) => {
     if (!['EXPIRED', 'CANCELLED'].includes(currentPayment.status)) throw error
     payment = currentPayment
   }
-  order.orderStatus = 'Cancelled'
-  await order.save()
+  const cancelledOrder = await Order.findOneAndUpdate({ _id: order._id, orderStatus: 'Pending', stockReserved: true }, { $set: { orderStatus: 'Cancelled', stockReserved: false } }, { new: true })
+  if (cancelledOrder) await restoreTicketStock(cancelledOrder.items)
   return { orderId: order._id, orderCode: Number(orderCode), status: payment.status }
 }
 

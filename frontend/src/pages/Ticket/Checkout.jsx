@@ -115,7 +115,7 @@ const Checkout = () => {
     [cartItems],
   );
   const hasUnavailableItems = useMemo(
-    () => cartItems.some((item) => item.ticketType?.ticketTypeStatus !== "active"),
+    () => cartItems.some((item) => item.ticketType?.ticketTypeStatus !== "active" || Number(item.ticketType?.availableQuantity) <= 0),
     [cartItems],
   );
   const discount =

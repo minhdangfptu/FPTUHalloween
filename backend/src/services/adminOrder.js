@@ -1,16 +1,29 @@
 const mongoose = require('mongoose')
-const { Order, UserTicket } = require('../models')
+const { Order, UserTicket, TicketType } = require('../models')
 
 const expirePendingOrders = async () => {
   const expiredAt = Math.floor(Date.now() / 1000)
+  const legacyResult = await Order.updateMany(
+    { orderStatus: 'Pending', stockReserved: { $ne: true } },
+    { $set: { orderStatus: 'Cancelled' } }
+  )
+  const expiredOrders = await Order.find({
+    orderStatus: 'Pending',
+    stockReserved: true,
+    $or: [{ 'paymentData.expiredAt': { $lte: expiredAt } }, { reservationExpiresAt: { $lte: new Date() } }]
+  }).select('items').lean()
   const result = await Order.updateMany(
     {
       orderStatus: 'Pending',
-      'paymentData.expiredAt': { $lte: expiredAt }
+      stockReserved: true,
+      $or: [{ 'paymentData.expiredAt': { $lte: expiredAt } }, { reservationExpiresAt: { $lte: new Date() } }]
     },
-    { $set: { orderStatus: 'Cancelled' } }
+    { $set: { orderStatus: 'Cancelled', stockReserved: false } }
   )
-  return result.modifiedCount || 0
+  await Promise.all(expiredOrders.flatMap(order => (order.items || []).map(item =>
+    TicketType.findByIdAndUpdate(item.ticketTypeId, { $inc: { availableQuantity: Number(item.quantity) } })
+  )))
+  return (legacyResult.modifiedCount || 0) + (result.modifiedCount || 0)
 }
 
 const ensureId = id => {

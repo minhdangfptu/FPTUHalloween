@@ -1,18 +1,5 @@
 const userTicketService = require('../services/userTicket')
 
-const createTestTickets = async (req, res, next) => {
-  try {
-    const result = await userTicketService.createTestTickets(
-      req.user.id,
-      req.body?.ticketTypeId,
-      req.body?.quantity
-    )
-    return res.status(201).json({ success: true, data: result })
-  } catch (error) {
-    return next(error)
-  }
-}
-
 const getMyTickets = async (req, res, next) => {
   try {
     const tickets = await userTicketService.getMyTickets(req.user.id)
@@ -29,4 +16,4 @@ const getDetail = wrap(req => userTicketService.getTicketById(req.params.id))
 const getByQrCode = wrap(req => userTicketService.getTicketByQrCode(req.query.code))
 const checkIn = wrap(req => userTicketService.checkInByQrCode(req.body?.code, req.user.id))
 
-module.exports = { createTestTickets, getMyTickets, getList, getDetail, getByQrCode, checkIn }
+module.exports = { getMyTickets, getList, getDetail, getByQrCode, checkIn }

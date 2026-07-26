@@ -61,6 +61,7 @@ const TicketDetail = () => {
 
   const isActive = ticketType?.ticketTypeStatus === "active";
   const availableQuantity = Number(ticketType?.availableQuantity);
+  const isAvailable = isActive && availableQuantity > 0;
   const totalPrice = useMemo(
     () => (ticketType?.ticketTypePrice || 0) * quantity,
     [quantity, ticketType],
@@ -237,7 +238,7 @@ const TicketDetail = () => {
                 type="button"
                 aria-label="Tăng số lượng"
                 disabled={
-                  !isActive ||
+                  !isAvailable ||
                   (Number.isInteger(availableQuantity) &&
                     quantity >= availableQuantity)
                 }
@@ -253,7 +254,7 @@ const TicketDetail = () => {
             <button
               className="ticket-detail-buy"
               type="button"
-              disabled={!isActive || isAddingToCart}
+              disabled={!isAvailable || isAddingToCart}
               onClick={addToCart}
             >
               <ShoppingBag size={18} />{" "}

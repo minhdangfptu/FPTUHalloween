@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
   availableQuantity: { type: Number, required: true, min: 0 },
   totalQuantity: { type: Number, required: true, min: 0 },
   ticketTypeDate: { type: Number, required: true, min: 0 },
+  ticketEventDate: { type: Date, index: true },
   ticketTypeTime: { type: String, required: true, match: /^([01]\d|2[0-3]):[0-5]\d$/ },
   ticketTypeStatus: { type: String, default: 'active', enum: ['active', 'inactive'] },
   ticketType3dModel: { type: String, required: true }

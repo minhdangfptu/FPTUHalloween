@@ -41,6 +41,9 @@ const serializeConversation = conversation => ({
   isActive: conversation.isActive,
   lastMessageAt: conversation.lastMessageAt,
   lastMessagePreview: conversation.lastMessagePreview,
+  lastMessageSender: conversation.lastMessageSenderId?._id
+    ? serializeUser(conversation.lastMessageSenderId)
+    : null,
   memberStates: (conversation.memberStates || []).map(state => ({
     userId: String(state.userId),
     lastReadAt: state.lastReadAt
@@ -84,9 +87,29 @@ const getConversations = async userId => {
   const conversations = await ChatConversation.find({ members: userId, isActive: true })
     .populate('members', 'userName fullName roleId')
     .populate('members.roleId', 'roleName')
+    .populate('lastMessageSenderId', 'userName fullName roleId')
+    .populate('lastMessageSenderId.roleId', 'roleName')
     .sort({ lastMessageAt: -1, updatedAt: -1 })
     .lean()
-  return conversations.map(serializeConversation)
+  const conversationIds = conversations.map(conversation => conversation._id)
+  const latestMessages = conversationIds.length
+    ? await ChatMessage.find({ conversationId: { $in: conversationIds }, deletedAt: null })
+      .populate('senderId', 'userName fullName roleId')
+      .populate('senderId.roleId', 'roleName')
+      .sort({ createdAt: -1 })
+      .lean()
+    : []
+  const latestSenderByConversation = new Map()
+  latestMessages.forEach(message => {
+    const conversationId = String(message.conversationId)
+    if (!latestSenderByConversation.has(conversationId)) {
+      latestSenderByConversation.set(conversationId, message.senderId)
+    }
+  })
+  return conversations.map(conversation => serializeConversation({
+    ...conversation,
+    lastMessageSenderId: conversation.lastMessageSenderId || latestSenderByConversation.get(String(conversation._id))
+  }))
 }
 
 const getOrCreateDirectConversation = async (userId, otherUserId) => {
@@ -227,6 +250,7 @@ const sendMessage = async (userId, conversationId, content) => {
   const message = await ChatMessage.create({ conversationId, senderId: userId, content: value })
   conversation.lastMessageAt = message.createdAt
   conversation.lastMessagePreview = value.slice(0, 120)
+  conversation.lastMessageSenderId = userId
   await conversation.save()
   const populated = await ChatMessage.findById(message._id).populate('senderId', 'userName fullName roleId').populate('senderId.roleId', 'roleName').lean()
   return serializeMessage(populated)

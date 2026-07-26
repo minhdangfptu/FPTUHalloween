@@ -75,6 +75,7 @@ function Header() {
                 text={renderTickerContent(tickerItems)}
                 default_velocity={60}
                 className="fpt-header__ticker-track"
+                startFromRight
               />
             )}
           </div>

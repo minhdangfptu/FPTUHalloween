@@ -15,7 +15,8 @@ const schema = new mongoose.Schema({
   memberStates: { type: [memberStateSchema], default: [] },
   isActive: { type: Boolean, default: true, index: true },
   lastMessageAt: { type: Date, default: null, index: true },
-  lastMessagePreview: { type: String, default: '' }
+  lastMessagePreview: { type: String, default: '' },
+  lastMessageSenderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', default: null }
 }, { collection: 'ChatConversations', timestamps: true })
 
 schema.index({ members: 1, lastMessageAt: -1 })

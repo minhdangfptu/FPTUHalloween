@@ -24,7 +24,9 @@ const toForm = (ticket) => ({
   ticketTypePrice: ticket.ticketTypePrice ?? "",
   availableQuantity: ticket.availableQuantity ?? "",
   totalQuantity: ticket.totalQuantity ?? "",
-  ticketTypeDate: ticket.ticketTypeDate ? `2026-10-${String(ticket.ticketTypeDate).padStart(2, "0")}` : "",
+  ticketTypeDate: ticket.ticketEventDate
+    ? new Date(ticket.ticketEventDate).toISOString().slice(0, 10)
+    : ticket.ticketTypeDate ? `2026-10-${String(ticket.ticketTypeDate).padStart(2, "0")}` : "",
   ticketTypeTime: ticket.ticketTypeTime || "",
   ticketType3dModel: ticket.ticketType3dModel || "ghost",
 });
@@ -72,6 +74,7 @@ const StaffTicketTypeDetail = () => {
         ticketTypePrice: Number(form.ticketTypePrice),
         totalQuantity: Number(form.totalQuantity),
         ticketTypeDate: Number(form.ticketTypeDate.split("-")[2]),
+        ticketEventDate: form.ticketTypeDate,
       });
       setTicketType(result.ticketType);
       setForm(toForm(result.ticketType));

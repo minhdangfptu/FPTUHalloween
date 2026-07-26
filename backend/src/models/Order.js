@@ -7,7 +7,9 @@ const schema = new Schema({
   totalAmount: { type: Number, required: true, min: 0 },
   paymentMethod: { type: String },
   paymentData: { type: Schema.Types.Mixed },
-  payosOrderId: { type: String, required: true },
+  stockReserved: { type: Boolean, default: false, index: true },
+  reservationExpiresAt: { type: Date, index: true },
+  payosOrderId: { type: String, required: true, unique: true, index: true },
   orderStatus: { type: String, default: 'Pending', enum: ['Pending', 'Processing', 'Paid', 'Cancelled'] }
 }, { collection: 'Orders', timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 

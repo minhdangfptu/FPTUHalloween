@@ -72,7 +72,7 @@ const Cart = () => {
     [selectedItems],
   );
   const hasSelectedUnavailableItems = selectedItems.some(
-    (item) => getTicketType(item).ticketTypeStatus !== "active" || Number(getTicketType(item).availableQuantity) < 0,
+    (item) => getTicketType(item).ticketTypeStatus !== "active" || Number(getTicketType(item).availableQuantity) <= 0,
   );
   const allItemsSelected = cartItems.length > 0 && selectedItems.length === cartItems.length;
 
@@ -227,7 +227,7 @@ const Cart = () => {
               {cartItems.map((item) => {
                 const ticketType = getTicketType(item);
                 const ticketTypeId = item.ticketTypeId;
-                const isSoldOut = Number(ticketType.availableQuantity) < 0;
+                const isSoldOut = Number(ticketType.availableQuantity) <= 0;
                 const isUnavailable = ticketType.ticketTypeStatus !== "active" || isSoldOut;
                 const isPending = pendingAction !== null;
                 return (
