@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Hướng dẫn sử dụng FPTU Halloween Online</title>
+  <style>
+    @page { size: A4; margin: 18mm 17mm 18mm; }
+    :root { --red: #e50914; --ink: #141821; --muted: #5f6877; --line: #dce1e8; --soft: #fff4f4; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); font-family: Arial, sans-serif; font-size: 10.5pt; line-height: 1.55; }
+    h1, h2, h3 { margin: 0 0 9px; line-height: 1.2; }
+    h1 { font-size: 30pt; letter-spacing: -0.7px; }
+    h2 { color: var(--red); font-size: 19pt; border-bottom: 2px solid var(--red); padding-bottom: 7px; margin-top: 4px; }
+    h3 { font-size: 13pt; margin-top: 16px; }
+    p { margin: 6px 0 9px; }
+    ul, ol { margin: 5px 0 10px 22px; padding: 0; }
+    li { margin: 3px 0; }
+    .cover { min-height: 245mm; display: flex; flex-direction: column; justify-content: center; padding: 18mm 12mm; background: linear-gradient(145deg, #0b0f1b 0%, #171321 68%, #3a1018 100%); color: white; page-break-after: always; }
+    .cover .eyebrow { color: #ff4752; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .cover h1 { max-width: 155mm; margin-top: 20px; }
+    .cover .subtitle { color: #d9dee8; font-size: 15pt; max-width: 140mm; margin-top: 12px; }
+    .cover .meta { color: #ffb5b8; margin-top: 32px; }
+    .toc { page-break-after: always; }
+    .toc li { padding: 4px 0; }
+    .section { page-break-before: always; }
+    .section:first-of-type { page-break-before: auto; }
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+    .card { border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; background: #fff; }
+    .card strong { color: var(--red); display: block; margin-bottom: 3px; }
+    .note, .warning, .success { border-left: 4px solid; border-radius: 5px; padding: 9px 12px; margin: 11px 0; }
+    .note { background: #f2f6fb; border-color: #4a78b8; }
+    .warning { background: #fff7df; border-color: #d89400; }
+    .success { background: #eefaf1; border-color: #219653; }
+    .step { display: grid; grid-template-columns: 25px 1fr; gap: 8px; margin: 8px 0; }
+    .step-no { width: 24px; height: 24px; border-radius: 50%; color: #fff; background: var(--red); text-align: center; font-weight: 700; line-height: 24px; }
+    code { background: #f1f3f6; border-radius: 3px; padding: 1px 4px; font-family: Consolas, monospace; font-size: 9.5pt; }
+    table { border-collapse: collapse; width: 100%; margin: 9px 0 14px; }
+    th, td { border: 1px solid var(--line); padding: 7px 8px; text-align: left; vertical-align: top; }
+    th { background: var(--soft); color: #9d1118; }
+    .footer { color: var(--muted); font-size: 8.5pt; border-top: 1px solid var(--line); margin-top: 20px; padding-top: 6px; }
+    .avoid-break { break-inside: avoid; }
+    @media print { a { color: inherit; text-decoration: none; } }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div class="eyebrow">FPTU Halloween Online</div>
+    <h1>Hướng dẫn sử dụng ứng dụng</h1>
+    <div class="subtitle">Tài liệu dành cho người tham gia, nhân viên sự kiện và quản trị viên.</div>
+    <div class="meta">Phiên bản tài liệu: 1.0 · Cập nhật: 26/07/2026</div>
+  </section>
+
+  <section class="toc">
+    <h2>Mục lục</h2>
+    <ol>
+      <li>Tổng quan và phân quyền</li>
+      <li>Hướng dẫn cho người tham gia</li>
+      <li>Mua vé và thanh toán</li>
+      <li>Xem vé và sử dụng mã QR</li>
+      <li>Hướng dẫn cho Staff</li>
+      <li>Hướng dẫn cho Admin</li>
+      <li>Chat nội bộ</li>
+      <li>Xử lý lỗi thường gặp</li>
+      <li>Lưu ý vận hành và an toàn</li>
+    </ol>
+    <div class="note"><strong>Cách đọc tài liệu:</strong> Người tham gia đọc mục 2–4. Nhân viên sự kiện đọc mục 5 và 7. Quản trị viên đọc mục 6–9.</div>
+  </section>
+
+  <section class="section">
+    <h2>1. Tổng quan và phân quyền</h2>
+    <p>Ứng dụng giúp người tham gia mua vé trực tuyến và giúp đội ngũ sự kiện quản lý vé, đơn hàng, người dùng và hoạt động tại sự kiện.</p>
+    <div class="card-grid">
+      <div class="card"><strong>Người tham gia</strong>Đăng ký, chọn vé, thanh toán, xem vé và đưa mã QR cho nhân viên khi đến sự kiện.</div>
+      <div class="card"><strong>Nhân viên sự kiện</strong>Kiểm tra vé, quét mã QR, xác nhận khách đã vào và trao đổi với đội ngũ.</div>
+      <div class="card"><strong>Quản trị viên</strong>Quản lý toàn bộ vé, đơn hàng, người dùng, nội dung và hoạt động của sự kiện.</div>
+      <div class="card"><strong>Thông tin an toàn</strong>Những mã nhận diện và cách hệ thống lưu dữ liệu không nằm trong tài liệu này. Chỉ sử dụng các nút và thông báo hiển thị trên màn hình.</div>
+    </div>
+    <h3>Các khu vực chính</h3>
+    <table>
+      <tr><th>Khu vực</th><th>Chức năng</th></tr>
+      <tr><td>Trang chủ</td><td>Xem thông tin chương trình và tin mới.</td></tr>
+      <tr><td>Mua vé</td><td>Xem vé, giỏ hàng và thanh toán.</td></tr>
+      <tr><td>Vé của tôi</td><td>Xem vé đã mua và mã QR.</td></tr>
+      <tr><td>Khu vực nhân viên</td><td>Dashboard, danh sách vé, quét mã và trò chuyện nội bộ.</td></tr>
+      <tr><td>Khu vực quản trị</td><td>Quản lý và theo dõi toàn bộ hoạt động của chương trình.</td></tr>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>2. Hướng dẫn cho người tham gia</h2>
+    <h3>Đăng ký và đăng nhập</h3>
+    <div class="step"><div class="step-no">1</div><div>Chọn <strong>Đăng ký</strong>, nhập họ tên, email, số điện thoại và mật khẩu.</div></div>
+    <div class="step"><div class="step-no">2</div><div>Xác nhận email nếu hệ thống yêu cầu, sau đó chọn <strong>Đăng nhập</strong>.</div></div>
+    <div class="step"><div class="step-no">3</div><div>Nếu quên mật khẩu, chọn <strong>Quên mật khẩu</strong> và làm theo hướng dẫn gửi qua email.</div></div>
+    <h3>Xem loại vé</h3>
+    <p>Chọn <strong>Danh sách vé</strong> để xem tên vé, giá, ngày, thời gian và số lượng còn lại. Chọn một loại vé để xem chi tiết trước khi mua.</p>
+    <div class="warning"><strong>Lưu ý:</strong> Số lượng vé có thể thay đổi nhanh. Hãy kiểm tra lại thông tin trước khi thanh toán.</div>
+    <h3>Giỏ hàng</h3>
+    <p>Trong phần chi tiết vé, chọn số lượng rồi bấm <strong>Thêm vào giỏ</strong>. Mở <strong>Giỏ hàng</strong> để kiểm tra loại vé, số lượng và tổng tiền. Bạn có thể bỏ vé hoặc thay đổi số lượng trước khi thanh toán.</p>
+  </section>
+
+  <section class="section">
+    <h2>3. Mua vé và thanh toán</h2>
+    <div class="step"><div class="step-no">1</div><div>Trong giỏ hàng, chọn vé cần mua và bấm <strong>Thanh toán</strong>.</div></div>
+    <div class="step"><div class="step-no">2</div><div>Kiểm tra thông tin người mua, số điện thoại và tổng tiền rồi bấm <strong>Tiếp tục</strong>.</div></div>
+    <div class="step"><div class="step-no">3</div><div>Hoàn tất thanh toán trong thời gian được hiển thị trên màn hình.</div></div>
+    <div class="step"><div class="step-no">4</div><div>Quét mã thanh toán hoặc mở nút thanh toán và làm theo hướng dẫn của ngân hàng.</div></div>
+    <div class="step"><div class="step-no">5</div><div>Sau khi thanh toán, chọn <strong>Xem vé của tôi</strong> để kiểm tra kết quả.</div></div>
+    <table>
+      <tr><th>Thông báo</th><th>Ý nghĩa</th><th>Người dùng nên làm gì?</th></tr>
+      <tr><td>Đang chờ thanh toán</td><td>Thanh toán chưa hoàn tất.</td><td>Tiếp tục thanh toán trong thời gian hiển thị.</td></tr>
+      <tr><td>Thanh toán thành công</td><td>Giao dịch đã được ghi nhận.</td><td>Mở phần vé của bạn để kiểm tra vé.</td></tr>
+      <tr><td>Đã hết thời gian</td><td>Giao dịch chưa hoàn tất đúng hạn.</td><td>Thực hiện lại nếu vẫn muốn mua.</td></tr>
+      <tr><td>Đã hủy</td><td>Giao dịch không còn hiệu lực.</td><td>Kiểm tra lại giỏ hàng và thực hiện giao dịch mới.</td></tr>
+    </table>
+    <div class="warning"><strong>Quan trọng:</strong> Không đóng hoặc tải lại liên tục trang thanh toán khi giao dịch đang xử lý. Nếu tiền đã trừ nhưng chưa thấy vé, lưu lại thông tin giao dịch và liên hệ quản trị viên.</div>
+  </section>
+
+  <section class="section">
+    <h2>4. Xem vé và sử dụng mã QR</h2>
+    <p>Chọn <strong>Vé của tôi</strong> để xem các vé đã mua. Mỗi vé có mã vé, loại vé, ngày, thời gian và mã QR riêng.</p>
+    <h3>Chuẩn bị khi tham dự</h3>
+    <ul>
+      <li>Mở sẵn mã QR trên điện thoại hoặc dùng ảnh chụp rõ nét.</li>
+      <li>Đảm bảo màn hình đủ sáng, không bị nứt hoặc che mã.</li>
+      <li>Chuẩn bị họ tên và số điện thoại để Staff đối chiếu.</li>
+      <li>Mỗi mã QR chỉ được sử dụng một lần.</li>
+    </ul>
+    <div class="success"><strong>Lưu ý về mã QR:</strong> Chỉ sử dụng mã QR được tạo từ phần <strong>Vé của tôi</strong>. Không tự sửa, cắt ghép hoặc dùng mã của người khác.</div>
+  </section>
+
+  <section class="section">
+    <h2>5. Hướng dẫn cho Staff</h2>
+    <h3>Đăng nhập và vào màn hình check-in</h3>
+    <p>Đăng nhập bằng tài khoản nhân viên, mở mục <strong>Check-in vé</strong> và cho phép sử dụng camera khi trình duyệt yêu cầu.</p>
+    <h3>Quy trình quét QR</h3>
+    <div class="step"><div class="step-no">1</div><div>Đưa mã QR vào khung quét, giữ điện thoại khách ổn định.</div></div>
+    <div class="step"><div class="step-no">2</div><div>Kiểm tra thông tin hiển thị: họ tên, số điện thoại, loại vé, ngày và thời gian.</div></div>
+    <div class="step"><div class="step-no">3</div><div>Đối chiếu họ tên và số điện thoại với khách trước khi xác nhận.</div></div>
+    <div class="step"><div class="step-no">4</div><div>Chỉ bấm <strong>Xác nhận check-in</strong> khi vé hợp lệ và đúng ngày sự kiện.</div></div>
+    <div class="step"><div class="step-no">5</div><div>Sau khi xác nhận, vé được đánh dấu đã sử dụng và khách có thể tiếp tục vào khu vực sự kiện.</div></div>
+    <table>
+      <tr><th>Thông báo</th><th>Ý nghĩa / xử lý</th></tr>
+      <tr><td>Vé hợp lệ</td><td>Đúng ngày và chưa sử dụng. Có thể xác nhận.</td></tr>
+      <tr><td>Check-in sai ngày</td><td>Không xác nhận. Hướng dẫn khách quay lại đúng ngày ghi trên vé.</td></tr>
+      <tr><td>Vé đã được sử dụng</td><td>Không xác nhận lần nữa. Báo trưởng ban/điều phối nếu khách khiếu nại.</td></tr>
+      <tr><td>QR không hợp lệ</td><td>Kiểm tra lại độ sáng, mã QR và nguồn vé. Không nhập hoặc sửa mã thủ công.</td></tr>
+    </table>
+    <div class="warning"><strong>Nguyên tắc:</strong> Khi vé sai ngày hoặc đã sử dụng, nút xác nhận sẽ không bấm được. Nếu thông tin khách không khớp, không xác nhận và báo điều phối.</div>
+    <h3>Các màn hình Staff khác</h3>
+    <ul>
+      <li><strong>Dashboard:</strong> xem tổng quan dữ liệu vận hành.</li>
+      <li><strong>Danh sách loại vé:</strong> xem loại vé và thông tin chi tiết.</li>
+      <li><strong>Danh sách vé đã mua:</strong> xem các vé theo quyền được cấp.</li>
+      <li><strong>Chat:</strong> trao đổi với nhân viên và quản trị viên.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>6. Hướng dẫn cho Admin</h2>
+    <h3>Dashboard</h3>
+    <p>Mở mục <strong>Dashboard</strong> để xem tổng quan, biểu đồ doanh thu, số vé phát hành, người dùng và tỷ lệ check-in. Dùng nút <strong>Làm mới</strong> để tải lại dữ liệu.</p>
+    <table>
+      <tr><th>Màn hình</th><th>Chức năng</th></tr>
+      <tr><td>Quản lý người dùng</td><td>Xem và quản lý tài khoản người dùng.</td></tr>
+      <tr><td>Đơn hàng</td><td>Kiểm tra đơn hàng, thanh toán, doanh thu và chi tiết đơn.</td></tr>
+      <tr><td>Vé đã mua</td><td>Quản lý vé đã phát hành và tình trạng sử dụng.</td></tr>
+      <tr><td>Danh sách loại vé</td><td>Tạo, chỉnh sửa, xem chi tiết hoặc tạm dừng bán loại vé.</td></tr>
+      <tr><td>Check-in vé</td><td>Quét mã và theo dõi việc đón khách.</td></tr>
+      <tr><td>Liên hệ</td><td>Tiếp nhận và xử lý câu hỏi của người tham gia.</td></tr>
+      <tr><td>Tin nóng</td><td>Quản lý nội dung thông báo trên website.</td></tr>
+      <tr><td>Chat</td><td>Trao đổi với nhân viên, tạo nhóm và xem tin nhắn.</td></tr>
+    </table>
+    <h3>Tạo loại vé</h3>
+    <ol>
+      <li>Mở danh sách loại vé và chọn tạo mới.</li>
+      <li>Nhập tên, giá, tổng số lượng, ngày sự kiện và thời gian.</li>
+      <li>Kiểm tra lại dữ liệu trước khi lưu.</li>
+      <li>Vô hiệu hóa loại vé khi không muốn tiếp tục bán; không xóa dữ liệu nếu còn liên quan đến đơn hàng.</li>
+    </ol>
+  </section>
+
+  <section class="section">
+    <h2>7. Chat nội bộ</h2>
+    <p>Nhân viên và quản trị viên có thể mở mục <strong>Chat</strong> để nhắn tin cá nhân và nhóm.</p>
+    <ul>
+      <li>Chọn cuộc trò chuyện trong danh sách bên trái.</li>
+      <li>Với nhóm, danh sách hiển thị người gửi tin nhắn gần nhất để dễ nhận biết.</li>
+      <li>Nhập nội dung ở ô cuối màn hình và bấm nút gửi.</li>
+      <li>Khu vực tin nhắn có thanh cuộn riêng; tin mới nhất nằm ở cuối cuộc trò chuyện.</li>
+      <li>Trên màn hình nhỏ, có thể thu gọn sidebar để mở rộng vùng chat.</li>
+    </ul>
+    <div class="note"><strong>Khuyến nghị:</strong> Không gửi mật khẩu, mã OTP, thông tin thanh toán hoặc dữ liệu cá nhân không cần thiết trong nhóm chat.</div>
+  </section>
+
+  <section class="section">
+    <h2>8. Xử lý lỗi thường gặp</h2>
+    <table>
+      <tr><th>Hiện tượng</th><th>Cách xử lý</th></tr>
+      <tr><td>Không đăng nhập được</td><td>Kiểm tra email/mật khẩu, thử đổi mật khẩu hoặc đăng nhập lại sau ít phút.</td></tr>
+      <tr><td>Không thấy loại vé</td><td>Làm mới trang, kiểm tra trạng thái bán và số lượng còn lại.</td></tr>
+      <tr><td>Thanh toán chưa cập nhật</td><td>Không thanh toán lần thứ hai ngay. Chờ một lúc rồi kiểm tra lại phần vé của bạn.</td></tr>
+      <tr><td>Tiền đã trừ nhưng chưa có vé</td><td>Chụp lại giao dịch và liên hệ quản trị viên để được kiểm tra.</td></tr>
+      <tr><td>Camera không mở khi check-in</td><td>Cho phép quyền camera trong trình duyệt, đóng ứng dụng đang dùng camera và tải lại trang.</td></tr>
+      <tr><td>QR báo sai ngày</td><td>Kiểm tra ngày trên vé; chỉ check-in đúng ngày được ghi trên vé.</td></tr>
+      <tr><td>Chat báo lỗi lúc mới vào</td><td>Kiểm tra phiên đăng nhập, tải lại trang; nếu vẫn lỗi, đăng xuất và đăng nhập lại.</td></tr>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>9. Lưu ý vận hành và an toàn</h2>
+    <ul>
+      <li>Không chia sẻ tài khoản Staff/Admin cho người khác.</li>
+      <li>Luôn kiểm tra đúng tài khoản đang đăng nhập trước khi check-in.</li>
+      <li>Không xác nhận vé chỉ dựa vào tên; phải đối chiếu mã vé, số điện thoại và ngày sự kiện.</li>
+      <li>Không sửa, cắt ghép hoặc tạo mã QR thủ công. Chỉ dùng mã QR được hiển thị trong phần vé của ứng dụng.</li>
+      <li>Không hoàn tiền hoặc thay đổi trạng thái đơn hàng ngoài quy trình được Admin phê duyệt.</li>
+      <li>Khi phát hiện dấu hiệu dùng lại vé, báo ngay cho trưởng ban/điều phối và Admin.</li>
+    </ul>
+    <div class="success"><strong>Hỗ trợ:</strong> Khi gửi yêu cầu hỗ trợ, cung cấp vai trò tài khoản, thời điểm xảy ra lỗi, mã đơn/mã vé liên quan và ảnh chụp màn hình. Không gửi mật khẩu hoặc mã OTP.</div>
+    <div class="footer">FPTU Halloween Online · Tài liệu hướng dẫn sử dụng · Phiên bản 1.0</div>
+  </section>
+</body>
+</html>
