@@ -317,6 +317,15 @@ body:has(.hot-news-page) {
   border-color: var(--hot-news-success-line);
 }
 
+.hot-news-action--danger {
+  color: var(--hot-news-danger);
+}
+
+.hot-news-action--order {
+  width: 2.75rem;
+  padding-inline: 0.5rem;
+}
+
 .hot-news-skeleton {
   display: grid;
 }

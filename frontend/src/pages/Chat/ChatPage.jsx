@@ -1,4 +1,11 @@
-import { ArrowLeft, CheckCheck, Info, Send, UsersRound } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCheck,
+  Info,
+  Send,
+  Trash2,
+  UsersRound,
+} from "lucide-react";
 import React from "react";
 import { io } from "socket.io-client";
 import toast from "react-hot-toast";
@@ -28,6 +35,38 @@ const currentUser = () => {
 };
 const CHAT_AUTH_RETRY_DELAY_MS = 300;
 
+const renderMentionText = (content, members = []) => {
+  const text = String(content || "");
+  const memberNames = new Set(
+    members
+      .map((member) => member?.userName?.toLowerCase())
+      .filter(Boolean),
+  );
+  const mentionPattern = /(^|\s)(@[a-zA-Z0-9._-]+)/g;
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = mentionPattern.exec(text)) !== null) {
+    parts.push(text.slice(lastIndex, match.index));
+    parts.push(match[1]);
+    const mention = match[2];
+    parts.push(
+      memberNames.has(mention.slice(1).toLowerCase()) ? (
+        <span className="chat-mention" key={`${match.index}-${mention}`}>
+          {mention}
+        </span>
+      ) : (
+        mention
+      ),
+    );
+    lastIndex = mentionPattern.lastIndex;
+  }
+
+  parts.push(text.slice(lastIndex));
+  return parts;
+};
+
 const ChatPage = ({ role = "staff" }) => {
   const [conversations, setConversations] = React.useState([]);
   const [groups, setGroups] = React.useState([]);
@@ -47,6 +86,8 @@ const ChatPage = ({ role = "staff" }) => {
   const [editingGroup, setEditingGroup] = React.useState(null);
   const [showConversationInfo, setShowConversationInfo] = React.useState(false);
   const [confirmLeaveGroup, setConfirmLeaveGroup] = React.useState(false);
+  const [memberToRemove, setMemberToRemove] = React.useState(null);
+  const [isRemovingMember, setIsRemovingMember] = React.useState(false);
   const [groupName, setGroupName] = React.useState("");
   const [groupDescription, setGroupDescription] = React.useState("");
   const [selectedMembers, setSelectedMembers] = React.useState([]);
@@ -56,7 +97,10 @@ const ChatPage = ({ role = "staff" }) => {
   const activeRef = React.useRef(null);
   const conversationsRef = React.useRef([]);
   const messagesContainerRef = React.useRef(null);
+  const composerRef = React.useRef(null);
   const typingTimer = React.useRef(null);
+  const [mentionQuery, setMentionQuery] = React.useState(null);
+  const [mentionStart, setMentionStart] = React.useState(-1);
   const me = React.useMemo(currentUser, []);
   const meId = idOf(me);
   React.useEffect(() => {
@@ -269,6 +313,9 @@ const ChatPage = ({ role = "staff" }) => {
     markConversationReadLocally(idOf(conversation));
     setMobileOpen(true);
     setQuery("");
+    setDraft("");
+    setMentionQuery(null);
+    setMentionStart(-1);
     const conversationId = idOf(conversation);
     const loading = toast.loading("Đang tải tin nhắn...");
     setIsLoadingMessages(true);
@@ -328,7 +375,7 @@ const ChatPage = ({ role = "staff" }) => {
       setGroupName("");
       setGroupDescription("");
       setSelectedMembers([]);
-      setMemberQuery([]);
+      setMemberQuery("");
       toast.success("Đã tạo nhóm", { id: loading });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Không thể tạo nhóm", {
@@ -348,6 +395,15 @@ const ChatPage = ({ role = "staff" }) => {
       toast.error("Không thể tìm thành viên");
     }
   };
+  const openCreateGroup = () => {
+    setEditingGroup(null);
+    setGroupName("");
+    setGroupDescription("");
+    setSelectedMembers([]);
+    setMemberQuery("");
+    setResults([]);
+    setShowGroupModal(true);
+  };
   const openEditGroup = (group) => {
     setEditingGroup(group);
     setGroupName(group.name || "");
@@ -358,25 +414,71 @@ const ChatPage = ({ role = "staff" }) => {
   const updateExistingGroup = async (event) => {
     event.preventDefault();
     if (!groupName.trim()) return toast.error("Vui lòng nhập tên nhóm");
+    const currentMemberIds = (editingGroup.members || []).map(idOf);
+    const selectedMemberIds = selectedMembers.map(idOf);
+    const memberIdsToAdd = selectedMemberIds.filter(
+      (memberId) =>
+        !currentMemberIds.some(
+          (id) => String(id) === String(memberId),
+        ),
+    );
+    const memberIdsToRemove = currentMemberIds.filter(
+      (memberId) =>
+        !selectedMemberIds.some(
+          (id) => String(id) === String(memberId),
+        ),
+    );
+    const creatorId = idOf(editingGroup.createdBy);
+
+    if (
+      memberIdsToRemove.some(
+        (memberId) => String(memberId) === String(creatorId),
+      )
+    ) {
+      return toast.error("Không thể xóa người tạo nhóm");
+    }
+
+    setIsCreatingGroup(true);
     const loading = toast.loading("Đang cập nhật nhóm...");
     try {
-      const group = await staffChatAPI.updateGroup(idOf(editingGroup), {
+      let group = await staffChatAPI.updateGroup(idOf(editingGroup), {
         name: groupName.trim(),
         description: groupDescription.trim(),
       });
+      if (memberIdsToAdd.length) {
+        group = await staffChatAPI.addGroupMembers(
+          idOf(editingGroup),
+          memberIdsToAdd,
+        );
+      }
+      for (const memberId of memberIdsToRemove) {
+        group = await staffChatAPI.removeGroupMember(
+          idOf(editingGroup),
+          memberId,
+        );
+      }
       setGroups((items) =>
         items.map((item) => (idOf(item) === idOf(group) ? group : item)),
       );
       setConversations((items) =>
         items.map((item) => (idOf(item) === idOf(group) ? group : item)),
       );
+      setActive((current) =>
+        current && idOf(current) === idOf(group) ? group : current,
+      );
       setEditingGroup(null);
       setShowGroupModal(false);
+      setGroupName("");
+      setGroupDescription("");
+      setSelectedMembers([]);
+      setMemberQuery("");
       toast.success("Đã cập nhật nhóm", { id: loading });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Không thể cập nhật nhóm", {
         id: loading,
       });
+    } finally {
+      setIsCreatingGroup(false);
     }
   };
   const leaveGroup = async () => {
@@ -396,6 +498,34 @@ const ChatPage = ({ role = "staff" }) => {
       toast.error(error?.response?.data?.message || "Không thể rời nhóm", {
         id: loading,
       });
+    }
+  };
+  const removeMember = async () => {
+    if (!active || !memberToRemove || isRemovingMember) return;
+    const loading = toast.loading("Đang xóa thành viên...");
+    setIsRemovingMember(true);
+    try {
+      const group = await staffChatAPI.removeGroupMember(
+        idOf(active),
+        idOf(memberToRemove),
+      );
+      setConversations((items) =>
+        items.map((item) => (idOf(item) === idOf(group) ? group : item)),
+      );
+      setGroups((items) =>
+        items.map((item) => (idOf(item) === idOf(group) ? group : item)),
+      );
+      setActive(group);
+      activeRef.current = group;
+      setMemberToRemove(null);
+      toast.success("Đã xóa thành viên khỏi nhóm", { id: loading });
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || "Không thể xóa thành viên",
+        { id: loading },
+      );
+    } finally {
+      setIsRemovingMember(false);
     }
   };
   const sendMessage = (event) => {
@@ -430,6 +560,8 @@ const ChatPage = ({ role = "staff" }) => {
             ),
           );
           setDraft("");
+          setMentionQuery(null);
+          setMentionStart(-1);
         }
       },
     );
@@ -440,7 +572,20 @@ const ChatPage = ({ role = "staff" }) => {
     markConversationReadLocally(idOf(active));
   };
   const handleDraft = (event) => {
-    setDraft(event.target.value);
+    const { value, selectionStart } = event.target;
+    const cursorPosition = selectionStart ?? value.length;
+    setDraft(value);
+
+    const beforeCursor = value.slice(0, cursorPosition);
+    const mentionMatch = beforeCursor.match(/(?:^|\s)@([a-zA-Z0-9._-]*)$/);
+    if (active?.type !== "group" || !mentionMatch) {
+      setMentionQuery(null);
+      setMentionStart(-1);
+    } else {
+      setMentionQuery(mentionMatch[1].toLowerCase());
+      setMentionStart(cursorPosition - mentionMatch[1].length - 1);
+    }
+
     if (!active || !socketRef.current) return;
     socketRef.current.emit("typing:start", { conversationId: idOf(active) });
     clearTimeout(typingTimer.current);
@@ -451,6 +596,31 @@ const ChatPage = ({ role = "staff" }) => {
         }),
       900,
     );
+  };
+  const mentionSuggestions =
+    mentionQuery === null || active?.type !== "group"
+      ? []
+      : (active.members || [])
+          .filter(
+            (member) =>
+              String(idOf(member)) !== String(meId) &&
+              member.userName?.toLowerCase().includes(mentionQuery),
+          )
+          .slice(0, 6);
+  const insertMention = (member) => {
+    const username = member.userName;
+    if (!username || mentionStart < 0) return;
+    const input = composerRef.current;
+    const cursorPosition = input?.selectionStart ?? draft.length;
+    const nextDraft = `${draft.slice(0, mentionStart)}@${username} ${draft.slice(cursorPosition)}`;
+    const nextCursor = mentionStart + username.length + 2;
+    setDraft(nextDraft);
+    setMentionQuery(null);
+    setMentionStart(-1);
+    window.requestAnimationFrame(() => {
+      input?.focus();
+      input?.setSelectionRange(nextCursor, nextCursor);
+    });
   };
   const activeMember = active?.members?.find((member) => idOf(member) !== meId);
   const activeName = active
@@ -472,7 +642,7 @@ const ChatPage = ({ role = "staff" }) => {
           groups={groups}
           currentUserId={meId}
           isAdmin={role === "admin"}
-          onCreateGroup={() => setShowGroupModal(true)}
+          onCreateGroup={openCreateGroup}
           onEditGroup={openEditGroup}
           presence={presence}
           searchQuery={query}
@@ -548,7 +718,9 @@ const ChatPage = ({ role = "staff" }) => {
                         </span>
                       )}
                       <div className="chat-bubble">
-                        <span>{message.content}</span>
+                        <span className="chat-bubble__content">
+                          {renderMentionText(message.content, active.members)}
+                        </span>
                         <small>
                           {message.createdAt
                             ? new Date(message.createdAt).toLocaleTimeString(
@@ -571,7 +743,29 @@ const ChatPage = ({ role = "staff" }) => {
                 )}
               </div>
               <form className="chat-composer" onSubmit={sendMessage}>
+                {mentionSuggestions.length > 0 && (
+                  <div className="chat-mention-menu" role="listbox">
+                    {mentionSuggestions.map((member) => (
+                      <button
+                        type="button"
+                        className="chat-mention-option"
+                        key={idOf(member)}
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => insertMention(member)}
+                      >
+                        <span className="chat-avatar">
+                          {initialsOf(nameOf(member))}
+                        </span>
+                        <span>
+                          <strong>{nameOf(member)}</strong>
+                          <small>@{member.userName}</small>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <input
+                  ref={composerRef}
                   value={draft}
                   onChange={handleDraft}
                   placeholder="Viết tin nhắn..."
@@ -626,10 +820,28 @@ const ChatPage = ({ role = "staff" }) => {
                       <span className="chat-avatar">
                         {initialsOf(nameOf(member))}
                       </span>
-                      <span>
+                      <span className="chat-info-modal__member-copy">
                         <strong>{nameOf(member)}</strong>
                         <small>@{member.userName || "staff"}</small>
+                        <small className="chat-info-modal__member-meta">
+                          {[member.department, member.department_position]
+                            .filter(Boolean)
+                            .join(" · ") || "Chưa cập nhật bộ phận / chức vụ"}
+                        </small>
                       </span>
+                      {role === "admin" &&
+                        String(idOf(member)) !== String(meId) &&
+                        String(idOf(member)) !== String(active.createdBy) && (
+                          <button
+                            className="chat-info-modal__remove"
+                            type="button"
+                            onClick={() => setMemberToRemove(member)}
+                            aria-label={`Xóa ${nameOf(member)} khỏi nhóm`}
+                            title="Xóa khỏi nhóm"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        )}
                     </div>
                   ))}
                 </div>
@@ -692,6 +904,46 @@ const ChatPage = ({ role = "staff" }) => {
           </div>
         </div>
       )}
+      {memberToRemove && (
+        <div
+          className="chat-modal-backdrop"
+          role="presentation"
+          onMouseDown={(event) =>
+            event.target === event.currentTarget &&
+            !isRemovingMember &&
+            setMemberToRemove(null)
+          }
+        >
+          <div
+            className="chat-modal chat-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="remove-member-title"
+          >
+            <h2 id="remove-member-title">Xóa thành viên?</h2>
+            <p>
+              Bạn muốn xóa <strong>{nameOf(memberToRemove)}</strong> khỏi nhóm
+              này?
+            </p>
+            <div>
+              <button
+                type="button"
+                disabled={isRemovingMember}
+                onClick={() => setMemberToRemove(null)}
+              >
+                Hủy
+              </button>
+              <button
+                type="button"
+                disabled={isRemovingMember}
+                onClick={removeMember}
+              >
+                {isRemovingMember ? "Đang xóa..." : "Xóa thành viên"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showGroupModal && (
         <div
           className="chat-modal-backdrop"
@@ -704,7 +956,7 @@ const ChatPage = ({ role = "staff" }) => {
             <div className="chat-modal__heading">
               <div>
                 <span className="chat-list__eyebrow">ADMIN TOOL</span>
-                <h2>Tạo nhóm chat</h2>
+                <h2>{editingGroup ? "Chỉnh sửa nhóm chat" : "Tạo nhóm chat"}</h2>
               </div>
               <button
                 type="button"
@@ -774,7 +1026,13 @@ const ChatPage = ({ role = "staff" }) => {
             <div className="chat-modal__footer">
               <span>{selectedMembers.length} thành viên được chọn</span>
               <button type="submit" disabled={isCreatingGroup}>
-                {isCreatingGroup ? "Đang tạo..." : "Tạo nhóm"}
+                {isCreatingGroup
+                  ? editingGroup
+                    ? "Đang cập nhật..."
+                    : "Đang tạo..."
+                  : editingGroup
+                    ? "Lưu thay đổi"
+                    : "Tạo nhóm"}
               </button>
             </div>
           </form>

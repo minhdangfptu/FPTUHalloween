@@ -11,6 +11,14 @@ const hotNewsAPI = {
     return response.data?.data || [];
   },
 
+  reorder: async (orderIds) => {
+    const response = await axiosClient.patch("/hot-news/order", { orderIds });
+    return {
+      message: response.data?.message,
+      hotNews: response.data?.data || [],
+    };
+  },
+
   create: async (payload) => {
     const response = await axiosClient.post("/hot-news", payload);
     return { message: response.data?.message, hotNews: response.data?.data };
@@ -26,6 +34,11 @@ const hotNewsAPI = {
       isActive,
     });
     return { message: response.data?.message, hotNews: response.data?.data };
+  },
+
+  delete: async (hotNewsId) => {
+    const response = await axiosClient.delete(`/hot-news/${hotNewsId}`);
+    return { message: response.data?.message };
   },
 };
 

@@ -1,110 +1,18 @@
-// src/pages/ErrorPage404.jsx
-import * as React from "react";
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Link,
-  useTheme,
-  Stack,
-} from "@mui/material";
-import KeyboardReturnOutlinedIcon from "@mui/icons-material/KeyboardReturnOutlined";
-import error404 from "~/assets/errors/404.png";
+import "@fontsource-variable/geist";
+import error404 from "../../assets/errors/404.png";
+import ErrorPageView from "./ErrorPageView";
 
-export default function ErrorPage404() {
-  const theme = useTheme();
+const ErrorPage404 = () => (
+  <ErrorPageView
+    code="404"
+    eyebrow="Request / 404"
+    title="Trang này không có trong bản đồ."
+    description="Đường dẫn không trỏ tới một trang đang được mở trong FPTU Halloween."
+    statusLabel="NOT FOUND"
+    illustration={error404}
+    illustrationAlt="Minh hoạ chiếc nồi bị lạc giữa vùng màu đỏ"
+    variant="not-found"
+  />
+);
 
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        minWidth: "100vw",
-        bgcolor: "background.default",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        py: { xs: 6, md: 8 },
-      }}
-    >
-      <Container disableGutters>
-        <Stack
-          direction="column"
-          alignItems="center"
-          textAlign="center"
-          spacing={3}
-        >
-          <Typography
-            variant="h1"
-            sx={{
-              color: "red",
-              fontSize: { xs: "100px", md: "96px" },
-              lineHeight: 1.05,
-              fontWeight: 800,
-            }}
-          >
-            404
-          </Typography>
-
-          <Typography
-            variant="h3"
-            sx={{
-              fontSize: { xs: 24, md: 22 },
-              fontWeight: 700,
-              color: "text.primary",
-            }}
-          >
-            OOPS, Bạn đi lạc rồi!
-          </Typography>
-          <Box
-            sx={{
-              mt: 1,
-              mb: 2,
-              width: "100%",
-              maxWidth: 420,
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src={error404}
-              alt="404 illustration"
-              style={{
-                width: "130%",
-                height: "auto",
-                objectFit: "contain",
-              }}
-            />
-          </Box>
-
-          <Button
-            component={Link}
-            href="/"
-        
-            color="black"
-            variant="text"
-            startIcon={<KeyboardReturnOutlinedIcon />}
-            sx={{
-              fontWeight: 700,
-              fontSize: 20,
-              color: "black",
-              
-              textUnderlineOffset: "6px",
-              "&:hover": {
-                bgcolor: "transparent",
-                // textDecoration: "underline",
-                fontWeight: 800,
-                textDecorationThickness: "3px",
-                color: "red",
-                backgroundColor: "transparent",
-                transition: "all 0.3s ease-in-out",
-              },
-            }}
-          >
-            Về Trang Chủ
-          </Button>
-        </Stack>
-      </Container>
-    </Box>
-  );
-}
+export default ErrorPage404;

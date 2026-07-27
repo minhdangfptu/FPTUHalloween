@@ -10,6 +10,7 @@ const saveAuthData = (data) => {
   if (data?.user) {
     localStorage.setItem('user', JSON.stringify(data.user));
   }
+  window.dispatchEvent(new CustomEvent('auth:login'));
   return data;
 };
 
@@ -17,6 +18,7 @@ const clearAuthData = () => {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
   localStorage.removeItem('user');
+  window.dispatchEvent(new CustomEvent('auth:logout'));
 };
 
 const unwrapResponse = (response) => response.data?.data || response.data;

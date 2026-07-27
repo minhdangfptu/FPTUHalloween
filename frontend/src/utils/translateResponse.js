@@ -17,9 +17,12 @@ import axios from 'axios';
 const ERROR_TRANSLATIONS = {
   // --- Authentication ---
   'No token provided. Authorization denied.': 'Vui lòng đăng nhập để tiếp tục.',
+  'Missing Authorization header': 'Vui lòng đăng nhập để tiếp tục.',
   'Invalid token. Please login again.': 'Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.',
   'Token expired. Please login again.': 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+  'Invalid or expired token': 'Phiên đăng nhập đã hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.',
   'You do not have permission to perform this action.': 'Bạn không có quyền thực hiện hành động này.',
+  Forbidden: 'Bạn không có quyền thực hiện hành động này.',
 
   // --- Validation ---
   'Validation failed': 'Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.',
@@ -180,6 +183,7 @@ const SUCCESS_TRANSLATIONS = {
   'Hot news created successfully': 'Thêm thông báo thành công.',
   'Hot news updated successfully': 'Cập nhật thông báo thành công.',
   'Hot news status updated successfully': 'Cập nhật trạng thái thông báo thành công.',
+  'Hot news deleted successfully': 'Xóa thông báo thành công.',
   'Ticket type created successfully': 'Tạo loại vé thành công.',
   'Ticket type updated successfully': 'Cập nhật loại vé thành công.',
   'Ticket type status updated successfully': 'Cập nhật trạng thái loại vé thành công.',

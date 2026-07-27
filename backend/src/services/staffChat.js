@@ -18,7 +18,7 @@ const ensureStaffUser = async userId => {
   ensureId(userId, 'user ID')
   const roleIds = await getStaffRoleIds()
   const user = await User.findOne({ _id: userId, roleId: { $in: roleIds }, isDisabled: false })
-    .select('_id userName fullName roleId isDisabled')
+    .select('_id userName fullName department department_position roleId isDisabled')
     .populate('roleId', 'roleName')
     .lean()
   if (!user) throw buildError(403, 'Only active Admin or Staff users can use staff chat')
@@ -29,6 +29,8 @@ const serializeUser = user => ({
   id: String(user._id || user.id),
   userName: user.userName,
   fullName: user.fullName,
+  department: user.department || null,
+  department_position: user.department_position || null,
   role: user.roleId?.roleName || user.role
 })
 
@@ -37,6 +39,7 @@ const serializeConversation = conversation => ({
   type: conversation.type,
   name: conversation.name || null,
   description: conversation.description || '',
+  createdBy: String(conversation.createdBy),
   members: (conversation.members || []).map(member => member._id ? serializeUser(member) : { id: String(member) }),
   isActive: conversation.isActive,
   lastMessageAt: conversation.lastMessageAt,
@@ -78,14 +81,14 @@ const searchStaffUsers = async (userId, query) => {
     roleId: { $in: roleIds },
     isDisabled: false,
     userName: { $regex: escapeRegex(value), $options: 'i' }
-  }).select('userName fullName roleId').populate('roleId', 'roleName').sort({ userName: 1 }).limit(20).lean()
+  }).select('userName fullName department department_position roleId').populate('roleId', 'roleName').sort({ userName: 1 }).limit(20).lean()
   return users.map(serializeUser)
 }
 
 const getConversations = async userId => {
   await ensureStaffUser(userId)
   const conversations = await ChatConversation.find({ members: userId, isActive: true })
-    .populate('members', 'userName fullName roleId')
+    .populate('members', 'userName fullName department department_position roleId')
     .populate('members.roleId', 'roleName')
     .populate('lastMessageSenderId', 'userName fullName roleId')
     .populate('lastMessageSenderId.roleId', 'roleName')
@@ -118,7 +121,7 @@ const getOrCreateDirectConversation = async (userId, otherUserId) => {
   if (String(userId) === String(otherUser._id)) throw buildError(400, 'You cannot start a direct chat with yourself')
   const members = [String(userId), String(otherUser._id)].sort()
   const directKey = members.join(':')
-  let conversation = await ChatConversation.findOne({ directKey }).populate('members', 'userName fullName roleId').populate('members.roleId', 'roleName').lean()
+  let conversation = await ChatConversation.findOne({ directKey }).populate('members', 'userName fullName department department_position roleId').populate('members.roleId', 'roleName').lean()
   if (!conversation) {
     try {
       const created = await ChatConversation.create({
@@ -128,10 +131,10 @@ const getOrCreateDirectConversation = async (userId, otherUserId) => {
         members,
         memberStates: members.map(member => ({ userId: member }))
       })
-      conversation = await ChatConversation.findById(created._id).populate('members', 'userName fullName roleId').populate('members.roleId', 'roleName').lean()
+      conversation = await ChatConversation.findById(created._id).populate('members', 'userName fullName department department_position roleId').populate('members.roleId', 'roleName').lean()
     } catch (error) {
       if (error.code !== 11000) throw error
-      conversation = await ChatConversation.findOne({ directKey }).populate('members', 'userName fullName roleId').populate('members.roleId', 'roleName').lean()
+      conversation = await ChatConversation.findOne({ directKey }).populate('members', 'userName fullName department department_position roleId').populate('members.roleId', 'roleName').lean()
     }
   }
   return serializeConversation(conversation)
@@ -143,7 +146,7 @@ const getGroups = async userId => {
     ? { type: 'group' }
     : { type: 'group', members: userId }
   const groups = await ChatConversation.find(groupQuery)
-    .populate('members', 'userName fullName roleId')
+    .populate('members', 'userName fullName department department_position roleId')
     .populate('members.roleId', 'roleName')
     .sort({ isActive: -1, name: 1 })
     .lean()
@@ -171,7 +174,7 @@ const getGroupById = async (userId, groupId) => {
   ensureId(groupId, 'group ID')
   const requester = await ensureStaffUser(userId)
   const conversation = await ChatConversation.findOne({ _id: groupId, type: 'group' })
-    .populate('members', 'userName fullName roleId')
+    .populate('members', 'userName fullName department department_position roleId')
     .populate('members.roleId', 'roleName')
     .lean()
   if (!conversation) throw buildError(404, 'Group not found')

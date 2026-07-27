@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Software Requirement Specification - FPTU Halloween Online</title>
+  <style>
+    @page { size: A4; margin: 16mm 15mm 17mm; }
+    :root { --red:#bd0715; --ink:#17202d; --muted:#5d6877; --line:#d8dee7; --soft:#fff3f3; --blue:#edf5ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); font-family:Arial,sans-serif; font-size:9.6pt; line-height:1.45; }
+    h1,h2,h3,h4 { line-height:1.2; margin:0 0 7px; }
+    h1 { font-size:27pt; letter-spacing:-.5px; }
+    h2 { font-size:18pt; color:var(--red); border-bottom:2px solid var(--red); padding-bottom:6px; margin-top:2px; }
+    h3 { font-size:13pt; margin-top:15px; color:#242f3d; }
+    h4 { font-size:10.5pt; margin-top:11px; color:var(--red); }
+    p { margin:5px 0 8px; }
+    ul,ol { margin:4px 0 8px 20px; padding:0; }
+    li { margin:2px 0; }
+    table { width:100%; border-collapse:collapse; margin:7px 0 12px; }
+    th,td { border:1px solid var(--line); padding:5px 6px; vertical-align:top; text-align:left; }
+    th { background:var(--soft); color:#8e0b14; font-weight:700; }
+    .cover { min-height:250mm; page-break-after:always; display:flex; flex-direction:column; justify-content:center; padding:20mm 14mm; color:#fff; background:linear-gradient(145deg,#080c16,#191221 65%,#3b1017); }
+    .cover .eyebrow { color:#ff535c; text-transform:uppercase; letter-spacing:2px; font-weight:700; }
+    .cover h1 { max-width:165mm; margin-top:18px; }
+    .cover .subtitle { font-size:14pt; color:#d8dee9; max-width:145mm; margin-top:12px; }
+    .cover .meta { margin-top:32px; color:#ffb9bd; }
+    .page { page-break-before:always; }
+    .page:first-of-type { page-break-before:auto; }
+    .toc { page-break-after:always; }
+    .toc li { padding:2px 0; }
+    .box { border:1px solid var(--line); border-left:4px solid var(--red); background:#fff; padding:8px 10px; margin:8px 0; }
+    .info { border-left-color:#3978bb; background:var(--blue); }
+    .warning { border-left-color:#ca8700; background:#fff8df; }
+    .good { border-left-color:#24854a; background:#effaf2; }
+    .small { color:var(--muted); font-size:8.5pt; }
+    .id { font-family:Consolas,monospace; color:#8e0b14; white-space:nowrap; }
+    .avoid { break-inside:avoid; }
+    .footer { border-top:1px solid var(--line); color:var(--muted); font-size:8pt; margin-top:16px; padding-top:5px; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    @media print { a { color:inherit; text-decoration:none; } }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div class="eyebrow">Capstone Project · Report 3</div>
+    <h1>Software Requirement Specification</h1>
+    <div class="subtitle">FPTU Halloween Online — Hệ thống mua vé, quản lý sự kiện và check-in điện tử</div>
+    <div class="meta">Phiên bản 1.0 · Trạng thái: Baseline · Ngày: 26/07/2026</div>
+  </section>
+
+  <section class="toc">
+    <h2>Mục lục</h2>
+    <ol>
+      <li>Kiểm soát tài liệu</li>
+      <li>Tổng quan sản phẩm</li>
+      <li>Yêu cầu người dùng và tác nhân</li>
+      <li>Use case</li>
+      <li>Yêu cầu chức năng</li>
+      <li>Yêu cầu dữ liệu và mô hình nghiệp vụ</li>
+      <li>Phân quyền và kiểm soát truy cập</li>
+      <li>Giao diện bên ngoài và API</li>
+      <li>Yêu cầu phi chức năng</li>
+      <li>Quy tắc nghiệp vụ và xử lý ngoại lệ</li>
+      <li>Tiêu chí nghiệm thu</li>
+      <li>Phạm vi chưa bao gồm và định hướng tương lai</li>
+      <li>Phụ lục: bảng mã yêu cầu</li>
+    </ol>
+    <div class="box info"><strong>Phạm vi tài liệu:</strong> Tài liệu này mô tả yêu cầu sản phẩm, dữ liệu, API, bảo mật, vận hành và tiêu chí nghiệm thu. Theo yêu cầu, tài liệu không bao gồm sơ đồ screen flow.</div>
+  </section>
+
+  <section class="page">
+    <h2>1. Kiểm soát tài liệu</h2>
+    <table>
+      <tr><th>Trường</th><th>Giá trị</th></tr>
+      <tr><td>Tên sản phẩm</td><td>FPTU Halloween Online</td></tr>
+      <tr><td>Loại tài liệu</td><td>Software Requirement Specification (SRS)</td></tr>
+      <tr><td>Phiên bản</td><td>1.0 — Baseline</td></tr>
+      <tr><td>Ngôn ngữ</td><td>Tiếng Việt; tên API và trường dữ liệu giữ nguyên tiếng Anh</td></tr>
+      <tr><td>Cơ sở biên soạn</td><td>Report 3 — Software Requirement Specification và mã nguồn hiện tại của frontend/backend</td></tr>
+      <tr><td>Đối tượng sử dụng</td><td>Khách hàng, Product Owner, BA, UI/UX, frontend, backend, QA, DevOps và đội vận hành sự kiện</td></tr>
+    </table>
+    <h3>1.1. Lịch sử thay đổi</h3>
+    <table>
+      <tr><th>Phiên bản</th><th>Ngày</th><th>Loại</th><th>Mô tả</th><th>Người thực hiện</th></tr>
+      <tr><td>1.0</td><td>26/07/2026</td><td>A/M</td><td>Biên soạn SRS đầy đủ theo khung Report 3, bổ sung yêu cầu thực tế của hệ thống mua vé, thanh toán, QR, quản trị và chat.</td><td>Project team</td></tr>
+    </table>
+    <p class="small"><strong>Ký hiệu:</strong> A — Added; M — Modified; D — Deleted.</p>
+    <h3>1.2. Quy ước yêu cầu</h3>
+    <ul>
+      <li><strong>MUST:</strong> bắt buộc để đáp ứng nghiệp vụ hoặc bảo mật.</li>
+      <li><strong>SHOULD:</strong> nên có; chỉ thay đổi khi Product Owner phê duyệt.</li>
+      <li><strong>MAY:</strong> tùy chọn, không phải điều kiện nghiệm thu cốt lõi.</li>
+      <li>Mỗi yêu cầu có mã duy nhất, có thể truy vết sang test case và tiêu chí nghiệm thu.</li>
+    </ul>
+  </section>
+
+  <section class="page">
+    <h2>2. Tổng quan sản phẩm</h2>
+    <h3>2.1. Mục đích</h3>
+    <p>FPTU Halloween Online là nền tảng web hỗ trợ quảng bá sự kiện, bán vé điện tử, thanh toán trực tuyến, phát hành mã QR, kiểm soát khách vào cổng và quản lý hoạt động của đội ngũ tổ chức.</p>
+    <h3>2.2. Vấn đề cần giải quyết</h3>
+    <ul>
+      <li>Thay thế việc đăng ký, đối soát và kiểm tra vé thủ công.</li>
+      <li>Cho phép người tham gia mua vé và nhận vé điện tử thuận tiện.</li>
+      <li>Giảm nguy cơ dùng lại một vé hoặc check-in sai ngày.</li>
+      <li>Cung cấp số liệu tập trung về vé, người dùng, đơn hàng, doanh thu và check-in.</li>
+      <li>Tạo kênh trao đổi nội bộ giữa Staff và Admin.</li>
+    </ul>
+    <h3>2.3. Phạm vi sản phẩm</h3>
+    <table>
+      <tr><th>Nhóm</th><th>Trong phạm vi</th></tr>
+      <tr><td>Người tham gia</td><td>Đăng ký, đăng nhập, hồ sơ, danh sách vé, giỏ hàng, đặt hàng, thanh toán, xem vé, mã QR, liên hệ và nội dung sự kiện.</td></tr>
+      <tr><td>Vận hành sự kiện</td><td>Quét QR, kiểm tra thông tin khách, xác nhận check-in, xem vé và dashboard Staff.</td></tr>
+      <tr><td>Quản trị</td><td>Quản lý người dùng, loại vé, vé, đơn hàng, thống kê, liên hệ, tin nóng, chat và quyền Staff.</td></tr>
+      <tr><td>Tích hợp</td><td>PayOS cho thanh toán; email/OTP và Google OAuth nếu được cấu hình; camera trình duyệt cho quét QR; Socket.IO cho chat thời gian thực.</td></tr>
+    </table>
+    <h3>2.4. Bối cảnh hệ thống</h3>
+    <div class="box info"><strong>Người tham gia → Website → Backend/API → MongoDB</strong><br>Website cung cấp giao diện; backend xử lý xác thực, nghiệp vụ, thanh toán và dữ liệu; MongoDB lưu tài khoản, loại vé, vé, đơn hàng và chat. PayOS gửi kết quả thanh toán về backend qua webhook.</div>
+    <div class="box info"><strong>Staff/Admin → Khu vực điều hành → Backend/API</strong><br>Nhân sự điều hành chỉ được gọi chức năng phù hợp với vai trò. Các thao tác quan trọng phải được kiểm tra lại ở backend, không chỉ dựa vào giao diện.</div>
+  </section>
+
+  <section class="page">
+    <h2>3. Yêu cầu người dùng và tác nhân</h2>
+    <h3>3.1. Tác nhân</h3>
+    <table>
+      <tr><th>Mã</th><th>Tác nhân</th><th>Mô tả</th><th>Mục tiêu</th></tr>
+      <tr><td>A01</td><td>Người tham gia</td><td>Người mua hoặc sử dụng vé tham dự sự kiện.</td><td>Mua vé, thanh toán, nhận vé và vào sự kiện.</td></tr>
+      <tr><td>A02</td><td>Staff</td><td>Nhân viên vận hành được Admin cấp quyền.</td><td>Kiểm tra vé, check-in khách và phối hợp vận hành.</td></tr>
+      <tr><td>A03</td><td>Admin</td><td>Người quản trị toàn bộ hệ thống.</td><td>Quản lý cấu hình, dữ liệu, nhân sự và theo dõi kết quả.</td></tr>
+      <tr><td>A04</td><td>PayOS</td><td>Dịch vụ thanh toán bên ngoài.</td><td>Tạo giao dịch, nhận thanh toán và gửi kết quả về hệ thống.</td></tr>
+      <tr><td>A05</td><td>Email/OTP provider</td><td>Dịch vụ gửi mã xác nhận và email hệ thống.</td><td>Xác nhận tài khoản, khôi phục mật khẩu và thông báo.</td></tr>
+      <tr><td>A06</td><td>Trình duyệt/camera</td><td>Thiết bị và trình duyệt người dùng.</td><td>Hiển thị web, lưu phiên đăng nhập và cung cấp camera quét QR.</td></tr>
+    </table>
+    <h3>3.2. Nhu cầu người dùng</h3>
+    <table>
+      <tr><th>Mã</th><th>Nhu cầu</th><th>Mức độ</th></tr>
+      <tr><td>UN-01</td><td>Người tham gia có thể mua vé mà không cần thao tác kỹ thuật phức tạp.</td><td>MUST</td></tr>
+      <tr><td>UN-02</td><td>Người tham gia biết rõ số tiền, ngày và thời gian của vé trước khi trả tiền.</td><td>MUST</td></tr>
+      <tr><td>UN-03</td><td>Nhân viên có thể kiểm tra vé nhanh và nhận biết vé sai ngày/đã dùng.</td><td>MUST</td></tr>
+      <tr><td>UN-04</td><td>Quản trị viên có thể xem số liệu và kiểm soát hoạt động tập trung.</td><td>MUST</td></tr>
+      <tr><td>UN-05</td><td>Đội ngũ có thể trao đổi nội bộ trong các cuộc trò chuyện cá nhân/nhóm.</td><td>SHOULD</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>4. Use case</h2>
+    <h3>4.1. Danh sách use case</h3>
+    <table>
+      <tr><th>Mã</th><th>Tên use case</th><th>Tác nhân chính</th><th>Kết quả</th></tr>
+      <tr><td>UC-01</td><td>Đăng ký tài khoản</td><td>Người tham gia</td><td>Tài khoản được tạo sau khi xác nhận.</td></tr>
+      <tr><td>UC-02</td><td>Đăng nhập và duy trì phiên</td><td>Người tham gia, Staff, Admin</td><td>Người dùng được truy cập đúng khu vực.</td></tr>
+      <tr><td>UC-03</td><td>Quản lý hồ sơ cá nhân</td><td>Người dùng đã đăng nhập</td><td>Thông tin hồ sơ được cập nhật.</td></tr>
+      <tr><td>UC-04</td><td>Xem và chọn loại vé</td><td>Người tham gia</td><td>Loại vé phù hợp được chọn.</td></tr>
+      <tr><td>UC-05</td><td>Quản lý giỏ hàng</td><td>Người tham gia</td><td>Danh sách và số lượng vé được điều chỉnh.</td></tr>
+      <tr><td>UC-06</td><td>Tạo đơn và thanh toán</td><td>Người tham gia, PayOS</td><td>Đơn được tạo, thanh toán và đối soát.</td></tr>
+      <tr><td>UC-07</td><td>Xem vé điện tử</td><td>Người tham gia</td><td>Vé và mã QR được hiển thị.</td></tr>
+      <tr><td>UC-08</td><td>Tra cứu vé bằng QR</td><td>Staff, Admin</td><td>Thông tin vé và khả năng check-in được trả về.</td></tr>
+      <tr><td>UC-09</td><td>Xác nhận check-in</td><td>Staff, Admin</td><td>Vé được đánh dấu đã sử dụng, ghi nhận người thực hiện.</td></tr>
+      <tr><td>UC-10</td><td>Quản lý loại vé</td><td>Admin</td><td>Loại vé được tạo, sửa hoặc tạm dừng.</td></tr>
+      <tr><td>UC-11</td><td>Quản lý người dùng và Staff</td><td>Admin</td><td>Tài khoản được xem, khóa/mở hoặc cấp vai trò.</td></tr>
+      <tr><td>UC-12</td><td>Quản lý đơn hàng và báo cáo</td><td>Admin</td><td>Doanh thu và số liệu được theo dõi.</td></tr>
+      <tr><td>UC-13</td><td>Trao đổi chat</td><td>Staff, Admin</td><td>Tin nhắn cá nhân/nhóm được gửi và nhận.</td></tr>
+      <tr><td>UC-14</td><td>Quản lý liên hệ và tin nóng</td><td>Người tham gia, Admin</td><td>Yêu cầu được tiếp nhận; nội dung được xuất bản.</td></tr>
+    </table>
+    <h3>4.2. Mẫu đặc tả use case</h3>
+    <p>Các use case được mô tả chi tiết ở mục 5 dưới dạng yêu cầu chức năng. Mỗi yêu cầu bao gồm tác nhân, điều kiện, dữ liệu vào, xử lý chính, nhánh lỗi và kết quả đầu ra để QA có thể chuyển thành test case.</p>
+  </section>
+
+  <section class="page">
+    <h2>5. Yêu cầu chức năng</h2>
+    <h3>5.1. Xác thực và tài khoản</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th><th>Quy tắc/ngoại lệ</th></tr>
+      <tr><td>FR-AUTH-01</td><td>Hệ thống MUST cho phép đăng ký bằng họ tên, email, số điện thoại và mật khẩu.</td><td>Email không hợp lệ, email đã tồn tại hoặc dữ liệu thiếu phải bị từ chối.</td></tr>
+      <tr><td>FR-AUTH-02</td><td>Hệ thống MUST gửi mã xác nhận khi quy trình đăng ký yêu cầu.</td><td>Mã hết hạn hoặc sai phải báo lỗi; không tiết lộ mã cho người khác.</td></tr>
+      <tr><td>FR-AUTH-03</td><td>Hệ thống MUST cho phép đăng nhập bằng thông tin hợp lệ và trả phiên truy cập an toàn.</td><td>Sai thông tin không được tiết lộ tài khoản nào tồn tại.</td></tr>
+      <tr><td>FR-AUTH-04</td><td>Hệ thống SHOULD hỗ trợ đăng nhập Google nếu cấu hình nhà cung cấp hợp lệ.</td><td>Không tạo tài khoản trùng email đã có nếu chính sách không cho phép.</td></tr>
+      <tr><td>FR-AUTH-05</td><td>Hệ thống MUST hỗ trợ quên và đổi mật khẩu.</td><td>Liên kết/mã đặt lại phải có thời hạn và chỉ dùng một lần.</td></tr>
+      <tr><td>FR-AUTH-06</td><td>Hệ thống MUST hỗ trợ làm mới và đăng xuất phiên.</td><td>Phiên hết hạn hoặc bị thu hồi phải yêu cầu đăng nhập lại.</td></tr>
+      <tr><td>FR-AUTH-07</td><td>Hệ thống MUST chặn tài khoản bị vô hiệu hóa.</td><td>Tài khoản bị khóa không được gọi chức năng cần đăng nhập.</td></tr>
+    </table>
+    <h3>5.2. Hồ sơ cá nhân</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>FR-PROFILE-01</td><td>Người dùng MUST xem được họ tên, email, số điện thoại và thông tin hồ sơ được phép hiển thị.</td></tr>
+      <tr><td>FR-PROFILE-02</td><td>Người dùng MUST cập nhật được thông tin cá nhân theo các trường được cho phép.</td></tr>
+      <tr><td>FR-PROFILE-03</td><td>Hệ thống MUST kiểm tra định dạng số điện thoại và dữ liệu bắt buộc trước khi lưu.</td></tr>
+      <tr><td>FR-PROFILE-04</td><td>Người dùng MUST chỉ xem được dữ liệu thuộc tài khoản của mình; Admin mới được xem dữ liệu quản trị theo quyền.</td></tr>
+    </table>
+    <h3>5.3. Danh sách và quản lý loại vé</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th><th>Vai trò</th></tr>
+      <tr><td>FR-TYPE-01</td><td>Hệ thống MUST hiển thị tên, giá, ngày, thời gian, tổng số lượng, số lượng còn lại và tình trạng bán của loại vé.</td><td>Người dùng đã đăng nhập, Staff, Admin</td></tr>
+      <tr><td>FR-TYPE-02</td><td>Admin MUST tạo loại vé với tên, giá, số lượng, ngày và thời gian hợp lệ.</td><td>Admin</td></tr>
+      <tr><td>FR-TYPE-03</td><td>Admin MUST sửa thông tin loại vé theo chính sách dữ liệu đã phát hành.</td><td>Admin</td></tr>
+      <tr><td>FR-TYPE-04</td><td>Admin MUST bật/tắt tình trạng bán của loại vé.</td><td>Admin</td></tr>
+      <tr><td>FR-TYPE-05</td><td>Hệ thống MUST từ chối thêm vào giỏ hoặc mua loại vé không còn bán hoặc hết số lượng.</td><td>Hệ thống</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>5. Yêu cầu chức năng (tiếp)</h2>
+    <h3>5.4. Giỏ hàng</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>FR-CART-01</td><td>Người dùng MUST thêm loại vé đang bán vào giỏ hàng.</td></tr>
+      <tr><td>FR-CART-02</td><td>Người dùng MUST thay đổi số lượng hoặc xóa vé khỏi giỏ hàng.</td></tr>
+      <tr><td>FR-CART-03</td><td>Hệ thống MUST tính tổng tiền từ giá hiện tại và số lượng hợp lệ.</td></tr>
+      <tr><td>FR-CART-04</td><td>Hệ thống MUST kiểm tra lại loại vé và số lượng tại thời điểm tạo thanh toán, không tin tuyệt đối vào dữ liệu từ trình duyệt.</td></tr>
+    </table>
+    <h3>5.5. Tạo đơn và thanh toán</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th><th>Tiêu chí xử lý</th></tr>
+      <tr><td>FR-PAY-01</td><td>Hệ thống MUST tạo Order chứa người mua, mặt hàng, số lượng, tổng tiền, phương thức và mã giao dịch duy nhất.</td><td>Không cho phép trùng mã giao dịch.</td></tr>
+      <tr><td>FR-PAY-02</td><td>Hệ thống MUST tạm giữ số lượng vé trước khi tạo link thanh toán.</td><td>Chỉ giữ được khi số lượng còn đủ; nếu không đủ phải trả lỗi thân thiện.</td></tr>
+      <tr><td>FR-PAY-03</td><td>Hệ thống MUST tạo giao dịch qua PayOS với tổng tiền và mặt hàng đã kiểm tra.</td><td>Không lấy số tiền từ client nếu chưa đối chiếu server.</td></tr>
+      <tr><td>FR-PAY-04</td><td>Hệ thống MUST cung cấp trang thanh toán và cho phép người dùng xem kết quả.</td><td>Không lộ secret key hoặc dữ liệu nhạy cảm.</td></tr>
+      <tr><td>FR-PAY-05</td><td>Hệ thống MUST nhận webhook và/hoặc chủ động kiểm tra kết quả thanh toán để cập nhật đơn.</td><td>Webhook phải xác thực; xử lý lặp lại không được phát hành vé trùng.</td></tr>
+      <tr><td>FR-PAY-06</td><td>Nếu thao tác lưu Order tạm thời lỗi sau khi tạo thanh toán, hệ thống MUST thử lại theo chính sách retry.</td><td>Nếu vẫn thất bại, phải có cơ chế đối soát/khôi phục để tránh khách trả tiền nhưng không có vé.</td></tr>
+      <tr><td>FR-PAY-07</td><td>Đơn chưa thanh toán hết thời gian MUST được chuyển sang không còn hiệu lực và số lượng được trả lại đúng một lần.</td><td>Thao tác hủy và hoàn số lượng phải chống xử lý đồng thời.</td></tr>
+      <tr><td>FR-PAY-08</td><td>Người dùng MUST xem và hủy giao dịch chưa hoàn tất nếu chính sách cho phép.</td><td>Không cho hủy đơn đã hoàn tất.</td></tr>
+    </table>
+    <div class="box warning"><strong>Yêu cầu quan trọng:</strong> Thanh toán thành công và phát hành vé là hai việc phải được đối soát. Hệ thống không được coi việc trình duyệt quay về trang kết quả là bằng chứng duy nhất của thanh toán.</div>
+    <h3>5.6. Phát hành và xem vé</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>FR-TICKET-01</td><td>Sau khi thanh toán được xác nhận, hệ thống MUST tạo số vé tương ứng số lượng đã mua.</td></tr>
+      <tr><td>FR-TICKET-02</td><td>Mỗi vé MUST có mã riêng, loại vé, người sở hữu, đơn hàng, ngày và thời gian tham dự.</td></tr>
+      <tr><td>FR-TICKET-03</td><td>Mỗi vé MUST có mã QR riêng được sinh bởi server; định dạng nhận diện cụ thể không công khai trong tài liệu người dùng.</td></tr>
+      <tr><td>FR-TICKET-04</td><td>Người dùng MUST chỉ xem được vé thuộc tài khoản của mình.</td></tr>
+      <tr><td>FR-TICKET-05</td><td>Hệ thống MUST không tạo vé mới khi cùng một thanh toán được xử lý lại.</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>5. Yêu cầu chức năng (tiếp)</h2>
+    <h3>5.7. Tra cứu QR và check-in</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th><th>Vai trò</th></tr>
+      <tr><td>FR-CHECK-01</td><td>Staff/Admin MUST quét hoặc nhập mã QR qua màn hình check-in.</td><td>Staff, Admin</td></tr>
+      <tr><td>FR-CHECK-02</td><td>Backend MUST kiểm tra mã QR hợp lệ, tồn tại và thuộc vé được phát hành.</td><td>Hệ thống</td></tr>
+      <tr><td>FR-CHECK-03</td><td>Màn hình MUST hiển thị đủ thông tin đối chiếu cần thiết: mã vé, tên, số điện thoại, loại vé, ngày và thời gian.</td><td>Staff, Admin</td></tr>
+      <tr><td>FR-CHECK-04</td><td>Hệ thống MUST chỉ cho phép check-in đúng ngày ghi trên vé.</td><td>Hệ thống</td></tr>
+      <tr><td>FR-CHECK-05</td><td>Vé đã check-in MUST không được check-in lại.</td><td>Hệ thống</td></tr>
+      <tr><td>FR-CHECK-06</td><td>Nút xác nhận MUST bị vô hiệu hóa nếu vé sai ngày, đã sử dụng, không hợp lệ hoặc thiếu điều kiện.</td><td>Frontend</td></tr>
+      <tr><td>FR-CHECK-07</td><td>Backend MUST tự kiểm tra lại mọi điều kiện khi nhận yêu cầu xác nhận.</td><td>Backend</td></tr>
+      <tr><td>FR-CHECK-08</td><td>Hệ thống MUST ghi nhận tài khoản nhân viên thực hiện, thời gian và vé được check-in.</td><td>Hệ thống</td></tr>
+      <tr><td>FR-CHECK-09</td><td>Hai yêu cầu check-in đồng thời cho cùng vé chỉ được phép có một yêu cầu thành công.</td><td>Hệ thống</td></tr>
+    </table>
+    <h3>5.8. Dashboard và báo cáo</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>FR-DASH-01</td><td>Admin MUST xem tổng số vé phát hành, số đã sử dụng, tỷ lệ sử dụng, tài khoản và doanh thu.</td></tr>
+      <tr><td>FR-DASH-02</td><td>Dashboard MUST có thẻ số liệu và biểu đồ cột, đường, tròn phù hợp với dữ liệu.</td></tr>
+      <tr><td>FR-DASH-03</td><td>Staff SHOULD xem số liệu phục vụ vận hành như lượt check-in và vé gần đây.</td></tr>
+      <tr><td>FR-DASH-04</td><td>Người dùng không được xem dashboard quản trị.</td></tr>
+      <tr><td>FR-DASH-05</td><td>Dữ liệu dashboard MUST hiển thị thời gian cập nhật hoặc trạng thái đang tải.</td></tr>
+    </table>
+    <h3>5.9. Quản trị người dùng, loại vé và đơn hàng</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>FR-ADMIN-01</td><td>Admin MUST xem danh sách người dùng có phân trang, tìm kiếm hoặc lọc phù hợp.</td></tr>
+      <tr><td>FR-ADMIN-02</td><td>Admin MUST vô hiệu hóa hoặc kích hoạt lại tài khoản theo quyền.</td></tr>
+      <tr><td>FR-ADMIN-03</td><td>Admin MUST cấp vai trò Staff cho tài khoản được phê duyệt.</td></tr>
+      <tr><td>FR-ADMIN-04</td><td>Admin MUST xem danh sách và chi tiết đơn hàng, vé và thông tin thanh toán được phép.</td></tr>
+      <tr><td>FR-ADMIN-05</td><td>Thao tác tạo/sửa/tạm dừng loại vé MUST được kiểm tra dữ liệu và ghi nhận thời gian cập nhật.</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>5. Yêu cầu chức năng (tiếp)</h2>
+    <h3>5.10. Chat nội bộ</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>FR-CHAT-01</td><td>Staff/Admin MUST xem các cuộc trò chuyện mà họ có quyền tham gia.</td></tr>
+      <tr><td>FR-CHAT-02</td><td>Người dùng nội bộ MUST tìm được thành viên hoặc nhóm theo thông tin được phép tìm kiếm.</td></tr>
+      <tr><td>FR-CHAT-03</td><td>Staff/Admin MUST gửi và xem tin nhắn cá nhân hoặc tin nhắn nhóm.</td></tr>
+      <tr><td>FR-CHAT-04</td><td>Danh sách nhóm MUST hiển thị người gửi tin nhắn gần nhất và nội dung xem trước khi có dữ liệu.</td></tr>
+      <tr><td>FR-CHAT-05</td><td>Khu vực tin nhắn MUST có thanh cuộn riêng, tự hiển thị tin mới nhất khi mở cuộc trò chuyện mà không làm cuộn toàn trang.</td></tr>
+      <tr><td>FR-CHAT-06</td><td>Admin MUST tạo nhóm, cập nhật nhóm và quản lý thành viên theo quyền.</td></tr>
+      <tr><td>FR-CHAT-07</td><td>Hệ thống MUST không tạo tin nhắn rỗng hoặc bản tin tạm trùng khi gửi tin.</td></tr>
+      <tr><td>FR-CHAT-08</td><td>Khi phiên hết hạn, giao diện MUST báo người dùng đăng nhập lại thay vì hiển thị lỗi khó hiểu.</td></tr>
+    </table>
+    <h3>5.11. Liên hệ, tin nóng và nội dung sự kiện</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>FR-CONT-01</td><td>Người tham gia MUST gửi được yêu cầu liên hệ với nội dung bắt buộc và thông tin phản hồi hợp lệ.</td></tr>
+      <tr><td>FR-CONT-02</td><td>Admin MUST xem, đọc, cập nhật trạng thái và xóa liên hệ theo quyền.</td></tr>
+      <tr><td>FR-NEWS-01</td><td>Admin MUST tạo, sửa, bật/tắt và xem danh sách tin nóng.</td></tr>
+      <tr><td>FR-NEWS-02</td><td>Khách truy cập chỉ được xem tin nóng đang được phép hiển thị.</td></tr>
+      <tr><td>FR-PUBLIC-01</td><td>Website MUST hiển thị thông tin sự kiện, giới thiệu, câu hỏi thường gặp, chính sách và điều khoản.</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>6. Yêu cầu dữ liệu và mô hình nghiệp vụ</h2>
+    <h3>6.1. Thực thể chính</h3>
+    <table>
+      <tr><th>Thực thể</th><th>Thông tin chính</th><th>Quan hệ</th></tr>
+      <tr><td>User</td><td>Họ tên, email, số điện thoại, mật khẩu đã mã hóa, vai trò, trạng thái.</td><td>Có nhiều Cart, Order, UserTicket, ChatConversation.</td></tr>
+      <tr><td>Role</td><td>Tên vai trò và thông tin quyền.</td><td>User tham chiếu Role.</td></tr>
+      <tr><td>TicketType</td><td>Tên, giá, tổng số lượng, số lượng còn lại, ngày, thời gian, tình trạng bán.</td><td>Có nhiều CartItem/OrderItem/UserTicket.</td></tr>
+      <tr><td>Cart</td><td>Người dùng và danh sách loại vé/số lượng.</td><td>Mỗi người dùng có giỏ hàng hiện hành.</td></tr>
+      <tr><td>Order</td><td>Người mua, mặt hàng, tổng tiền, mã thanh toán, phương thức, tình trạng, thời hạn giữ.</td><td>Liên kết User, UserTicket và TicketType qua items.</td></tr>
+      <tr><td>UserTicket</td><td>Chủ vé, đơn hàng, loại vé, mã QR, ngày tạo, tình trạng sử dụng.</td><td>Mỗi vé thuộc một Order.</td></tr>
+      <tr><td>StaffCheckin</td><td>Vé, nhân viên thực hiện, thời gian và kết quả.</td><td>Ghi nhận lịch sử check-in.</td></tr>
+      <tr><td>ChatConversation</td><td>Loại cuộc trò chuyện, tên nhóm, thành viên, trạng thái.</td><td>Có nhiều ChatMessage.</td></tr>
+      <tr><td>ChatMessage</td><td>Người gửi, cuộc trò chuyện, nội dung, thời gian.</td><td>Thuộc một ChatConversation.</td></tr>
+      <tr><td>Contact</td><td>Người gửi, nội dung, trạng thái xử lý, thời gian.</td><td>Được Admin xử lý.</td></tr>
+      <tr><td>HotNews</td><td>Tiêu đề, nội dung, trạng thái hiển thị, thời gian.</td><td>Được công khai khi đang hoạt động.</td></tr>
+      <tr><td>Otp/RefreshToken</td><td>Mã xác thực hoặc token đã băm, thời hạn, trạng thái sử dụng/thu hồi.</td><td>Phục vụ xác thực và bảo mật phiên.</td></tr>
+    </table>
+    <h3>6.2. Yêu cầu toàn vẹn dữ liệu</h3>
+    <ul>
+      <li>Mã email và mã giao dịch phải có quy tắc duy nhất phù hợp.</li>
+      <li>Giá và số lượng phải là số hợp lệ, không âm; số lượng mua phải lớn hơn 0.</li>
+      <li>Vé phải tham chiếu được người sở hữu, đơn hàng và loại vé còn tồn tại.</li>
+      <li>Không xóa cứng dữ liệu đang được Order/UserTicket tham chiếu nếu làm mất lịch sử.</li>
+      <li>Thông tin mật khẩu, mã OTP và token không được lưu hoặc trả về dưới dạng rõ.</li>
+      <li>Các thao tác phát hành vé, check-in và hoàn số lượng phải có tính idempotent.</li>
+    </ul>
+  </section>
+
+  <section class="page">
+    <h2>6. Yêu cầu dữ liệu và mô hình nghiệp vụ (tiếp)</h2>
+    <h3>6.3. Vòng đời đơn hàng</h3>
+    <table>
+      <tr><th>Giai đoạn</th><th>Điều kiện</th><th>Thao tác tiếp theo</th></tr>
+      <tr><td>Chờ thanh toán</td><td>Đơn đã tạo và vé đang được giữ.</td><td>Thanh toán, hủy hoặc hết thời gian.</td></tr>
+      <tr><td>Đang xử lý</td><td>Hệ thống đang xác nhận thanh toán/phát hành.</td><td>Hoàn tất phát hành hoặc xử lý lại khi có lỗi.</td></tr>
+      <tr><td>Đã thanh toán</td><td>Thanh toán đã được xác nhận.</td><td>Vé được hiển thị cho người mua.</td></tr>
+      <tr><td>Đã hủy</td><td>Thanh toán không hoàn tất hoặc giao dịch bị hủy.</td><td>Không phát hành vé; số lượng được trả lại một lần.</td></tr>
+    </table>
+    <h3>6.4. Vòng đời vé</h3>
+    <table>
+      <tr><th>Giai đoạn</th><th>Ý nghĩa</th><th>Điều kiện</th></tr>
+      <tr><td>Chưa sử dụng</td><td>Vé đã phát hành và có thể đưa ra cổng.</td><td>Đúng ngày và thông tin hợp lệ.</td></tr>
+      <tr><td>Đã sử dụng</td><td>Vé đã check-in thành công.</td><td>Không được check-in lại.</td></tr>
+      <tr><td>Không hợp lệ</td><td>Không tìm thấy, sai thông tin, sai ngày hoặc đã dùng.</td><td>Không được xác nhận.</td></tr>
+    </table>
+    <h3>6.5. Bảo toàn số lượng vé</h3>
+    <p>Khi tạo thanh toán, hệ thống giảm số lượng còn lại để giữ vé. Nếu giao dịch không hoàn tất hoặc bị hủy, hệ thống trả lại đúng số lượng. Việc hủy đơn và trả số lượng phải được thực hiện nguyên tử theo từng đơn để tránh hoàn nhầm khi thanh toán xảy ra đồng thời.</p>
+  </section>
+
+  <section class="page">
+    <h2>7. Phân quyền và kiểm soát truy cập</h2>
+    <table>
+      <tr><th>Chức năng</th><th>Khách chưa đăng nhập</th><th>Người tham gia</th><th>Staff</th><th>Admin</th></tr>
+      <tr><td>Xem nội dung công khai</td><td>Được</td><td>Được</td><td>Được</td><td>Được</td></tr>
+      <tr><td>Đăng ký/đăng nhập</td><td>Được</td><td>Được</td><td>Được</td><td>Được</td></tr>
+      <tr><td>Hồ sơ cá nhân</td><td>Không</td><td>Của mình</td><td>Của mình</td><td>Của mình</td></tr>
+      <tr><td>Xem loại vé</td><td>Theo chính sách công khai</td><td>Được</td><td>Được</td><td>Được</td></tr>
+      <tr><td>Giỏ hàng/thanh toán</td><td>Không</td><td>Được</td><td>Theo chính sách</td><td>Theo chính sách</td></tr>
+      <tr><td>Vé của tôi</td><td>Không</td><td>Của mình</td><td>Của mình</td><td>Của mình</td></tr>
+      <tr><td>Danh sách vé vận hành</td><td>Không</td><td>Không</td><td>Được theo quyền</td><td>Được</td></tr>
+      <tr><td>Tra QR/check-in</td><td>Không</td><td>Không</td><td>Được</td><td>Được</td></tr>
+      <tr><td>Tạo/sửa loại vé</td><td>Không</td><td>Không</td><td>Không</td><td>Được</td></tr>
+      <tr><td>Quản lý người dùng/Staff</td><td>Không</td><td>Không</td><td>Không</td><td>Được</td></tr>
+      <tr><td>Đơn hàng và thống kê quản trị</td><td>Không</td><td>Không</td><td>Không</td><td>Được</td></tr>
+      <tr><td>Chat nội bộ</td><td>Không</td><td>Không</td><td>Được</td><td>Được</td></tr>
+      <tr><td>Tạo/quản lý nhóm chat</td><td>Không</td><td>Không</td><td>Theo quyền</td><td>Được</td></tr>
+    </table>
+    <h3>7.1. Nguyên tắc kiểm soát</h3>
+    <ul>
+      <li>Backend MUST kiểm tra token, tài khoản còn hoạt động và vai trò ở mọi API cần bảo vệ.</li>
+      <li>Frontend chỉ ẩn/hiện nút theo vai trò để hỗ trợ trải nghiệm; không được coi đó là biện pháp bảo mật.</li>
+      <li>API chỉ trả các trường cần thiết cho từng màn hình; không trả mật khẩu, token, secret hoặc dữ liệu nội bộ.</li>
+      <li>Người dùng chỉ được xem Order, Ticket và Cart thuộc tài khoản của mình.</li>
+      <li>Thao tác nhạy cảm phải có giới hạn tần suất và ghi log đủ để điều tra.</li>
+    </ul>
+  </section>
+
+  <section class="page">
+    <h2>8. Giao diện bên ngoài và API</h2>
+    <h3>8.1. Giao diện người dùng</h3>
+    <ul>
+      <li>Website MUST chạy trên trình duyệt hiện đại trên máy tính và điện thoại.</li>
+      <li>Giao diện MUST phản hồi theo kích thước màn hình; nội dung chat và bảng dữ liệu không được làm tràn toàn trang.</li>
+      <li>Trạng thái đang tải, thành công và lỗi MUST được hiển thị rõ ràng bằng loading, skeleton hoặc thông báo/toast phù hợp.</li>
+      <li>Thông báo lỗi cho người dùng phải dùng ngôn ngữ dễ hiểu, không đưa stack trace hoặc chi tiết máy chủ.</li>
+      <li>Biểu mẫu phải có nhãn, thông báo lỗi tại trường và trạng thái nút không thể bấm khi dữ liệu chưa hợp lệ.</li>
+    </ul>
+    <h3>8.2. Nhóm API chính</h3>
+    <table>
+      <tr><th>Nhóm</th><th>Chức năng</th><th>Bảo vệ</th></tr>
+      <tr><td>Authentication</td><td>Đăng ký, OTP, đăng nhập, Google, đổi/quên mật khẩu, refresh, logout.</td><td>Các route phù hợp; secret chỉ ở server.</td></tr>
+      <tr><td>Users</td><td>Hồ sơ của mình; Admin xem và quản lý người dùng.</td><td>JWT + vai trò Admin cho dữ liệu quản trị.</td></tr>
+      <tr><td>Ticket Types</td><td>Xem loại vé; Admin tạo, sửa, xóa theo chính sách, thay đổi trạng thái.</td><td>Đọc có đăng nhập; ghi cần Admin.</td></tr>
+      <tr><td>Cart</td><td>Đọc, thêm, sửa, xóa mặt hàng trong giỏ.</td><td>JWT; chỉ của mình.</td></tr>
+      <tr><td>Payments</td><td>Tạo, kiểm tra, hủy thanh toán; webhook từ nhà cung cấp.</td><td>JWT cho người dùng; webhook xác thực riêng.</td></tr>
+      <tr><td>Tickets</td><td>Danh sách vận hành, vé của mình, tra QR, chi tiết và check-in.</td><td>JWT + Staff/Admin; giới hạn tần suất cho QR/check-in.</td></tr>
+      <tr><td>Orders/Statistics</td><td>Đơn của mình; Admin xem đơn, chi tiết và thống kê.</td><td>JWT; Admin cho dữ liệu quản trị.</td></tr>
+      <tr><td>Staff Chat</td><td>Tìm người, cuộc trò chuyện, tin nhắn, nhóm và thành viên.</td><td>JWT + Staff/Admin.</td></tr>
+      <tr><td>Contacts/Hot News</td><td>Gửi liên hệ; Admin xử lý; nội dung công khai.</td><td>Gửi công khai theo chính sách; quản lý cần Admin.</td></tr>
+    </table>
+    <h3>8.3. Giao tiếp và tích hợp</h3>
+    <ul>
+      <li>API sử dụng JSON qua HTTPS trong môi trường triển khai thật.</li>
+      <li>PayOS webhook phải được xác minh trước khi cập nhật đơn hoặc phát hành vé.</li>
+      <li>Chat thời gian thực sử dụng kết nối socket; khi mất kết nối phải có trạng thái và cơ chế tải lại dữ liệu.</li>
+      <li>Camera chỉ được sử dụng sau khi người dùng cấp quyền; hệ thống phải có cách nhập/đọc QR thay thế nếu camera không khả dụng.</li>
+    </ul>
+  </section>
+
+  <section class="page">
+    <h2>9. Yêu cầu phi chức năng</h2>
+    <h3>9.1. Usability</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu đo được</th></tr>
+      <tr><td>NFR-USE-01</td><td>Người dùng mới có thể hoàn tất mua vé sau tối đa 5 phút hướng dẫn thông thường.</td></tr>
+      <tr><td>NFR-USE-02</td><td>Thông báo phải nói rõ việc cần làm tiếp theo, không chỉ hiển thị mã lỗi.</td></tr>
+      <tr><td>NFR-USE-03</td><td>Nhân viên mới có thể thực hiện quét và xác nhận vé sau một buổi hướng dẫn ngắn.</td></tr>
+      <tr><td>NFR-USE-04</td><td>Các nút xác nhận hành động quan trọng phải có trạng thái disabled khi thao tác không hợp lệ.</td></tr>
+      <tr><td>NFR-USE-05</td><td>Trang phải dùng được ở chiều rộng màn hình điện thoại phổ biến và máy tính.</td></tr>
+    </table>
+    <h3>9.2. Performance</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>NFR-PERF-01</td><td>API đọc thông thường SHOULD trả kết quả trong 2 giây ở điều kiện mạng và tải bình thường.</td></tr>
+      <tr><td>NFR-PERF-02</td><td>API tra QR/check-in SHOULD trả kết quả trong 1 giây ở điều kiện bình thường, không tính thời gian camera.</td></tr>
+      <tr><td>NFR-PERF-03</td><td>Dashboard phải giới hạn dữ liệu, phân trang hoặc tổng hợp để tránh tải toàn bộ collection không cần thiết.</td></tr>
+      <tr><td>NFR-PERF-04</td><td>Chat phải giới hạn số tin nhắn tải mỗi lần và chỉ tải thêm khi người dùng cuộn.</td></tr>
+      <tr><td>NFR-PERF-05</td><td>Hệ thống phải giới hạn tần suất API nhạy cảm; ngưỡng cụ thể cấu hình theo môi trường.</td></tr>
+    </table>
+    <h3>9.3. Reliability and availability</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>NFR-REL-01</td><td>Không phát hành trùng vé khi webhook hoặc yêu cầu kiểm tra thanh toán được gọi nhiều lần.</td></tr>
+      <tr><td>NFR-REL-02</td><td>Không hoàn số lượng vé nhiều lần khi nhiều tiến trình cùng hết hạn một Order.</td></tr>
+      <tr><td>NFR-REL-03</td><td>Lỗi tạm thời khi lưu Order phải có retry và cơ chế đối soát giao dịch.</td></tr>
+      <tr><td>NFR-REL-04</td><td>Ứng dụng phải có endpoint health check và log lỗi ở backend.</td></tr>
+      <tr><td>NFR-REL-05</td><td>Thời gian khôi phục dịch vụ và chính sách sao lưu MongoDB phải được đội vận hành xác định trước khi phát hành thật.</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>9. Yêu cầu phi chức năng (tiếp)</h2>
+    <h3>9.4. Security</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>NFR-SEC-01</td><td>Mật khẩu MUST được băm trước khi lưu; không ghi password, OTP hoặc token rõ vào log.</td></tr>
+      <tr><td>NFR-SEC-02</td><td>Secret PayOS, JWT và email provider MUST chỉ nằm ở biến môi trường/server secret.</td></tr>
+      <tr><td>NFR-SEC-03</td><td>Tất cả API riêng tư MUST yêu cầu token hợp lệ và kiểm tra vai trò ở backend.</td></tr>
+      <tr><td>NFR-SEC-04</td><td>Webhook thanh toán MUST xác thực chữ ký hoặc cơ chế xác minh của nhà cung cấp.</td></tr>
+      <tr><td>NFR-SEC-05</td><td>API QR, check-in và thanh toán MUST có rate limit và phản hồi 429 thân thiện khi vượt ngưỡng.</td></tr>
+      <tr><td>NFR-SEC-06</td><td>Dữ liệu trả về MUST dùng nguyên tắc ít quyền nhất; không trả trường không cần thiết.</td></tr>
+      <tr><td>NFR-SEC-07</td><td>Truy vấn MUST dùng tham số an toàn; dữ liệu đầu vào phải được kiểm tra định dạng, độ dài và phạm vi.</td></tr>
+      <tr><td>NFR-SEC-08</td><td>Thông tin QR, mã giao dịch và dữ liệu khách không được công khai trong tài liệu hướng dẫn người dùng hoặc log không cần thiết.</td></tr>
+    </table>
+    <h3>9.5. Maintainability and deployment</h3>
+    <table>
+      <tr><th>Mã</th><th>Yêu cầu</th></tr>
+      <tr><td>NFR-MNT-01</td><td>Frontend và backend phải tách biệt; nghiệp vụ chính nằm ở service/backend, không tin logic chỉ ở UI.</td></tr>
+      <tr><td>NFR-MNT-02</td><td>API phải có response nhất quán và lỗi được dịch phù hợp ở frontend.</td></tr>
+      <tr><td>NFR-MNT-03</td><td>Thay đổi schema hoặc index phải có kế hoạch migration và kiểm tra dữ liệu trùng.</td></tr>
+      <tr><td>NFR-MNT-04</td><td>Build, lint và test phải chạy được trong môi trường CI trước khi triển khai.</td></tr>
+      <tr><td>NFR-MNT-05</td><td>Cấu hình triển khai Railway phải được ghi lại, bao gồm biến môi trường, domain, webhook và kết nối MongoDB.</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>10. Quy tắc nghiệp vụ và xử lý ngoại lệ</h2>
+    <h3>10.1. Quy tắc nghiệp vụ</h3>
+    <table>
+      <tr><th>Mã</th><th>Quy tắc</th></tr>
+      <tr><td>BR-01</td><td>Mỗi người chỉ được thao tác trên dữ liệu cá nhân của mình, trừ Admin theo quyền.</td></tr>
+      <tr><td>BR-02</td><td>Chỉ loại vé đang bán và còn số lượng mới được đưa vào giao dịch.</td></tr>
+      <tr><td>BR-03</td><td>Tổng tiền phải được tính lại tại backend từ giá và số lượng hợp lệ.</td></tr>
+      <tr><td>BR-04</td><td>Vé chỉ được phát hành sau khi thanh toán được xác nhận.</td></tr>
+      <tr><td>BR-05</td><td>Vé chỉ check-in vào đúng ngày được ghi trên vé.</td></tr>
+      <tr><td>BR-06</td><td>Vé đã check-in không được check-in lần hai.</td></tr>
+      <tr><td>BR-07</td><td>Mỗi lần check-in thành công phải gắn với một tài khoản Staff/Admin và thời điểm cụ thể.</td></tr>
+      <tr><td>BR-08</td><td>Không được phát hành nhiều bộ vé cho cùng một giao dịch thanh toán.</td></tr>
+      <tr><td>BR-09</td><td>Đơn hết thời gian phải hủy an toàn và trả số lượng đúng một lần.</td></tr>
+      <tr><td>BR-10</td><td>Thông tin nhạy cảm chỉ được hiển thị cho vai trò và màn hình cần thiết.</td></tr>
+    </table>
+    <h3>10.2. Ma trận lỗi và phản hồi</h3>
+    <table>
+      <tr><th>Tình huống</th><th>HTTP/hiển thị</th><th>Hành vi hệ thống</th></tr>
+      <tr><td>Dữ liệu nhập sai</td><td>Thông báo tại trường</td><td>Không gửi hoặc không lưu dữ liệu.</td></tr>
+      <tr><td>Chưa đăng nhập/hết phiên</td><td>Yêu cầu đăng nhập lại</td><td>Không trả dữ liệu riêng tư.</td></tr>
+      <tr><td>Không đủ vé</td><td>Thông báo hết hoặc không đủ vé</td><td>Không tạo giao dịch; không giữ thiếu số lượng.</td></tr>
+      <tr><td>Thanh toán thất bại/hết hạn</td><td>Thông báo dễ hiểu</td><td>Đơn không phát hành vé; xử lý trả số lượng an toàn.</td></tr>
+      <tr><td>Thanh toán thành công nhưng lưu lỗi</td><td>Không báo thành công giả</td><td>Retry, đối soát và khôi phục; chuyển sự việc cho Admin nếu cần.</td></tr>
+      <tr><td>QR không tồn tại</td><td>QR không hợp lệ</td><td>Không cho check-in.</td></tr>
+      <tr><td>QR sai ngày</td><td>Vé check-in sai ngày</td><td>Nút xác nhận bị khóa; không ghi nhận check-in.</td></tr>
+      <tr><td>QR đã dùng</td><td>Vé đã được sử dụng</td><td>Nút xác nhận bị khóa; không thay đổi lần hai.</td></tr>
+      <tr><td>Vượt rate limit</td><td>Thử lại sau</td><td>Từ chối tạm thời, không làm thay đổi dữ liệu.</td></tr>
+      <tr><td>Server/database lỗi</td><td>Thông báo hệ thống</td><td>Ghi log; không trả chi tiết kỹ thuật cho người dùng.</td></tr>
+    </table>
+  </section>
+
+  <section class="page">
+    <h2>11. Tiêu chí nghiệm thu</h2>
+    <h3>11.1. Nhóm nghiệm thu người tham gia</h3>
+    <ul>
+      <li>Đăng ký thành công với dữ liệu hợp lệ; dữ liệu sai bị báo rõ.</li>
+      <li>Đăng nhập, đăng xuất, đổi/quên mật khẩu hoạt động đúng.</li>
+      <li>Người dùng chỉ xem được hồ sơ, giỏ hàng, đơn hàng và vé của mình.</li>
+      <li>Không thể mua loại vé đã tắt hoặc không đủ số lượng.</li>
+      <li>Tổng tiền trên giao diện và backend khớp.</li>
+      <li>Thanh toán thành công tạo đúng số vé và mã QR riêng.</li>
+      <li>Webhook hoặc kiểm tra lặp lại không tạo vé trùng.</li>
+      <li>Đơn hết hạn không làm mất hoặc nhân đôi số lượng vé.</li>
+    </ul>
+    <h3>11.2. Nhóm nghiệm thu Staff/Admin</h3>
+    <ul>
+      <li>Staff/Admin tra cứu được QR hợp lệ và xem đúng thông tin cần đối chiếu.</li>
+      <li>QR sai ngày, đã dùng hoặc không hợp lệ không thể xác nhận.</li>
+      <li>Hai thao tác đồng thời chỉ có một check-in thành công.</li>
+      <li>Hệ thống ghi nhận đúng người thực hiện và thời điểm check-in.</li>
+      <li>Staff không truy cập được thao tác chỉ dành cho Admin.</li>
+      <li>Admin quản lý được loại vé, người dùng, Staff, đơn hàng, liên hệ, tin nóng và chat.</li>
+      <li>Dashboard hiển thị đúng số liệu sau khi làm mới.</li>
+    </ul>
+    <h3>11.3. Nhóm nghiệm thu phi chức năng</h3>
+    <ul>
+      <li>Giao diện dùng được trên điện thoại và máy tính, không tràn toàn trang ở khu vực chat.</li>
+      <li>Loading, thành công và lỗi được hiển thị rõ; không hiện lỗi kỹ thuật cho người dùng.</li>
+      <li>API có xác thực, phân quyền, giới hạn tần suất và kiểm tra dữ liệu đầu vào.</li>
+      <li>Log không chứa mật khẩu, token, OTP hoặc thông tin bí mật.</li>
+      <li>Build/lint/test và quy trình triển khai được kiểm tra trước khi bàn giao.</li>
+    </ul>
+  </section>
+
+  <section class="page">
+    <h2>12. Phạm vi chưa bao gồm và định hướng tương lai</h2>
+    <h3>12.1. Chưa bao gồm trong baseline</h3>
+    <ul>
+      <li>Ứng dụng mobile native cho Android/iOS.</li>
+      <li>Thanh toán ngoài nhà cung cấp đã tích hợp nếu chưa có cấu hình và phê duyệt.</li>
+      <li>Hoàn tiền tự động và đối soát ngân hàng tự động hoàn toàn.</li>
+      <li>In vé vật lý, thiết bị cổng chuyên dụng hoặc tích hợp turnstile.</li>
+      <li>Phân quyền theo từng hành động nhỏ hơn vai trò hiện tại nếu chưa được thống nhất.</li>
+      <li>Phân tích hành vi nâng cao, marketing automation và CRM đầy đủ.</li>
+      <li>Sơ đồ screen flow, theo yêu cầu của chủ đầu tư.</li>
+    </ul>
+    <h3>12.2. Định hướng đề xuất</h3>
+    <ul>
+      <li>Thêm job đối soát thanh toán định kỳ để xử lý trường hợp PayOS thành công nhưng server gặp lỗi khi lưu Order.</li>
+      <li>Thêm audit log cho các thao tác Admin, thay đổi loại vé, hủy đơn và check-in.</li>
+      <li>Dùng kho lưu trữ dùng chung cho rate limit khi triển khai nhiều server.</li>
+      <li>Thêm test tự động cho race condition giữ/hoàn số lượng và check-in đồng thời.</li>
+      <li>Bổ sung backup/restore và dashboard giám sát lỗi production.</li>
+      <li>Thêm phân trang, tìm kiếm server-side và tổng hợp báo cáo theo thời gian.</li>
+    </ul>
+  </section>
+
+  <section class="page">
+    <h2>13. Phụ lục: bảng mã yêu cầu</h2>
+    <table>
+      <tr><th>Tiền tố</th><th>Nhóm</th><th>Phạm vi</th></tr>
+      <tr><td>FR-AUTH</td><td>Authentication</td><td>Đăng ký, đăng nhập, phiên và mật khẩu.</td></tr>
+      <tr><td>FR-PROFILE</td><td>Profile</td><td>Thông tin cá nhân.</td></tr>
+      <tr><td>FR-TYPE</td><td>Ticket Type</td><td>Danh sách và quản lý loại vé.</td></tr>
+      <tr><td>FR-CART</td><td>Cart</td><td>Giỏ hàng.</td></tr>
+      <tr><td>FR-PAY</td><td>Payment</td><td>Đơn hàng, giữ số lượng, thanh toán, webhook.</td></tr>
+      <tr><td>FR-TICKET</td><td>Ticket</td><td>Phát hành và xem vé.</td></tr>
+      <tr><td>FR-CHECK</td><td>Check-in</td><td>Tra QR và xác nhận vào cổng.</td></tr>
+      <tr><td>FR-DASH</td><td>Dashboard</td><td>Thống kê và biểu đồ.</td></tr>
+      <tr><td>FR-ADMIN</td><td>Administration</td><td>Người dùng, Staff, loại vé và đơn hàng.</td></tr>
+      <tr><td>FR-CHAT</td><td>Chat</td><td>Cuộc trò chuyện cá nhân/nhóm.</td></tr>
+      <tr><td>FR-CONT/NEWS/PUBLIC</td><td>Content</td><td>Liên hệ, tin nóng và nội dung công khai.</td></tr>
+      <tr><td>NFR-*</td><td>Non-functional</td><td>Usability, performance, reliability, security, maintainability.</td></tr>
+      <tr><td>BR-*</td><td>Business Rules</td><td>Quy tắc nghiệp vụ dùng chung.</td></tr>
+    </table>
+    <div class="box good"><strong>Kết luận:</strong> Baseline SRS này là nguồn tham chiếu để thiết kế, lập trình, kiểm thử, triển khai và nghiệm thu FPTU Halloween Online. Mọi thay đổi nghiệp vụ sau khi phê duyệt phải cập nhật mã yêu cầu và lịch sử thay đổi.</div>
+    <div class="footer">FPTU Halloween Online · Software Requirement Specification · Version 1.0</div>
+  </section>
+</body>
+</html>

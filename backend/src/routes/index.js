@@ -44,8 +44,10 @@ router.patch('/contacts/:id/status', requireAuth, requireRole('Admin'), contactC
 // HOT NEWS
 router.get('/hot-news/active', hotNewsCtrl.getActiveList)
 router.get('/hot-news', requireAuth, requireRole('Admin'), hotNewsCtrl.getList)
+router.patch('/hot-news/order', requireAuth, requireRole('Admin'), hotNewsCtrl.reorder)
 router.post('/hot-news', requireAuth, requireRole('Admin'), hotNewsCtrl.create)
 router.put('/hot-news/:id', requireAuth, requireRole('Admin'), hotNewsCtrl.update)
+router.delete('/hot-news/:id', requireAuth, requireRole('Admin'), hotNewsCtrl.remove)
 router.patch('/hot-news/:id/status', requireAuth, requireRole('Admin'), hotNewsCtrl.changeStatus)
 
 // USERS

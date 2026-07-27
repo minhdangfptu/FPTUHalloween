@@ -16,6 +16,12 @@ const HotNews = new mongoose.Schema({
         maxlength: 2048,
         default: ""
     },
+    displayOrder: {
+        type: Number,
+        default: null,
+        index: true,
+        min: 1
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

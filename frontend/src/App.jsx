@@ -1,9 +1,8 @@
 import * as React from "react";
 import { BrowserRouter, Navigate, Routes, Route, useLocation } from "react-router-dom";
-import { CssBaseline, CssVarsProvider, ThemeProvider } from "@mui/material";
-import theme from "./theme";
 import HomePage from "./pages/Normal/HomePage";
 import ErrorPage404 from "./pages/Errors/ErrorPage404";
+import ErrorPage403 from "./pages/Errors/ErrorPage403";
 import Login from "./pages/Authentication/Login";
 import Register from "./pages/Authentication/Register";
 import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
@@ -65,12 +64,12 @@ function Layout({ children }) {
   );
 }
 
-function ManageLayout({ children, role = "staff" }) {
+function ManageLayout({ children, role = "staff", showFooter = true }) {
   return (
     <>
       <ManageHeader role={role} />
       {children}
-      <Footer />
+      {showFooter && <Footer />}
     </>
   );
 }
@@ -92,23 +91,98 @@ function ScrollToTop() {
   return null;
 }
 
+const ACCESS_RULES = [
+  { pattern: /^\/admin(?:\/|$)/, roles: ["admin"] },
+  { pattern: /^\/staff(?:\/|$)/, roles: ["staff"] },
+  {
+    pattern:
+      /^\/(?:user-profile|change-password|cart|checkout|qr-payment|complete-payment|my-ticket)(?:\/|$)/,
+    roles: null,
+  },
+  {
+    pattern: /^\/tickets(?:\/|$)/,
+    roles: null,
+  },
+];
+
+const getRoleName = (user) =>
+  user?.role?.roleName ||
+  user?.roleName ||
+  user?.role ||
+  user?.roleId?.roleName ||
+  user?.roleId;
+
+const normalizeRole = (role) => String(role || "").trim().toLowerCase();
+
+const readAuthSnapshot = () => {
+  try {
+    return {
+      token: localStorage.getItem("accessToken"),
+      user: JSON.parse(localStorage.getItem("user") || "null"),
+    };
+  } catch {
+    return { token: null, user: null };
+  }
+};
+
+const isRoleAllowed = (user, allowedRoles) => {
+  const role = normalizeRole(getRoleName(user));
+  if (role === "admin") return true;
+  return allowedRoles.includes(role);
+};
+
+function FrontendAccessGuard({ children }) {
+  const location = useLocation();
+  const [authSnapshot, setAuthSnapshot] = React.useState(readAuthSnapshot);
+  const accessRule = ACCESS_RULES.find(({ pattern }) =>
+    pattern.test(location.pathname),
+  );
+
+  React.useEffect(() => {
+    const syncAuthSnapshot = () => setAuthSnapshot(readAuthSnapshot());
+    window.addEventListener("storage", syncAuthSnapshot);
+    window.addEventListener("auth:login", syncAuthSnapshot);
+    window.addEventListener("auth:logout", syncAuthSnapshot);
+    return () => {
+      window.removeEventListener("storage", syncAuthSnapshot);
+      window.removeEventListener("auth:login", syncAuthSnapshot);
+      window.removeEventListener("auth:logout", syncAuthSnapshot);
+    };
+  }, []);
+
+  if (!accessRule) return children;
+
+  const isAuthenticated = Boolean(authSnapshot.token && authSnapshot.user);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (
+    accessRule.roles &&
+    !isRoleAllowed(authSnapshot.user, accessRule.roles)
+  ) {
+    return <Navigate to="/403" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
+
 export default function App() {
   return (
-    // <CssVarsProvider theme={theme}>
-    //   <CssBaseline />
     <BrowserRouter>
       <ScrollToTop />
-      <Routes>
-        {/* Authentication pages - không có Header, Navbar, Footer */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/fbgc-login" element={<FBGCLogin />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/confirm-email" element={<ConfirmEmail />} />
-        <Route path="/complete-register" element={<CompleteRegister />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/change-password" element={<ChangePassword />} />
+      <FrontendAccessGuard>
+        <Routes>
+          {/* Authentication pages - không có Header, Navbar, Footer */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/fbgc-login" element={<FBGCLogin />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/confirm-email" element={<ConfirmEmail />} />
+          <Route path="/complete-register" element={<CompleteRegister />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/change-password" element={<ChangePassword />} />
 
-        <Route path="*" element={<ErrorPage404 />} />
+          <Route path="/403" element={<ErrorPage403 />} />
 
         {/* Normal pages - có Header, Navbar, Footer */}
         <Route
@@ -308,8 +382,8 @@ export default function App() {
             </ManageLayout>
           }
         />
-        <Route path="/admin/chat" element={<ManageLayout role="admin"><ChatPage role="admin" /></ManageLayout>} />
-        <Route path="/staff/chat" element={<ManageLayout role="staff"><ChatPage role="staff" /></ManageLayout>} />
+        <Route path="/admin/chat" element={<ManageLayout role="admin" showFooter={false}><ChatPage role="admin" /></ManageLayout>} />
+        <Route path="/staff/chat" element={<ManageLayout role="staff" showFooter={false}><ChatPage role="staff" /></ManageLayout>} />
         <Route
           path="/admin/users"
           element={
@@ -462,9 +536,10 @@ export default function App() {
             </Layout>
           }
         />
-      </Routes>
+          <Route path="*" element={<ErrorPage404 />} />
+        </Routes>
+      </FrontendAccessGuard>
       <ConditionalMessengerButton />
     </BrowserRouter>
-    // </CssVarsProvider>
   );
 }

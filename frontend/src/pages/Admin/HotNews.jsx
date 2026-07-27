@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  ArrowDown,
+  ArrowUp,
   CircleAlert,
   Clock3,
   Link2,
@@ -8,12 +10,14 @@ import {
   Plus,
   Power,
   RefreshCw,
+  Trash2,
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ManageSidebar from "../../components/ManageSidebar";
+import LogoutModal from "../../components/LogoutModal";
 import hotNewsAPI from "../../apis/hotNewsAPI";
 import {
   translateError,
@@ -58,6 +62,9 @@ const HotNews = () => {
   const [formError, setFormError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [changingId, setChangingId] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+  const [isReordering, setIsReordering] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const dialogRef = useRef(null);
 
   const loadHotNews = useCallback(async () => {
@@ -145,7 +152,7 @@ const HotNews = () => {
       const savedHotNews = result.hotNews;
 
       setHotNews((current) => {
-        if (!editingId) return [savedHotNews, ...current];
+        if (!editingId) return [...current, savedHotNews];
         return current.map((item) =>
           item._id === editingId ? savedHotNews : item,
         );
@@ -160,7 +167,7 @@ const HotNews = () => {
   };
 
   const handleStatusChange = async (item) => {
-    if (changingId) return;
+    if (changingId || deletingId || isReordering) return;
 
     const previousItems = hotNews;
     const nextIsActive = !item.isActive;
@@ -186,6 +193,64 @@ const HotNews = () => {
       toast.error(translateError(error));
     } finally {
       setChangingId(null);
+    }
+  };
+
+  const openDeleteModal = (item) => {
+    if (deletingId || changingId || isReordering) return;
+    setDeleteTarget(item);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteTarget || deletingId || changingId || isReordering) return;
+
+    const item = deleteTarget;
+    setDeleteTarget(null);
+
+    const previousItems = hotNews;
+    const loadingToastId = toast.loading("Đang xóa thông báo...");
+    setDeletingId(item._id);
+    setHotNews((current) =>
+      current.filter((currentItem) => currentItem._id !== item._id),
+    );
+
+    try {
+      const result = await hotNewsAPI.delete(item._id);
+      toast.success(translateSuccess(result.message), { id: loadingToastId });
+    } catch (error) {
+      setHotNews(previousItems);
+      toast.error(translateError(error), { id: loadingToastId });
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const handleMove = async (index, direction) => {
+    if (isReordering || changingId || deletingId) return;
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= hotNews.length) return;
+
+    const previousItems = hotNews;
+    const nextItems = [...hotNews];
+    [nextItems[index], nextItems[targetIndex]] = [
+      nextItems[targetIndex],
+      nextItems[index],
+    ];
+    setHotNews(nextItems);
+    setIsReordering(true);
+    const loadingToastId = toast.loading("Đang cập nhật thứ tự...");
+
+    try {
+      const result = await hotNewsAPI.reorder(
+        nextItems.map((item) => item._id),
+      );
+      setHotNews(result.hotNews);
+      toast.success("Đã cập nhật thứ tự hiển thị", { id: loadingToastId });
+    } catch (error) {
+      setHotNews(previousItems);
+      toast.error(translateError(error), { id: loadingToastId });
+    } finally {
+      setIsReordering(false);
     }
   };
 
@@ -324,10 +389,56 @@ const HotNews = () => {
                       className={`hot-news-action ${item.isActive ? "is-active" : ""}`}
                       type="button"
                       aria-pressed={item.isActive}
-                      disabled={changingId === item._id}
+                      disabled={
+                        isReordering ||
+                        changingId === item._id ||
+                        deletingId === item._id
+                      }
                       onClick={() => handleStatusChange(item)}
                     >
                       <Power size={15} /> {item.isActive ? "Tắt" : "Bật"}
+                    </button>
+                    <button
+                      className="hot-news-action hot-news-action--order"
+                      type="button"
+                      disabled={
+                        isReordering ||
+                        changingId === item._id ||
+                        deletingId === item._id ||
+                        index === 0
+                      }
+                      onClick={() => handleMove(index, -1)}
+                      aria-label={`Đưa thông báo ${index + 1} lên trước`}
+                      title="Đưa lên"
+                    >
+                      <ArrowUp size={15} />
+                    </button>
+                    <button
+                      className="hot-news-action hot-news-action--order"
+                      type="button"
+                      disabled={
+                        isReordering ||
+                        changingId === item._id ||
+                        deletingId === item._id ||
+                        index === hotNews.length - 1
+                      }
+                      onClick={() => handleMove(index, 1)}
+                      aria-label={`Đưa thông báo ${index + 1} xuống sau`}
+                      title="Đưa xuống"
+                    >
+                      <ArrowDown size={15} />
+                    </button>
+                    <button
+                      className="hot-news-action hot-news-action--danger"
+                      type="button"
+                      disabled={
+                        isReordering ||
+                        changingId === item._id ||
+                        deletingId === item._id
+                      }
+                      onClick={() => openDeleteModal(item)}
+                    >
+                      <Trash2 size={15} /> {deletingId === item._id ? "Đang xóa…" : "Xóa"}
                     </button>
                   </div>
                 </article>
@@ -417,6 +528,16 @@ const HotNews = () => {
           </div>
         </form>
       </dialog>
+
+      <LogoutModal
+        isOpen={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDelete}
+        title="Xóa thông báo?"
+        description="Thông báo này sẽ bị xóa khỏi bảng tin.<br />Hành động này không thể hoàn tác."
+        cancelLabel="Hủy"
+        confirmLabel="Xóa thông báo"
+      />
     </div>
   );
 };

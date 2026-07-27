@@ -7,6 +7,8 @@ export const staffChatAPI = {
   getGroups: () => axiosClient.get("/staff-chat/groups").then(unwrap),
   createGroup: (payload) => axiosClient.post("/staff-chat/groups", payload).then(unwrap),
   updateGroup: (groupId, payload) => axiosClient.patch(`/staff-chat/groups/${groupId}`, payload).then(unwrap),
+  addGroupMembers: (groupId, memberIds) =>
+    axiosClient.post(`/staff-chat/groups/${groupId}/members`, { memberIds }).then(unwrap),
   removeGroupMember: (groupId, userId) => axiosClient.delete(`/staff-chat/groups/${groupId}/members/${userId}`).then(unwrap),
   searchUsers: (q) => axiosClient.get("/staff-chat/users/search", { params: { q } }).then(unwrap),
   createDirectConversation: (userId) =>
