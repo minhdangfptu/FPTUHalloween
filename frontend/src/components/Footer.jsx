@@ -2,8 +2,11 @@
 import { Link } from "react-router-dom";
 import "./Footer.css";
 import wtm from "../assets/wtm.png";
-// eslint-disable-next-line no-unused-vars -- icon is rendered in the social anchors below.
+import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 
 const linkGroups = [
   {
@@ -77,13 +80,17 @@ function Footer() {
             </Link>
             <h3 className="fpt-footer__contact-title">Thông tin liên hệ</h3>
             <div className="fpt-footer__contact-item">
-              <span className="fpt-footer__contact-icon">@</span>
+              <span className="fpt-footer__contact-icon" aria-hidden="true">
+                <EmailIcon fontSize="small" />
+              </span>
               <p className="fpt-footer__contact-text">
                 fptuhalloween@gmail.com
               </p>
             </div>
             <div className="fpt-footer__contact-item">
-              <span className="fpt-footer__contact-icon">⌖</span>
+              <span className="fpt-footer__contact-icon" aria-hidden="true">
+                <LocationOnIcon fontSize="small" />
+              </span>
               <p className="fpt-footer__contact-text">
                 Trường Đại học FPT
                 <br />
@@ -91,13 +98,13 @@ function Footer() {
               </p>
             </div>
             <h4 className="fpt-footer__social-title">Kết nối với chúng tôi</h4>
-            <div className="fpt-header__social">
+            <div className="fpt-footer__social-buttons">
               <a
                 href="https://www.facebook.com/fptuhalloween"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Facebook FPTU Halloween"
-                className="fpt-header__social-btn fpt-header__social-btn--facebook"
+                className="fpt-footer__social-btn fpt-footer__social-btn--facebook"
               >
                 <FacebookIcon />
               </a>
@@ -106,18 +113,18 @@ function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Facebook FPTU Board Game Club"
-                className="fpt-header__social-btn fpt-header__social-btn--tiktok"
+                className="fpt-footer__social-btn fpt-footer__social-btn--instagram"
               >
-                <FacebookIcon />
+                <InstagramIcon />
               </a>
               <a
                 href="https://www.tiktok.com/@fptu.halloween2025"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="TikTok FPTU Halloween"
-                className="fpt-header__social-btn fpt-header__social-btn--youtube"
+                className="fpt-footer__social-btn fpt-footer__social-btn--youtube"
               >
-                <span aria-hidden="true">T</span>
+                <YouTubeIcon />
               </a>
             </div>
           </div>
@@ -138,7 +145,7 @@ function Footer() {
       </div>
       <hr className="fpt-footer__divider" />
       <div className="fpt-footer__copyright">
-        Phát triển bởi đội ngũ FPTU Halloween
+        Phát triển bởi MINH ĐẶNG - Trưởng ban Media & Design thích làm thợ code
         <br />
         Bản quyền © 2019-{year}. Bảo lưu mọi quyền.
       </div>
