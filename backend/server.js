@@ -7,6 +7,7 @@ const { config, connectDB, corsConfig } = require('./src/config')
 const routes = require('./src/routes')
 const { default: mongoose } = require('mongoose')
 const { expirePendingOrders } = require('./src/services/adminOrder')
+const { migrateTicketTypeQuantities } = require('./src/services/ticketType')
 const { initializeStaffChatSocket } = require('./src/sockets/staffChat')
 
 const app = express()
@@ -84,6 +85,7 @@ const startServer = async () => {
   try {
     await connectDB()
     console.log('DB name:', mongoose.connection.name);
+    if (mongoose.connection.readyState === 1) await migrateTicketTypeQuantities()
     await expirePendingOrders()
     setInterval(() => {
       expirePendingOrders().catch(error => console.error('Failed to expire pending orders:', error.message))

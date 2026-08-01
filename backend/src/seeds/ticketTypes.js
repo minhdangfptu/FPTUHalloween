@@ -14,7 +14,7 @@ const ticketTypes = Object.entries(SCHEDULE).flatMap(([date, times]) =>
   times.map((time) => ({
     ticketTypeName: `Vé Nhà Ma Ngày ${date} - ${time}`,
     ticketTypePrice: TICKET_PRICE,
-    availableQuantity: String(TICKET_QUANTITY),
+    availableQuantity: TICKET_QUANTITY,
     totalQuantity: TICKET_QUANTITY,
     ticketTypeDate: Number(date),
     ticketEventDate: new Date(`2026-10-${String(date).padStart(2, '0')}T00:00:00+07:00`),

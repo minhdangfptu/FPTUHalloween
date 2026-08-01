@@ -11,7 +11,8 @@ const normalizePayload = payload => {
   const data = {}
   FIELDS.forEach(field => { if (payload[field] !== undefined) data[field] = payload[field] })
   if (data.ticketTypeName !== undefined) data.ticketTypeName = String(data.ticketTypeName).trim()
-  if (data.availableQuantity !== undefined) data.availableQuantity = String(data.availableQuantity).trim()
+  if (data.availableQuantity !== undefined) data.availableQuantity = Number(data.availableQuantity)
+  if (data.totalQuantity !== undefined) data.totalQuantity = Number(data.totalQuantity)
   if (data.ticketTypeTime !== undefined) data.ticketTypeTime = String(data.ticketTypeTime).trim()
   if (data.ticketEventDate !== undefined) data.ticketEventDate = new Date(data.ticketEventDate)
   return data
@@ -23,8 +24,17 @@ const validatePayload = data => {
   if (missing.length) throw new Error(`${missing.join(', ')} are required`)
   if (!Number.isFinite(Number(data.ticketTypePrice)) || Number(data.ticketTypePrice) < 0) throw new Error('Ticket price must be a non-negative number')
   if (!Number.isInteger(Number(data.totalQuantity)) || Number(data.totalQuantity) < 0) throw new Error('Total quantity must be a non-negative integer')
+  if (!Number.isInteger(Number(data.availableQuantity)) || Number(data.availableQuantity) < 0) throw new Error('Available quantity must be a non-negative integer')
   if (!(data.ticketEventDate instanceof Date) || Number.isNaN(data.ticketEventDate.getTime())) throw new Error('Ticket event date must be a valid date')
   if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(data.ticketTypeTime)) throw new Error('Ticket time must use HH:mm format')
+}
+
+const migrateTicketTypeQuantities = async () => {
+  const result = await TicketType.collection.updateMany(
+    { $or: [{ availableQuantity: { $type: 'string' } }, { totalQuantity: { $type: 'string' } }] },
+    [{ $set: { availableQuantity: { $toInt: '$availableQuantity' }, totalQuantity: { $toInt: '$totalQuantity' } } }]
+  )
+  if (result.modifiedCount > 0) console.log(`Migrated ${result.modifiedCount} ticket type quantity record(s) to numbers.`)
 }
 
 const warnInventoryMismatch = data => {
@@ -87,4 +97,4 @@ const changeTicketTypeStatus = async (id, ticketTypeStatus) => {
   return { message: 'Ticket type status updated successfully', ticketType }
 }
 
-module.exports = { createTicketType, getTicketTypes, getTicketTypeById, updateTicketType, deleteTicketType, changeTicketTypeStatus }
+module.exports = { createTicketType, getTicketTypes, getTicketTypeById, updateTicketType, deleteTicketType, changeTicketTypeStatus, migrateTicketTypeQuantities }
