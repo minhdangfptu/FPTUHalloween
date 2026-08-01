@@ -1,6 +1,7 @@
 import React from "react";
 import {
   BadgeCheck,
+  ClipboardPenLine,
   CircleUserRound,
   ContactRound,
   Home,
@@ -39,6 +40,7 @@ const MENU_BY_ROLE = {
     { id: "orders", label: "Đơn hàng", icon: ReceiptText },
     { id: "contacts", label: "Liên hệ", icon: ContactRound },
     { id: "hot-news", label: "Thêm thông báo", icon: Megaphone },
+    { id: "feedback", label: "Phản hồi sự kiện", icon: ClipboardPenLine },
     { id: "home", label: "Về trang sự kiện", icon: Home },
   ],
   staff: [
@@ -47,6 +49,7 @@ const MENU_BY_ROLE = {
     { id: "ticket-types", label: "Danh sách loại vé", icon: TicketCheck },
     { id: "purchased-tickets", label: "Danh sách vé đã mua", icon: Tickets },
     { id: "check-in", label: "Checkin vé", icon: BadgeCheck },
+    { id: "feedback", label: "Đánh giá sự kiện", icon: ClipboardPenLine },
     { id: "home", label: "Về trang sự kiện", icon: Home },
   ],
 };
@@ -137,6 +140,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
     contacts: "/admin/contacts",
     "hot-news": "/admin/hot-news",
     "ticket-types": "/staff/ticket-types",
+    feedback: resolvedRole === "admin" ? "/admin/feedback" : "/staff/feedback",
     "purchased-tickets":
       resolvedRole === "admin"
         ? "/admin/purchased-tickets"

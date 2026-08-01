@@ -51,6 +51,9 @@ import StaffHomePage from "./pages/Staff/StaffDashboardPage";
 import StaffUserTicket from "./pages/Staff/StaffUserTicket";
 import PDP from "./pages/Halloween2026/PDP";
 import ChatPage from "./pages/Chat/ChatPage";
+import FeedbackStaffPage from "./pages/Feedback/FeedbackStaffPage";
+import FeedbackUserPage from "./pages/Feedback/FeedbackUserPage";
+import AdminFeedback from "./pages/Admin/AdminFeedback";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -94,6 +97,7 @@ function ScrollToTop() {
 const ACCESS_RULES = [
   { pattern: /^\/admin(?:\/|$)/, roles: ["admin"] },
   { pattern: /^\/staff(?:\/|$)/, roles: ["staff"] },
+  { pattern: /^\/feedback(?:\/|$)/, roles: null },
   {
     pattern:
       /^\/(?:user-profile|change-password|cart|checkout|qr-payment|complete-payment|my-ticket)(?:\/|$)/,
@@ -327,6 +331,22 @@ export default function App() {
           }
         />
         <Route
+          path="/feedback"
+          element={
+            <Layout>
+              <FeedbackUserPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/staff/feedback"
+          element={
+            <ManageLayout role="staff">
+              <FeedbackStaffPage />
+            </ManageLayout>
+          }
+        />
+        <Route
           path="/admin/contacts"
           element={
             <ManageLayout role="admin">
@@ -363,6 +383,14 @@ export default function App() {
           element={
             <ManageLayout role="admin">
               <HotNews />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/feedback"
+          element={
+            <ManageLayout role="admin">
+              <AdminFeedback />
             </ManageLayout>
           }
         />

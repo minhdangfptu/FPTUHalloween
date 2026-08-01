@@ -11,5 +11,7 @@ module.exports = {
   Cart: require('./Cart'),
   HotNews: require('./HotNews'),
   ChatConversation: require('./ChatConversation'),
-  ChatMessage: require('./ChatMessage')
+  ChatMessage: require('./ChatMessage'),
+  FeedbackForm: require('./FeedbackForm'),
+  FeedbackResponse: require('./FeedbackResponse')
 }

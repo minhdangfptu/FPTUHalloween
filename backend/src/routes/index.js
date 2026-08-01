@@ -11,6 +11,7 @@ const hotNewsCtrl = require('../controllers/hotNews')
 const payOSCtrl = require('../controllers/payOS')
 const payOSWebhookCtrl = require('../controllers/payOSWebhook')
 const userTicketCtrl = require('../controllers/userTicket')
+const feedbackCtrl = require('../controllers/feedback')
 const staffChatRoute = require('./staffChat')
 // const adminCtrl = require('../controllers/admin')
 
@@ -93,6 +94,17 @@ router.get('/orders', requireAuth, requireRole('Admin'), adminOrderCtrl.getList)
 router.get('/orders/:id', requireAuth, requireRole('Admin'), adminOrderCtrl.getDetail)
 router.get('/statistics/tickets', requireAuth, requireRole('Admin'), adminOrderCtrl.getTicketStatistics)
 router.patch('/admin/users/:id/promote-staff', requireAuth, requireRole('Admin'), adminCtrl.promoteUserToStaff)
+
+// FEEDBACK FORMS AND RESPONSES
+router.get('/feedback/forms', requireAuth, requireRole('Admin', 'Staff', 'User'), feedbackCtrl.getForms)
+router.get('/feedback/forms/:id', requireAuth, requireRole('Admin', 'Staff', 'User'), feedbackCtrl.getFormById)
+router.post('/feedback/forms', requireAuth, requireRole('Admin'), feedbackCtrl.createForm)
+router.put('/feedback/forms/:id', requireAuth, requireRole('Admin'), feedbackCtrl.updateForm)
+router.patch('/feedback/forms/:id', requireAuth, requireRole('Admin'), feedbackCtrl.updateForm)
+router.delete('/feedback/forms/:id', requireAuth, requireRole('Admin'), feedbackCtrl.deleteForm)
+router.post('/feedback/forms/:formId/responses', requireAuth, requireRole('Admin', 'Staff', 'User'), feedbackCtrl.submitResponse)
+router.get('/feedback/forms/:formId/responses', requireAuth, requireRole('Admin'), feedbackCtrl.getResponses)
+router.get('/feedback/forms/:formId/statistics', requireAuth, requireRole('Admin'), feedbackCtrl.getStatistics)
 
 // STAFF CHAT
 router.use('/staff-chat', staffChatRoute)

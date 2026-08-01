@@ -21,6 +21,7 @@ import LogoutModal from "./LogoutModal";
 import toast from "react-hot-toast";
 import { translateSuccess } from "../utils/translateResponse";
 import { CART_UPDATED_EVENT, getCartItemCount } from "../utils/flyingToCart";
+import feedbackAPI from "../apis/feedbackAPI";
 const navigationItems = [
   {
     label: "TRANG CHỦ",
@@ -44,28 +45,11 @@ const navigationItems = [
     children: [
       { label: "Câu chuyện", href: "/haunted-ghost" },
       { label: "Mua vé", href: "/tickets" },
-      // { label: "Thông tin", href: "/agenda" },
-      // { label: "Tin tức", href: "/news" },
     ],
   },
-  // {
-  //   label: "ĐĂNG KÝ",
-  //   href: "#",
-  //   children: [
-  //     // { label: "Vé nhà ma", href: "/ticket-ghost" },
-  //     { label: "Big game", href: "/ticket-game" },
-  //     // { label: "Cuộc thi hóa trang", href: "/jnbwueoini0" },
-  //   ],
-  // },
   {
     label: "VỀ BTC FPTU HALLOWEEN",
     href: "/btc-fuhlw",
-    // children: [
-    //   { label: "Ban tổ chức FPTU Halloween 2026", href: "/fbgc" },
-    //   { label: "Cơ cấu tổ chức", href: "/fbgc" },
-    //   { label: "Fanpage", style: { cursor: "pointer" }, onClick: () => navigate("https://www.facebook.com/fuboardgameclub") },
-    //   { label: "Hoạt động", href: "#" },
-    // ],
   },
   {
     label: "LIÊN HỆ",
@@ -79,6 +63,7 @@ function Navbar() {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [cartQuantity, setCartQuantity] = useState(0);
+  const [hasAvailableFeedback, setHasAvailableFeedback] = useState(false);
   const userDropdownRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation(); // Add location hook
@@ -97,8 +82,34 @@ function Navbar() {
       "",
   ).toLowerCase();
   const canManageEvents = userRole === "admin" || userRole === "staff";
+  const isRegularUser = userRole === "user";
   const managementHome =
     userRole === "admin" ? "/admin/dashboard" : "/staff/dashboard";
+
+  useEffect(() => {
+    if (!isRegularUser) {
+      setHasAvailableFeedback(false);
+      return undefined;
+    }
+
+    let isMounted = true;
+    const loadAvailableFeedback = async () => {
+      try {
+        const forms = await feedbackAPI.getAvailableForms({ targetType: "attendee" });
+        if (isMounted) setHasAvailableFeedback(forms.length > 0);
+      } catch {
+        if (isMounted) setHasAvailableFeedback(false);
+      }
+    };
+
+    loadAvailableFeedback();
+    const handleFeedbackVisibilityChanged = () => loadAvailableFeedback();
+    window.addEventListener("feedback:visibility-changed", handleFeedbackVisibilityChanged);
+    return () => {
+      isMounted = false;
+      window.removeEventListener("feedback:visibility-changed", handleFeedbackVisibilityChanged);
+    };
+  }, [isRegularUser]);
 
   useEffect(() => {
     const loadCartQuantity = async () => {
@@ -287,6 +298,20 @@ function Navbar() {
                     }}
                   >
                     QUẢN TRỊ
+                  </a>
+                </div>
+              )}
+              {isRegularUser && hasAvailableFeedback && (
+                <div className="fpt-navbar__nav-item">
+                  <a
+                    href="/feedback"
+                    className={`fpt-navbar__nav-link ${isActive("/feedback") ? "active" : ""}`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      navigate("/feedback");
+                    }}
+                  >
+                    ĐÁNH GIÁ
                   </a>
                 </div>
               )}
@@ -482,6 +507,21 @@ function Navbar() {
                   }}
                 >
                   QUẢN TRỊ
+                </a>
+              </div>
+            )}
+            {isRegularUser && hasAvailableFeedback && (
+              <div className="fpt-navbar__mobile-group">
+                <a
+                  href="/feedback"
+                  className={`fpt-navbar__mobile-link ${isActive("/feedback") ? "active" : ""}`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    navigate("/feedback");
+                    handleDrawerToggle();
+                  }}
+                >
+                  Đánh giá
                 </a>
               </div>
             )}
