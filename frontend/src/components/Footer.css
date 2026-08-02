@@ -1,7 +1,7 @@
 /* Footer Styles - FPT Halloween Website */
 .fpt-footer {
-  background-color: #fff;
-  color: #111;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   border-top: 1px solid #e5e7eb;
   width: 100%;
   margin-top: 0;
@@ -45,7 +45,7 @@
 }
 
 .fpt-footer__contact-icon {
-  color: #ce0000;
+  color: var(--color-button);
   display: flex;
   width: 24px;
   height: 24px;
@@ -91,7 +91,7 @@
 }
 
 .fpt-footer__social-btn:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-hover-surface);
 }
 
 .fpt-footer__social-btn--facebook {
@@ -121,7 +121,7 @@
 }
 
 .fpt-footer__contact-link:hover {
-  color: #c60000;
+  color: var(--color-button);
   text-decoration: underline;
 }
 
@@ -152,7 +152,7 @@
 }
 
 .fpt-footer__link:hover {
-  color: #c60000;
+  color: var(--color-button);
   text-decoration: underline;
 }
 
@@ -166,7 +166,7 @@
 .fpt-footer__copyright {
   text-align: center;
   font-size: 12px;
-  color: #6b7280;
+  color: var(--color-muted-text);
   padding: 16px;
   margin: 0;
 }

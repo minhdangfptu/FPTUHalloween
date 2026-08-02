@@ -1,6 +1,7 @@
 import * as React from "react";
 import { BrowserRouter, Navigate, Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "./pages/Normal/HomePage";
+import AboutTwoBars from "./pages/EasterEgg/AboutTwoBars";
 import ErrorPage404 from "./pages/Errors/ErrorPage404";
 import ErrorPage403 from "./pages/Errors/ErrorPage403";
 import Login from "./pages/Authentication/Login";
@@ -328,6 +329,14 @@ export default function App() {
             <ManageLayout role="staff">
               <StaffHomePage />
             </ManageLayout>
+          }
+        />
+        <Route
+          path="/easter-egg"
+          element={
+            <Layout>
+              <AboutTwoBars />
+            </Layout>
           }
         />
         <Route

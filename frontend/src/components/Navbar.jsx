@@ -22,42 +22,44 @@ import toast from "react-hot-toast";
 import { translateSuccess } from "../utils/translateResponse";
 import { CART_UPDATED_EVENT, getCartItemCount } from "../utils/flyingToCart";
 import feedbackAPI from "../apis/feedbackAPI";
+import { useTranslation } from "react-i18next";
 const navigationItems = [
   {
-    label: "TRANG CHỦ",
+    labelKey: "nav.home",
     href: "/",
   },
   {
-    label: "GIỚI THIỆU",
+    labelKey: "nav.introduce",
     href: "#",
     children: [
-      { label: "Giới thiệu chung", href: "/introduce-hlw26" },
-      { label: "Về CLB FPTU Board Game", href: "/fbgc" },
+      { labelKey: "nav.introduceGeneral", href: "/introduce-hlw26" },
+      { labelKey: "nav.boardGameClub", href: "/fbgc" },
       {
-        label: "Về PDP - Chương trình Phát triển Cá nhân FPTU Hà Nội",
+        labelKey: "nav.pdp",
         href: "/pdp",
       },
     ],
   },
   {
-    label: "NHÀ MA HALLOWEEN",
+    labelKey: "nav.hauntedHouse",
     href: "#",
     children: [
-      { label: "Câu chuyện", href: "/haunted-ghost" },
-      { label: "Mua vé", href: "/tickets" },
+      { labelKey: "nav.story", href: "/haunted-ghost" },
+      { labelKey: "nav.tickets", href: "/tickets" },
     ],
   },
   {
-    label: "VỀ BTC FPTU HALLOWEEN",
+    labelKey: "nav.btc",
     href: "/btc-fuhlw",
   },
   {
-    label: "LIÊN HỆ",
+    labelKey: "nav.contact",
     href: "/contact-us",
   },
 ];
 
 function Navbar() {
+  const { t } = useTranslation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -235,7 +237,7 @@ function Navbar() {
             <div className="fpt-navbar__desktop-nav">
               {navigationItems.map((item, index) => (
                 <div
-                  key={item.label}
+                  key={item.labelKey}
                   className="fpt-navbar__nav-item"
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
@@ -254,7 +256,7 @@ function Navbar() {
                       }
                     }}
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                     {item.children && (
                       <span className="fpt-navbar__nav-arrow">▼</span>
                     )}
@@ -263,7 +265,7 @@ function Navbar() {
                     <div className="fpt-navbar__dropdown">
                       {item.children.map((child) => (
                         <a
-                          key={child.label}
+                          key={child.labelKey}
                           href={child.href}
                           className={`fpt-navbar__dropdown-link ${
                             isActive(child.href) ? "active" : ""
@@ -275,7 +277,7 @@ function Navbar() {
                             }
                           }}
                         >
-                          {child.label}
+                          {t(child.labelKey)}
                         </a>
                       ))}
                     </div>
@@ -297,7 +299,7 @@ function Navbar() {
                       navigate(managementHome);
                     }}
                   >
-                    QUẢN TRỊ
+                    {t("nav.management")}
                   </a>
                 </div>
               )}
@@ -311,22 +313,22 @@ function Navbar() {
                       navigate("/feedback");
                     }}
                   >
-                    ĐÁNH GIÁ
+                    {t("nav.feedback")}
                   </a>
                 </div>
               )}
-              <Tooltip title="Giỏ hàng của bạn">
+              <Tooltip title={t("nav.cart")}>
                 <button
                   className="fpt-navbar__search-btn"
                   onClick={() => navigate("/cart")}
-                  aria-label={`Mở giỏ hàng${cartQuantity ? `, ${cartQuantity} vé` : ""}`}
+                  aria-label={`${t("nav.cart")}${cartQuantity ? `, ${t("nav.cartTickets", { count: cartQuantity })}` : ""}`}
                   data-cart-target
                 >
                   <ShoppingBag size={22} />
                   {cartQuantity > 0 && (
                     <span
                       className="fpt-navbar__cart-badge"
-                      aria-label={`${cartQuantity} vé trong giỏ hàng`}
+                      aria-label={t("nav.cartTickets", { count: cartQuantity })}
                     >
                       {cartQuantity > 99 ? "99+" : cartQuantity}
                     </span>
@@ -334,7 +336,7 @@ function Navbar() {
                 </button>
               </Tooltip>
               <div ref={userDropdownRef} className="fpt-navbar__user-item">
-                <Tooltip title="Tài khoản">
+                <Tooltip title={t("nav.account")}>
                   <button
                     className="fpt-navbar__search-btn"
                     onClick={handleUserClick}
@@ -359,7 +361,7 @@ function Navbar() {
                       <div className="fpt-navbar__account-greeting">
                         <CircleUserRound size={18} />
                         <span>
-                          Xin chào {user.fullName || user.name || "bạn"}
+                          {t("nav.hello", { name: user.fullName || user.name || t("nav.account") })}
                         </span>
                       </div>
                       {/* {canManageEvents && (
@@ -374,7 +376,7 @@ function Navbar() {
                         href="/user-profile"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
                       >
-                        <WalletCards size={16} /> Tài khoản của bạn
+                        <WalletCards size={16} /> {t("nav.yourAccount")}
                       </a>
                       <a
                         href="/my-ticket"
@@ -385,19 +387,19 @@ function Navbar() {
                           setShowUserDropdown(false);
                         }}
                       >
-                        <Ticket size={16} /> Vé của bạn
+                        <Ticket size={16} /> {t("nav.yourTickets")}
                       </a>
                       <a
                         href="/change-password"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
                       >
-                        <KeyRound size={16} /> Đổi mật khẩu
+                        <KeyRound size={16} /> {t("nav.changePassword")}
                       </a>
                       <a
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
                         onClick={requestLogout}
                       >
-                        <LogOut size={16} /> Đăng xuất
+                        <LogOut size={16} /> {t("nav.logout")}
                       </a>
                     </div>
                   )}
@@ -406,14 +408,14 @@ function Navbar() {
                     style={{ display: user ? "none" : undefined }}
                     className="fpt-navbar__dropdown-link"
                   >
-                    Đăng nhập
+                    {t("nav.login")}
                   </a>
                   <a
                     href="/register"
                     style={{ display: user ? "none" : undefined }}
                     className="fpt-navbar__dropdown-link"
                   >
-                    Đăng ký
+                    {t("nav.register")}
                   </a>
                   {/* <a
                     href="/forgot-password"
@@ -429,7 +431,7 @@ function Navbar() {
             <button
               className="fpt-navbar__mobile-toggle"
               onClick={handleDrawerToggle}
-              aria-label="Toggle mobile menu"
+              aria-label={t("nav.mobileMenu")}
             >
               ☰
             </button>
@@ -459,7 +461,7 @@ function Navbar() {
           </div>
           <div className="fpt-navbar__mobile-nav">
             {navigationItems.map((item) => (
-              <div key={item.label} className="fpt-navbar__mobile-group">
+              <div key={item.labelKey} className="fpt-navbar__mobile-group">
                 <a
                   href={item.href}
                   className="fpt-navbar__mobile-link"
@@ -471,13 +473,13 @@ function Navbar() {
                     handleDrawerToggle();
                   }}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </a>
                 {item.children && (
                   <div className="fpt-navbar__mobile-sub">
                     {item.children.map((child) => (
                       <a
-                        key={child.label}
+                        key={child.labelKey}
                         href={child.href}
                         className="fpt-navbar__mobile-sublink"
                         onClick={(e) => {
@@ -488,7 +490,7 @@ function Navbar() {
                           handleDrawerToggle();
                         }}
                       >
-                        {child.label}
+                        {t(child.labelKey)}
                       </a>
                     ))}
                   </div>

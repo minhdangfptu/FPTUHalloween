@@ -1,7 +1,7 @@
 /* Navbar Styles - FPT Halloween Website */
 .fpt-navbar {
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: var(--color-surface);
+  border-bottom: none;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -40,7 +40,7 @@
 }
 
 .fpt-navbar__nav-link {
-  color: #333;
+  color: var(--color-text);
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
@@ -53,12 +53,12 @@
 }
 
 .fpt-navbar__nav-link:hover {
-  color: #ce0000;
+  color: var(--color-button);
   background-color: transparent;
 }
 
 .fpt-navbar__nav-link.active {
-  color: #e60000 !important;
+  color: var(--color-button) !important;
   font-weight: bold;
 }
 
@@ -74,7 +74,7 @@
 .fpt-navbar__search-btn {
   background: none;
   border: none;
-  color: #333;
+  color: var(--color-icon);
   width: 40px;
   height: 40px;
   padding: 0;
@@ -102,7 +102,7 @@
 }
 
 .fpt-navbar__search-btn:hover {
-  color: #ce0000;
+  color: var(--color-button);
   background-color: rgba(255, 0, 0, 0.1);
 }
 
@@ -110,7 +110,7 @@
   display: none;
   background: none;
   border: none;
-  color: #333;
+  color: var(--color-icon);
   font-size: 20px;
   cursor: pointer;
   padding: 8px;
@@ -123,7 +123,7 @@
 }
 
 .fpt-navbar__mobile-toggle:hover {
-  color: #ce0000;
+  color: var(--color-button);
   background-color: rgba(255, 0, 0, 0.1);
 }
 
@@ -148,7 +148,7 @@
 
 /* Nội dung drawer hiệu ứng trượt */
 .fpt-navbar__mobile-content {
-  background: #fff;
+  background: var(--color-surface);
   width: 80vw;
   max-width: 350px;
   height: 100vh;
@@ -252,8 +252,8 @@
   top: 100%;
   left: 0;
   min-width: 220px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-dropdown-border);
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -274,7 +274,7 @@
   display: block;
   padding: 10px 12px;
   border-radius: 6px;
-  color: #111;
+  color: var(--color-text);
   text-decoration: none;
   white-space: nowrap;
 }
@@ -288,9 +288,9 @@
 
 .fpt-navbar__account-greeting {
   padding: 10px 12px;
-  color: #555;
+  color: var(--color-muted-text);
   font-size: 14px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-dropdown-border);
 }
 
 .fpt-navbar__logout-button {
@@ -303,11 +303,11 @@
 }
 
 .fpt-navbar__dropdown-link:hover {
-  background: #f6f7f9;
+  background: var(--color-dropdown-hover);
 }
 
 .fpt-navbar__dropdown-link.active {
-  color: #e60000 !important;
+  color: var(--color-button) !important;
   background-color: rgba(230, 0, 0, 0.1);
 }
 
@@ -387,8 +387,8 @@
   top: 100%;
   right: 0;
   min-width: 200px;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-surface);
+  border: 1px solid var(--color-dropdown-border);
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);

@@ -1,0 +1,10 @@
+{
+  "date": "2026-08-02",
+  "fontStack": "Roboto + existing SVN-MidnightMinutes display face",
+  "palette": "existing CSS custom properties plus page-scoped OKLCH tokens",
+  "motion": "framer-motion installed; page uses no new motion interaction",
+  "spacing": "existing project spacing with rem/clamp values",
+  "framework": "React + Vite + SCSS",
+  "preserved": ["existing app chrome", "existing assets", "existing route tree"],
+  "introduced": "Rainbow directory / botanical carnival visual language"
+}

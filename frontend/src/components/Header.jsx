@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import { Circle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import hotNewsAPI from "../apis/hotNewsAPI";
 import { ScrollBasedVelocity } from "./ui/scroll-based-velocity";
+import useTheme from "../hooks/use-theme";
+import { useTranslation } from "react-i18next";
 
 const HOT_NEWS_ERROR_FALLBACK =
   "Chào mừng bạn đến với FPTU Halloween! Hãy chuẩn bị sẵn sàng tinh thần để bước vào đêm hội kinh hoàng và bùng nổ nhất năm!";
@@ -32,8 +31,11 @@ const renderTickerContent = (items) => (
 
 function Header() {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  const { i18n, t } = useTranslation();
   const [activeHotNews, setActiveHotNews] = useState([]);
   const [hotNewsState, setHotNewsState] = useState("loading");
+  const language = i18n.language === "en" ? "en" : "vi";
 
   useEffect(() => {
     let isMounted = true;
@@ -56,7 +58,7 @@ function Header() {
   }, []);
 
   const tickerItems = hotNewsState === "error"
-    ? [{ _id: "error", content: HOT_NEWS_ERROR_FALLBACK }]
+    ? [{ _id: "error", content: t("header.tickerFallback", { defaultValue: HOT_NEWS_ERROR_FALLBACK }) }]
     : hotNewsState === "ready"
       ? activeHotNews
       : [];
@@ -67,7 +69,7 @@ function Header() {
         <div className="fpt-header__content">
           <div
             className="fpt-header__ticker"
-            aria-label="Thông báo sự kiện"
+            aria-label={t("header.newsLabel")}
             aria-live="polite"
           >
             {tickerItems.length > 0 && (
@@ -83,44 +85,72 @@ function Header() {
           <div className="fpt-header__actions">
             <div className="fpt-header__social">
               <button
-                onClick={() =>
-                  window.open(
-                    "https://www.facebook.com/fptuhalloween",
-                    "_blank",
-                  )
-                }
-                className="fpt-header__social-btn fpt-header__social-btn--facebook"
+                type="button"
+                onClick={() => i18n.changeLanguage(language === "vi" ? "en" : "vi")}
+                className="fpt-header__social-btn fpt-header__social-btn--language"
+                aria-label={language === "vi" ? "English" : "Tiếng Việt"}
+                title={language === "vi" ? "English" : "Tiếng Việt"}
               >
-                <FacebookIcon sx={{ color: "white" }} />
+                <svg
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="#ffffff"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M3 12h18" />
+                  <path d="M12 3c2.5 2.5 3.8 5.5 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z" />
+                </svg>
               </button>
               <button
-                onClick={() =>
-                  window.open(
-                    "https://www.facebook.com/fuboardgameclub",
-                    "_blank",
-                  )
-                }
-                className="fpt-header__social-btn fpt-header__social-btn--tiktok"
+                type="button"
+                onClick={toggleTheme}
+                className="fpt-header__social-btn fpt-header__social-btn--theme"
+                aria-label={theme === "light" ? t("header.darkMode") : t("header.lightMode")}
+                title={theme === "light" ? t("header.darkMode") : t("header.lightMode")}
               >
-                <InstagramIcon sx={{ color: "white" }} />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    "https://www.tiktok.com/@fptu.halloween2025",
-                    "_blank",
-                  )
-                }
-                className="fpt-header__social-btn fpt-header__social-btn--youtube"
-              >
-                <YouTubeIcon sx={{ color: "white" }} />
+                {theme === "light" ? (
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.7 6.7 0 0 0 21 12.8Z" />
+                  </svg>
+                ) : (
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                  </svg>
+                )}
               </button>
             </div>
             <button
               onClick={() => navigate("/tickets")}
               className="fpt-header__cta-btn"
             >
-              MUA VÉ NGAY
+              {t("header.buyTicket")}
             </button>
           </div>
         </div>
