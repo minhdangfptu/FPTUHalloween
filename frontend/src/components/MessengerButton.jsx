@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { HelpCircle, X } from "lucide-react";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./MessengerButton.scss";
 import logo from "../assets/avatar.jpg"; // Thay đường dẫn này bằng đường dẫn thực tế đến logo của dự án
 export default function MessengerButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="messenger-wrapper">
@@ -18,15 +20,15 @@ export default function MessengerButton() {
               <img src={logo} alt="FPTUHalloween" className="page-avatar" />
               <div className="page-details">
                 <h4>FPTUHalloween</h4>
-                <p>Thường trả lời ngay lập tức</p>
+                <p>{t("components.messengerStatus")}</p>
               </div>
             </div>
           </div>
 
           <div className="popup-body">
             <div className="chat-bubble">
-              Xin chào! <br />
-              FPTUHalloween có thể giúp gì cho bạn hôm nay?
+              {t("components.messengerGreeting")} <br />
+              {t("components.messengerHelp")}
             </div>
           </div>
 
@@ -38,7 +40,7 @@ export default function MessengerButton() {
               className="start-chat-btn"
             >
               <FaFacebookMessenger className="btn-icon" aria-hidden="true" />
-              Chat trên Messenger
+              {t("components.messengerChat")}
             </a>
           </div>
         </div>
@@ -49,7 +51,7 @@ export default function MessengerButton() {
         <button
           className="messenger-fab"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Mở khung chat"
+          aria-label={t("components.openChat")}
         >
           {isOpen ? (
             <X size={24} aria-hidden="true" />
@@ -61,8 +63,8 @@ export default function MessengerButton() {
         <Link
           className="faq-fab"
           to="/faq"
-          aria-label="Mở trang câu hỏi thường gặp"
-          title="Câu hỏi thường gặp"
+          aria-label={t("components.openFaq")}
+          title={t("components.faq")}
         >
           <HelpCircle size={28} aria-hidden="true" />
         </Link>

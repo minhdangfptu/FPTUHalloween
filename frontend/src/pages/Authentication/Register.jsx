@@ -12,6 +12,7 @@ import {
   translateSuccess,
 } from "../../utils/translateResponse";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -30,6 +31,8 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const auth = (key, options) => t(`auth.register.${key}`, options);
 
   useEffect(() => {
     const initializeGoogle = () => {
@@ -71,7 +74,7 @@ function Register() {
         toast.error(translateError(new Error("Unable to login with Google.")));
         return;
       }
-      const loadingToast = toast.loading("Đang đăng nhập với Google...");
+      const loadingToast = toast.loading(auth("googleLoading"));
       try {
         await authAPI.googleLogin({ accessToken });
         window.dispatchEvent(new CustomEvent("auth:login"));
@@ -106,37 +109,37 @@ function Register() {
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = "Email là bắt buộc";
+      newErrors.email = auth("required", { field: "Email" });
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email không hợp lệ";
+      newErrors.email = auth("invalid", { field: "Email" });
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = "Mật khẩu là bắt buộc";
+      newErrors.password = auth("required", { field: auth("passwordPlaceholder") });
     } else if (formData.password.length < 6) {
-      newErrors.password = "Mật khẩu phải có ít nhất 6 ký tự";
+      newErrors.password = auth("minPassword");
     }
 
     // Confirm password validation
     if (!confirmPassword) {
-      newErrors.confirmPassword = "Xác nhận mật khẩu là bắt buộc";
+      newErrors.confirmPassword = auth("required", { field: auth("confirmPassword") });
     } else if (formData.password !== confirmPassword) {
-      newErrors.confirmPassword = "Mật khẩu không khớp";
+      newErrors.confirmPassword = auth("passwordMismatch");
     }
 
     // Full name validation
     if (!formData.full_name) {
-      newErrors.full_name = "Họ tên là bắt buộc";
+      newErrors.full_name = auth("required", { field: auth("fullName") });
     } else if (formData.full_name.length < 2) {
-      newErrors.full_name = "Họ tên phải có ít nhất 2 ký tự";
+      newErrors.full_name = auth("minName");
     }
 
     // Phone number validation
     if (!formData.phone_number) {
-      newErrors.phone_number = "Số điện thoại là bắt buộc";
+      newErrors.phone_number = auth("required", { field: auth("phone") });
     } else if (!/^[0-9+\-\s()]+$/.test(formData.phone_number)) {
-      newErrors.phone_number = "Số điện thoại không hợp lệ";
+      newErrors.phone_number = auth("invalid", { field: auth("phone") });
     }
 
     setErrors(newErrors);
@@ -152,7 +155,7 @@ function Register() {
 
     setLoading(true);
     setServerMessage("");
-    const loadingToast = toast.loading("Đang đăng ký...");
+    const loadingToast = toast.loading(auth("registering"));
 
     try {
       await authAPI.register({
@@ -166,13 +169,13 @@ function Register() {
         translateSuccess("Register successfully. Please confirm OTP."),
         { id: loadingToast },
       );
-      setServerMessage("Đăng ký thành công! Đang chuyển về trang đăng nhập...");
+      setServerMessage(auth("success"));
       setTimeout(() => navigate("/login"), 1200);
     } catch (error) {
       const message =
         error?.response?.data?.message ||
         error?.message ||
-        "Có lỗi xảy ra khi đăng ký";
+        auth("error");
       setServerMessage(message);
       toast.error(message, { id: loadingToast });
     } finally {
@@ -187,9 +190,9 @@ function Register() {
         <div className="fptu-halloween-register-top">
           <div className="fptu-halloween-register-box">
             {/* <img className="fptu-halloween-register-logo" src={loginImg} alt="FPTU Halloween" /> */}
-            <h1 className="auth-title">Đăng ký</h1>
+            <h1 className="auth-title">{auth("title")}</h1>
             <p className="auth-subtitle">
-              Tạo tài khoản để tham gia FPTU Halloween
+              {auth("subtitle")}
             </p>
             <div className="fptu-halloween-register-panel">
               <form onSubmit={onSubmit}>
@@ -197,14 +200,14 @@ function Register() {
                   className="fptu-halloween-register-form-label"
                   htmlFor="full_name"
                 >
-                  Họ và tên
+                  {auth("fullName")}
                 </label>
                 <input
                   id="full_name"
                   name="full_name"
                   className="fptu-halloween-register-form-input"
                   type="text"
-                  placeholder="Nhập họ và tên"
+                  placeholder={auth("fullNamePlaceholder")}
                   value={formData.full_name}
                   onChange={handleInputChange}
                   required
@@ -227,7 +230,7 @@ function Register() {
                   name="email"
                   className="fptu-halloween-register-form-input"
                   type="email"
-                  placeholder="Nhập email"
+                  placeholder={auth("emailPlaceholder")}
                   value={formData.email}
                   onChange={handleInputChange}
                   required
@@ -243,14 +246,14 @@ function Register() {
                   className="fptu-halloween-register-form-label"
                   htmlFor="phone_number"
                 >
-                  Số điện thoại
+                  {auth("phone")}
                 </label>
                 <input
                   id="phone_number"
                   name="phone_number"
                   className="fptu-halloween-register-form-input"
                   type="tel"
-                  placeholder="Nhập số điện thoại"
+                  placeholder={auth("phonePlaceholder")}
                   value={formData.phone_number}
                   onChange={handleInputChange}
                   required
@@ -266,7 +269,7 @@ function Register() {
                   className="fptu-halloween-register-form-label"
                   htmlFor="password"
                 >
-                  Mật khẩu
+                  {auth("passwordPlaceholder")}
                 </label>
                 <div className="password-field">
                   <input
@@ -274,7 +277,7 @@ function Register() {
                     name="password"
                     className="fptu-halloween-register-form-input"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Nhập mật khẩu"
+                    placeholder={auth("passwordPlaceholder")}
                     value={formData.password}
                     onChange={handleInputChange}
                     required
@@ -283,7 +286,7 @@ function Register() {
                     type="button"
                     className="password-toggle"
                     onClick={() => setShowPassword((visible) => !visible)}
-                    aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                    aria-label={showPassword ? auth("hide") : auth("show")}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -299,7 +302,7 @@ function Register() {
                   className="fptu-halloween-register-form-label"
                   htmlFor="confirmPassword"
                 >
-                  Xác nhận mật khẩu
+                  {auth("confirmPassword")}
                 </label>
                 <div className="password-field">
                   <input
@@ -307,7 +310,7 @@ function Register() {
                     name="confirmPassword"
                     className="fptu-halloween-register-form-input"
                     type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Nhập lại mật khẩu"
+                    placeholder={auth("confirmPlaceholder")}
                     value={confirmPassword}
                     onChange={(e) => {
                       setConfirmPassword(e.target.value);
@@ -327,7 +330,7 @@ function Register() {
                       setShowConfirmPassword((visible) => !visible)
                     }
                     aria-label={
-                      showConfirmPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"
+                      showConfirmPassword ? auth("hide") : auth("show")
                     }
                   >
                     {showConfirmPassword ? (
@@ -362,7 +365,7 @@ function Register() {
                   type="submit"
                   disabled={loading}
                 >
-                  {loading ? "Đang đăng ký..." : "Đăng ký"}
+                  {loading ? auth("loading") : auth("submit")}
                 </button>
               </form>
             </div>
@@ -371,7 +374,7 @@ function Register() {
               style={{ marginTop: 12 }}
               className="fptu-halloween-register-text-muted"
             >
-              Hoặc
+              {auth("or")}
             </div>
             <div style={{ marginTop: 12 }}>
               <button
@@ -382,7 +385,7 @@ function Register() {
                 <span aria-hidden className="google-swatch">
                   <GoogleIcon />
                 </span>
-                <span style={{ color: "black" }}>Tiếp tục với Google</span>
+                <span style={{ color: "black" }}>{auth("google")}</span>
               </button>
             </div>
 
@@ -390,7 +393,7 @@ function Register() {
               style={{ marginTop: 16 }}
               className="fptu-halloween-register-text-muted"
             >
-              Đã có tài khoản?{" "}
+              {auth("hasAccount")} {" "}
               <a
                 href="/login"
                 style={{
@@ -399,7 +402,7 @@ function Register() {
                   fontWeight: 600,
                 }}
               >
-                Đăng nhập
+                {auth("login")}
               </a>
             </div>
           </div>

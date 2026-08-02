@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowDown, CalendarDays, Ghost } from "lucide-react";
 import cover from "../../assets/cover-01.png";
+import { useTranslation } from "react-i18next";
 import event2020 from "../../assets/hlw/2020.jpg";
 import event2022 from "../../assets/hlw/2022.jpg";
 import event2023 from "../../assets/hlw/2023.jpg";
@@ -97,6 +98,8 @@ const handleSectionScroll = (event) => {
 };
 
 export default function IntroduceHLW26() {
+  const { t } = useTranslation();
+  const page = (key) => t(`eventPages.hlwIntro.${key}`);
   return (
     <main className="introduce-hlw26">
       <section
@@ -105,19 +108,19 @@ export default function IntroduceHLW26() {
       >
         <div className="introduce-hlw26__hero-overlay" />
         <div className="introduce-hlw26__hero-content">
-          <p className="introduce-hlw26__eyebrow">FPTU HALLOWEEN · 2026</p>
+          <p className="introduce-hlw26__eyebrow">{page("kicker")}</p>
           <h1>
-            Giới thiệu một
+            {page("title")}
             <br />
-            <span>đêm hội.</span>
+            <span>{page("titleAfter")}</span>
           </h1>
-          <p>Nơi hòa quyện niềm vui và nỗi sợ</p>
+          <p>{page("subtitle")}</p>
           <a
             href="#overview"
             className="introduce-hlw26__scroll"
             onClick={handleSectionScroll}
           >
-            Khám phá <ArrowDown size={16} />
+            {page("explore")} <ArrowDown size={16} />
           </a>
         </div>
         <div className="introduce-hlw26__year" aria-hidden="true">
@@ -131,13 +134,13 @@ export default function IntroduceHLW26() {
         aria-labelledby="overview-title"
       >
         <div className="introduce-hlw26__section-mark">
-          <Ghost size={18} /> Tổng quan
+          <Ghost size={18} /> {page("overview")}
         </div>
         <div>
           <h2 id="overview-title">
-            Một sự kiện
+            {page("overviewTitle")}
             <br />
-            <span>bùng nổ nhất nhì xứ FU.</span>
+            <span>{page("overviewTitleAfter")}</span>
           </h2>
           <p>
             Lễ hội Halloween tại Đại học FPT là sự kiện thường niên bùng nổ –
@@ -154,7 +157,7 @@ export default function IntroduceHLW26() {
 
       <section
         className="introduce-hlw26__facts"
-        aria-label="Thông tin Halloween FPTU"
+        aria-label={page("factsLabel")}
       >
         {sections.map((section) => (
           <article className="introduce-hlw26__fact" key={section.label}>
@@ -171,11 +174,11 @@ export default function IntroduceHLW26() {
       >
         <div className="introduce-hlw26__seasons-head">
           <div className="introduce-hlw26__section-mark">
-            <CalendarDays size={18} /> Dấu mốc
+            <CalendarDays size={18} /> {page("milestone")}
           </div>
-          <h2 id="seasons-title">Các mùa Halloween</h2>
+          <h2 id="seasons-title">{page("seasons")}</h2>
           <p>
-            Những mùa lễ hội đã tạo nên ký ức và bản sắc của Halloween FPTU.
+            {page("seasonsIntro")}
           </p>
         </div>
         <div className="introduce-hlw26__season-list">
@@ -190,15 +193,15 @@ export default function IntroduceHLW26() {
                   <img src={season.image} alt={`${season.title} thumbnail`} />
                 ) : (
                   <span className="introduce-hlw26__coming-soon">
-                    Coming soon
+                    {page("comingSoon")}
                   </span>
                 )}
               </div>
               <div>
                 <span>{season.year}</span>
                 <strong>{season.title}</strong>
-                <small>Concept · {season.concept}</small>
-                <small>Quy mô · {season.scale}</small>
+                <small>{page("concept")} · {season.concept}</small>
+                <small>{page("scale")} · {season.scale}</small>
               </div>
             </a>
           ))}

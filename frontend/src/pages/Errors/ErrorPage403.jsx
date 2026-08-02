@@ -1,14 +1,15 @@
 import ErrorPageView from "./ErrorPageView";
+import { useTranslation } from "react-i18next";
 
-const ErrorPage403 = () => (
+const ErrorPage403 = () => { const { t } = useTranslation(); return (
   <ErrorPageView
     code="403"
     eyebrow="Access / 403"
-    title="Cửa này không dành cho tài khoản của bạn."
-    description="Bạn đã đăng nhập, nhưng tài khoản hiện tại không có quyền mở đường dẫn này."
+    title={t("pages.errors.forbiddenTitle")}
+    description={t("pages.errors.forbiddenDescription")}
     statusLabel="FORBIDDEN"
     variant="forbidden"
   />
-);
+); };
 
 export default ErrorPage403;

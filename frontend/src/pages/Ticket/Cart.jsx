@@ -10,6 +10,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { CartSkeleton } from "../../components/LoadingSkeletons";
 import cartAPI from "../../apis/cartAPI";
@@ -28,6 +29,8 @@ const SELECTED_ITEMS_KEY = "fptu-halloween-selected-cart-items";
 
 const Cart = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const ticket = (key, options) => t(`ticket.${key}`, options);
   const [cart, setCart] = useState({ items: [], totalAmount: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -141,7 +144,7 @@ const Cart = () => {
       setSelectedTicketTypeIds([]);
       localStorage.removeItem(SELECTED_ITEMS_KEY);
       notifyCartUpdated({ items: [], totalAmount: 0 });
-      toast.success("Đã xóa tất cả vé khỏi giỏ hàng.");
+      toast.success(ticket("removeAll"));
     } catch (requestError) {
       toast.error(translateError(requestError));
       await loadCart();
@@ -164,7 +167,7 @@ const Cart = () => {
         <div className="ticket-cart-state">
           <p>{error}</p>
           <button type="button" onClick={loadCart}>
-            Thử lại
+            {ticket("retry")}
           </button>
         </div>
       </main>
@@ -179,15 +182,15 @@ const Cart = () => {
           type="button"
           onClick={() => navigate(-1)}
         >
-          <ArrowLeft size={17} /> Tiếp tục chọn vé
+          <ArrowLeft size={17} /> {ticket("backStore")}
         </button>
 
         <header className="ticket-cart-heading">
           <div>
-            <h1>Giỏ vé của bạn</h1>
+            <h1>{ticket("cartTitle")}</h1>
           </div>
           {cartItems.length > 0 && (
-            <span className="ticket-cart-count">{totalQuantity} vé</span>
+            <span className="ticket-cart-count">{totalQuantity} {ticket("tickets")}</span>
           )}
         </header>
 
@@ -196,33 +199,33 @@ const Cart = () => {
             <div className="ticket-cart-empty__icon">
               <ShoppingBag size={30} />
             </div>
-            <h2>Giỏ vé đang trống</h2>
-            <p>Chọn một trải nghiệm Halloween để bắt đầu hành trình của bạn.</p>
+            <h2>{ticket("cartEmpty")}</h2>
+            <p>{ticket("cartEmptyText")}</p>
             <button
               className="ticket-cart-primary"
               type="button"
               onClick={() => navigate("/tickets")}
             >
-              Xem danh sách vé
+              {ticket("ticketList")}
             </button>
           </section>
         ) : (
           <div className="ticket-cart-layout">
             <section
               className="ticket-cart-items"
-              aria-label="Các vé trong giỏ hàng"
+              aria-label={ticket("cartItemsAria")}
             >
               <div className="ticket-cart-items__top">
                 <label className="ticket-cart-select-all">
                   <input type="checkbox" checked={allItemsSelected} onChange={toggleAllItems} />
-                  <span>Chọn tất cả ({selectedItems.length}/{cartItems.length})</span>
+                  <span>{ticket("selectAll")} ({selectedItems.length}/{cartItems.length})</span>
                 </label>
                 <button
                   type="button"
                   disabled={pendingAction !== null}
                   onClick={removeAllItems}
                 >
-                  Xóa tất cả
+                  {ticket("removeAll")}
                 </button>
               </div>
               {cartItems.map((item) => {
@@ -238,7 +241,7 @@ const Cart = () => {
                         type="checkbox"
                         checked={selectedTicketTypeIds.includes(String(ticketTypeId))}
                         onChange={() => toggleItemSelection(ticketTypeId)}
-                        aria-label={`Chọn ${ticketType.ticketTypeName} để thanh toán`}
+                        aria-label={ticket("selectForPayment", { name: ticketType.ticketTypeName })}
                       />
                     </label>
                     <div
@@ -256,36 +259,35 @@ const Cart = () => {
                     <div className="ticket-cart-item__content">
                       <div className="ticket-cart-item__heading">
                         <div>
-                          <p>Trải nghiệm Halloween</p>
+                          <p>{ticket("hauntedHouse")}</p>
                           <h2>{ticketType.ticketTypeName}</h2>
                         </div>
                         <button
                           className="ticket-cart-item__remove"
                           type="button"
-                          aria-label={`Xóa ${ticketType.ticketTypeName}`}
+                          aria-label={ticket("removeTicket", { name: ticketType.ticketTypeName })}
                           disabled={isPending}
                           onClick={() => removeItem(ticketTypeId)}
                         >
                           <Trash2 size={17} />
                         </button>
                       </div>
-                      {isSoldOut ? <p className="ticket-cart-item__unavailable">Hết vé</p> : isUnavailable && <p className="ticket-cart-item__unavailable">Vé không còn được bán</p>}
+                      {isSoldOut ? <p className="ticket-cart-item__unavailable">{ticket("soldOut")}</p> : isUnavailable && <p className="ticket-cart-item__unavailable">{ticket("unavailable")}</p>}
                       <div className="ticket-cart-item__meta">
                         <span>
-                          <CalendarDays size={15} /> Ngày{" "}
-                          {ticketType.ticketTypeDate} tháng 10, 2026
+                          <CalendarDays size={15} /> {ticket("dateTime", { date: ticketType.ticketTypeDate })}
                         </span>
                         <span>
                           <Clock3 size={15} />{" "}
                           {ticketType.ticketTypeTime ||
-                            "Thời gian sẽ được cập nhật"}
+                            ticket("timeUpdating")}
                         </span>
                       </div>
                       <div className="ticket-cart-item__footer">
                         <div className="ticket-cart-quantity">
                           <button
                             type="button"
-                            aria-label="Giảm số lượng"
+                            aria-label={ticket("decrease")}
                             disabled={isPending || isUnavailable || item.quantity <= 1}
                             onClick={() =>
                               updateQuantity(item, item.quantity - 1)
@@ -296,7 +298,7 @@ const Cart = () => {
                           <output aria-live="polite">{item.quantity}</output>
                           <button
                             type="button"
-                            aria-label="Tăng số lượng"
+                            aria-label={ticket("increase")}
                             disabled={isPending || isUnavailable}
                             onClick={() =>
                               updateQuantity(item, item.quantity + 1)
@@ -314,17 +316,17 @@ const Cart = () => {
             </section>
 
             <aside className="ticket-cart-summary">
-              <p className="ticket-cart-summary__label">Tóm tắt đơn hàng</p>
+              <p className="ticket-cart-summary__label">{ticket("orderSummary")}</p>
               <div>
-                <span>Tạm tính ({selectedItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0)} vé)</span>
+                <span>{ticket("subtotalTickets", { count: selectedItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0) })}</span>
                 <strong>{formatPrice(selectedTotal)}</strong>
               </div>
               <div>
-                <span>Phí dịch vụ</span>
-                <strong>Đang cập nhật</strong>
+                <span>{ticket("serviceFee")}</span>
+                <strong>{ticket("updating")}</strong>
               </div>
               <div className="ticket-cart-summary__total">
-                <span>Tổng cộng</span>
+                <span>{ticket("total")}</span>
                 <strong>{formatPrice(selectedTotal)}</strong>
               </div>
               <button
@@ -336,13 +338,11 @@ const Cart = () => {
                   navigate("/checkout");
                 }}
               >
-                Tiếp tục thanh toán
+                {ticket("continue")}
               </button>
-              {hasSelectedUnavailableItems && <p className="ticket-cart-summary__warning">Hãy bỏ chọn hoặc xóa vé không còn được bán trước khi thanh toán.</p>}
-              {selectedItems.length === 0 && <p className="ticket-cart-summary__warning">Hãy chọn ít nhất một loại vé để thanh toán.</p>}
-              <p className="ticket-cart-summary__note">
-                Bạn sẽ được chuyển đến trang xác nhận thanh toán.
-              </p>
+              {hasSelectedUnavailableItems && <p className="ticket-cart-summary__warning">{ticket("removeUnavailableWarning")}</p>}
+              {selectedItems.length === 0 && <p className="ticket-cart-summary__warning">{ticket("selectAtLeastWarning")}</p>}
+              <p className="ticket-cart-summary__note">{ticket("checkoutNotice")}</p>
             </aside>
           </div>
         )}

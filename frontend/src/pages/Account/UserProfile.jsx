@@ -1,6 +1,7 @@
 /* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V4 */
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -50,14 +51,14 @@ const getProfileData = (response) => {
     updatedAt: data.updatedAt ?? data.update_at ?? "",
   };
 };
-const formatDate = (value) =>
+const formatDate = (value, fallback = "Chưa cập nhật", locale = "vi-VN") =>
   value
-    ? new Intl.DateTimeFormat("vi-VN", { dateStyle: "medium" }).format(
+    ? new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
         new Date(value),
       )
-    : "Chưa cập nhật";
+    : fallback;
 
-const OrderCountdown = ({ expiresAt }) => {
+const OrderCountdown = ({ expiresAt, t }) => {
   const getRemaining = () => Math.max(0, Number(expiresAt || 0) - Math.floor(Date.now() / 1000));
   const [remaining, setRemaining] = useState(getRemaining);
 
@@ -68,19 +69,21 @@ const OrderCountdown = ({ expiresAt }) => {
     return () => window.clearInterval(timer);
   }, [expiresAt]);
 
-  if (!expiresAt || remaining <= 0) return <small className="profile-order-expiry profile-order-expiry--expired">Đã hết thời gian</small>;
+  if (!expiresAt || remaining <= 0) return <small className="profile-order-expiry profile-order-expiry--expired">{t("profilePage.expired")}</small>;
   const minutes = Math.floor(remaining / 60);
   const seconds = remaining % 60;
-  return <small className="profile-order-expiry">Còn lại {minutes}:{String(seconds).padStart(2, "0")}</small>;
+  return <small className="profile-order-expiry">{t("profilePage.remaining", { time: `${minutes}:${String(seconds).padStart(2, "0")}` })}</small>;
 };
 
 export default function UserProfile() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const profileText = (key, options) => t(`profilePage.${key}`, options);
   const orderStatusLabels = {
-    Pending: "Chờ thanh toán",
-    Processing: "Đang xử lý",
-    Paid: "Đã thanh toán",
-    Cancelled: "Đã huỷ",
+    Pending: profileText("pending"),
+    Processing: profileText("processing"),
+    Paid: profileText("paid"),
+    Cancelled: profileText("cancelled"),
   };
   const handleOrderAction = (order) => {
     if (order.orderStatus === "Cancelled") return;
@@ -109,7 +112,7 @@ export default function UserProfile() {
     hasLoadedProfile.current = true;
 
     const loadProfile = async () => {
-      const loadingToast = toast.loading("Đang tải dữ liệu...");
+      const loadingToast = toast.loading(profileText("loading"));
       try {
         const [profileResponse, ticketResponse, orderResponse] =
           await Promise.all([
@@ -136,7 +139,7 @@ export default function UserProfile() {
     setDraft((current) => ({ ...current, [target.name]: target.value }));
   const handleSave = async (event) => {
     event.preventDefault();
-    const loadingToast = toast.loading("Đang cập nhật thông tin...");
+    const loadingToast = toast.loading(profileText("updateLoading"));
     try {
       const data = getProfileData(
         await authAPI.updateMe({
@@ -160,32 +163,32 @@ export default function UserProfile() {
     setDraft(profile);
     setIsEditing(false);
   };
-  const displayName = profile.fullName || "Người dùng FPTU";
-  const value = (field) => profile[field] || "Chưa cập nhật";
+  const displayName = profile.fullName || profileText("user");
+  const value = (field) => profile[field] || profileText("notUpdated");
   const visibleOrders = orderStatusFilter
     ? orders.filter((order) => order.orderStatus === orderStatusFilter)
     : orders;
   const authProviderLabel =
     profile.authProvider === "google"
-      ? "Tài khoản Google"
+      ? profileText("googleAccount")
       : profile.authProvider === "local"
-        ? "Tài khoản Email"
-        : "Chưa cập nhật";
+        ? profileText("emailAccount")
+        : profileText("notUpdated");
   const details = [
-    ["fullName", "Họ và tên"],
-    ["email", "Email"],
-    ["phone", "Số điện thoại"],
-    ["createdAt", "Ngày tham gia"],
-    ["department", "Ban Sự kiện"],
-    ["department_position", "Chức vụ"],
-    ["authProvider", "Phương thức đăng nhập"],
+    ["fullName", "fullName"],
+    ["email", "email"],
+    ["phone", "phone"],
+    ["createdAt", "joined"],
+    ["department", "department"],
+    ["department_position", "position"],
+    ["authProvider", "authMethod"],
   ];
 
   return (
     <main className="user-profile-page">
       <div className="profile-toolbar">
         <div className="profile-tab">
-          <UserRound size={18} /> Chi tiết Người dùng
+          <UserRound size={18} /> {profileText("detailsTab")}
         </div>
         <div className="profile-toolbar-actions">
           <button
@@ -194,14 +197,14 @@ export default function UserProfile() {
             onClick={() => setIsEditing((current) => !current)}
           >
             {isEditing ? <X size={17} /> : <Edit3 size={17} />}
-            {isEditing ? "Hủy chỉnh sửa" : "Chỉnh sửa"}
+            {isEditing ? profileText("cancelEdit") : profileText("edit")}
           </button>
           <button
             type="button"
             className="profile-button profile-button--delete"
-            onClick={() => toast.error("Xóa tài khoản chưa được hỗ trợ.")}
+            onClick={() => toast.error(profileText("deleteUnavailable"))}
           >
-            <Trash2 size={17} /> Xóa tài khoản
+            <Trash2 size={17} /> {profileText("delete")}
           </button>
         </div>
       </div>
@@ -224,7 +227,7 @@ export default function UserProfile() {
               <div className="profile-badges">
                 <span className="profile-badge profile-badge--active">
                   <i />{" "}
-                  {profile.isDisabled ? "Đã vô hiệu hóa" : "Đang hoạt động"}
+                  {profile.isDisabled ? profileText("disabled") : profileText("active")}
                 </span>
                 <span className="profile-badge profile-badge--role">
                   <Info size={15} /> {value("roleId")}
@@ -232,7 +235,7 @@ export default function UserProfile() {
               </div>
               <div className="profile-summary-meta">
                 <div>
-                  <span>Số điện thoại</span>
+                  <span>{profileText("phone")}</span>
                   <strong>{value("phone")}</strong>
                 </div>
                 <div>
@@ -244,13 +247,13 @@ export default function UserProfile() {
             <section className="profile-card profile-details">
               <div className="section-title">
                 <Info size={23} />
-                <h2>Thông tin chi tiết</h2>
+                <h2>{profileText("details")}</h2>
               </div>
               <form id="profile-form" onSubmit={handleSave}>
                 <div className="details-grid">
-                  {details.map(([field, label]) => (
+                  {details.map(([field, labelKey]) => (
                     <div className="detail-item" key={field}>
-                      <span>{label}</span>
+                      <span>{profileText(labelKey)}</span>
                       {isEditing && ["fullName", "phone"].includes(field) ? (
                         <input
                           name={field}
@@ -260,7 +263,7 @@ export default function UserProfile() {
                       ) : (
                         <strong>
                           {field === "createdAt"
-                            ? formatDate(profile[field])
+                            ? formatDate(profile[field], profileText("notUpdated"), i18n.language.startsWith("en") ? "en-US" : "vi-VN")
                             : field === "authProvider"
                               ? authProviderLabel
                               : value(field)}
@@ -269,14 +272,14 @@ export default function UserProfile() {
                     </div>
                   ))}
                   <div className="detail-item">
-                    <span>Trạng thái xác minh</span>
+                    <span>{profileText("verificationStatus")}</span>
                     <strong className="verified">
                       {profile.isVerified ? (
                         <>
-                          <Check size={16} /> Đã xác minh
+                          <Check size={16} /> {profileText("verified")}
                         </>
                       ) : (
-                        "Chưa xác minh"
+                        profileText("unverified")
                       )}
                     </strong>
                   </div>
@@ -286,7 +289,7 @@ export default function UserProfile() {
                     className="profile-button profile-button--save"
                     type="submit"
                   >
-                    <Save size={17} /> Lưu thay đổi
+                    <Save size={17} /> {profileText("save")}
                   </button>
                 )}
               </form>
@@ -298,31 +301,31 @@ export default function UserProfile() {
                 <Package size={22} />
               </div>
               <div>
-                <h2>Đơn hàng của bạn</h2>
-                <p>Theo dõi và xem lại các đơn hàng đã đặt.</p>
+                <h2>{profileText("orders")}</h2>
+                <p>{profileText("ordersIntro")}</p>
               </div>
               <label className="orders-status-filter">
-                <span>Lọc trạng thái</span>
-                <select value={orderStatusFilter} onChange={(event) => setOrderStatusFilter(event.target.value)} aria-label="Lọc trạng thái đơn hàng">
-                  <option value="">Tất cả</option>
-                  <option value="Pending">Chờ thanh toán</option>
-                  <option value="Processing">Đang xử lý</option>
-                  <option value="Paid">Đã thanh toán</option>
-                  <option value="Cancelled">Đã hủy</option>
+                <span>{profileText("filterStatus")}</span>
+                <select value={orderStatusFilter} onChange={(event) => setOrderStatusFilter(event.target.value)} aria-label={profileText("filterOrderStatus")}>
+                  <option value="">{profileText("all")}</option>
+                  <option value="Pending">{profileText("pending")}</option>
+                  <option value="Processing">{profileText("processing")}</option>
+                  <option value="Paid">{profileText("paid")}</option>
+                  <option value="Cancelled">{profileText("cancelled")}</option>
                 </select>
               </label>
             </header>
             <div className="orders-table">
               <div className="orders-row orders-row--header">
-                <span>Mã đơn</span>
-                <span>Ngày đặt</span>
-                <span>Sản phẩm</span>
-                <span>Tổng tiền</span>
-                <span>Trạng thái</span>
-                <span>Thao tác</span>
+                <span>{profileText("orderCode")}</span>
+                <span>{profileText("orderDate")}</span>
+                <span>{profileText("product")}</span>
+                <span>{profileText("total")}</span>
+                <span>{profileText("status")}</span>
+                <span>{profileText("action")}</span>
               </div>
               {visibleOrders.length === 0 ? (
-                <div className="orders-empty">Bạn chưa có đơn hàng nào.</div>
+                <div className="orders-empty">{profileText("noOrders")}</div>
               ) : (
                 <div className="profile-order-list">
                   {visibleOrders.map((order) => (
@@ -337,10 +340,10 @@ export default function UserProfile() {
                         #{String(order.payosOrderId || order._id).slice(-8)}
                       </span>
                       <span style={{ fontSize: "14px" }}>
-                        {formatDate(order.createdAt)}
+                        {formatDate(order.createdAt, profileText("notUpdated"), i18n.language.startsWith("en") ? "en-US" : "vi-VN")}
                       </span>
                       <span style={{ fontSize: "14px" }}>
-                        {order.itemCount || 0} vé
+                        {profileText("tickets", { count: order.itemCount || 0 })}
                       </span>
                       <strong
                         className={
@@ -359,8 +362,8 @@ export default function UserProfile() {
                         className={`profile-order-status profile-order-status--${String(order.orderStatus).toLowerCase()}`}
                       >
                         {orderStatusLabels[order.orderStatus] ||
-                          "Chưa xác định"}
-                        {order.orderStatus === "Pending" && <OrderCountdown expiresAt={order.paymentExpiresAt} />}
+                          profileText("unknown")}
+                        {order.orderStatus === "Pending" && <OrderCountdown expiresAt={order.paymentExpiresAt} t={t} />}
                       </span>
                       <span
                         className={`profile-order-view ${
@@ -370,8 +373,8 @@ export default function UserProfile() {
                         }`}
                       >
                         {order.orderStatus === "Pending"
-                          ? "Tiếp tục thanh toán"
-                          : "Xem vé"}
+                          ? profileText("continuePayment")
+                          : profileText("viewTicket")}
                       </span>
                     </button>
                   ))}
@@ -382,11 +385,11 @@ export default function UserProfile() {
           <section className="profile-card profile-tickets-card">
             <div className="section-title">
               <Package size={23} />
-              <h2>Vé điện tử của bạn</h2>
+              <h2>{profileText("digitalTickets")}</h2>
             </div>
             {tickets.length === 0 ? (
               <p className="profile-tickets-empty">
-                Bạn chưa có vé điện tử nào.
+                {profileText("noTickets")}
               </p>
             ) : (
               <div className="profile-ticket-list">
@@ -395,15 +398,15 @@ export default function UserProfile() {
                     <div>
                       <strong>
                         {ticket.ticketTypeId?.ticketTypeName ||
-                          "Vé FPTU Halloween"}
+                          profileText("ticketFallback")}
                       </strong>
-                      <span>Trạng thái: {ticket.ticketStatus}</span>
+                      <span>{profileText("ticketStatus", { status: ticket.ticketStatus })}</span>
                     </div>
                     {ticket.qrCodeData ? (
                       <button type="button" className="profile-ticket-qr-button" onClick={() => setSelectedQrCode(ticket.qrCodeData)}>
-                        Xem mã QR
+                        {profileText("viewQr")}
                       </button>
-                    ) : <span>Chưa phát hành mã QR</span>}
+                    ) : <span>{profileText("qrPending")}</span>}
                   </article>
                 ))}
               </div>

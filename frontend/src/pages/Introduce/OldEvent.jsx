@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import "./OldEvent.css";
 import { ArrowDown, CalendarDays, X } from "lucide-react";
 import cover from "../../assets/cover-01.png";
@@ -202,10 +203,21 @@ const getDescriptionBlocks = (description = "") =>
     .filter(Boolean);
 
 export default function OldEvent() {
+  const { t } = useTranslation();
+  const archiveText = (key, options) => t(`archive.${key}`, options);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const dialogRef = useRef(null);
 
-  const openEvent = (event) => setSelectedEvent(event);
+  const localizeEvent = (event) => ({
+    ...event,
+    status: archiveText(`event${event.id}Status`, { defaultValue: event.status }),
+    date: archiveText(`event${event.id}Date`, { defaultValue: event.date }),
+    description: archiveText(`event${event.id}Description`, { defaultValue: event.description }),
+    location: archiveText(`event${event.id}Location`, { defaultValue: event.location }),
+    scale: archiveText(`event${event.id}Scale`, { defaultValue: event.scale }),
+  });
+  const localizedEvents = archivedEvents.map(localizeEvent);
+  const openEvent = (event) => setSelectedEvent(localizeEvent(event));
   const closeEvent = () => setSelectedEvent(null);
   const handleCardKeyDown = (event, keyEvent) => {
     if (keyEvent.key !== "Enter" && keyEvent.key !== " ") return;
@@ -216,7 +228,7 @@ export default function OldEvent() {
 
   useEffect(() => {
     const eventYear = window.location.hash.replace("#halloween-", "");
-    const hashEvent = archivedEvents.find((event) =>
+    const hashEvent = localizedEvents.find((event) =>
       event.title.endsWith(eventYear),
     );
 
@@ -244,21 +256,21 @@ export default function OldEvent() {
       >
         <div className="old-event-hero-overlay" />
         <div className="old-event-hero-content">
-          <p className="old-event-eyebrow">FPTU HALLOWEEN · ARCHIVE</p>
+          <p className="old-event-eyebrow">{archiveText("eyebrow")}</p>
           <h1>
-            Những mùa lễ hội,
+            {archiveText("heroTitle")}
             <br />
-            <span>những thế giới khác.</span>
+            <span>{archiveText("heroTitleAfter")}</span>
           </h1>
           <p className="old-event-hero-lede">
-            Một kho lưu trữ những concept đã tạo nên ký ức Halloween FPTU.
+            {archiveText("heroLede")}
           </p>
           <a
             className="old-event-scroll-link"
             href="#archive"
             onClick={handleSectionScroll}
           >
-            Xem kho lưu trữ <ArrowDown size={16} aria-hidden="true" />
+            {archiveText("viewArchive")} <ArrowDown size={16} aria-hidden="true" />
           </a>
         </div>
         <div className="old-event-hero-year" aria-hidden="true">
@@ -272,21 +284,20 @@ export default function OldEvent() {
         aria-labelledby="old-event-archive-title"
       >
         <div className="old-event-section-mark">
-          <CalendarDays size={18} aria-hidden="true" /> Dấu mốc
+          <CalendarDays size={18} aria-hidden="true" /> {archiveText("milestone")}
         </div>
         <div className="old-event-archive-main">
           <h2 id="old-event-archive-title">
-            Từ khu rừng ma
+            {archiveText("archiveTitle")}
             <br />
-            <span>đến thị trấn điều ước.</span>
+            <span>{archiveText("archiveTitleAfter")}</span>
           </h2>
           <p className="old-event-archive-lede">
-            Chọn một mùa Halloween để đọc lại concept và câu chuyện phía sau sự
-            kiện.
+            {archiveText("archiveLede")}
           </p>
 
           <div className="old-event-grid" aria-live="polite">
-            {archivedEvents.map((event) => (
+            {localizedEvents.map((event) => (
               <article
                 className="old-event-card"
                 key={event.id}
@@ -294,7 +305,7 @@ export default function OldEvent() {
                 tabIndex={0}
                 aria-haspopup="dialog"
                 aria-expanded={selectedEvent?.id === event.id}
-                aria-label={`Đọc concept ${event.title}`}
+                aria-label={archiveText("readConcept", { title: event.title })}
                 onClick={() => openEvent(event)}
                 onKeyDown={(keyEvent) => handleCardKeyDown(event, keyEvent)}
               >
@@ -307,7 +318,7 @@ export default function OldEvent() {
                       loading="lazy"
                     />
                   ) : (
-                    <span className="old-event-coming-soon">Coming soon</span>
+                    <span className="old-event-coming-soon">{archiveText("comingSoon")}</span>
                   )}
                   <span className="old-event-card-year">
                     {event.title.replace("FPTU Halloween ", "")}
@@ -324,22 +335,22 @@ export default function OldEvent() {
                   <h3>{event.title}</h3>
                   <div
                     className="old-event-card-details"
-                    aria-label={`Thông tin ${event.title}`}
+                    aria-label={archiveText("eventInfo", { title: event.title })}
                   >
                     <div className="old-event-card-detail">
-                      <span>Năm</span>
+                      <span>{archiveText("year")}</span>
                       <strong>{event.year}</strong>
                     </div>
                     <div className="old-event-card-detail">
-                      <span>Thời gian</span>
+                      <span>{archiveText("time")}</span>
                       <strong>{event.time}</strong>
                     </div>
                     <div className="old-event-card-detail old-event-card-detail--wide">
-                      <span>Địa điểm</span>
+                      <span>{archiveText("location")}</span>
                       <strong>{event.location}</strong>
                     </div>
                     <div className="old-event-card-detail">
-                      <span>Quy mô</span>
+                      <span>{archiveText("scale")}</span>
                       <strong>{event.scale}</strong>
                     </div>
                     <div className="old-event-card-detail">
@@ -350,10 +361,10 @@ export default function OldEvent() {
                   <span className="old-event-card-link">
                     {event.image ? (
                       <>
-                        Đọc concept <ArrowDown size={16} aria-hidden="true" />
+                        {archiveText("readConceptShort")} <ArrowDown size={16} aria-hidden="true" />
                       </>
                     ) : (
-                      "Coming soon"
+                      archiveText("comingSoon")
                     )}
                   </span>
                 </div>
@@ -381,17 +392,17 @@ export default function OldEvent() {
             <div className="old-event-dialog-header">
               <div>
                 <p className="old-event-dialog-kicker">
-                  Concept archive · {selectedEvent.year}
+                  {archiveText("dialogKicker")} · {selectedEvent.year}
                 </p>
                 <h2 id="old-event-dialog-title">{selectedEvent.title}</h2>
                 <p className="old-event-dialog-concept">
-                  Concept · {selectedEvent.concept}
+                  {archiveText("concept")} · {selectedEvent.concept}
                 </p>
               </div>
               <button
                 type="button"
                 className="old-event-dialog-close"
-                aria-label="Đóng concept"
+                aria-label={archiveText("closeConcept")}
                 onClick={closeEvent}
               >
                 <X size={20} aria-hidden="true" />
@@ -407,7 +418,7 @@ export default function OldEvent() {
               {selectedEvent.image ? (
                 <img src={selectedEvent.image} alt="" />
               ) : (
-                <span className="old-event-coming-soon">Coming soon</span>
+                <span className="old-event-coming-soon">{archiveText("comingSoon")}</span>
               )}
             </div>
             <div className="old-event-dialog-meta">
@@ -420,11 +431,11 @@ export default function OldEvent() {
             </div>
             <div className="old-event-dialog-facts">
               <div className="old-event-dialog-fact">
-                <span>Địa điểm</span>
+                <span>{archiveText("location")}</span>
                 <strong>{selectedEvent.location}</strong>
               </div>
               <div className="old-event-dialog-fact">
-                <span>Quy mô</span>
+                <span>{archiveText("scale")}</span>
                 <strong>{selectedEvent.scale}</strong>
               </div>
             </div>
@@ -451,7 +462,7 @@ export default function OldEvent() {
                 className="old-event-dialog-action"
                 onClick={closeEvent}
               >
-                Đóng concept
+                {archiveText("closeConcept")}
               </button>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Copy, QrCode, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -14,6 +15,8 @@ const PAYMENT_KEY = "fptu-halloween-payos-payment";
 
 const QRPayment = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const ticket = (key, options) => t(`ticket.${key}`, options);
   const checkout = useMemo(
     () => JSON.parse(localStorage.getItem("fptu-halloween-checkout") || "null"),
     [],
@@ -30,7 +33,7 @@ const QRPayment = () => {
   useEffect(() => {
     if (!checkout) return undefined;
     let isMounted = true;
-    const loadingToast = toast.loading("Đang tạo mã QR thanh toán...");
+    const loadingToast = toast.loading(ticket("qrCreate"));
 
     const savedPayment = JSON.parse(localStorage.getItem(PAYMENT_KEY) || "null");
     paymentAPI.createPayOSPayment({
@@ -46,7 +49,7 @@ const QRPayment = () => {
         if (!isMounted) return;
         setPayment(result);
         localStorage.setItem(PAYMENT_KEY, JSON.stringify(result));
-        toast.success("Tạo mã QR thanh toán thành công", { id: loadingToast });
+        toast.success(ticket("qrCreated"), { id: loadingToast });
       })
       .catch((error) => {
         if (isMounted) toast.error(translateError(error), { id: loadingToast });
@@ -75,7 +78,7 @@ const QRPayment = () => {
 
   useEffect(() => {
     if (!isExpired) return undefined;
-    toast.error("Mã QR đã hết hạn. Vui lòng tạo thanh toán lại.");
+    toast.error(ticket("qrExpired"));
     const cancelExpiredPayment = async () => {
       if (payment?.orderCode) {
         try { await paymentAPI.cancelPayOSPayment(payment.orderCode); } catch { /* Already expired is safe. */ }
@@ -95,7 +98,7 @@ const QRPayment = () => {
       await paymentAPI.cancelPayOSPayment(payment.orderCode);
       localStorage.removeItem(PAYMENT_KEY);
       notifyCartUpdated({ items: [], totalAmount: 0 });
-      toast.success("Đã huỷ đơn hàng.");
+          toast.success(ticket("cancelled"));
       navigate("/cart", { replace: true });
     } catch (error) {
       toast.error(translateError(error));
@@ -113,7 +116,7 @@ const QRPayment = () => {
           window.clearInterval(intervalId);
           localStorage.removeItem(PAYMENT_KEY);
           notifyCartUpdated({ items: [], totalAmount: 0 });
-          toast.success("Thanh toán thành công. Vé đã được phát hành.");
+          toast.success(ticket("paymentSuccess"));
           navigate(`/complete-payment?orderCode=${payment.orderCode}`);
         }
       } catch {
@@ -135,9 +138,9 @@ const QRPayment = () => {
       <main className="qr-payment-page">
         <section className="qr-payment-empty">
           <QrCode size={34} />
-          <h1>Chưa có đơn thanh toán</h1>
+          <h1>{ticket("noPayment")}</h1>
           <button type="button" onClick={() => navigate("/cart")}>
-            Quay lại giỏ vé
+            {ticket("backCart")}
           </button>
         </section>
       </main>
@@ -146,7 +149,7 @@ const QRPayment = () => {
     return <main className="qr-payment-page"><div className="qr-payment-shell" aria-busy="true" aria-live="polite"><Skeleton width={140} height={18} /><Skeleton width="48%" height={42} /><Skeleton width="68%" /><section className="qr-payment-card qr-payment-loading__card"><Skeleton height={300} width="min(400px, 70vw)" /><div className="qr-payment-loading__details"><Skeleton height={48} /><Skeleton height={48} /><Skeleton height={48} /><Skeleton height={48} /></div></section></div></main>;
 
   if (!payment)
-    return <main className="qr-payment-page"><div className="qr-payment-empty"><QrCode size={34} /><h1>Không thể tạo thanh toán</h1><button type="button" onClick={() => navigate("/checkout")}>Thử lại</button></div></main>;
+    return <main className="qr-payment-page"><div className="qr-payment-empty"><QrCode size={34} /><h1>{ticket("cannotPayment")}</h1><button type="button" onClick={() => navigate("/checkout")}>{ticket("retry")}</button></div></main>;
 
   return (
     <main className="qr-payment-page">
@@ -156,56 +159,55 @@ const QRPayment = () => {
           type="button"
           onClick={() => navigate("/checkout")}
         >
-          <ArrowLeft size={17} /> Quay lại xác nhận đơn
+          <ArrowLeft size={17} /> {ticket("backCheckout")}
         </button>
         <header className="qr-payment-heading">
           <p>
-            <QrCode size={16} /> Bước 2 / 2
+            <QrCode size={16} /> {ticket("stepTwo")}
           </p>
-          <h1>Quét mã để thanh toán</h1>
-          <span>Hoàn tất thanh toán để nhận vé điện tử.</span>
+          <h1>{ticket("scanQr")}</h1>
+          <span>{ticket("scanQrText")}</span>
         </header>
         <section className={`qr-payment-card${isExpired ? " qr-payment-card--expired" : ""}`}>
           <div className="qr-payment-left">
-            <div className="qr-payment-code" aria-label="Mã QR thanh toán">
+            <div className="qr-payment-code" aria-label={ticket("qrLabel")}>
               <img
                 src={`https://img.vietqr.io/image/${payment.bin}-${payment.accountNumber}-compact2.png?amount=${payment.amount}&addInfo=${encodeURIComponent(payment.description)}&accountName=${encodeURIComponent(payment.accountName)}`}
-                alt="Mã QR VietQR thanh toán PayOS"
+                alt={ticket("qrAlt")}
               />
             </div>
           </div>
           <div className="qr-payment-details">
             <div className="qr-payment-amount">
-              <span>Số tiền cần thanh toán</span>
+              <span>{ticket("paymentAmount")}</span>
               <strong>{new Intl.NumberFormat("vi-VN").format(total)} VND</strong>
             </div>
             <div className="qr-payment-countdown">
-              Thời gian thanh toán còn lại: <strong>{String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:{String(remainingSeconds % 60).padStart(2, "0")}</strong>
+              {ticket("paymentTime")}: <strong>{String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:{String(remainingSeconds % 60).padStart(2, "0")}</strong>
             </div>
             <div className="qr-payment-instructions">
-              <h2>Thông tin chuyển khoản</h2>
+              <h2>{ticket("bankInfo")}</h2>
               <div>
-                <span>Ngân hàng</span>
-                <strong>MB - Ngân hàng TMCP Quân Đội</strong>
+                <span>{ticket("bank")}</span>
+                <strong>{ticket("bankName")}</strong>
               </div>
               <div>
-                <span>Số tài khoản</span>
+                <span>{ticket("accountNumber")}</span>
                 <strong>{payment.accountNumber}</strong>
               </div>
               <div>
-                <span>Tên tài khoản</span>
+                <span>{ticket("accountName")}</span>
                 <strong>{payment.accountName}</strong>
               </div>
               <div>
-                <span>Nội dung chuyển khoản</span>
+                <span>{ticket("transferContent")}</span>
                 <button type="button" onClick={copyCode}>
                   {payment.description} <Copy size={15} />
                 </button>
               </div>
             </div>
             <div className="qr-payment-note">
-              <ShieldCheck size={17} /> Sau khi chuyển khoản, hệ thống sẽ xác nhận
-              và phát hành vé điện tử.
+              <ShieldCheck size={17} /> {ticket("paymentNotice")}
             </div>
             {/* Nút "Tôi đã thanh toán" tạm ẩn; trạng thái được đồng bộ tự động từ PayOS. */}
             {/* <button
@@ -213,19 +215,19 @@ const QRPayment = () => {
               type="button"
               onClick={() => window.open(payment.checkoutUrl, "_blank", "noopener,noreferrer")}
             >
-              <Check size={18} /> Tôi đã thanh toán
+              <Check size={18} /> {ticket("paidButton")}
             </button> */}
             <button className="qr-payment-cancel" type="button" onClick={() => setShowCancelModal(true)} disabled={isCancelling || isExpired}>
-              {isCancelling ? "Đang huỷ đơn..." : "Huỷ đơn hàng"}
+              {isCancelling ? ticket("canceling") : ticket("cancelOrder")}
             </button>
           </div>
           {isExpired && (
             <div className="qr-payment-expired-overlay" role="alert">
               <QrCode size={34} />
-              <strong>Mã QR đã hết hạn</strong>
-              <span>Vui lòng thanh toán lại.</span>
+              <strong>{ticket("payExpired")}</strong>
+              <span>{ticket("payAgain")}</span>
               <button type="button" onClick={() => navigate("/cart", { replace: true })}>
-                Quay lại giỏ hàng
+                {ticket("backCart")}
               </button>
             </div>
           )}
@@ -235,10 +237,10 @@ const QRPayment = () => {
         isOpen={showCancelModal}
         onClose={() => setShowCancelModal(false)}
         onConfirm={handleCancelPayment}
-        title="Huỷ đơn hàng"
-        description="Bạn muốn huỷ đơn hàng này?<br />Bạn có chắc chắn không?"
-        cancelLabel="Không, giữ lại đơn"
-        confirmLabel="Đúng, huỷ đơn hàng"
+        title={ticket("cancelOrder")}
+        description={ticket("cancelOrderText")}
+        cancelLabel={ticket("keepOrder")}
+        confirmLabel={ticket("confirmCancel")}
       />
     </main>
   );

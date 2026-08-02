@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { authAPI } from "../../apis/authAPI";
 import {
@@ -16,12 +17,14 @@ const FBGCLogin = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { t } = useTranslation();
+  const auth = (key) => t(`auth.fbgc.${key}`);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const loadingToast = toast.loading("Đang đăng nhập...");
+    const loadingToast = toast.loading(auth("loading"));
 
     try {
       await authAPI.login({ identifier: username, password });
@@ -44,36 +47,36 @@ const FBGCLogin = () => {
             src={fbgcLogo}
             alt="FPTU Board Game Club"
           />
-          <h1>Đăng nhập</h1>
+          <h1>{auth("title")}</h1>
           <p className="fbgc-login-subtitle">
-            Chào mừng bạn trở lại với FPTU Board Game Club
+            {auth("welcome")}
           </p>
 
           <form onSubmit={handleSubmit} className="fbgc-login-form">
-            <label htmlFor="fbgc-username">Tên đăng nhập</label>
+            <label htmlFor="fbgc-username">{auth("username")}</label>
             <input
               id="fbgc-username"
               type="text"
-              placeholder="Nhập tên đăng nhập"
+              placeholder={auth("usernamePlaceholder")}
               value={username}
               onChange={(event) => setUsername(event.target.value)}
               autoComplete="username"
               required
             />
 
-            <label htmlFor="fbgc-password">Mật khẩu</label>
+            <label htmlFor="fbgc-password">{auth("passwordPlaceholder")}</label>
             <div className="fbgc-password-field"><input
               id="fbgc-password"
               type={showPassword ? "text" : "password"}
-              placeholder="Nhập mật khẩu"
+              placeholder={auth("passwordPlaceholder")}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="current-password"
               required
-            /><button type="button" className="fbgc-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button></div>
+            /><button type="button" className="fbgc-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? t("auth.login.hide") : t("auth.login.show")}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button></div>
 
             <button type="submit" disabled={isLoading}>
-              {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
+              {isLoading ? auth("loading") : auth("title")}
             </button>
           </form>
 
@@ -82,7 +85,7 @@ const FBGCLogin = () => {
             className="fbgc-back-link"
             onClick={() => navigate("/login")}
           >
-            Quay lại trang đăng nhập FPTU Halloween
+            {auth("back")}
           </button>
         </div>
       </section>

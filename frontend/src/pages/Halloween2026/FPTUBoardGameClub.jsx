@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 // eslint-disable-next-line no-unused-vars -- namespace icons are rendered as JSX member components.
 import * as ClubIcons from "lucide-react";
 import clubAvatar from "../../assets/ava_fbgc.jpg";
@@ -39,6 +40,7 @@ const tabItems = [
 
 export default function FPTUBoardGameClub() {
   const [activeTab, setActiveTab] = useState("about");
+  const { t } = useTranslation();
 
   return (
     <main className="fptu-club-page">
@@ -61,7 +63,7 @@ export default function FPTUBoardGameClub() {
             mới.
           </p>
           <a className="fptu-club-scroll-link" href="#club-profile">
-            Đọc hồ sơ CLB <ClubIcons.ArrowDown size={16} aria-hidden="true" />
+            {t("nav.introduceGeneral")} <ClubIcons.ArrowDown size={16} aria-hidden="true" />
           </a>
         </div>
         <div className="fptu-club-hero-year" aria-hidden="true">
@@ -76,7 +78,7 @@ export default function FPTUBoardGameClub() {
       >
         <div className="fptu-club-profile-main">
           <div className="fptu-club-section-mark">
-            <ClubIcons.Gamepad2 size={18} aria-hidden="true" /> Hồ sơ câu lạc bộ
+            <ClubIcons.Gamepad2 size={18} aria-hidden="true" /> {t("nav.boardGameClub")}
           </div>
 
           <header className="fptu-club-brand">

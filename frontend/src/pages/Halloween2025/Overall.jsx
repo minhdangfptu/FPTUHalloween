@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Container,
@@ -19,6 +20,8 @@ import {
 } from "@mui/icons-material";
 
 export default function Overall({ event }) {
+  const { t } = useTranslation();
+  const overallText = (key, options) => t(`overall.${key}`, options);
   const [activeTab, setActiveTab] = useState(0);
   event = {
     event_name: "FPTU HALLOWEEN 2025: WISHBOUND",
@@ -39,10 +42,12 @@ Sự kiện gồm 4 khu vực chính:
     event_year: 2025,
     event_start_time: "2025-10-27T18:00:00Z",
     event_end_time: "2025-10-30T23:00:00Z",
-    event_location: "Đường 30m Đại học FPT Hà Nội (Nhà ma trong tòa Delta)",
+    event_location: overallText("location"),
     event_status: 1, // 0: nháp, 1: sắp diễn ra, 2: kết thúc, 3: hủy
     ticket_url: "https://forms.gle/BViHc5dYp9HxgKCo6",
   };
+  event.event_concept = overallText("concept");
+  event.event_description = overallText("description");
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
@@ -65,10 +70,10 @@ Sự kiện gồm 4 khu vực chính:
   // Get status info
   const getStatusInfo = (status) => {
     const statusMap = {
-      0: { label: "Bản nháp", color: "default" },
-      1: { label: "Sắp diễn ra", color: "success" },
-      2: { label: "Đã kết thúc", color: "error" },
-      3: { label: "Đã hủy", color: "warning" },
+      0: { label: overallText("draft"), color: "default" },
+      1: { label: overallText("upcoming"), color: "success" },
+      2: { label: overallText("ended"), color: "error" },
+      3: { label: overallText("cancelled"), color: "warning" },
     };
     return statusMap[status] || statusMap[1];
   };
@@ -88,7 +93,7 @@ Sự kiện gồm 4 khu vực chính:
             color: "text.primary",
           }}
         >
-          Xem thông tin sự kiện
+          {overallText("viewEvent")}
         </Typography>
 
         {/* Banner Section */}
@@ -116,11 +121,11 @@ Sự kiện gồm 4 khu vực chính:
                 <Box
                   component="img"
                   src="/placeholder.svg?height=100&width=100"
-                  alt="No image"
+                  alt={overallText("noImage")}
                   sx={{ width: 100, height: 100, opacity: 0.5 }}
                 />
                 <Typography variant="h6" sx={{ mt: 1 }}>
-                  NO IMAGE AVAILABLE
+                  {overallText("noImageAvailable")}
                 </Typography>
               </Box>
             )}
@@ -162,9 +167,9 @@ Sự kiện gồm 4 khu vực chính:
               },
             }}
           >
-            <Tab label="Giới thiệu" />
-            <Tab label="Thông tin" />
-            <Tab label="Đăng ký" />
+            <Tab label={overallText("intro")} />
+            <Tab label={overallText("information")} />
+            <Tab label={overallText("registration")} />
           </Tabs>
         </Paper>
 
@@ -180,7 +185,7 @@ Sự kiện gồm 4 khu vực chính:
                     variant="h6"
                     sx={{ mb: 2, fontWeight: 600, color: "error.main" }}
                   >
-                    Giới thiệu
+                    {overallText("intro")}
                   </Typography>
 
                   {/* Event Concept */}
@@ -192,7 +197,7 @@ Sự kiện gồm 4 khu vực chính:
                         variant="subtitle2"
                         sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}
                       >
-                        Concept sự kiện
+                        {overallText("eventConcept")}
                       </Typography>
                       <Typography
                         variant="body1"
@@ -213,7 +218,7 @@ Sự kiện gồm 4 khu vực chính:
                     variant="subtitle2"
                     sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}
                   >
-                    Chi tiết sự kiện
+                    {overallText("eventDetails")}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -224,7 +229,7 @@ Sự kiện gồm 4 khu vực chính:
                     }}
                   >
                     {event.event_description ||
-                      "Chưa có mô tả chi tiết cho sự kiện này."}
+                      overallText("noDescription")}
                   </Typography>
                 </Box>
               )}
@@ -236,7 +241,7 @@ Sự kiện gồm 4 khu vực chính:
                     variant="h6"
                     sx={{ mb: 3, fontWeight: 600, color: "error.main" }}
                   >
-                    Thông tin sự kiện
+                    {overallText("eventInformation")}
                   </Typography>
 
                   {/* Event Year */}
@@ -245,7 +250,7 @@ Sự kiện gồm 4 khu vực chính:
                       variant="subtitle2"
                       sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}
                     >
-                      Năm tổ chức
+                      {overallText("eventYear")}
                     </Typography>
                     <Chip
                       label={event.event_year}
@@ -260,7 +265,7 @@ Sự kiện gồm 4 khu vực chính:
                       variant="subtitle2"
                       sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}
                     >
-                      Thời gian
+                      {overallText("time")}
                     </Typography>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <CalendarToday
@@ -281,7 +286,7 @@ Sự kiện gồm 4 khu vực chính:
                       variant="subtitle2"
                       sx={{ fontWeight: 600, mb: 1, color: "text.primary" }}
                     >
-                      Địa điểm
+                      {overallText("locationLabel")}
                     </Typography>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                       <LocationOn
@@ -291,7 +296,7 @@ Sự kiện gồm 4 khu vực chính:
                         variant="body1"
                         sx={{ color: "text.secondary" }}
                       >
-                        {event.event_location || "Chưa xác định"}
+                        {event.event_location || overallText("unknown")}
                       </Typography>
                     </Box>
                   </Box>
@@ -308,7 +313,7 @@ Sự kiện gồm 4 khu vực chính:
                     variant="h6"
                     sx={{ mb: 3, fontWeight: 600, color: "error.main" }}
                   >
-                    Đăng ký tham gia
+                    {overallText("registerToAttend")}
                   </Typography>
 
                   {event.ticket_url && event.event_status === 1 ? (
@@ -317,8 +322,7 @@ Sự kiện gồm 4 khu vực chính:
                         variant="body1"
                         sx={{ mb: 3, color: "text.secondary", lineHeight: 1.8 }}
                       >
-                        Sự kiện đang mở đăng ký game chặng. Nhấn vào nút bên dưới để đăng
-                        ký tham gia game chặng sự kiện.
+                        {overallText("registrationOpen")}
                       </Typography>
                       <Button
                         variant="contained"
@@ -335,7 +339,7 @@ Sự kiện gồm 4 khu vực chính:
                           fontSize: "1rem",
                         }}
                       >
-                        Đăng ký ngay
+                        {overallText("registerNow")}
                       </Button>
                     </Box>
                   ) : (
@@ -345,10 +349,10 @@ Sự kiện gồm 4 khu vực chính:
                         sx={{ color: "text.secondary" }}
                       >
                         {event.event_status === 2
-                          ? "Sự kiện đã kết thúc. Không thể đăng ký."
+                          ? overallText("registrationEnded")
                           : event.event_status === 3
-                          ? "Sự kiện đã bị hủy."
-                          : "Sự kiện chưa mở đăng ký."}
+                          ? overallText("registrationCancelled")
+                          : overallText("registrationNotOpen")}
                       </Typography>
                     </Box>
                   )}
@@ -364,7 +368,7 @@ Sự kiện gồm 4 khu vực chính:
                 variant="h6"
                 sx={{ mb: 3, fontWeight: 600, color: "error.main" }}
               >
-                Thông tin nhanh
+                {overallText("quickInformation")}
               </Typography>
 
               {/* Status */}
@@ -373,7 +377,7 @@ Sự kiện gồm 4 khu vực chính:
                   variant="body2"
                   sx={{ color: "text.secondary", mb: 1 }}
                 >
-                  Trạng thái sự kiện:
+                  {overallText("eventStatus")}:
                 </Typography>
                 <Chip
                   label={statusInfo.label}
@@ -389,7 +393,7 @@ Sự kiện gồm 4 khu vực chính:
                   variant="body2"
                   sx={{ color: "text.secondary", mb: 1 }}
                 >
-                  Thời gian:
+                  {overallText("time")}:
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500 }}>
                   {formatDateRange()}
@@ -402,10 +406,10 @@ Sự kiện gồm 4 khu vực chính:
                   variant="body2"
                   sx={{ color: "text.secondary", mb: 1 }}
                 >
-                  Địa điểm:
+                  {overallText("locationLabel")}:
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                  {event.event_location || "Chưa xác định"}
+                  {event.event_location || overallText("unknown")}
                 </Typography>
               </Box>
 
@@ -415,7 +419,7 @@ Sự kiện gồm 4 khu vực chính:
                   variant="body2"
                   sx={{ color: "text.secondary", mb: 1 }}
                 >
-                  Câu lạc bộ Tổ chức
+                  {overallText("organizer")}
                 </Typography>
                 <Typography
                   variant="body1"

@@ -9,6 +9,7 @@
  */
 
 import axios from 'axios';
+import i18n from '../i18n';
 
 // ============================================================
 // BẢNG DỊCH ERROR MESSAGE — Tiếng Anh → Tiếng Việt
@@ -119,6 +120,10 @@ const ERROR_TRANSLATIONS = {
   'Service Unavailable': 'Dịch vụ tạm thời không khả dụng. Vui lòng thử lại sau.',
 };
 
+const ERROR_TRANSLATIONS_EN = Object.fromEntries(
+  Object.keys(ERROR_TRANSLATIONS).map((message) => [message, message]),
+);
+
 /**
  * Lấy message từ axios error object
  * @param {Error|axios.AxiosError} error
@@ -165,7 +170,10 @@ const getErrorMessage = (error) => {
  */
 const translateError = (error) => {
   const rawMessage = getErrorMessage(error);
-  return ERROR_TRANSLATIONS[rawMessage] || rawMessage;
+  const translations = i18n.language?.startsWith('en')
+    ? ERROR_TRANSLATIONS_EN
+    : ERROR_TRANSLATIONS;
+  return translations[rawMessage] || rawMessage;
 };
 
 /**
@@ -178,7 +186,10 @@ const translateError = (error) => {
  * toast.success(message); // "Tạo thành công."
  */
 const translateSuccess = (message) => {
-  return SUCCESS_TRANSLATIONS[message] || message;
+  const translations = i18n.language?.startsWith('en')
+    ? SUCCESS_TRANSLATIONS_EN
+    : SUCCESS_TRANSLATIONS;
+  return translations[message] || message;
 };
 
 const SUCCESS_TRANSLATIONS = {
@@ -215,6 +226,10 @@ const SUCCESS_TRANSLATIONS = {
   'Item removed from cart successfully': 'Xóa vé khỏi giỏ hàng thành công.',
 };
 
+const SUCCESS_TRANSLATIONS_EN = Object.fromEntries(
+  Object.keys(SUCCESS_TRANSLATIONS).map((message) => [message, message]),
+);
+
 /**
  * Lấy danh sách tất cả các trường validation lỗi
  * @param {Error|axios.AxiosError} error
@@ -231,7 +246,9 @@ const translateValidationErrors = (error) => {
 
   return error.response.data.errors.map((err) => ({
     field: err.field,
-    message: ERROR_TRANSLATIONS[err.message] || err.message,
+    message: (i18n.language?.startsWith('en')
+      ? ERROR_TRANSLATIONS_EN[err.message]
+      : ERROR_TRANSLATIONS[err.message]) || err.message,
   }));
 };
 
@@ -241,5 +258,7 @@ export {
   translateValidationErrors,
   getErrorMessage,
   ERROR_TRANSLATIONS,
+  ERROR_TRANSLATIONS_EN,
   SUCCESS_TRANSLATIONS,
+  SUCCESS_TRANSLATIONS_EN,
 };

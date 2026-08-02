@@ -441,7 +441,7 @@ const AdminOrderList = () => {
           </section>
         </div>
       )}
-      <QRModal isOpen={Boolean(selectedQrCode)} value={selectedQrCode} onClose={() => setSelectedQrCode(null)} />
+      <QRModal isOpen={Boolean(selectedQrCode)} value={selectedQrCode} onClose={() => setSelectedQrCode(null)} isManagement />
     </div>
   );
 };

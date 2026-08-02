@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 // eslint-disable-next-line no-unused-vars -- namespace icons are rendered as JSX member components.
 import * as PdpIcons from "lucide-react";
 import pdpAvatar from "../../assets/pdp_avatar_to.jpg";
@@ -50,6 +51,8 @@ const renderIcon = (name, props = {}) => {
 
 export default function PDP() {
   const [activeTab, setActiveTab] = useState("about");
+  const { t } = useTranslation();
+  const page = (key) => t(`nav.${key}`);
 
   return (
     <main className="fptu-club-page">
@@ -69,7 +72,7 @@ export default function PDP() {
           </h1>
           <p className="fptu-club-hero-lede">{pdpData.description}</p>
           <a className="fptu-club-scroll-link" href="#pdp-profile">
-            Xem thông tin PDP {renderIcon("ArrowDown", { size: 16 })}
+            {t("nav.introduceGeneral")} PDP {renderIcon("ArrowDown", { size: 16 })}
           </a>
         </div>
         <div className="fptu-club-hero-year" aria-hidden="true">
@@ -84,7 +87,7 @@ export default function PDP() {
       >
         <div className="fptu-club-profile-main">
           <div className="fptu-club-section-mark">
-            {renderIcon("UserRound", { size: 18 })} Chương trình PDP
+            {renderIcon("UserRound", { size: 18 })} PDP
           </div>
 
           <header className="fptu-club-brand">

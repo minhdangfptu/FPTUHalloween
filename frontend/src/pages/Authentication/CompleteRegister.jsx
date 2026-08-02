@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./CompleteRegister.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
+import { useTranslation } from "react-i18next";
 
 function CompleteRegister() {
   const [email, setEmail] = useState("");
   const [showAnimation, setShowAnimation] = useState(false);
+  const { t } = useTranslation();
+  const auth = (key, options) => t(`auth.complete.${key}`, options);
 
   useEffect(() => {
     // Lấy email từ URL params hoặc localStorage
@@ -70,16 +73,15 @@ function CompleteRegister() {
                   </svg>
                 </div>
 
-                <h2>Đăng ký thành công!</h2>
+                <h2>{auth("title")}</h2>
                 <p className="fptu-halloween-complete-register-description">
-                  Chúc mừng! Tài khoản của bạn đã được tạo thành công.
+                  {auth("text")}
                 </p>
                 <p className="fptu-halloween-complete-register-email">
                   Email: <strong>{email}</strong>
                 </p>
                 <p className="fptu-halloween-complete-register-instruction">
-                  Bạn có thể đăng nhập ngay bây giờ để bắt đầu trải nghiệm FPTU
-                  Halloween 2026!
+                  {auth("instruction")}
                 </p>
               </div>
 
@@ -88,7 +90,7 @@ function CompleteRegister() {
                   className="fptu-halloween-complete-register-btn-primary"
                   onClick={handleGoToLogin}
                 >
-                  Đăng nhập ngay
+                  {auth("login")}
                 </button>
               </div>
             </div>
@@ -97,7 +99,7 @@ function CompleteRegister() {
               style={{ marginTop: 16 }}
               className="fptu-halloween-complete-register-text-muted"
             >
-              Cần hỗ trợ?{" "}
+              {auth("support")} {" "}
               <a
                 href="/contact"
                 style={{
@@ -106,7 +108,7 @@ function CompleteRegister() {
                   fontWeight: 600,
                 }}
               >
-                Liên hệ chúng tôi
+                {auth("contact")}
               </a>
             </div>
           </div>

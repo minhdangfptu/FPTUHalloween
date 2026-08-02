@@ -1,7 +1,10 @@
 import React from "react";
 import "./Fanpage.css";
+import { useTranslation } from "react-i18next";
 
 export default function Fanpage() {
+  const { t } = useTranslation();
+  const page = (key) => t(`eventPages.fanpage.${key}`);
   return (
     <div className="fptu-halloween-fanpage-container">
         
@@ -33,22 +36,22 @@ export default function Fanpage() {
 
       {/* Cột phải: mô tả sự kiện */}
       <div className="fptu-halloween-fanpage-column fptu-halloween-fanpage-right">
-        <h2>🎃 FPTU Halloween 2025 – Wishbound</h2>
+        <h2>{page("title")}</h2>
         <p>
-          Sự kiện Halloween thường niên lớn nhất tại Đại học FPT Hà Nội!
+          {page("intro")}
         </p>
         <ul>
-          <li>📍Địa điểm: Đường 30m, Khuôn viên Đại học FPT, Hòa Lạc</li>
-          <li>🗓 Thời gian: 28–31/10/2025</li>
-          <li>🎟 Vé: "Link vé"</li>
-          <li>☎ Liên hệ: fptuhalloween@gmail.com</li>
+          <li>📍{page("location")}</li>
+          <li>🗓 {page("date")}</li>
+          <li>🎟 {page("tickets")}</li>
+          <li>☎ {page("contact")}</li>
         </ul>
 
         <a
           href="https://www.facebook.com/fptuhalloween"
           className="fptu-halloween-fanpage-btn-primary"
         >
-          Truy cập ngay
+          {page("visit")}
         </a>
       </div>
     </div>

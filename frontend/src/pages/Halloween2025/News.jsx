@@ -4,33 +4,37 @@ import { Box, Container, Typography, Card, CardMedia, CardContent, Grid, Stack }
 import { AccessTime } from "@mui/icons-material"
 import { Link } from "react-router-dom"
 import "./News.css"
+import { useTranslation } from "react-i18next"
 
 export default function News() {
+  const { t } = useTranslation()
+  const page = (key, options) => t(`eventPages.news.${key}`, options)
+  const titles = page("titles", { returnObjects: true })
   // Sample news data
   const featuredNews = {
     id: 1,
-    title: "FPTU Halloween 2025: Sự kiện Wishbound sắp diễn ra với nhiều hoạt động hấp dẫn",
+    title: titles[0],
     image: "/halloween-event-2025.jpg",
     source: "FPTU HALLOWEEN",
-    time: "2 giờ",
-    views: "1,234 lượt xem",
+    time: page("hour", { count: 2 }),
+    views: page("views", { count: "1,234" }),
   }
 
   const secondaryNews = [
     {
       id: 2,
-      title: "Chương trình nghệ thuật đặc sắc tại FPTU Halloween 2025",
+      title: titles[1],
       image: "/halloween-art-performance.jpg",
       source: "FPTU NEWS",
-      time: "3 giờ",
+      time: page("hour", { count: 3 }),
       views: "",
     },
     {
       id: 3,
-      title: "Hướng dẫn mua vé và tham gia sự kiện Halloween",
+      title: titles[2],
       image: "/halloween-ticket-guide.jpg",
       source: "FPTU GUIDE",
-      time: "4 giờ",
+      time: page("hour", { count: 4 }),
       views: "",
     },
   ]
@@ -38,51 +42,51 @@ export default function News() {
   const newsList = [
     {
       id: 4,
-      title: "Các hoạt động chính trong FPTU Halloween 2025",
+      title: titles[3],
       image: "/halloween-activities.jpg",
       source: "FPTU EVENTS",
-      time: "5 giờ",
-      views: "856 lượt xem",
+      time: page("hour", { count: 5 }),
+      views: page("views", { count: 856 }),
     },
     {
       id: 5,
-      title: "Thông tin về địa điểm và thời gian sự kiện",
+      title: titles[4],
       image: "/halloween-location.jpg",
       source: "FPTU INFO",
-      time: "6 giờ",
-      views: "432 lượt xem",
+      time: page("hour", { count: 6 }),
+      views: page("views", { count: 432 }),
     },
     {
       id: 6,
-      title: "Những điều cần biết khi tham gia Halloween tại FPTU",
+      title: titles[5],
       image: "/halloween-tips.jpg",
       source: "FPTU TIPS",
-      time: "7 giờ",
-      views: "1,567 lượt xem",
+      time: page("hour", { count: 7 }),
+      views: page("views", { count: "1,567" }),
     },
     {
       id: 7,
-      title: "Chương trình ưu đãi đặc biệt cho sinh viên FPTU",
+      title: titles[6],
       image: "/halloween-discounts.jpg",
       source: "FPTU OFFERS",
-      time: "8 giờ",
-      views: "2,345 lượt xem",
+      time: page("hour", { count: 8 }),
+      views: page("views", { count: "2,345" }),
     },
     {
       id: 8,
-      title: "Cách thức đăng ký tham gia các workshop Halloween",
+      title: titles[7],
       image: "/halloween-workshops.jpg",
       source: "FPTU WORKSHOPS",
-      time: "9 giờ",
-      views: "789 lượt xem",
+      time: page("hour", { count: 9 }),
+      views: page("views", { count: 789 }),
     },
     {
       id: 9,
-      title: "Thông tin về các nhà tài trợ của sự kiện",
+      title: titles[8],
       image: "/halloween-sponsors.jpg",
       source: "FPTU SPONSORS",
-      time: "10 giờ",
-      views: "654 lượt xem",
+      time: page("hour", { count: 10 }),
+      views: page("views", { count: 654 }),
     },
   ]
 
@@ -91,7 +95,7 @@ export default function News() {
       <header className="fptu-halloween-contact-header">
         <div className="fptu-halloween-contact-banner">
           <h1 className="fptu-halloween-contact-banner-title">
-            TIN TỨC
+            {page("title")}
           </h1>
         </div>
       </header>
@@ -101,7 +105,7 @@ export default function News() {
           {/* Left Column - Featured and Secondary News */}
           <div className="fptu-halloween-news-featured">
             <h2 className="fptu-halloween-news-featured-title">
-              Tin tức nổi bật
+              {page("featured")}
             </h2>
             {/* Featured News */}
             <div className="fptu-halloween-news-featured-main">
@@ -162,7 +166,7 @@ export default function News() {
           {/* Right Column - News List */}
           <div className="fptu-halloween-news-sidebar">
             <h2 className="fptu-halloween-news-sidebar-title">
-              Tin tức khác
+              {page("other")}
             </h2>
             {newsList.map((news, index) => (
               <div 

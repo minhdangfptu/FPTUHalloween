@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import heroImage from "../../assets/cover-01.png";
 import pdpLogo from "../../assets/pdp_avatar.jpg";
@@ -99,14 +100,16 @@ const sponsors = [
 ];
 
 const countdownItems = [
-  ["days", "Ngày"],
-  ["hours", "Giờ"],
-  ["minutes", "Phút"],
-  ["seconds", "Giây"],
+  "days",
+  "hours",
+  "minutes",
+  "seconds",
 ];
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const home = (key, options) => t(`normal.home.${key}`, options);
   const [countdown, setCountdown] = useState(getCountdown);
 
   const handleExploreClick = (event) => {
@@ -127,8 +130,8 @@ export default function HomePage() {
     if (sessionStorage.getItem("showLoginWelcome") !== "1") return;
     sessionStorage.removeItem("showLoginWelcome");
     const user = JSON.parse(localStorage.getItem("user") || "null");
-    toast.success(`Xin chào ${user?.fullName || user?.name || "bạn"}!`);
-  }, []);
+    toast.success(t("normal.home.welcome", { name: user?.fullName || user?.name || (t("nav.home") === "HOME" ? "there" : "bạn") }));
+  }, [t]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setCountdown(getCountdown()), 1000);
@@ -139,12 +142,12 @@ export default function HomePage() {
     <main className="home-page">
       <section
         className="home-hero"
-        aria-label="Hero banner FPTU Halloween 2026"
+        aria-label="FPTU Halloween 2026 hero banner"
       >
         <img
           className="home-hero__image"
           src={heroImage}
-          alt="Không gian FPTU Halloween"
+          alt={home("heroAlt")}
         />
       </section>
 
@@ -154,7 +157,7 @@ export default function HomePage() {
             <span>FPTU HALLOWEEN</span>
             <div
               className="home-lockup"
-              aria-label="FPT University, PDP, FPTU Board Game Club và FPTU Halloween 2026"
+              aria-label={home("lockupAlt")}
             >
               <span className="home-lockup__mark home-lockup__mark--university">
                 FPT UNIVERSITY
@@ -171,14 +174,13 @@ export default function HomePage() {
             </div>
             <span>2026 / FPTU HÀ NỘI</span>
           </div>
-          <p className="home-eyebrow">THEME OF THE YEAR · COMING SOON</p>
+          <p className="home-eyebrow">{home("eyebrow")}</p>
           <h1 id="home-hero-title">
-            AI SỢ THÌ ĐI VỀ
-            <span>Hòa Lạc không ngủ.</span>
+            {home("slogan")}
+            <span>{home("subSlogan")}</span>
           </h1>
           <p className="home-hero__lede">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Một mùa
-            Halloween mới đang được mở khóa tại FPTU Hà Nội.
+            {home("lede")}
           </p>
           <div className="home-hero__actions">
             <button
@@ -186,14 +188,14 @@ export default function HomePage() {
               type="button"
               onClick={() => navigate("/tickets")}
             >
-              Mua vé
+              {home("buy")}
             </button>
             <a
               className="home-button home-button--quiet"
               href="#home-intro"
               onClick={handleExploreClick}
             >
-              Xem sự kiện <span aria-hidden="true">↓</span>
+              {home("explore")} <span aria-hidden="true">↓</span>
             </a>
           </div>
         </div>
@@ -209,14 +211,14 @@ export default function HomePage() {
               COUNTDOWN D-DAY
             </p>
             <span>
-              {countdown.complete ? "Đã đến ngày diễn ra" : "Thời gian còn lại"}
+              {countdown.complete ? home("countdownDone") : home("countdownLeft")}
             </span>
           </div>
           <div className="home-countdown__grid" aria-live="polite">
-            {countdownItems.map(([key, label]) => (
+            {countdownItems.map((key) => (
               <div className="home-countdown__unit" key={key}>
                 <strong>{String(countdown[key]).padStart(2, "0")}</strong>
-                <span>{label}</span>
+                <span>{home(key)}</span>
               </div>
             ))}
           </div>
@@ -231,19 +233,15 @@ export default function HomePage() {
         <div className="home-section__head">
           <p className="home-eyebrow">01 · CONCEPT NOTE</p>
           <h2 id="home-intro-title">
-            Một concept đủ gần để chạm vào, đủ lạ để nhớ.
+            {home("concept")}
           </h2>
         </div>
         <div className="home-intro__body">
           <p className="home-intro__lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. FPTU
-            Halloween 2026 là nơi câu chuyện, âm nhạc và những cuộc gặp bất ngờ
-            cùng tồn tại trong một đêm.
+            {home("conceptLead")}
           </p>
           <p>
-            Chọn một lối đi, nhập vai theo cách của bạn và để những chi tiết nhỏ
-            dẫn đường. Nội dung năm nay sẽ được cập nhật dần trong thời gian
-            tới.
+            {home("conceptBody")}
           </p>
         </div>
       </section>
@@ -254,8 +252,8 @@ export default function HomePage() {
       >
         <div className="home-section__head home-section__head--line">
           <p className="home-eyebrow">02 · THE NIGHT MAP</p>
-          <h2 id="home-highlights-title">Điểm nổi bật</h2>
-          <p>Những điểm dừng tạo nên toàn bộ nhịp điệu của đêm hội.</p>
+          <h2 id="home-highlights-title">{home("highlights")}</h2>
+          <p>{home("highlightsIntro")}</p>
         </div>
         <div className="home-highlights__list">
           {highlights.map((item) => (
@@ -265,8 +263,8 @@ export default function HomePage() {
             >
               <span className="home-highlight__number">{item.number}</span>
               <div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+                <h3>{home("highlightTitles", { returnObjects: true })[Number(item.number) - 1]}</h3>
+                <p>{home("highlightDescriptions", { returnObjects: true })[Number(item.number) - 1]}</p>
               </div>
               <span className="home-highlight__arrow" aria-hidden="true">
                 ↗
@@ -282,20 +280,19 @@ export default function HomePage() {
       >
         <div className="home-section__head">
           <p className="home-eyebrow">03 · RUN OF SHOW</p>
-          <h2 id="home-timeline-title">Timeline chương trình</h2>
+          <h2 id="home-timeline-title">{home("timeline")}</h2>
         </div>
         <div className="home-timeline__layout">
           <p className="home-timeline__note">
-            Lịch trình chi tiết sẽ được công bố khi chương trình hoàn tất các
-            mốc chuẩn bị.
+            {home("timelineNote")}
           </p>
           <ol className="home-timeline__list">
             {timeline.map((item) => (
               <li key={item.time}>
                 <span>{item.time}</span>
                 <div>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
+                  <h3>{home("timelineTitles", { returnObjects: true })[Number(item.time) - 1]}</h3>
+                  <p>{home("timelineDescriptions", { returnObjects: true })[Number(item.time) - 1]}</p>
                 </div>
               </li>
             ))}
@@ -309,7 +306,7 @@ export default function HomePage() {
       >
         <div className="home-section__head">
           <p className="home-eyebrow">04 · FIND YOUR WAY</p>
-          <h2 id="home-map-title">Map preview</h2>
+          <h2 id="home-map-title">{home("map")}</h2>
         </div>
         <div className="home-map">
           <div className="home-map__grid" aria-hidden="true" />
@@ -324,10 +321,10 @@ export default function HomePage() {
           <span className="home-map__point home-map__point--main">
             MAIN GATE
           </span>
-          <span className="home-map__point home-map__point--house">NHÀ MA</span>
+          <span className="home-map__point home-map__point--house">{home("hauntedHouse")}</span>
           <span className="home-map__point home-map__point--stage">STAGE</span>
           <span className="home-map__caption">
-            Sơ đồ minh họa · cập nhật sau
+            {home("mapCaption")}
           </span>
         </div>
       </section>
@@ -338,13 +335,13 @@ export default function HomePage() {
       >
         <div className="home-section__head home-section__head--compact">
           <p className="home-eyebrow">05 · WITH SUPPORT FROM</p>
-          <h2 id="home-sponsors-title">Nhà tài trợ</h2>
+          <h2 id="home-sponsors-title">{home("sponsors")}</h2>
         </div>
         <div className="home-sponsors__row">
           {sponsors.map((sponsor) => (
             <div className={`home-sponsor home-sponsor--${sponsor.key}`} key={sponsor.label}>
               {sponsor.image ? (
-                <img src={sponsor.image} alt={sponsor.alt} />
+                <img src={sponsor.image} alt={home("sponsorsAlt", { name: sponsor.label })} />
               ) : (
                 <span>{sponsor.label}</span>
               )}
@@ -352,8 +349,7 @@ export default function HomePage() {
           ))}
         </div>
         <p className="home-sponsors__note">
-          Lorem ipsum dolor sit amet. Danh sách đối tác đồng hành sẽ được cập
-          nhật.
+          {home("sponsorsNote")}
         </p>
       </section>
     </main>

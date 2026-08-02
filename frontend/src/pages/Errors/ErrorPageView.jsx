@@ -1,5 +1,6 @@
 import { ArrowLeft, House, LockKeyhole } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./ErrorPages.scss";
 
 const ErrorPageView = ({
@@ -13,6 +14,7 @@ const ErrorPageView = ({
   variant,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <main className={`error-page error-page--${variant}`}>
@@ -34,7 +36,7 @@ const ErrorPageView = ({
         <div className="error-page__actions">
           <Link className="error-page__action error-page__action--primary" to="/">
             <House size={17} strokeWidth={2.2} />
-            Về trang chủ
+            {t("pages.errors.backHome")}
           </Link>
           <button
             className="error-page__action error-page__action--secondary"
@@ -42,7 +44,7 @@ const ErrorPageView = ({
             onClick={() => navigate(-1)}
           >
             <ArrowLeft size={17} strokeWidth={2.2} />
-            Quay lại
+            {t("pages.errors.back")}
           </button>
         </div>
 

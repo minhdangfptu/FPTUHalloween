@@ -9,21 +9,18 @@ import {
   Ticket,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { SkeletonCards } from "../../components/LoadingSkeletons";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import { translateError } from "../../utils/translateResponse";
 import "./ListTicketTypePage.scss";
 
-const FEATURES = [
-  "Trải nghiệm Nhà Ma",
-  "Vé điện tử cá nhân",
-  "Dùng trong ngày sự kiện",
-];
-
-const HAUNTED_HOUSE_LOCATION = "Sảnh Toà nhà Delta (trước thư viện)";
+const FEATURE_KEYS = ["featureExperience", "featurePersonal", "featureEventDay"];
 
 const ListTicketTypePage = () => {
+  const { t } = useTranslation();
+  const ticket = (key, options) => t(`ticket.${key}`, options);
   const [activeFilter, setActiveFilter] = useState("all");
   const [ticketTypes, setTicketTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +28,7 @@ const ListTicketTypePage = () => {
   const navigate = useNavigate();
 
   const loadTicketTypes = useCallback(async () => {
-    const loadingToast = toast.loading("Đang tải danh sách vé...");
+    const loadingToast = toast.loading(ticket("loadingList"));
     setIsLoading(true);
     setError(null);
     try {
@@ -78,17 +75,13 @@ const ListTicketTypePage = () => {
             <Ticket size={15} /> FPTU Halloween 2026
           </p>
           <h1>
-            Mua vé nhà ma
+            {t("ticketHero.titleBefore")}
             <br />
-            <span style={{ color: "red" }}>ngay hôm nay.</span>
+            <span style={{ color: "red" }}>{t("ticketHero.titleAfter")}</span>
           </h1>
-          <p className="ticket-list-hero__intro">
-            Một trải nghiệm kinh dị. Ba ngày để lựa chọn. Chọn ngày bạn muốn
-            bước vào Nhà Ma.
-          </p>
+          <p className="ticket-list-hero__intro">{t("ticketHero.intro")}</p>
           <div className="ticket-list-hero__note">
-            <span className="ticket-list-hero__dot" /> Vé điện tử được lưu sau
-            khi mua thành công
+            <span className="ticket-list-hero__dot" /> {t("ticketHero.note")}
           </div>
         </div>
         <div className="ticket-list-hero__mark" aria-hidden="true">
@@ -102,13 +95,13 @@ const ListTicketTypePage = () => {
       >
         <div className="ticket-list-heading-row">
           <div>
-            <p className="ticket-list-section-label">Cửa hàng vé</p>
-            <h2 id="ticket-list-heading">Chọn ngày tham gia</h2>
+            <p className="ticket-list-section-label">{t("ticketHero.sectionKicker")}</p>
+            <h2 id="ticket-list-heading">{t("ticketHero.sectionTitle")}</h2>
           </div>
           <div
             className="ticket-list-filter"
             role="tablist"
-            aria-label="Lọc theo ngày"
+            aria-label={t("ticketHero.filterLabel")}
           >
             <button
               className={activeFilter === "all" ? "is-active" : ""}
@@ -116,7 +109,7 @@ const ListTicketTypePage = () => {
               role="tab"
               aria-selected={activeFilter === "all"}
             >
-              Tất cả
+              {ticket("all")}
             </button>
             {[27, 28, 29].map((day) => (
               <button
@@ -137,11 +130,11 @@ const ListTicketTypePage = () => {
           <div className="ticket-list-state">
             <p>{error}</p>
             <button type="button" onClick={loadTicketTypes}>
-              Thử lại
+              {ticket("retry")}
             </button>
           </div>
         ) : visibleTickets.length === 0 ? (
-          <div className="ticket-list-state">Chưa có loại vé nào.</div>
+          <div className="ticket-list-state">{ticket("empty")}</div>
         ) : (
           <div className="ticket-list-grid">
             {visibleTickets.map((ticketType, index) => (
@@ -151,13 +144,13 @@ const ListTicketTypePage = () => {
               >
                 <div className="ticket-card__topline">
                   <span className="ticket-card__eyebrow">
-                    Nhà Ma Âm Dương Tử Khí
+                    {ticket("hauntedHouse")}
                   </span>
                   <span className="ticket-card__status">
                     <span />{" "}
                     {ticketType.ticketTypeStatus === "active"
-                      ? "Đang mở bán"
-                      : "Tạm ngưng"}
+                      ? ticket("active")
+                      : ticket("paused")}
                   </span>
                 </div>
                 <div className="ticket-card__visual" aria-hidden="true">
@@ -181,21 +174,21 @@ const ListTicketTypePage = () => {
                     </span>
                     <span>
                       <CalendarDays size={16} />
-                      Ngày {ticketType.ticketTypeDate} tháng 10, 2026
+                      {ticket("dateTime", { date: ticketType.ticketTypeDate })}
                     </span>
                     <span>
                       <MapPin size={16} />
-                      {HAUNTED_HOUSE_LOCATION}
+                      {ticket("venue")}
                     </span>
                     <span>
                       <Ticket size={16} />
-                      {ticketType.availableQuantity} vé còn lại
+                      {ticketType.availableQuantity} {ticket("tickets")} {ticket("remaining").toLowerCase()}
                     </span>
                   </div>
                   <ul>
-                    {FEATURES.map((feature) => (
-                      <li key={feature}>
-                        <Check size={16} /> {feature}
+                    {FEATURE_KEYS.map((featureKey) => (
+                      <li key={featureKey}>
+                        <Check size={16} /> {ticket(featureKey)}
                       </li>
                     ))}
                   </ul>
@@ -205,7 +198,7 @@ const ListTicketTypePage = () => {
                       navigate(`/tickets/detail/${ticketType._id}`)
                     }
                   >
-                    <span>Xem trải nghiệm</span>
+                    <span>{ticket("detail")}</span>
                     <ArrowRight size={18} />
                   </button>
                 </div>
@@ -214,24 +207,23 @@ const ListTicketTypePage = () => {
           </div>
         )}
       </section>
-      <section className="ticket-list-trust" aria-label="Thông tin mua vé">
+      <section className="ticket-list-trust" aria-label={ticket("purchaseInfo")}>
         <div>
           <ShoppingBag size={20} />
           <span>
-            <strong>Mua vé đơn giản</strong>Chọn ngày bạn muốn tham gia
+            <strong>{ticket("simplePurchase")}</strong>{ticket("chooseDay")}
           </span>
         </div>
         <div>
           <Clock3 size={20} />
           <span>
-            <strong>Vé điện tử</strong>Nhận vé sau khi thanh toán thành công
+            <strong>{ticket("digitalTicket")}</strong>{ticket("receiveAfterPayment")}
           </span>
         </div>
         <div>
           <Ticket size={20} />
           <span>
-            <strong>Một vé, một kỷ niệm</strong>Lưu vé để sử dụng trong ngày sự
-            kiện
+            <strong>{ticket("oneTicket")}</strong>{ticket("useOnEventDay")}
           </span>
         </div>
       </section>

@@ -7,9 +7,6 @@ import { ScrollBasedVelocity } from "./ui/scroll-based-velocity";
 import useTheme from "../hooks/use-theme";
 import { useTranslation } from "react-i18next";
 
-const HOT_NEWS_ERROR_FALLBACK =
-  "Chào mừng bạn đến với FPTU Halloween! Hãy chuẩn bị sẵn sàng tinh thần để bước vào đêm hội kinh hoàng và bùng nổ nhất năm!";
-
 const renderTickerContent = (items) => (
   items.map((item, index) => (
     <React.Fragment key={item._id || index}>
@@ -58,7 +55,7 @@ function Header() {
   }, []);
 
   const tickerItems = hotNewsState === "error"
-    ? [{ _id: "error", content: t("header.tickerFallback", { defaultValue: HOT_NEWS_ERROR_FALLBACK }) }]
+    ? [{ _id: "error", content: t("header.tickerFallback") }]
     : hotNewsState === "ready"
       ? activeHotNews
       : [];
@@ -88,8 +85,8 @@ function Header() {
                 type="button"
                 onClick={() => i18n.changeLanguage(language === "vi" ? "en" : "vi")}
                 className="fpt-header__social-btn fpt-header__social-btn--language"
-                aria-label={language === "vi" ? "English" : "Tiếng Việt"}
-                title={language === "vi" ? "English" : "Tiếng Việt"}
+                aria-label={language === "vi" ? t("header.switchToEnglish") : t("header.switchToVietnamese")}
+                title={language === "vi" ? t("header.switchToEnglish") : t("header.switchToVietnamese")}
               >
                 <svg
                   viewBox="0 0 24 24"

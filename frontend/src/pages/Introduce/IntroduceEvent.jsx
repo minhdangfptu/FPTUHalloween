@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "./IntroduceEvent.css";
 
 import cover from "../../assets/cover-01.png";
@@ -31,6 +32,8 @@ const albums = [
 ];
 
 export default function IntroduceEvent() {
+  const { t } = useTranslation();
+  const copy = (key) => t(`eventPages.introduceEvent.${key}`);
   return (
     <div className="fp-page">
       {/* Cover */}
@@ -45,7 +48,7 @@ export default function IntroduceEvent() {
             <h1 className="fp-title">
               {page.name}
               {page.verified && (
-                <span className="fp-badge" aria-label="verified">
+                  <span className="fp-badge" aria-label={copy("verified")}>
                   ✔
                 </span>
               )}
@@ -54,9 +57,9 @@ export default function IntroduceEvent() {
               {page.username} · {page.category}
             </div>
             <div className="fp-stats">
-              <span>{page.likes.toLocaleString()} likes</span>
+              <span>{page.likes.toLocaleString()} {copy("likes")}</span>
               <span>·</span>
-              <span>{page.followers.toLocaleString()} followers</span>
+              <span>{page.followers.toLocaleString()} {copy("followers")}</span>
               <span>·</span>
               <span>⭐ {page.rating}</span>
             </div>
@@ -83,10 +86,10 @@ export default function IntroduceEvent() {
         {/* Left column */}
         <section className="fp-col fp-col--left">
           <article id="about" className="fp-card">
-            <h3 className="fp-card__title">Về sự kiện</h3>
+            <h3 className="fp-card__title">{copy("about")}</h3>
             <p className="fp-text">{page.about}</p>
-            <p className="fp-text">Được tổ chức bởi <strong style={{color: 'red'}}>FPTU Board Game Club</strong>, sự kiện được nhuộm màu ma mị với chủ đề độc đáo mỗi năm, trở thành sân khấu cho những màn hóa trang đỉnh cao và sáng tạo có 1 không 2 của các Cóc. </p>
-            <p className="fp-text">Với những hoạt động như Nhà ma rùng rợn, sự kiện sôi động, hay các cuộc thi gay cấn, Halloween FPT luôn mang đến một đêm hội kỳ bí, chất lừ và đáng nhớ, củng cố tinh thần năng động và gắn kết của cộng đồng sinh viên FPT.  </p>
+            <p className="fp-text">{copy("organized")} <strong style={{color: 'red'}}>FPTU Board Game Club</strong>.</p>
+            <p className="fp-text">{copy("description")}</p>
             {/* <ul className="fp-meta">
               <li>
                 <strong>Website:</strong>{" "}
@@ -127,9 +130,9 @@ export default function IntroduceEvent() {
         <section className="fp-col fp-col--right">
           <article id="albums" className="fp-card">
             <div className="fp-card__title-row">
-              <h3 className="fp-card__title">Các sự kiện gần nhất</h3>
+              <h3 className="fp-card__title">{copy("recent")}</h3>
               <a className="fp-link" href="/old-event">
-                Xem tất cả
+                {copy("viewAll")}
               </a>
             </div>
             <div className="fp-albums">

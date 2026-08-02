@@ -533,6 +533,7 @@ const HotNews = () => {
         isOpen={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
+        isManagement
         title="Xóa thông báo?"
         description="Thông báo này sẽ bị xóa khỏi bảng tin.<br />Hành động này không thể hoàn tác."
         cancelLabel="Hủy"

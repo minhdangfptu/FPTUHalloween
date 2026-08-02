@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CheckCircle2, Ticket } from "lucide-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import paymentAPI from "../../apis/paymentAPI";
 import "./CompletePayment.scss";
@@ -11,6 +12,8 @@ const CompletePayment = () => {
   const orderCode = searchParams.get("orderCode");
   const [isChecking, setIsChecking] = useState(true);
   const [status, setStatus] = useState("checking");
+  const { t } = useTranslation();
+  const page = (key) => t(`pages.payment.${key}`);
 
   useEffect(() => {
     if (!orderCode) {
@@ -22,9 +25,9 @@ const CompletePayment = () => {
       .then((result) => {
         const nextStatus = result.status === "PAID" ? "paid" : result.status === "PROCESSING" ? "processing" : "pending";
         setStatus(nextStatus);
-        if (nextStatus !== "paid") toast.error("Thanh toán chưa được xác nhận hoàn tất.");
+        if (nextStatus !== "paid") toast.error(page("notConfirmed"));
       })
-      .catch(() => { setStatus("failed"); toast.error("Không thể kiểm tra trạng thái đơn hàng."); })
+      .catch(() => { setStatus("failed"); toast.error(page("statusError")); })
       .finally(() => setIsChecking(false));
     return undefined;
   }, [orderCode]);
@@ -34,13 +37,13 @@ const CompletePayment = () => {
       <section className="complete-payment-card">
         <div className="complete-payment-icon"><CheckCircle2 size={36} /></div>
         <p className="complete-payment-kicker"><Ticket size={15} /> FPTU Halloween</p>
-        <h1>{isChecking ? "Đang xác nhận thanh toán" : status === "paid" ? "Thanh toán thành công" : "Đang chờ xác nhận"}</h1>
+        <h1>{isChecking ? page("checking") : status === "paid" ? page("success") : page("waiting")}</h1>
         <p className="complete-payment-lede">
-          {isChecking ? "Hệ thống đang kiểm tra giao dịch và phát hành vé điện tử." : status === "paid" ? "Vé điện tử của bạn đã được phát hành thành công." : "Giao dịch chưa hoàn tất. Vui lòng chờ webhook hoặc thử lại sau."}
+          {isChecking ? page("checkingText") : status === "paid" ? page("successText") : page("waitingText")}
         </p>
         <div className="complete-payment-actions">
-          <button type="button" onClick={() => navigate("/user-profile")}>Xem vé của tôi</button>
-          <button type="button" className="is-secondary" onClick={() => navigate("/")}>Về trang chủ</button>
+          <button type="button" onClick={() => navigate("/user-profile")}>{page("myTickets")}</button>
+          <button type="button" className="is-secondary" onClick={() => navigate("/")}>{page("home")}</button>
         </div>
       </section>
     </main>

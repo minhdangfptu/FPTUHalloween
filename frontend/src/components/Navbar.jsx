@@ -451,7 +451,7 @@ function Navbar() {
         ></div>
         <div className="fpt-navbar__mobile-content">
           <div className="fpt-navbar__mobile-header">
-            <h3>Menu</h3>
+            <h3>{t("components.menu")}</h3>
             <button
               className="fpt-navbar__mobile-close"
               onClick={handleDrawerToggle}
@@ -523,7 +523,7 @@ function Navbar() {
                     handleDrawerToggle();
                   }}
                 >
-                  Đánh giá
+                  {t("components.feedback")}
                 </a>
               </div>
             )}
@@ -535,7 +535,7 @@ function Navbar() {
                     style={{ fontWeight: "bold", color: "#ce0000" }}
                   >
                     <User size={18} aria-hidden="true" />
-                    {user.fullName || user.name || "Tài khoản"}
+                    {user.fullName || user.name || t("components.account")}
                   </div>
                   <div className="fpt-navbar__mobile-sub">
                     <a
@@ -543,28 +543,28 @@ function Navbar() {
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
-                      Tài khoản của bạn
+                      {t("components.yourAccount")}
                     </a>
                     <a
                       href="/my-ticket"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
-                      Vé của bạn
+                      {t("components.yourTickets")}
                     </a>
                     <a
                       href="/change-password"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
-                      Đổi mật khẩu
+                      {t("components.changePassword")}
                     </a>
                     <button
                       type="button"
                       className="fpt-navbar__mobile-sublink fpt-navbar__mobile-action"
                       onClick={requestLogout}
                     >
-                      Đăng xuất
+                      {t("components.logout")}
                     </button>
                   </div>
                 </>
@@ -575,7 +575,7 @@ function Navbar() {
                     style={{ fontWeight: "bold", color: "#ce0000" }}
                   >
                     <User size={18} aria-hidden="true" />
-                    Tài khoản
+                    {t("components.account")}
                   </div>
                   <div className="fpt-navbar__mobile-sub">
                     <a
@@ -583,14 +583,14 @@ function Navbar() {
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
-                      🔐 Đăng nhập
+                      🔐 {t("nav.login")}
                     </a>
                     <a
                       href="/register"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
-                      📝 Đăng ký
+                      📝 {t("nav.register")}
                     </a>
                   </div>
                 </>

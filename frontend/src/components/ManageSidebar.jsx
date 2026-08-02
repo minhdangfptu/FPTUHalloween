@@ -243,6 +243,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
         onConfirm={handleLogout}
+        isManagement
       />
     </aside>
   );

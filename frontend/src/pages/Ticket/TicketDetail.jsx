@@ -13,6 +13,7 @@ import {
   Users,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { DetailSkeleton } from "../../components/LoadingSkeletons";
 import cartAPI from "../../apis/cartAPI";
@@ -27,9 +28,9 @@ import "./TicketDetail.scss";
 const formatPrice = (price) =>
   `${new Intl.NumberFormat("vi-VN").format(price || 0)} VND`;
 
-const HAUNTED_HOUSE_LOCATION = "Sảnh Toà nhà Delta (trước thư viện)";
-
 const TicketDetail = () => {
+  const { t } = useTranslation();
+  const ticket = (key, options) => t(`ticket.${key}`, options);
   const navigate = useNavigate();
   const { ticketTypeId } = useParams();
   const [ticketType, setTicketType] = useState(null);
@@ -39,7 +40,7 @@ const TicketDetail = () => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const loadTicketType = useCallback(async () => {
-    const loadingToast = toast.loading("Đang tải chi tiết vé...");
+    const loadingToast = toast.loading(ticket("loadingDetail"));
     setIsLoading(true);
     setError(null);
 
@@ -98,9 +99,9 @@ const TicketDetail = () => {
     return (
       <main className="ticket-detail-page">
         <div className="ticket-detail-state">
-          <p>{error || "Không tìm thấy loại vé."}</p>
+          <p>{error || ticket("empty")}</p>
           <button type="button" onClick={loadTicketType}>
-            Thử lại
+            {ticket("retry")}
           </button>
         </div>
       </main>
@@ -115,14 +116,14 @@ const TicketDetail = () => {
           type="button"
           onClick={() => navigate(-1)}
         >
-          <ArrowLeft size={17} /> Quay lại cửa hàng vé
+        <ArrowLeft size={17} /> {ticket("backStore")}
         </button>
 
         <div className="ticket-detail-layout">
           <section className="ticket-detail-main">
             <div className="ticket-detail-heading">
               <p className="ticket-detail-kicker">
-                <Ticket size={15} /> Chi tiết vé
+                <Ticket size={15} /> {ticket("detail")}
               </p>
               <h1>{ticketType.ticketTypeName}</h1>
             </div>
@@ -148,57 +149,57 @@ const TicketDetail = () => {
               <div>
                 <CalendarDays size={19} />
                 <span>
-                  <small>Ngày tham gia</small>
+                  <small>{ticket("day")}</small>
                   <strong>
-                    Ngày {ticketType.ticketTypeDate} tháng 10, 2026
+                    {ticket("day")} {ticketType.ticketTypeDate} {ticket("dateSuffix")}
                   </strong>
                 </span>
               </div>
               <div>
                 <Clock3 size={19} />
                 <span>
-                  <small>Thời gian</small>
+                  <small>{ticket("time")}</small>
                   <strong>
-                    {ticketType.ticketTypeTime || "Đang cập nhật"}
+                    {ticketType.ticketTypeTime || ticket("updating")}
                   </strong>
                 </span>
               </div>
               <div>
                 <Users size={19} />
                 <span>
-                  <small>Số lượng còn lại</small>
+                  <small>{ticket("remaining")}</small>
                   <strong>
-                    {ticketType.availableQuantity || "Đang cập nhật"} vé
+                    {ticketType.availableQuantity || ticket("updating")} {ticket("tickets")}
                   </strong>
                 </span>
               </div>
               <div>
                 <ShieldCheck size={19} />
                 <span>
-                  <small>Trạng thái</small>
-                  <strong>{isActive ? "Đang mở bán" : "Tạm ngưng"}</strong>
+                  <small>{ticket("status")}</small>
+                  <strong>{isActive ? ticket("active") : ticket("paused")}</strong>
                 </span>
               </div>
               <div className="ticket-detail-info-grid__location">
                 <MapPin size={19} />
                 <span>
-                  <small>Địa điểm Nhà Ma</small>
-                  <strong>{HAUNTED_HOUSE_LOCATION}</strong>
+                  <small>{ticket("location")} {ticket("hauntedHouse")}</small>
+                  <strong>{ticket("venue")}</strong>
                 </span>
               </div>
             </div>
 
             <div className="ticket-detail-includes">
-              <h2>Vé của bạn bao gồm</h2>
+              <h2>{ticket("includes")}</h2>
               <ul>
                 <li>
-                  <Check size={17} /> Quyền tham gia trải nghiệm Nhà Ma
+                  <Check size={17} /> {ticket("experience")}
                 </li>
                 <li>
-                  <Check size={17} /> Vé điện tử cá nhân
+                  <Check size={17} /> {ticket("personalTicket")}
                 </li>
                 <li>
-                  <Check size={17} /> Sử dụng trong đúng ngày đã chọn
+                  <Check size={17} /> {ticket("selectedDay")}
                 </li>
               </ul>
             </div>
@@ -206,27 +207,27 @@ const TicketDetail = () => {
 
           <aside className="ticket-detail-purchase">
             <div className="ticket-detail-purchase__status">
-              <span /> {isActive ? "Đang mở bán" : "Tạm ngưng"}
+              <span /> {isActive ? ticket("active") : ticket("paused")}
             </div>
-            <p className="ticket-detail-purchase__label">Giá vé</p>
+            <p className="ticket-detail-purchase__label">{ticket("price")}</p>
             <strong className="ticket-detail-purchase__price">
               {formatPrice(ticketType.ticketTypePrice)}
             </strong>
             <div className="ticket-detail-purchase__rule" />
             <div className="ticket-detail-availability">
-              <span>Còn lại</span>
+              <span>{ticket("remaining")}</span>
               <strong>{ticketType.availableQuantity}</strong>
             </div>
             <label
               className="ticket-detail-quantity-label"
               htmlFor="ticket-quantity"
             >
-              Số lượng vé
+              {ticket("quantity")}
             </label>
             <div className="ticket-detail-quantity">
               <button
                 type="button"
-                aria-label="Giảm số lượng"
+                aria-label={ticket("decrease")}
                 disabled={quantity <= 1}
                 onClick={() => setQuantity((value) => Math.max(1, value - 1))}
               >
@@ -237,7 +238,7 @@ const TicketDetail = () => {
               </output>
               <button
                 type="button"
-                aria-label="Tăng số lượng"
+                aria-label={ticket("increase")}
                 disabled={
                   !isAvailable ||
                   (Number.isInteger(availableQuantity) &&
@@ -249,7 +250,7 @@ const TicketDetail = () => {
               </button>
             </div>
             <div className="ticket-detail-total">
-              <span>Tạm tính</span>
+              <span>{ticket("subtotal")}</span>
               <strong>{formatPrice(totalPrice)}</strong>
             </div>
             <button
@@ -259,10 +260,10 @@ const TicketDetail = () => {
               onClick={addToCart}
             >
               <ShoppingBag size={18} />{" "}
-              {isAddingToCart ? "Đang thêm..." : "Thêm vào giỏ hàng"}
+            {isAddingToCart ? ticket("adding") : ticket("addCart")}
             </button>
             <p className="ticket-detail-note">
-              Bạn sẽ được chuyển đến bước xác nhận đơn hàng sau khi chọn mua.
+              {ticket("detailNote")}
             </p>
             {/* <span className="ticket-detail-id">Mã vé: {ticketType._id}</span> */}
           </aside>

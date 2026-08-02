@@ -2,6 +2,7 @@
 import React from "react";
 import { ArrowUpRight, Mail, ShieldCheck, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import coverArt from "../../assets/cover-01.png";
 import groupPhoto from "../../assets/cover.jpg";
 import baoKk from "../../assets/core/baokk.jpg";
@@ -161,7 +162,7 @@ const PersonCard = ({ person, index, level }) => (
     <div className="btc-person-card__media">
       <img
         src={person.image || coverArt}
-        alt={`Ảnh đại diện của ${person.name}`}
+        alt={person.avatarAlt}
         onError={(event) => {
           event.currentTarget.onerror = null;
           event.currentTarget.src = coverArt;
@@ -175,13 +176,13 @@ const PersonCard = ({ person, index, level }) => (
         <span>HLW26</span>
       </div>
       <h3>{person.name}</h3>
-      <p className="btc-person-card__role">{person.role}</p>
+      <p className="btc-person-card__role">{person.displayRole}</p>
       <a
         className={person.email.includes("@") ? "" : "is-pending"}
         href={person.email.includes("@") ? `mailto:${person.email}` : undefined}
       >
         <Mail size={14} aria-hidden="true" />
-        <span>{person.email}</span>
+        <span>{person.displayEmail}</span>
       </a>
     </div>
     <div className="btc-person-card__footer">
@@ -192,6 +193,15 @@ const PersonCard = ({ person, index, level }) => (
 );
 
 export default function BTCFUHLW() {
+  const { t } = useTranslation();
+  const btc = t("normal.btc", { returnObjects: true });
+  const roleLabel = (role) => {
+    const roleKey = role.includes("Trưởng ban Tổ chức") ? "chair" : role === "HR" ? "hr" : role.includes("Nhà Ma") ? (role.includes("Trưởng") ? "hauntedLead" : "hauntedDeputy") : role.includes("Truyền Thông") ? (role.includes("Trưởng") ? "mediaLead" : "mediaDeputy") : role.includes("Nội Dung") ? (role.includes("Trưởng") ? "contentLead" : "contentDeputy") : role.includes("Hậu Cần") ? (role.includes("Trưởng") ? "logisticsLead" : "logisticsDeputy") : role.includes("Take Care") ? (role.includes("Trưởng") ? "careLead" : "careDeputy") : role.includes("Media") ? "mediaTeamLead" : role.includes("Design") ? (role.includes("Trưởng") ? "designLead" : "designDeputy") : null;
+    return roleKey ? btc.roles[roleKey] : role;
+  };
+  const displayTeam = coreTeam.map((person) => ({ ...person, displayRole: roleLabel(person.role), displayEmail: person.email.includes("@") ? person.email : btc.pendingEmail, avatarAlt: t("normal.btc.avatarAlt", { name: person.name }) }));
+  const translatedDepartments = btc.departments;
+  const translatedHierarchy = { chair: btc.hierarchy.chair, hr: btc.hierarchy.hr, lead: btc.hierarchy.lead, sublead: btc.hierarchy.sublead };
   return (
     <main className="btc-page">
       <section className="btc-hero">
@@ -200,20 +210,19 @@ export default function BTCFUHLW() {
         </div>
         <div className="btc-hero__content">
           <div>
-            <p className="btc-kicker">Đằng sau cánh gà nhà ma</p>
+            <p className="btc-kicker">{btc.kicker}</p>
             <h1>
-              Những người
+              {btc.titleBefore}
               <br />
-              <em>làm nên</em> sự kiện.
+              <em>{btc.titleAfter}</em> sự kiện.
             </h1>
           </div>
           <p className="btc-hero__intro">
-            Một tập thể đứng sau từng trải nghiệm của FPTU Halloween — từ ý
-            tưởng đầu tiên đến khoảnh khắc cánh cửa Nhà Ma mở ra.
+            {btc.intro}
           </p>
         </div>
         <div className="btc-hero__meta">
-          <span>01 / Về chúng tôi</span>
+          <span>01 / {btc.about}</span>
           <span>Core Team HLW26</span>
           <span>FPT University · Hà Nội</span>
         </div>
@@ -222,24 +231,20 @@ export default function BTCFUHLW() {
       <section className="btc-intro" aria-labelledby="btc-intro-title">
         <div className="btc-section-label">
           <span>01</span>
-          <span>Giới thiệu BTC</span>
+          <span>{btc.introLabel}</span>
         </div>
         <div className="btc-intro__grid">
           <h2 id="btc-intro-title">
-            Không chỉ là một
+            {btc.introTitle}
             <br />
-            sự kiện Halloween.
+            {btc.introTitleAfter}
           </h2>
           <div>
             <p>
-              FPTU Halloween là nơi những câu chuyện kinh dị, trải nghiệm nhập
-              vai và tinh thần sinh viên gặp nhau. Để tạo nên một mùa lễ hội
-              trọn vẹn, Core Team cùng các ban đã phối hợp như một hệ thống duy
-              nhất.
+              {btc.introText}
             </p>
             <p className="btc-muted">
-              Mỗi người góp một vai trò riêng. Cùng nhau, chúng tôi biến những
-              bản phác thảo thành trải nghiệm thật.
+              {btc.introMuted}
             </p>
           </div>
         </div>
@@ -251,17 +256,17 @@ export default function BTCFUHLW() {
       >
         <div className="btc-group-photo__heading">
           <div className="btc-section-label">
-            <span>Ảnh tập thể</span>
+            <span>{btc.groupPhoto}</span>
           </div>
           <h2 id="btc-group-photo-title">
-            Một tập thể,
+            {btc.groupTitle}
             <br />
-            <em>một dấu ấn.</em>
+            <em>{btc.groupTitleAfter}</em>
           </h2>
         </div>
         <figure>
-          <img src={groupPhoto} alt="Ảnh tập thể FPTU Halloween" />
-          <figcaption>FPTU Halloween · Những người đứng sau sự kiện</figcaption>
+          <img src={groupPhoto} alt={btc.groupAlt} />
+          <figcaption>{btc.groupCaption}</figcaption>
         </figure>
       </section>
 
@@ -269,16 +274,15 @@ export default function BTCFUHLW() {
         <div className="btc-section-heading">
           <div className="btc-section-label">
             <span>02</span>
-            <span>Cơ cấu tổ chức</span>
+            <span>{btc.organization}</span>
           </div>
           <h2 id="btc-org-title">
-            Một đội ngũ.
+            {btc.organizationTitle}
             <br />
-            <em>Nhiều nhịp đập.</em>
+            <em>{btc.organizationTitleAfter}</em>
           </h2>
           <p>
-            Gặp gỡ những thành viên đứng sau từng mảnh ghép của FPTU Halloween
-            2025.
+            {btc.organizationIntro}
           </p>
         </div>
 
@@ -289,14 +293,14 @@ export default function BTCFUHLW() {
             </div>
             <div>
               <span>CORE TEAM</span>
-              <h3>Ban tổ chức HLW26</h3>
+              <h3>{btc.boardTitle}</h3>
             </div>
             <Users size={22} className="btc-board-heading__mark" />
           </div>
           <div className="btc-hierarchy">
             <div className="btc-executive-row">
               {hierarchyLevels.slice(0, 2).map((level) => {
-                const people = coreTeam.filter(level.match);
+                const people = displayTeam.filter(level.match);
 
                 return (
                   <section
@@ -305,7 +309,7 @@ export default function BTCFUHLW() {
                   >
                     <div className="btc-level__heading">
                       <span>{level.note}</span>
-                      <h3>{level.label}</h3>
+                      <h3>{translatedHierarchy[level.key]}</h3>
                     </div>
                     <div
                       className={`btc-person-grid btc-person-grid--${level.key}`}
@@ -314,7 +318,7 @@ export default function BTCFUHLW() {
                         <PersonCard
                           key={`${person.name}-${person.role}`}
                           person={person}
-                          index={coreTeam.indexOf(person)}
+                          index={displayTeam.indexOf(person)}
                           level={level.key}
                         />
                       ))}
@@ -324,7 +328,7 @@ export default function BTCFUHLW() {
               })}
             </div>
             {hierarchyLevels.slice(2).map((level) => {
-              const people = coreTeam.filter(level.match);
+              const people = displayTeam.filter(level.match);
 
               return (
                 <section
@@ -333,7 +337,7 @@ export default function BTCFUHLW() {
                 >
                   <div className="btc-level__heading">
                     <span>{level.note}</span>
-                    <h3>{level.label}</h3>
+                    <h3>{translatedHierarchy[level.key]}</h3>
                   </div>
                   <div
                     className={`btc-person-grid btc-person-grid--${level.key}`}
@@ -342,7 +346,7 @@ export default function BTCFUHLW() {
                       <PersonCard
                         key={`${person.name}-${person.role}`}
                         person={person}
-                        index={coreTeam.indexOf(person)}
+                        index={displayTeam.indexOf(person)}
                         level={level.key}
                       />
                     ))}
@@ -353,11 +357,11 @@ export default function BTCFUHLW() {
           </div>
         </div>
 
-        <div className="btc-departments" aria-label="Các ban trong ban tổ chức">
+        <div className="btc-departments" aria-label={btc.departmentsLabel}>
           {departments.map((department, index) => (
             <div className="btc-department" key={department}>
               <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{department}</strong>
+              <strong>{translatedDepartments[index]}</strong>
               <small>Team HLW26</small>
             </div>
           ))}
@@ -368,21 +372,20 @@ export default function BTCFUHLW() {
         <div>
           <span className="btc-section-label">
             <span>03</span>
-            <span>Lời chào</span>
+            <span>{btc.greeting}</span>
           </span>
           <h2>
-            Hẹn gặp bạn
+            {btc.closingTitle}
             <br />
-            <em>trong bóng tối.</em>
+            <em>{btc.closingTitleAfter}</em>
           </h2>
         </div>
         <div className="btc-closing__aside">
           <p>
-            Cảm ơn bạn đã quan tâm đến những người đứng sau FPTU Halloween. Nếu
-            cần kết nối với ban tổ chức, chúng mình luôn sẵn sàng lắng nghe.
+            {btc.closingText}
           </p>
           <Link to="/contact-us">
-            Liên hệ ban tổ chức <ArrowUpRight size={17} />
+            {btc.contact} <ArrowUpRight size={17} />
           </Link>
         </div>
       </section>

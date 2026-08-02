@@ -5,6 +5,7 @@ import coverImg from "../../assets/cover-01.png";
 import { authAPI } from "../../apis/authAPI";
 import toast from "react-hot-toast";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
+import { useTranslation } from "react-i18next";
 
 function ConfirmEmail() {
   const [verificationCode, setVerificationCode] = useState("");
@@ -12,6 +13,8 @@ function ConfirmEmail() {
   const [isResending, setIsResending] = useState(false);
   const [resendCountdown, setResendCountdown] = useState(0);
   const [email, setEmail] = useState(""); // Email từ URL params hoặc localStorage
+  const { t } = useTranslation();
+  const auth = (key, options) => t(`auth.confirm.${key}`, options);
 
   useEffect(() => {
     // Lấy email từ URL params hoặc localStorage
@@ -39,9 +42,9 @@ function ConfirmEmail() {
     const newErrors = {};
 
     if (!verificationCode) {
-      newErrors.verificationCode = "Mã xác thực là bắt buộc";
+      newErrors.verificationCode = auth("required");
     } else if (verificationCode.length !== 6) {
-      newErrors.verificationCode = "Mã xác thực phải có đúng 6 số";
+      newErrors.verificationCode = auth("length");
     }
 
     setErrors(newErrors);
@@ -56,26 +59,16 @@ function ConfirmEmail() {
     }
 
     try {
-      const loadingToast = toast.loading("Đang xác thực email...");
+      const loadingToast = toast.loading(auth("submit"));
       await authAPI.confirmOtp({ identifier: email, otp: verificationCode, purpose: "register" });
       toast.success(translateSuccess("Registration successful"), { id: loadingToast });
       localStorage.removeItem("registerEmail");
       window.location.href = "/";
       return;
-      // TODO: Gọi API xác thực mã
-      console.log("Verification code:", verificationCode);
-      console.log("Email:", email);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      alert("Xác thực thành công! Bạn có thể đăng nhập.");
-      // Redirect to login or complete registration
-      window.location.href = '/login';
     } catch (error) {
       console.error("Verification error:", error);
       toast.error(translateError(error));
-      setErrors({ verificationCode: "Mã xác thực không đúng" });
+      setErrors({ verificationCode: auth("invalid") });
     }
   };
 
@@ -91,7 +84,7 @@ function ConfirmEmail() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      alert("Mã xác thực mới đã được gửi đến email của bạn!");
+      alert(auth("sent", { email }));
       
       // Start countdown
       setResendCountdown(60);
@@ -107,7 +100,7 @@ function ConfirmEmail() {
       
     } catch (error) {
       console.error("Resend error:", error);
-      alert("Có lỗi xảy ra khi gửi lại mã. Vui lòng thử lại.");
+      alert(auth("invalid"));
     } finally {
       setIsResending(false);
     }
@@ -122,25 +115,25 @@ function ConfirmEmail() {
             <img className="fptu-halloween-confirm-email-logo" src={loginImg} alt="FPTU Halloween" />
             <div className="fptu-halloween-confirm-email-panel">
               <div className="fptu-halloween-confirm-email-header">
-                <h2>Xác thực Email</h2>
+                <h2>{auth("title")}</h2>
                 <p className="fptu-halloween-confirm-email-description">
-                  Chúng tôi đã gửi mã xác thực đến email <strong>{email}</strong>
+                  {auth("sent", { email })}
                 </p>
                 <p className="fptu-halloween-confirm-email-instruction">
-                  Vui lòng nhập mã 6 số dưới đây để hoàn tất đăng ký
+                  {auth("instruction")}
                 </p>
               </div>
 
               <form onSubmit={onSubmit}>
                 <label className="fptu-halloween-confirm-email-form-label" htmlFor="verificationCode">
-                  Mã xác thực
+                  {auth("code")}
                 </label>
                 <input
                   id="verificationCode"
                   name="verificationCode"
                   className="fptu-halloween-confirm-email-form-input fptu-halloween-confirm-email-verification-code-input"
                   type="text"
-                  placeholder="Nhập mã 6 số"
+                  placeholder={auth("placeholder")}
                   value={verificationCode}
                   onChange={handleCodeChange}
                   maxLength={6}
@@ -152,13 +145,13 @@ function ConfirmEmail() {
                 <div style={{ height: 14 }} />
 
                 <button className="fptu-halloween-confirm-email-btn-primary" type="submit">
-                  Xác thực
+                  {auth("submit")}
                 </button>
               </form>
 
               <div className="fptu-halloween-confirm-email-resend-section">
                 <p className="fptu-halloween-confirm-email-resend-text">
-                  Chưa nhận được mã?
+                  {auth("notReceived")}
                 </p>
                 <button 
                   type="button" 
@@ -166,15 +159,13 @@ function ConfirmEmail() {
                   onClick={handleResendCode}
                   disabled={isResending || resendCountdown > 0}
                 >
-                  {isResending ? 'Đang gửi...' : 
-                   resendCountdown > 0 ? `Gửi lại (${resendCountdown}s)` : 
-                   'Gửi lại mã'}
+                  {isResending ? auth("sending") : resendCountdown > 0 ? `${auth("resend")} (${resendCountdown}s)` : auth("resend")}
                 </button>
               </div>
             </div>
 
             <div style={{ marginTop: 16 }} className="fptu-halloween-confirm-email-text-muted">
-              Quay lại{" "}
+              {auth("back")} {" "}
               <a
                 href="/register"
                 style={{
@@ -183,7 +174,7 @@ function ConfirmEmail() {
                   fontWeight: 600,
                 }}
               >
-                Đăng ký
+                {auth("register")}
               </a>
             </div>
           </div>

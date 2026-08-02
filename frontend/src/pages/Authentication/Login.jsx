@@ -11,6 +11,7 @@ import {
   translateSuccess,
 } from "../../utils/translateResponse";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -21,6 +22,8 @@ function Login() {
   const [googleClient, setGoogleClient] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const auth = (key, options) => t(`auth.login.${key}`, options);
 
   useEffect(() => {
     const initializeGoogle = () => {
@@ -62,7 +65,7 @@ function Login() {
         toast.error(translateError(new Error("Unable to login with Google.")));
         return;
       }
-      const loadingToast = toast.loading("Đang đăng nhập với Google...");
+      const loadingToast = toast.loading(auth("googleLoading"));
       try {
         await authAPI.googleLogin({ accessToken });
         window.dispatchEvent(new CustomEvent("auth:login"));
@@ -80,7 +83,7 @@ function Login() {
   const onSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    const loadingToast = toast.loading("Đang đăng nhập...");
+    const loadingToast = toast.loading(auth("loading"));
     try {
       await authAPI.login({ identifier: email, password });
       window.dispatchEvent(new CustomEvent("auth:login"));
@@ -100,9 +103,9 @@ function Login() {
         <div className="login-top">
           <div className="login-box">
             {/* <img className="login-logo" src={loginImg} alt="FPTU Halloween" /> */}
-            <h1 className="auth-title">Đăng nhập</h1>
+            <h1 className="auth-title">{auth("title")}</h1>
             <p className="auth-subtitle">
-              Chào mừng bạn trở lại với FPTU Halloween
+              {auth("welcome")}
             </p>
             <div className="login-panel">
               <form onSubmit={onSubmit}>
@@ -120,14 +123,14 @@ function Login() {
                 />
                 <div style={{ height: 12 }} />
                 <label className="form-label" htmlFor="password">
-                  Mật khẩu
+                  {auth("password")}
                 </label>
                 <div className="password-field">
                   <input
                     id="password"
                     className="form-input"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Mật khẩu"
+                    placeholder={auth("password")}
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     required
@@ -136,7 +139,7 @@ function Login() {
                     type="button"
                     className="password-toggle"
                     onClick={() => setShowPassword((visible) => !visible)}
-                    aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                    aria-label={showPassword ? auth("hide") : auth("show")}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -147,17 +150,17 @@ function Login() {
                   type="submit"
                   disabled={loading}
                 >
-                  {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+                  {loading ? auth("loading") : auth("title")}
                 </button>
                 <div style={{ marginTop: 8, textAlign: "center" }}>
                   <a className="link-muted" href="/forgot-password">
-                    Quên mật khẩu?
+                    {auth("forgot")}
                   </a>
                 </div>
               </form>
             </div>
             <div style={{ marginTop: 12 }} className="text-muted">
-              Hoặc
+              {auth("or")}
             </div>
             <div style={{ marginTop: 12 }}>
               <button
@@ -168,11 +171,11 @@ function Login() {
                 <span aria-hidden className="google-swatch">
                   <GoogleIcon />
                 </span>
-                <span style={{ color: "black" }}>Đăng nhập với Google</span>
+                <span style={{ color: "black" }}>{auth("google")}</span>
               </button>
             </div>
             <div style={{ marginTop: 12 }} className="text-muted">
-              Bạn là thành viên FPTU Board Game Club?
+              {auth("clubQuestion")}
             </div>
             <div style={{ marginTop: 12 }}>
               <button
@@ -188,12 +191,12 @@ function Login() {
                   />
                 </span>
                 <span style={{ color: "black" }}>
-                  Đăng nhập với tài khoản FBGC
+                  {auth("fbgc")}
                 </span>
               </button>
             </div>
             <div style={{ marginTop: 16 }} className="text-muted">
-              Bạn chưa có tài khoản?{" "}
+              {auth("noAccount")} {" "}
               <a
                 href="/register"
                 style={{
@@ -202,7 +205,7 @@ function Login() {
                   fontWeight: 600,
                 }}
               >
-                Đăng ký
+                {auth("register")}
               </a>
             </div>
           </div>

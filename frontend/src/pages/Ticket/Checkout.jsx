@@ -8,6 +8,7 @@ import {
   Ticket,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { CartSkeleton } from "../../components/LoadingSkeletons";
 import authAPI from "../../apis/authAPI";
@@ -45,6 +46,8 @@ const formatPrice = (value) =>
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const ticket = (key, options) => t(`ticket.${key}`, options);
   const [cart, setCart] = useState({ items: [], totalAmount: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,7 +57,7 @@ const Checkout = () => {
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
 
   const loadCart = useCallback(async () => {
-    const loadingToast = toast.loading("Đang tải thông tin thanh toán...");
+    const loadingToast = toast.loading(ticket("loadingPayment"));
     setIsLoading(true);
     setError(null);
     try {
@@ -133,13 +136,13 @@ const Checkout = () => {
   const applyDiscount = () =>
     setDiscountMessage(
       discount
-        ? "Mã giảm giá đã được áp dụng."
-        : "Mã giảm giá không hợp lệ hoặc đã hết hạn.",
+        ? ticket("couponApplied")
+        : ticket("couponInvalid"),
     );
   const handleSubmit = (event) => {
     event.preventDefault();
     if (hasUnavailableItems) {
-      toast.error("Vé không còn được bán. Vui lòng quay lại giỏ hàng.");
+      toast.error(ticket("noOrders"));
       return;
     }
     setShowPaymentConfirmation(true);
@@ -166,7 +169,7 @@ const Checkout = () => {
         <div className="ticket-checkout-state">
           <p>{error}</p>
           <button type="button" onClick={loadCart}>
-            Thử lại
+            {ticket("retry")}
           </button>
         </div>
       </main>
@@ -181,36 +184,35 @@ const Checkout = () => {
           type="button"
           onClick={() => navigate("/cart")}
         >
-          <ArrowLeft size={17} /> Quay lại giỏ vé
+          <ArrowLeft size={17} /> {ticket("backCart")}
         </button>
         <header className="checkout-heading">
           <p>FPTU Halloween 2026</p>
-          <h1>Xác nhận đơn hàng</h1>
-          <span>Bước 1 / 2</span>
+          <h1>{ticket("checkoutTitle")}</h1>
+          <span>{ticket("stepOne")}</span>
         </header>
         <div className="checkout-layout">
           <form className="checkout-form" onSubmit={handleSubmit}>
             <section>
               <div className="checkout-section-head">
                 <div>
-                  <h2>Thông tin người mua</h2>
-                  <p>Nhập thông tin để nhận vé điện tử.</p>
+                  <h2>{ticket("buyerInfo")}</h2>
+                  <p>{ticket("buyerHint")}</p>
                   <p style={{ color: "var(--red)" }}>
-                    Lưu ý: Hãy kiểm tra địa chỉ Email thật kĩ vì chúng tôi sẽ
-                    gửi vé điện tử về địa chỉ này.
+                    {ticket("emailNotice")}
                   </p>
                 </div>
               </div>
               <div className="checkout-fields">
                 <label>
-                  Họ và tên
+                  {ticket("fullName")}
                   <input
                     required
                     value={customer.fullName}
                     onChange={(event) =>
                       setCustomer({ ...customer, fullName: event.target.value })
                     }
-                    placeholder="Nhập họ và tên"
+                  placeholder={ticket("fullNamePlaceholder")}
                   />
                 </label>
                 <label>
@@ -226,7 +228,7 @@ const Checkout = () => {
                   />
                 </label>
                 <label>
-                  Số điện thoại
+                  {ticket("phone")}
                   <input
                     required
                     type="tel"
@@ -234,7 +236,7 @@ const Checkout = () => {
                     onChange={(event) =>
                       setCustomer({ ...customer, phone: event.target.value })
                     }
-                    placeholder="Nhập số điện thoại"
+                  placeholder={ticket("phonePlaceholder")}
                   />
                 </label>
               </div>
@@ -242,8 +244,8 @@ const Checkout = () => {
             <section>
               <div className="checkout-section-head">
                 <div>
-                  <h2>Mã giảm giá</h2>
-                  <p>Nếu có, nhập mã ưu đãi của bạn.</p>
+                  <h2>{ticket("coupon")}</h2>
+                  <p>{ticket("couponHint")}</p>
                 </div>
               </div>
               <div className="checkout-discount">
@@ -253,10 +255,10 @@ const Checkout = () => {
                     setDiscountCode(event.target.value);
                     setDiscountMessage("");
                   }}
-                  placeholder="Nhập mã giảm giá"
+                placeholder={ticket("couponPlaceholder")}
                 />
                 <button type="button" onClick={applyDiscount}>
-                  Áp dụng
+                {ticket("apply")}
                 </button>
               </div>
               {discountMessage && (
@@ -272,12 +274,12 @@ const Checkout = () => {
               )}
             </section>
             <button className="checkout-submit" type="submit" disabled={hasUnavailableItems}>
-              Tiếp tục thanh toán <ArrowRight size={18} />
+              {ticket("continue")} <ArrowRight size={18} />
             </button>
           </form>
           <aside className="checkout-summary">
             <p className="checkout-summary__label">
-              Vé đã chọn · {totalQuantity}
+              {ticket("selectedTickets")} · {totalQuantity}
             </p>
             {cartItems.map((item) => {
               const ticketType = item.ticketType || {};
@@ -294,10 +296,10 @@ const Checkout = () => {
                   </div>
                   <div>
                     <h3>{ticketType.ticketTypeName}</h3>
-                    {ticketType.ticketTypeStatus !== "active" && <p className="checkout-ticket__unavailable">Vé không còn được bán</p>}
+                    {ticketType.ticketTypeStatus !== "active" && <p className="checkout-ticket__unavailable">{ticket("unavailable")}</p>}
                     <p>
-                      <CalendarDays size={14} /> Ngày{" "}
-                      {ticketType.ticketTypeDate} tháng 10, 2026
+                      <CalendarDays size={14} /> {ticket("day")} {" "}
+                      {ticketType.ticketTypeDate} {ticket("dateSuffix")}
                     </p>
                     <p>
                       <Clock3 size={14} /> {ticketType.ticketTypeTime}
@@ -309,21 +311,20 @@ const Checkout = () => {
             })}
             <div className="checkout-total">
               <div>
-                <span>Tạm tính</span>
+                <span>{ticket("subtotal")}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
               <div>
-                <span>Giảm giá</span>
+                <span>{ticket("discount")}</span>
                 <strong>- {formatPrice(discount)}</strong>
               </div>
               <div className="checkout-total__final">
-                <span>Tổng thanh toán</span>
+                <span>{ticket("total")}</span>
                 <strong>{formatPrice(total)}</strong>
               </div>
             </div>
             <div className="checkout-safe">
-              <Check size={16} /> Thông tin của bạn được lưu an toàn trong phiên
-              thanh toán này.
+              <Check size={16} /> {ticket("secure")}
             </div>
           </aside>
         </div>
@@ -332,10 +333,10 @@ const Checkout = () => {
         isOpen={showPaymentConfirmation}
         onClose={() => setShowPaymentConfirmation(false)}
         onConfirm={continueToPayment}
-        title="Xác nhận thanh toán"
-        description="Bạn sẽ được chuyển đến màn hình mã QR để hoàn tất thanh toán.<br />Bạn có muốn tiếp tục không?"
-        cancelLabel="Quay lại"
-        confirmLabel="Tiếp tục thanh toán"
+        title={ticket("confirmPayment")}
+        description={ticket("confirmPaymentText")}
+        cancelLabel={ticket("cancel")}
+        confirmLabel={ticket("continue")}
       />
     </main>
   );
