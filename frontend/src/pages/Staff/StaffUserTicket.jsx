@@ -6,6 +6,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
+  QrCode,
   Search,
   Ticket,
   X,
@@ -14,6 +15,7 @@ import toast from "react-hot-toast";
 import { SkeletonRows } from "../../components/LoadingSkeletons";
 import ticketAPI from "../../apis/ticketAPI";
 import ManageSidebar from "../../components/ManageSidebar";
+import QRModal from "../../components/QRModal";
 import { translateError } from "../../utils/translateResponse";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./StaffUserTicket.scss";
@@ -56,6 +58,7 @@ const StaffUserTicket = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [selectedQrCode, setSelectedQrCode] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
@@ -308,7 +311,18 @@ const StaffUserTicket = () => {
             <StatusBadge status={selectedTicket.ticketStatus} />
             <dl>
               <dt>Mã vé</dt>
-              <dd>{selectedTicket.qrCodeData || selectedTicket._id}</dd>
+              <dd>
+                {selectedTicket.qrCodeData || selectedTicket._id}
+                {selectedTicket.qrCodeData && (
+                  <button
+                    type="button"
+                    className="user-ticket-qr-button"
+                    onClick={() => setSelectedQrCode(selectedTicket.qrCodeData)}
+                  >
+                    <QrCode size={16} /> Xem mã QR
+                  </button>
+                )}
+              </dd>
               <dt>Người sở hữu</dt>
               <dd>
                 {getName(selectedTicket)}
@@ -326,6 +340,12 @@ const StaffUserTicket = () => {
           </aside>
         </div>
       )}
+      <QRModal
+        isOpen={Boolean(selectedQrCode)}
+        value={selectedQrCode}
+        onClose={() => setSelectedQrCode(null)}
+        isManagement
+      />
     </div>
   );
 };

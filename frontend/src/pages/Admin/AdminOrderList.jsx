@@ -56,11 +56,13 @@ const formatMoney = (amount) =>
   `${new Intl.NumberFormat("vi-VN").format(Number(amount) || 0)} đ`;
 const formatDate = (value) =>
   value ? new Date(value).toLocaleString("vi-VN") : "—";
-const getItemCount = (order) =>
-  (order?.items || []).reduce(
+const getItemCount = (order) => {
+  if (order?.itemCount != null) return Number(order.itemCount) || 0;
+  return (order?.items || []).reduce(
     (sum, item) => sum + Number(item.quantity || 0),
     0,
   );
+};
 
 const AdminOrderList = () => {
   const [orders, setOrders] = useState([]);

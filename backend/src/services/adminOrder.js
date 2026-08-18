@@ -30,16 +30,23 @@ const ensureId = id => {
   if (!mongoose.isValidObjectId(id)) throw new Error('Invalid order ID')
 }
 
+const countOrderItems = items => (Array.isArray(items) ? items : [])
+  .reduce((total, item) => total + Number(item.quantity || 0), 0)
+
 const getOrders = async ({ page = 1, pageSize = 20, status } = {}) => {
   await expirePendingOrders()
   const currentPage = Math.max(Number.parseInt(page, 10) || 1, 1)
   const limit = Math.min(Math.max(Number.parseInt(pageSize, 10) || 20, 1), 100)
   const filter = status ? { orderStatus: status } : {}
   const [orders, total] = await Promise.all([
-    Order.find(filter).select('-items').populate('userId', 'fullName email phone').sort({ createdAt: -1 }).skip((currentPage - 1) * limit).limit(limit).lean(),
+    Order.find(filter).populate('userId', 'fullName email phone').sort({ createdAt: -1 }).skip((currentPage - 1) * limit).limit(limit).lean(),
     Order.countDocuments(filter)
   ])
-  return { orders, pagination: { page: currentPage, pageSize: limit, total, totalPages: Math.ceil(total / limit) } }
+  const ordersWithItemCount = orders.map(({ items, ...order }) => ({
+    ...order,
+    itemCount: countOrderItems(items)
+  }))
+  return { orders: ordersWithItemCount, pagination: { page: currentPage, pageSize: limit, total, totalPages: Math.ceil(total / limit) } }
 }
 
 const getOrderById = async id => {
@@ -66,7 +73,7 @@ const getMyOrders = async userId => {
     return {
       ...safeOrder,
       paymentExpiresAt: paymentData?.expiredAt || null,
-      itemCount: order.items.reduce((total, item) => total + Number(item.quantity || 0), 0)
+      itemCount: countOrderItems(order.items)
     }
   })
 }

@@ -89,7 +89,11 @@ const ERROR_TRANSLATIONS = {
   'Cart is empty': 'Giỏ hàng đang trống.',
   'Some tickets are no longer available': 'Một số vé không còn đủ số lượng.',
   'Order not found': 'Không tìm thấy đơn hàng.',
+  'Invalid ticket ID': 'Mã vé không hợp lệ.',
+  'Invalid ticket date': 'Ngày vé không hợp lệ.',
+  'Invalid ticket QR code': 'Mã QR vé không hợp lệ.',
   'Ticket not found': 'Không tìm thấy vé.',
+  'Ticket is not available for the current staff date': 'Vé không thuộc ngày check-in hiện tại.',
   'Ticket has already been checked in': 'Vé này đã được check-in trước đó.',
   'Ticket can only be checked in on its ticket date': 'Vé chỉ được check-in đúng ngày ghi trên vé.',
 
