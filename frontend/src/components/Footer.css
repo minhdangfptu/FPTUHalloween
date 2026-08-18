@@ -1,6 +1,6 @@
 /* Footer Styles - FPT Halloween Website */
 .fpt-footer {
-  background-color: var(--color-surface);
+  background-color: var(--color-background);
   color: var(--color-text);
   border-top: 1px solid #e5e7eb;
   width: 100%;
@@ -91,11 +91,11 @@
 }
 
 .fpt-footer__social-btn:hover {
-  background-color: var(--color-hover-surface);
+  background-color: var(--color-hover-background);
 }
 
 .fpt-footer__social-btn--facebook {
-  color: #1877F2;
+  color: #1877f2;
 }
 
 .fpt-footer__social-btn--instagram {
@@ -177,12 +177,12 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  
+
   .fpt-footer__links-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
-  
+
   .fpt-footer__container {
     padding: 32px 16px;
   }
@@ -193,7 +193,7 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .fpt-footer__container {
     padding: 24px 12px;
   }

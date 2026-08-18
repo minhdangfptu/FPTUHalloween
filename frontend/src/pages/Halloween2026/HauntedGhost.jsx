@@ -145,32 +145,56 @@ const HauntedGhost = () => {
           </div>
         ) : (
           <div className="haunted-ghost-table-wrap">
-            <table className="haunted-ghost-table">
-              {/* <caption className="haunted-ghost-table__caption">
-                Bảng giá vé Nhà Ma Halloween 2026
-              </caption> */}
+            <div className="haunted-ghost-ticket-venue">
+              <MapPin size={16} aria-hidden="true" />
+              <span>
+                <strong>{page("location")}:</strong> {page("venue")}
+              </span>
+            </div>
+            <table
+              className="haunted-ghost-table"
+              aria-label={page("ticketTitle")}
+            >
               <thead>
                 <tr>
-                  <th>{page("day")}</th><th>{page("time")}</th><th>{page("price")}</th><th>{page("location")}</th><th>{page("remaining")}</th>
-                  <th />
+                  <th scope="col">{page("day")}</th>
+                  <th scope="col">{page("time")}</th>
+                  <th scope="col">{page("price")}</th>
+                  <th scope="col">{page("remaining")}</th>
+                  <th scope="col"><span className="sr-only">{page("buy")}</span></th>
                 </tr>
               </thead>
               <tbody>
                 {tickets.map((ticket) => (
                   <tr key={ticket._id}>
-                    <td data-label={page("day")}>{ticket.ticketTypeDate}/10/2026</td>
-                    <td data-label={page("time")}>{ticket.ticketTypeTime}</td>
+                    <td data-label={page("day")}>
+                      <span className="haunted-ghost-table__detail">
+                        <CalendarDays size={16} aria-hidden="true" />
+                        <strong>{ticket.ticketTypeDate}/10/2026</strong>
+                      </span>
+                    </td>
+                    <td data-label={page("time")}>
+                      <span className="haunted-ghost-table__detail">
+                        <Clock3 size={16} aria-hidden="true" />
+                        <strong>{ticket.ticketTypeTime}</strong>
+                      </span>
+                    </td>
                     <td
                       data-label={page("price")}
                       className="haunted-ghost-table__price"
                     >
-                      {new Intl.NumberFormat("vi-VN").format(
-                        ticket.ticketTypePrice,
-                      )}{" "}
-                      VND
+                      <strong>
+                        {new Intl.NumberFormat("vi-VN").format(
+                          ticket.ticketTypePrice,
+                        )}{" "}
+                        VND
+                      </strong>
                     </td>
-                    <td data-label={page("location")}>{page("venue")}</td>
-                    <td data-label={page("remaining")}>{page("tickets", { count: ticket.availableQuantity })}</td>
+                    <td data-label={page("remaining")}>
+                      <span className="haunted-ghost-table__availability">
+                        {page("tickets", { count: ticket.availableQuantity })}
+                      </span>
+                    </td>
                     <td className="haunted-ghost-table__action">
                       <button
                         type="button"
@@ -178,7 +202,8 @@ const HauntedGhost = () => {
                           navigate(`/tickets/detail/${ticket._id}`)
                         }
                       >
-                        {page("buy")} <ArrowRight size={16} />
+                        <span>{page("buy")}</span>
+                        <ArrowRight size={16} aria-hidden="true" />
                       </button>
                     </td>
                   </tr>

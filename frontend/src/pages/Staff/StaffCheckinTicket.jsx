@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
-import { Html5Qrcode } from "html5-qrcode";
+import { Scanner } from "@yudiel/react-qr-scanner";
 import ManageSidebar from "../../components/ManageSidebar";
 import ticketAPI from "../../apis/ticketAPI";
 import { translateError } from "../../utils/translateResponse";
@@ -21,8 +21,7 @@ import "./StaffCheckinTicket.scss";
 const StaffCheckinTicket = () => {
   const location = useLocation();
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
-  const scannerRef = useRef(null);
-  const cameraLoadingToastRef = useRef(null);
+  const cameraScanInFlightRef = useRef(false);
   const [scannedTickets, setScannedTickets] = useState([]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [manualCode, setManualCode] = useState("");
@@ -47,25 +46,8 @@ const StaffCheckinTicket = () => {
   };
 
   const stopCamera = () => {
-    const scanner = scannerRef.current;
-    scannerRef.current = null;
+    cameraScanInFlightRef.current = false;
     setIsCameraOpen(false);
-    if (cameraLoadingToastRef.current?.status === "loading") {
-      toast.dismiss(cameraLoadingToastRef.current.id);
-    }
-    cameraLoadingToastRef.current = null;
-    if (!scanner) return;
-
-    scanner
-      .stop()
-      .catch(() => {})
-      .finally(() => {
-        try {
-          scanner.clear();
-        } catch {
-          // The scanner may already be cleared when the modal closes twice.
-        }
-      });
   };
 
   const previewScan = async (code) => {
@@ -119,69 +101,39 @@ const StaffCheckinTicket = () => {
   };
 
   const openCamera = () => {
-    if (isCameraOpen || scannerRef.current) return;
-    const loadingToast = toast.loading("Đang mở camera check-in...");
-    cameraLoadingToastRef.current = { id: loadingToast, status: "loading" };
+    if (isCameraOpen) return;
+    cameraScanInFlightRef.current = false;
     setIsCameraOpen(true);
   };
 
-  useEffect(() => {
-    if (!isCameraOpen) return undefined;
-    const scanner = new Html5Qrcode("staff-checkin-reader");
-    scannerRef.current = scanner;
-    scanner
-      .start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        (decodedText) => previewScan(decodedText),
-        () => {},
-      )
-      .then(() => {
-        if (scannerRef.current !== scanner) {
-          scanner
-            .stop()
-            .catch(() => {})
-            .finally(() => {
-              try {
-                scanner.clear();
-              } catch {
-                /* already cleared */
-              }
-            });
-          return;
-        }
-        toast.success("Camera đã sẵn sàng. Đưa mã QR vào khung quét.", {
-          id: cameraLoadingToastRef.current?.id,
-        });
-        if (cameraLoadingToastRef.current) {
-          cameraLoadingToastRef.current.status = "success";
-        }
-      })
-      .catch((error) => {
-        if (scannerRef.current !== scanner) return;
-        const errorDetails = [error?.name, error?.message, error?.cause, error]
-          .filter(Boolean)
-          .map(String)
-          .join(" ");
-        const cameraIsBusy =
-          /notreadableerror|trackstarterror|already in use|could not start video source|device busy|camera.*(?:busy|in use)|(?:busy|in use).*camera/i.test(
-            errorDetails,
-          );
-        const errorMessage = cameraIsBusy
-          ? "Camera đang được sử dụng ở nơi khác. Hãy đóng ứng dụng hoặc tab đang dùng camera rồi thử lại."
-          : "Không thể khởi động camera. Hãy kiểm tra quyền truy cập camera và cấp quyền cho trình duyệt.";
-        if (cameraLoadingToastRef.current) {
-          cameraLoadingToastRef.current.status = "error";
-        }
-        toast.error(errorMessage, { id: cameraLoadingToastRef.current?.id });
-        stopCamera();
-      });
-    return () => {
-      if (scannerRef.current === scanner) stopCamera();
-    };
-  }, [isCameraOpen]);
+  const handleCameraScan = async (detectedCodes) => {
+    const decodedCode = detectedCodes?.[0]?.rawValue;
+    if (!decodedCode || cameraScanInFlightRef.current) return;
 
-  useEffect(() => () => stopCamera(), []);
+    cameraScanInFlightRef.current = true;
+    try {
+      await previewScan(decodedCode);
+    } finally {
+      window.setTimeout(() => {
+        cameraScanInFlightRef.current = false;
+      }, 800);
+    }
+  };
+
+  const handleCameraError = (error) => {
+    console.error("QR scanner error:", error);
+    const errorMessages = {
+      "permission-denied": "Trình duyệt chưa được cấp quyền camera.",
+      "no-camera": "Không tìm thấy camera trên thiết bị.",
+      "in-use": "Camera đang được sử dụng ở ứng dụng hoặc tab khác.",
+      "insecure-context": "Trang quét QR phải được mở bằng HTTPS.",
+      unsupported: "Trình duyệt không hỗ trợ quét QR bằng camera.",
+    };
+    const message = errorMessages[error?.kind];
+    if (!message) return;
+    toast.error(message);
+    stopCamera();
+  };
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -412,7 +364,23 @@ const StaffCheckinTicket = () => {
               </button>
             </header>
             <div className="staff-checkin-camera-frame">
-              <div id="staff-checkin-reader" />
+              <Scanner
+                formats={["qr_code"]}
+                constraints={{ facingMode: "environment" }}
+                onScan={handleCameraScan}
+                onError={handleCameraError}
+                scanDelay={350}
+                components={{ finder: false }}
+                sound={false}
+                styles={{
+                  container: { width: "100%", height: "100%" },
+                  video: { width: "100%", height: "100%", objectFit: "cover" },
+                }}
+              />
+              <div
+                className="staff-checkin-camera-finder"
+                aria-hidden="true"
+              />
             </div>
             <p className="staff-checkin-camera-hint">
               Giữ mã QR cách camera khoảng 15–30 cm.

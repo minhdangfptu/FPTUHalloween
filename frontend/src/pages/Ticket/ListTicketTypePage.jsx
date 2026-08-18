@@ -18,6 +18,9 @@ import "./ListTicketTypePage.scss";
 
 const FEATURE_KEYS = ["featureExperience", "featurePersonal", "featureEventDay"];
 
+const getDayFromDateInput = (dateValue) =>
+  dateValue ? String(Number(dateValue.split("-")[2])) : "";
+
 const ListTicketTypePage = () => {
   const { t } = useTranslation();
   const ticket = (key, options) => t(`ticket.${key}`, options);
@@ -25,6 +28,14 @@ const ListTicketTypePage = () => {
   const [ticketTypes, setTicketTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchForm, setSearchForm] = useState({
+    date: "",
+    time: "",
+  });
+  const [appliedSearch, setAppliedSearch] = useState({
+    date: "",
+    time: "",
+  });
   const navigate = useNavigate();
 
   const loadTicketTypes = useCallback(async () => {
@@ -49,23 +60,72 @@ const ListTicketTypePage = () => {
   }, [loadTicketTypes]);
 
   const visibleTickets = useMemo(
+    () => {
+      const searchDate = getDayFromDateInput(appliedSearch.date);
+
+      return ticketTypes.filter((ticketType) => {
+        const matchesDay =
+          activeFilter === "all" ||
+          String(ticketType.ticketTypeDate) === activeFilter;
+        const matchesSearchDate =
+          !searchDate || String(ticketType.ticketTypeDate) === searchDate;
+        const matchesSearchTime =
+          !appliedSearch.time || ticketType.ticketTypeTime === appliedSearch.time;
+
+        return (
+          ticketType.ticketTypeStatus === "active" &&
+          Number(ticketType.availableQuantity) > 0 &&
+          matchesDay &&
+          matchesSearchDate &&
+          matchesSearchTime
+        );
+      });
+    },
+    [activeFilter, appliedSearch, ticketTypes],
+  );
+
+  const timeOptions = useMemo(
     () =>
-      activeFilter === "all"
-        ? ticketTypes.filter(
+      [...new Set(
+        ticketTypes
+          .filter(
             ({ ticketTypeStatus, availableQuantity }) =>
               ticketTypeStatus === "active" && Number(availableQuantity) > 0,
           )
-        : ticketTypes.filter(
-            ({ ticketTypeDate, ticketTypeStatus, availableQuantity }) =>
-              ticketTypeStatus === "active" &&
-              Number(availableQuantity) > 0 &&
-              String(ticketTypeDate) === activeFilter,
-          ),
-    [activeFilter, ticketTypes],
+          .map(({ ticketTypeTime }) => ticketTypeTime)
+          .filter(Boolean),
+      )].sort(),
+    [ticketTypes],
   );
 
   const formatPrice = (price) =>
     `${new Intl.NumberFormat("vi-VN").format(price)} VND`;
+
+  const handleSearchChange = (event) => {
+    const { name, value } = event.target;
+    setSearchForm((currentForm) => ({ ...currentForm, [name]: value }));
+  };
+
+  const handleTimeSelect = (time) => {
+    setSearchForm((currentForm) => ({
+      ...currentForm,
+      time: currentForm.time === time ? "" : time,
+    }));
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    setActiveFilter("all");
+    setAppliedSearch(searchForm);
+
+    const resultsSection = document.getElementById("ticket-list-results");
+    resultsSection?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <main className="ticket-list-page">
@@ -90,7 +150,88 @@ const ListTicketTypePage = () => {
         </div>
       </section>
       <section
+        className="ticket-search-panel"
+        aria-labelledby="ticket-search-title"
+      >
+        <div className="ticket-search-panel__form">
+          <p className="ticket-list-section-label">{ticket("ticketList")}</p>
+          <h2 id="ticket-search-title">{ticket("searchTitle")}</h2>
+          <p className="ticket-search-panel__intro">
+            {ticket("searchIntro")}
+          </p>
+          <form className="ticket-search-form" onSubmit={handleSearchSubmit}>
+            <div className="ticket-search-fields">
+              <label htmlFor="ticket-search-date">
+                {ticket("searchDate")}
+                <input
+                  id="ticket-search-date"
+                  name="date"
+                  type="date"
+                  value={searchForm.date}
+                  onChange={handleSearchChange}
+                  min="2026-10-27"
+                  max="2026-10-29"
+                />
+              </label>
+              <fieldset className="ticket-search-time-field">
+                <legend>{ticket("searchTime")}</legend>
+                <span
+                  className="ticket-time-chips"
+                  role="group"
+                  aria-label={ticket("searchTime")}
+                >
+                  {timeOptions.length > 0 ? (
+                    timeOptions.map((time) => (
+                      <button
+                        className={`ticket-time-chip${searchForm.time === time ? " is-active" : ""}`}
+                        key={time}
+                        type="button"
+                        aria-pressed={searchForm.time === time}
+                        onClick={() => handleTimeSelect(time)}
+                      >
+                        {time}
+                      </button>
+                    ))
+                  ) : (
+                    <span className="ticket-time-chips__empty">
+                      {ticket("timeUpdating")}
+                    </span>
+                  )}
+                </span>
+              </fieldset>
+              <label htmlFor="ticket-search-location">
+                {ticket("searchLocation")}
+                <input
+                  id="ticket-search-location"
+                  type="text"
+                  value={ticket("venue")}
+                  disabled
+                />
+              </label>
+            </div>
+            <button className="ticket-search-submit" type="submit">
+              {ticket("searchButton")}
+              <ArrowRight size={17} aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+        <div
+          className="ticket-search-panel__visual"
+          role="img"
+          aria-label={ticket("imagePlaceholder")}
+        >
+          <div className="ticket-search-placeholder">
+            <Ticket size={42} strokeWidth={1.4} aria-hidden="true" />
+            <strong>ENTRY PASS</strong>
+            <span>2026</span>
+          </div>
+          <p>{ticket("imagePlaceholder")}</p>
+          <span>{ticket("imageNote")}</span>
+        </div>
+      </section>
+      <section
         className="ticket-list-content"
+        id="ticket-list-results"
         aria-labelledby="ticket-list-heading"
       >
         <div className="ticket-list-heading-row">
