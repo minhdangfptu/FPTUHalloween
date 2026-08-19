@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import axios from 'axios';
 import { baseUrl } from '../config';
 
@@ -14,7 +13,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
-    if (token) {
+    if (token && !config.headers?.Authorization) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -41,7 +40,7 @@ axiosClient.interceptors.response.use(
 
     if (!error.response) return Promise.reject(error);
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry && !originalRequest.skipAuthRefresh) {
       const refreshToken = localStorage.getItem('refreshToken');
       if (!refreshToken) {
         localStorage.removeItem('accessToken');

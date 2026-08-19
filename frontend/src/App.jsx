@@ -55,6 +55,9 @@ import ChatPage from "./pages/Chat/ChatPage";
 import FeedbackStaffPage from "./pages/Feedback/FeedbackStaffPage";
 import FeedbackUserPage from "./pages/Feedback/FeedbackUserPage";
 import AdminFeedback from "./pages/Admin/AdminFeedback";
+import DdayVotePage from "./pages/Vote/DdayVotePage";
+import DdayVoteAdminPage from "./pages/Admin/DdayVoteAdminPage";
+import PublishCode from "./pages/Admin/PublishCode";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -347,6 +350,7 @@ export default function App() {
             </Layout>
           }
         />
+        <Route path="/vote/dday" element={<DdayVotePage />} />
         <Route
           path="/staff/feedback"
           element={
@@ -403,6 +407,15 @@ export default function App() {
             </ManageLayout>
           }
         />
+        <Route
+          path="/admin/votes"
+          element={
+            <ManageLayout role="admin">
+              <DdayVoteAdminPage />
+            </ManageLayout>
+          }
+        />
+        <Route path="/admin/votes/publish-code" element={<PublishCode />} />
         <Route
           path="/admin"
           element={

@@ -16,6 +16,7 @@ import {
   TicketCheck,
   Tickets,
   UsersRound,
+  Vote,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { authAPI } from "../apis/authAPI";
@@ -41,6 +42,7 @@ const MENU_BY_ROLE = {
     { id: "contacts", label: "Liên hệ", icon: ContactRound },
     { id: "hot-news", label: "Thêm thông báo", icon: Megaphone },
     { id: "feedback", label: "Phản hồi sự kiện", icon: ClipboardPenLine },
+    { id: "vote", label: "Bình chọn D-Day", icon: Vote },
     { id: "home", label: "Về trang sự kiện", icon: Home },
   ],
   staff: [
@@ -141,6 +143,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
     "hot-news": "/admin/hot-news",
     "ticket-types": "/staff/ticket-types",
     feedback: resolvedRole === "admin" ? "/admin/feedback" : "/staff/feedback",
+    vote: "/admin/votes",
     "purchased-tickets":
       resolvedRole === "admin"
         ? "/admin/purchased-tickets"

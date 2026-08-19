@@ -13,5 +13,7 @@ module.exports = {
   ChatConversation: require('./ChatConversation'),
   ChatMessage: require('./ChatMessage'),
   FeedbackForm: require('./FeedbackForm'),
-  FeedbackResponse: require('./FeedbackResponse')
+  FeedbackResponse: require('./FeedbackResponse'),
+  DdayVoteConfig: require('./DdayVoteConfig'),
+  DdayVote: require('./DdayVote')
 }

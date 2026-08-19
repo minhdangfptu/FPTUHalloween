@@ -8,6 +8,7 @@ const routes = require('./src/routes')
 const { default: mongoose } = require('mongoose')
 const { expirePendingOrders } = require('./src/services/adminOrder')
 const { migrateTicketTypeQuantities } = require('./src/services/ticketType')
+const { closeExpired, ensureIndexes } = require('./src/services/ddayVote')
 const { initializeStaffChatSocket } = require('./src/sockets/staffChat')
 
 const app = express()
@@ -85,11 +86,18 @@ const startServer = async () => {
   try {
     await connectDB()
     console.log('DB name:', mongoose.connection.name);
-    if (mongoose.connection.readyState === 1) await migrateTicketTypeQuantities()
+    if (mongoose.connection.readyState === 1) {
+      await migrateTicketTypeQuantities()
+      await ensureIndexes()
+    }
     await expirePendingOrders()
+    await closeExpired()
     setInterval(() => {
       expirePendingOrders().catch(error => console.error('Failed to expire pending orders:', error.message))
     }, 30 * 1000)
+    setInterval(() => {
+      closeExpired().catch(error => console.error('Failed to close expired D-Day vote:', error.message))
+    }, 15 * 1000)
     // mongoose.connection.db.listCollections().toArray().then(cols => {
     //   console.log('Collections:', cols.map(c => c.name));
     // });

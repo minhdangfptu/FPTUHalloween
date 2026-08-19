@@ -3,6 +3,7 @@ const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const { User, Role, RefreshToken, Otp } = require('../models')
 const { sendOtpEmail } = require('../providers/emailProvider')
+const { verifyGoogleCredential } = require('../providers/googleProvider')
 
 const accessSecret = () => process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET
 const refreshSecret = () => process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET
@@ -73,27 +74,7 @@ const login = async ({ identifier, userName, email, password } = {}) => {
   return { user: user.toJSON(), ...(await issueTokens(user)) }
 }
 const googleLogin = async ({ credential, accessToken } = {}) => {
-  if (!credential && !accessToken) throw new Error('Google credential is required')
-  const clientId = process.env.GOOGLE_CLIENT_ID
-  let googleUser
-
-  if (credential) {
-    const response = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(credential)}`)
-    if (!response.ok) throw new Error('Invalid Google credential')
-    googleUser = await response.json()
-    if (!clientId || googleUser.aud !== clientId) throw new Error('Invalid Google credential')
-  } else {
-    const tokenInfoResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?access_token=${encodeURIComponent(accessToken)}`)
-    if (!tokenInfoResponse.ok) throw new Error('Invalid Google credential')
-    const tokenInfo = await tokenInfoResponse.json()
-    if (!clientId || tokenInfo.aud !== clientId) throw new Error('Invalid Google credential')
-    const userInfoResponse = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: `Bearer ${accessToken}` } })
-    if (!userInfoResponse.ok) throw new Error('Invalid Google credential')
-    googleUser = await userInfoResponse.json()
-  }
-
-  if (!googleUser.email_verified) throw new Error('Google email is not verified')
-
+  const googleUser = await verifyGoogleCredential({ credential, accessToken })
   const email = normalizeEmail(googleUser.email)
   let user = await User.findOne({ email }).populate('roleId', 'roleName roleActive')
   if (user && user.authProvider !== 'google') throw new Error('An email account already exists with this email')

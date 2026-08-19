@@ -56,6 +56,14 @@ const ERROR_TRANSLATIONS = {
   'An email account already exists with this email': 'Email này đã được đăng ký bằng tài khoản email. Vui lòng đăng nhập bằng email và mật khẩu. Nếu bạn là FBGCer, hãy đăng nhập với FBGC',
   'Current password is incorrect': 'Mật khẩu hiện tại không đúng.',
   'Google accounts cannot change password here': 'Tài khoản Google không thể đổi mật khẩu tại đây.',
+  'Google credential is required': 'Vui lòng xác thực tài khoản Google.',
+  'Invalid Google credential': 'Thông tin xác thực Google không hợp lệ.',
+  'Google email is not verified': 'Email Google chưa được xác minh.',
+  'Invalid Google profile': 'Thông tin hồ sơ Google không hợp lệ.',
+  'Google login is not configured': 'Đăng nhập Google chưa được cấu hình.',
+  'Missing vote session token': 'Phiên bình chọn không tồn tại. Vui lòng xác thực lại Google.',
+  'Invalid vote session token': 'Phiên bình chọn không hợp lệ.',
+  'Invalid or expired vote session': 'Phiên bình chọn đã hết hạn. Vui lòng xác thực lại Google.',
   'No token provided': 'Vui lòng đăng nhập để tiếp tục.',
   'Invalid or expired OTP': 'Mã OTP không hợp lệ hoặc đã hết hạn.',
   'A valid email is required': 'Vui lòng nhập email hợp lệ.',
@@ -104,6 +112,29 @@ const ERROR_TRANSLATIONS = {
   'User enabled successfully': 'Gỡ vô hiệu hóa tài khoản thành công.',
   'Deleted successfully': 'Xóa thành công.',
   'Operation successful': 'Thao tác thành công.',
+  'D-Day vote configuration not found': 'Chưa có cấu hình bình chọn D-Day.',
+  'Vote campaign can only be edited while it is in draft': 'Chỉ có thể chỉnh sửa campaign khi đang ở bản nháp.',
+  'At least one vote category is required': 'Cần có ít nhất một hạng mục bình chọn.',
+  'Vote campaign title is required': 'Tiêu đề campaign bình chọn không được để trống.',
+  'Vote category 1 must have at least two options': 'Mỗi hạng mục cần ít nhất hai lựa chọn.',
+  'Close time must be later than the current time': 'Thời gian đóng phải sau thời điểm hiện tại.',
+  'Close time is required before opening the vote': 'Cần cấu hình thời gian đóng trước khi mở bình chọn.',
+  'A closed vote campaign cannot be reopened': 'Campaign đã đóng không thể mở lại.',
+  'Vote campaign is already open': 'Bình chọn hiện đang mở.',
+  'Vote campaign status has changed; please refresh and try again': 'Trạng thái bình chọn vừa thay đổi. Vui lòng tải lại trang và thử lại.',
+  'Close time is required': 'Vui lòng chọn thời điểm đóng bình chọn.',
+  'Close time can only be changed while the vote is open': 'Chỉ có thể đổi thời điểm đóng khi bình chọn đang mở.',
+  'Vote campaign must be open before it can be closed': 'Campaign phải được mở trước khi đóng.',
+  'Vote campaign is no longer in draft': 'Campaign không còn ở trạng thái bản nháp.',
+  'D-Day vote is not open': 'Bình chọn D-Day hiện chưa mở.',
+  'D-Day vote is not open yet': 'Bình chọn D-Day chưa đến thời gian mở.',
+  'Exactly one option is required for each vote category': 'Vui lòng chọn đúng một lựa chọn cho mỗi hạng mục.',
+  'Vote choices contain a missing or duplicate category': 'Lựa chọn bình chọn bị thiếu hoặc trùng hạng mục.',
+  'Submission ID must be a valid UUID': 'Mã gửi bình chọn không hợp lệ.',
+  'You have already submitted a different ballot': 'Bạn đã gửi một lá phiếu khác trước đó.',
+  'Submission ID has already been used': 'Mã gửi bình chọn đã được sử dụng.',
+  'The vote could not be recorded because it conflicts with another submission': 'Không thể ghi nhận vì lá phiếu bị trùng với một lượt gửi khác.',
+  'Vote results are not available until the vote is closed': 'Kết quả chỉ được công bố sau khi bình chọn đóng.',
   'Published feedback form not found': 'Không tìm thấy biểu mẫu phản hồi đang mở.',
   'This feedback form is not available for your role': 'Biểu mẫu phản hồi này không dành cho vai trò của bạn.',
   'You have already submitted this feedback form': 'Bạn đã gửi biểu mẫu phản hồi này rồi.',
@@ -159,6 +190,25 @@ const getErrorMessage = (error) => {
   return 'An unexpected error occurred.';
 };
 
+const translateVoteError = (message) => {
+  if (/^Vote category \d+ must have at least two options$/.test(message)) {
+    return 'Mỗi hạng mục cần ít nhất hai lựa chọn.';
+  }
+  if (/^Vote category \d+ is invalid$/.test(message) || /^Vote option \d+ is invalid$/.test(message)) {
+    return 'Thông tin hạng mục hoặc lựa chọn chưa hợp lệ.';
+  }
+  if (message.startsWith('Duplicate vote category:') || message.startsWith('Duplicate vote option:')) {
+    return 'Không được trùng mã hạng mục hoặc mã lựa chọn.';
+  }
+  if (message.startsWith('Missing vote choice for category:')) {
+    return 'Vui lòng chọn một lựa chọn cho từng hạng mục.';
+  }
+  if (message.startsWith('Invalid option for category:')) {
+    return 'Lựa chọn không thuộc hạng mục tương ứng.';
+  }
+  return null;
+};
+
 /**
  * Dịch error message từ tiếng Anh → tiếng Việt
  * @param {Error|axios.AxiosError} error
@@ -177,7 +227,7 @@ const translateError = (error) => {
   const translations = i18n.language?.startsWith('en')
     ? ERROR_TRANSLATIONS_EN
     : ERROR_TRANSLATIONS;
-  return translations[rawMessage] || rawMessage;
+  return translations[rawMessage] || translateVoteError(rawMessage) || rawMessage;
 };
 
 /**
@@ -219,6 +269,13 @@ const SUCCESS_TRANSLATIONS = {
   'Feedback form created successfully': 'Tạo biểu mẫu phản hồi thành công.',
   'Feedback form updated successfully': 'Cập nhật biểu mẫu phản hồi thành công.',
   'Feedback form deleted successfully': 'Xóa biểu mẫu phản hồi thành công.',
+  'Vote session created successfully': 'Xác thực Google thành công.',
+  'Vote recorded successfully': 'Ghi nhận bình chọn thành công.',
+  'Vote receipt returned successfully': 'Đã trả lại xác nhận bình chọn trước đó.',
+  'Vote campaign updated successfully': 'Cập nhật campaign bình chọn thành công.',
+  'Vote campaign opened successfully': 'Mở campaign bình chọn thành công.',
+  'Vote close time updated successfully': 'Cập nhật thời điểm đóng thành công.',
+  'Vote campaign closed successfully': 'Đóng campaign bình chọn thành công.',
   'Registration successful': 'Đăng ký thành công.',
   'Registration cancelled': 'Hủy đăng ký thành công.',
   'Login successful': 'Đăng nhập thành công.',

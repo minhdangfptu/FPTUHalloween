@@ -12,11 +12,13 @@ const payOSCtrl = require('../controllers/payOS')
 const payOSWebhookCtrl = require('../controllers/payOSWebhook')
 const userTicketCtrl = require('../controllers/userTicket')
 const feedbackCtrl = require('../controllers/feedback')
+const ddayVoteCtrl = require('../controllers/ddayVote')
 const staffChatRoute = require('./staffChat')
 // const adminCtrl = require('../controllers/admin')
 
 const { requireAuth, requireRole } = require('../middlewares/auth')
 const { ticketRateLimiter, paymentRateLimiter } = require('../middlewares/rateLimiter')
+const { requireVoteSession } = require('../middlewares/vote')
 
 // Health (optional)
 router.get('/_health', (req, res) => res.json({ ok: true }))
@@ -34,6 +36,20 @@ router.post('/auth/forgot-password', authCtrl.forgotPassword)
 router.post('/auth/reset-password', authCtrl.resetPassword)
 router.post('/auth/refresh', authCtrl.refresh)
 router.post('/auth/logout', authCtrl.logout)
+
+// D-DAY VOTE
+router.get('/vote/dday', ddayVoteCtrl.getPublicConfig)
+router.post('/vote/dday/session', ddayVoteCtrl.createSession)
+router.get('/vote/dday/status', requireVoteSession, ddayVoteCtrl.getStatus)
+router.post('/vote/dday/ballots', requireVoteSession, ddayVoteCtrl.createBallot)
+router.get('/vote/dday/results', ddayVoteCtrl.getResults)
+
+router.get('/admin/vote/dday', requireAuth, requireRole('Admin'), ddayVoteCtrl.getAdminConfig)
+router.patch('/admin/vote/dday', requireAuth, requireRole('Admin'), ddayVoteCtrl.updateConfig)
+router.post('/admin/vote/dday/open', requireAuth, requireRole('Admin'), ddayVoteCtrl.openConfig)
+router.patch('/admin/vote/dday/close-time', requireAuth, requireRole('Admin'), ddayVoteCtrl.updateCloseTime)
+router.post('/admin/vote/dday/close', requireAuth, requireRole('Admin'), ddayVoteCtrl.closeConfig)
+router.get('/admin/vote/dday/audit', requireAuth, requireRole('Admin'), ddayVoteCtrl.getAudit)
 
 // CONTACTS
 router.post('/contacts', contactCtrl.create)
