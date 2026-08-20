@@ -49,6 +49,7 @@ router.patch('/admin/vote/dday', requireAuth, requireRole('Admin'), ddayVoteCtrl
 router.post('/admin/vote/dday/open', requireAuth, requireRole('Admin'), ddayVoteCtrl.openConfig)
 router.patch('/admin/vote/dday/close-time', requireAuth, requireRole('Admin'), ddayVoteCtrl.updateCloseTime)
 router.post('/admin/vote/dday/close', requireAuth, requireRole('Admin'), ddayVoteCtrl.closeConfig)
+router.delete('/admin/vote/dday', requireAuth, requireRole('Admin'), ddayVoteCtrl.deleteCampaign)
 router.get('/admin/vote/dday/audit', requireAuth, requireRole('Admin'), ddayVoteCtrl.getAudit)
 
 // CONTACTS

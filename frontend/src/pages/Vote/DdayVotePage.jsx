@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { CheckCircle2, LoaderCircle, RefreshCw, Vote } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, House, Info, LoaderCircle, Mail, RefreshCw, UsersRound, Vote } from "lucide-react";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import ddayVoteAPI from "../../apis/ddayVoteAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
@@ -37,6 +38,7 @@ const DdayVotePage = () => {
   const [googleClient, setGoogleClient] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isCheckingVoteStatus, setIsCheckingVoteStatus] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -102,16 +104,18 @@ const DdayVotePage = () => {
     }
 
     setIsSigningIn(true);
+    setIsCheckingVoteStatus(true);
     googleClient.callback = async ({ access_token: accessToken, error: googleError }) => {
       if (googleError || !accessToken) {
         setIsSigningIn(false);
+        setIsCheckingVoteStatus(false);
         toast.error("Không thể xác thực tài khoản Google.");
         return;
       }
       try {
         const session = await ddayVoteAPI.createSession(accessToken);
-        setVoteToken(session.voteToken);
         const status = await ddayVoteAPI.getStatus(session.voteToken);
+        setVoteToken(session.voteToken);
         setHasVoted(status.hasVoted);
         if (status.hasVoted) setReceipt(status);
         toast.success("Xác thực Google thành công.");
@@ -119,6 +123,7 @@ const DdayVotePage = () => {
         toast.error(translateError(requestError));
       } finally {
         setIsSigningIn(false);
+        setIsCheckingVoteStatus(false);
       }
     };
     googleClient.requestAccessToken({ prompt: "select_account" });
@@ -175,7 +180,15 @@ const DdayVotePage = () => {
         </div>
       </section>
 
-      {isOpen && !hasVoted && !voteToken && (
+      {isOpen && !hasVoted && isCheckingVoteStatus && (
+        <section className="dday-vote-card dday-vote-status-card" aria-busy="true" aria-live="polite">
+          <LoaderCircle className="dday-spin" size={30} />
+          <h2>Đang kiểm tra trạng thái bình chọn</h2>
+          <p>Vui lòng chờ một chút, chúng tôi đang kiểm tra bạn đã bình chọn chưa.</p>
+        </section>
+      )}
+
+      {isOpen && !hasVoted && !isCheckingVoteStatus && !voteToken && (
         <section className="dday-vote-card dday-auth-card">
           <div className="dday-vote-card__intro">
             <div><span className="dday-vote-eyebrow">Bước 1 · Xác minh tài khoản</span><h2>Đăng nhập Google để bắt đầu</h2><p className="dday-card-description">Bạn cần đăng nhập bằng tài khoản Google để tham gia. Mỗi tài khoản chỉ được gửi một bình chọn.</p></div>
@@ -188,7 +201,7 @@ const DdayVotePage = () => {
         </section>
       )}
 
-      {isOpen && !hasVoted && voteToken && (
+      {isOpen && !hasVoted && !isCheckingVoteStatus && voteToken && (
         <section className="dday-vote-card">
           <div className="dday-vote-card__intro">
             <div><span className="dday-vote-eyebrow">Bước 2 · Gửi bình chọn</span><h2>Chọn một phương án ở mỗi hạng mục</h2><p className="dday-card-description">Hãy chọn phương án bạn yêu thích, sau đó kiểm tra lại trước khi gửi.</p></div>
@@ -215,7 +228,20 @@ const DdayVotePage = () => {
       )}
 
       {hasVoted && (
-        <section className="dday-vote-card dday-vote-card--success"><CheckCircle2 size={44} /><span className="dday-vote-eyebrow">BÌNH CHỌN THÀNH CÔNG</span><h2>Cảm ơn bạn đã tham gia!</h2><p>Bình chọn của bạn đã được ghi nhận và không thể thay đổi.</p>{receipt?.submittedAt && <small>Thời gian gửi: {formatDate(receipt.submittedAt)}</small>}</section>
+        <section className="dday-vote-card dday-vote-card--success">
+          <CheckCircle2 size={44} />
+          <span className="dday-vote-eyebrow">BÌNH CHỌN THÀNH CÔNG</span>
+          <h2>Cảm ơn bạn đã tham gia!</h2>
+          <p>Bình chọn của bạn đã được ghi nhận và không thể thay đổi.</p>
+          {receipt?.submittedAt && <small>Thời gian gửi: {formatDate(receipt.submittedAt)}</small>}
+          <p className="dday-success-links__label">Tham khảo thêm về sự kiện</p>
+          <nav className="dday-success-links" aria-label="Các trang liên quan">
+            <Link className="dday-button dday-button--secondary" to="/btc-fuhlw"><UsersRound size={17} /> Ban tổ chức <ArrowUpRight size={15} /></Link>
+            <Link className="dday-button dday-button--secondary" to="/introduce-hlw26"><Info size={17} /> Giới thiệu sự kiện <ArrowUpRight size={15} /></Link>
+            <Link className="dday-button dday-button--secondary" to="/"><House size={17} /> Trang chủ <ArrowUpRight size={15} /></Link>
+            <Link className="dday-button dday-button--secondary" to="/contact-us"><Mail size={17} /> Liên hệ <ArrowUpRight size={15} /></Link>
+          </nav>
+        </section>
       )}
 
       {!isOpen && !hasVoted && <section className="dday-vote-card dday-vote-card--closed"><span className="dday-vote-eyebrow">{config?.status === "closed" ? "BÌNH CHỌN ĐÃ ĐÓNG" : "BÌNH CHỌN CHƯA MỞ"}</span><h2>{config?.status === "closed" ? "Thời gian bình chọn đã kết thúc." : "Bình chọn chưa bắt đầu."}</h2><p>{config?.status === "closed" ? "Ban tổ chức sẽ công bố kết quả sau khi hoàn tất kiểm tra." : "Vui lòng quay lại sau khi ban tổ chức mở bình chọn."}</p></section>}

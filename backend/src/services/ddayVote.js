@@ -1,4 +1,5 @@
 const crypto = require('crypto')
+const mongoose = require('mongoose')
 const { DdayVoteConfig, DdayVote } = require('../models')
 const { verifyGoogleCredential } = require('../providers/googleProvider')
 const { hashGoogleSubject, createVoteSessionToken, VOTE_SESSION_TTL_SECONDS } = require('../utils/voteToken')
@@ -22,8 +23,12 @@ const normalizeCategories = categories => {
 
   const categoryIds = new Set()
   return categories.map((category, categoryIndex) => {
-    const categoryId = String(category?.categoryId || '').trim()
-    const label = String(category?.label || '').trim()
+    if (!category || typeof category !== 'object' || Array.isArray(category)) {
+      throw buildError(400, `Vote category ${categoryIndex + 1} is invalid`)
+    }
+
+    const categoryId = typeof category.categoryId === 'string' ? category.categoryId.trim() : ''
+    const label = typeof category.label === 'string' ? category.label.trim() : ''
     if (!categoryId || !label) throw buildError(400, `Vote category ${categoryIndex + 1} is invalid`)
     if (categoryIds.has(categoryId)) throw buildError(400, `Duplicate vote category: ${categoryId}`)
     categoryIds.add(categoryId)
@@ -34,8 +39,12 @@ const normalizeCategories = categories => {
 
     const optionIds = new Set()
     const options = category.options.map((option, optionIndex) => {
-      const optionId = String(option?.optionId || '').trim()
-      const optionLabel = String(option?.label || '').trim()
+      if (!option || typeof option !== 'object' || Array.isArray(option)) {
+        throw buildError(400, `Vote option ${optionIndex + 1} is invalid`)
+      }
+
+      const optionId = typeof option.optionId === 'string' ? option.optionId.trim() : ''
+      const optionLabel = typeof option.label === 'string' ? option.label.trim() : ''
       if (!optionId || !optionLabel) throw buildError(400, `Vote option ${optionIndex + 1} is invalid`)
       if (optionIds.has(optionId)) throw buildError(400, `Duplicate vote option: ${optionId}`)
       optionIds.add(optionId)
@@ -48,8 +57,13 @@ const normalizeCategories = categories => {
 
 const normalizeConfigPayload = (payload = {}, current = null) => {
   payload = payload || {}
-  const title = payload.title === undefined ? current?.title : String(payload.title || '').trim()
-  if (!title) throw buildError(400, 'Vote campaign title is required')
+  const title = payload.title === undefined ? current?.title : payload.title
+  if (title === undefined || title === null || (typeof title === 'string' && !title.trim())) {
+    throw buildError(400, 'Vote campaign title is required')
+  }
+  if (typeof title !== 'string' || title.trim().length > 200) {
+    throw buildError(400, 'Vote campaign title must be a valid text up to 200 characters')
+  }
 
   const categories = payload.categories === undefined
     ? current?.categories
@@ -60,9 +74,14 @@ const normalizeConfigPayload = (payload = {}, current = null) => {
   const closeAt = payload.closeAt === undefined ? current?.closeAt || null : normalizeDate(payload.closeAt, 'Close time')
   if (openAt && closeAt && openAt >= closeAt) throw buildError(400, 'Close time must be later than open time')
 
+  const description = payload.description === undefined ? current?.description || '' : payload.description
+  if (typeof description !== 'string' || description.trim().length > 1000) {
+    throw buildError(400, 'Vote campaign description must be text up to 1000 characters')
+  }
+
   return {
-    title,
-    description: payload.description === undefined ? current?.description || '' : String(payload.description || '').trim(),
+    title: title.trim(),
+    description: description.trim(),
     categories,
     openAt,
     closeAt
@@ -175,6 +194,31 @@ const closeConfig = async userId => {
   ).lean()
   if (!closed) throw buildError(409, 'Vote campaign must be open before it can be closed')
   return sanitizeConfig(closed)
+}
+
+const deleteCampaign = async () => {
+  const session = await mongoose.startSession()
+  let deletedVotes = 0
+
+  try {
+    await session.withTransaction(async () => {
+      const deletedConfig = await DdayVoteConfig.findOneAndDelete(
+        { configKey: CONFIG_KEY },
+        { session }
+      )
+      if (!deletedConfig) throw buildError(404, 'D-Day vote configuration not found')
+
+      const voteDeletion = await DdayVote.deleteMany({}, { session })
+      deletedVotes = voteDeletion.deletedCount || 0
+    })
+
+    return { configKey: CONFIG_KEY, deletedVotes }
+  } catch (error) {
+    if (error?.statusCode) throw error
+    throw buildError(503, 'Vote campaign deletion is temporarily unavailable')
+  } finally {
+    await session.endSession()
+  }
 }
 
 const createSession = async payload => {
@@ -318,6 +362,7 @@ module.exports = {
   openConfig,
   updateCloseTime,
   closeConfig,
+  deleteCampaign,
   createSession,
   createBallot,
   getStatus,

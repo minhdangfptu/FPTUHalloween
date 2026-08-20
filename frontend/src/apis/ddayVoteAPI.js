@@ -48,6 +48,9 @@ const ddayVoteAPI = {
 
   close: async () => unwrap(await axiosClient.post("/admin/vote/dday/close")),
 
+  deleteCampaign: async () =>
+    unwrap(await axiosClient.delete("/admin/vote/dday")),
+
   getAudit: async (params = {}) => {
     const response = await axiosClient.get("/admin/vote/dday/audit", { params });
     return response.data;

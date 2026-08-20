@@ -1,24 +1,53 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { LoaderCircle, Monitor, RefreshCw, Volume2, VolumeX } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { LoaderCircle, Monitor, RefreshCw, Star } from "lucide-react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  LabelList,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import ddayVoteAPI from "../../apis/ddayVoteAPI";
 import { translateError } from "../../utils/translateResponse";
 import "./PublishCode.scss";
 
-const formatDate = (value) => value ? new Date(value).toLocaleString("vi-VN", { dateStyle: "medium", timeStyle: "short" }) : "—";
+const formatDate = (value) =>
+  value
+    ? new Date(value).toLocaleString("vi-VN", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      })
+    : "—";
 
-const playAmbientTone = (audioContext, destination, frequency, duration, volume, type = "sine") => {
-  const oscillator = audioContext.createOscillator();
-  const gain = audioContext.createGain();
-  const startTime = audioContext.currentTime;
-  oscillator.type = type;
-  oscillator.frequency.setValueAtTime(frequency, startTime);
-  gain.gain.setValueAtTime(0.0001, startTime);
-  gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.08);
-  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-  oscillator.connect(gain);
-  gain.connect(destination);
-  oscillator.start(startTime);
-  oscillator.stop(startTime + duration + 0.1);
+const getChartData = (category) => {
+  const options = category.options || [];
+  const highestCount = Math.max(
+    ...options.map((option) => Number(option.count) || 0),
+    0,
+  );
+  return options.map((option) => {
+    const count = Number(option.count) || 0;
+    return {
+      label: option.label,
+      count,
+      isWinner: highestCount > 0 && count === highestCount,
+    };
+  });
+};
+
+const ChartTooltip = ({ active, payload }) => {
+  if (!active || !payload?.length) return null;
+  const point = payload[0].payload;
+  return (
+    <div className="publish-code-tooltip">
+      <strong>{point.label}</strong>
+      <span>{point.count} phiếu</span>
+    </div>
+  );
 };
 
 const PublishCode = () => {
@@ -28,11 +57,6 @@ const PublishCode = () => {
   const [publishing, setPublishing] = useState(false);
   const [published, setPublished] = useState(false);
   const [error, setError] = useState("");
-  const [musicOn, setMusicOn] = useState(false);
-  const audioContextRef = useRef(null);
-  const musicMasterRef = useRef(null);
-  const musicTimerRef = useRef(null);
-  const musicStepRef = useRef(0);
 
   const loadConfig = useCallback(async () => {
     setLoading(true);
@@ -40,7 +64,9 @@ const PublishCode = () => {
     try {
       const adminConfig = await ddayVoteAPI.getAdminConfig();
       if (!adminConfig || adminConfig.status !== "closed") {
-        throw new Error("Vote results are not available until the vote is closed");
+        throw new Error(
+          "Vote results are not available until the vote is closed",
+        );
       }
       setConfig(adminConfig);
     } catch (requestError) {
@@ -53,56 +79,6 @@ const PublishCode = () => {
   useEffect(() => {
     loadConfig();
   }, [loadConfig]);
-
-  const stopMusic = useCallback(() => {
-    if (musicTimerRef.current) {
-      window.clearInterval(musicTimerRef.current);
-      musicTimerRef.current = null;
-    }
-    const masterGain = musicMasterRef.current;
-    const audioContext = audioContextRef.current;
-    if (masterGain && audioContext) {
-      masterGain.gain.cancelScheduledValues(audioContext.currentTime);
-      masterGain.gain.setTargetAtTime(0.0001, audioContext.currentTime, 0.15);
-    }
-    musicMasterRef.current = null;
-    setMusicOn(false);
-  }, []);
-
-  const startMusic = useCallback(async () => {
-    if (musicTimerRef.current) return;
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-
-    try {
-      const audioContext = audioContextRef.current || new AudioContext();
-      if (audioContext.state === "suspended") await audioContext.resume();
-      const masterGain = audioContext.createGain();
-      masterGain.gain.value = 0.12;
-      masterGain.connect(audioContext.destination);
-      audioContextRef.current = audioContext;
-      musicMasterRef.current = masterGain;
-      musicStepRef.current = 0;
-
-      const playNextPhrase = () => {
-        const notes = [110, 130.81, 146.83, 123.47, 98, 130.81, 116.54, 87.31];
-        const note = notes[musicStepRef.current % notes.length];
-        musicStepRef.current += 1;
-        playAmbientTone(audioContext, masterGain, note, 1.9, 0.16, "sine");
-        if (musicStepRef.current % 4 === 1) {
-          playAmbientTone(audioContext, masterGain, note / 2, 2.5, 0.1, "triangle");
-        }
-      };
-
-      playNextPhrase();
-      musicTimerRef.current = window.setInterval(playNextPhrase, 1800);
-      setMusicOn(true);
-    } catch {
-      stopMusic();
-    }
-  }, [stopMusic]);
-
-  useEffect(() => () => stopMusic(), [stopMusic]);
 
   const publishResults = async () => {
     setPublishing(true);
@@ -118,53 +94,183 @@ const PublishCode = () => {
   };
 
   if (loading) {
-    return <main className="publish-code-screen publish-code-screen--state" aria-busy="true"><LoaderCircle className="publish-code-spin" size={42} /><p>Đang chuẩn bị màn hình công bố…</p></main>;
+    return (
+      <main
+        className="publish-code-screen publish-code-screen--state"
+        aria-busy="true"
+      >
+        <LoaderCircle className="publish-code-spin" size={42} />
+        <p>Đang chuẩn bị màn hình công bố…</p>
+      </main>
+    );
   }
 
   if (error) {
-    return <main className="publish-code-screen publish-code-screen--state"><div className="publish-code-error"><h1>Chưa thể công bố kết quả</h1><p>{error}</p><button type="button" className="publish-code-button publish-code-button--secondary" onClick={loadConfig}><RefreshCw size={18} /> Thử lại</button></div></main>;
+    return (
+      <main className="publish-code-screen publish-code-screen--state">
+        <div className="publish-code-error">
+          <h1>Chưa thể công bố kết quả</h1>
+          <p>{error}</p>
+          <button
+            type="button"
+            className="publish-code-button publish-code-button--secondary"
+            onClick={loadConfig}
+          >
+            <RefreshCw size={18} /> Thử lại
+          </button>
+        </div>
+      </main>
+    );
   }
 
   if (!published) {
-    return <main className="publish-code-screen publish-code-screen--waiting">
-      <span className="publish-code-ghost" aria-hidden="true">👻</span>
-      <div className="publish-code-stage">
-        <div className="publish-code-sparkles" aria-hidden="true">
-          <span>✦</span><span>✧</span><span>✷</span><span>★</span><span>✦</span><span>✧</span><span>★</span><span>✷</span>
+    return (
+      <main className="publish-code-screen publish-code-screen--waiting">
+        <span className="publish-code-ghost" aria-hidden="true">
+          👻
+        </span>
+        <div className="publish-code-stage">
+          <div className="publish-code-sparkles" aria-hidden="true">
+            <span>✦</span>
+            <span>✧</span>
+            <span>✷</span>
+            <span>★</span>
+            <span>✦</span>
+            <span>✧</span>
+            <span>★</span>
+            <span>✷</span>
+          </div>
+          <button
+            type="button"
+            className="publish-code-button"
+            onClick={publishResults}
+            disabled={publishing}
+          >
+            <Star size={28} />{" "}
+            {publishing ? "Đang tải kết quả…" : "Công bố kết quả"}
+          </button>
         </div>
-        <button type="button" className="publish-code-button" onClick={publishResults} disabled={publishing}><Monitor size={28} /> {publishing ? "Đang tải kết quả…" : "Công bố kết quả"}</button>
-      </div>
-      <button type="button" className="publish-code-music-toggle" onClick={musicOn ? stopMusic : startMusic} aria-pressed={musicOn} aria-label={musicOn ? "Tắt nhạc Halloween" : "Bật nhạc Halloween"}>
-        {musicOn ? <Volume2 size={17} /> : <VolumeX size={17} />}
-        <span>{musicOn ? "Tắt nhạc" : "Bật nhạc"}</span>
-      </button>
-    </main>;
+      </main>
+    );
   }
 
   return (
     <main className="publish-code-screen publish-code-screen--results">
       <section className="publish-code-results" aria-live="polite">
         <div className="publish-code-results__heading">
-          <span className="publish-code-eyebrow">FPTU HALLOWEEN · D-DAY</span>
-          <h1>{results?.title || config?.title || "Kết quả bình chọn"}</h1>
-          <p>{results?.totalVotes || 0} lượt bình chọn · Đóng lúc {formatDate(results?.closedAt || config?.closedAt)}</p>
+          <div className="publish-code-results__heading-copy">
+            <span className="publish-code-eyebrow">
+              KẾT QUẢ BÌNH CHỌN TRỰC TIẾP
+            </span>
+            <h1>{results?.title || config?.title || "Kết quả bình chọn"}</h1>
+            {/* <p>
+              Đóng lúc {formatDate(results?.closedAt || config?.closedAt)}
+            </p> */}
+          </div>
+          <div
+            className="publish-code-results__summary"
+            aria-label="Tổng số lượt bình chọn"
+          >
+            <strong>{results?.totalVotes || 0}</strong>
+            <span>lượt bình chọn</span>
+          </div>
         </div>
         <div className="publish-code-results__grid">
-          {(results?.categories || []).map((category) => {
-            const highestCount = Math.max(...category.options.map((option) => option.count), 0);
-            return <article className="publish-code-category" key={category.categoryId}>
-              <h2>{category.label}</h2>
-              <div className="publish-code-options">
-                {category.options.map((option) => <div className={`publish-code-option ${highestCount > 0 && option.count === highestCount ? "publish-code-option--winner" : ""}`} key={option.optionId}><span>{option.label}</span><strong>{option.count}</strong></div>)}
-              </div>
-            </article>;
+          {(results?.categories || []).map((category, categoryIndex) => {
+            const chartData = getChartData(category);
+            const categoryTotal = chartData.reduce(
+              (total, option) => total + option.count,
+              0,
+            );
+            return (
+              <article
+                className="publish-code-category"
+                key={category.categoryId}
+              >
+                <div className="publish-code-category__heading">
+                  <div>
+                    <span className="publish-code-category__eyebrow">
+                      HẠNG MỤC {String(categoryIndex + 1).padStart(2, "0")}
+                    </span>
+                    <h2>{category.label}</h2>
+                  </div>
+                  <span className="publish-code-category__count">
+                    {categoryTotal} lượt bình chọn
+                  </span>
+                </div>
+                <div
+                  className="publish-code-chart"
+                  role="img"
+                  aria-label={`Biểu đồ kết quả ${category.label}`}
+                >
+                  <div className="publish-code-chart__canvas">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={chartData}
+                        margin={{ top: 24, right: 8, left: -18, bottom: 4 }}
+                        barCategoryGap="18%"
+                      >
+                        <CartesianGrid
+                          stroke="var(--publish-grid)"
+                          vertical={false}
+                        />
+                        <XAxis
+                          dataKey="label"
+                          axisLine={{ stroke: "var(--publish-line)" }}
+                          tickLine={false}
+                          tick={{
+                            fill: "var(--publish-text)",
+                            fontSize: 14,
+                            fontWeight: 600,
+                          }}
+                          tickMargin={12}
+                        />
+                        <YAxis
+                          allowDecimals={false}
+                          axisLine={false}
+                          tickLine={false}
+                          tick={{ fill: "var(--publish-muted)", fontSize: 12 }}
+                          width={34}
+                        />
+                        <Tooltip
+                          content={<ChartTooltip />}
+                          cursor={{ fill: "var(--publish-hover)" }}
+                        />
+                        <Bar
+                          dataKey="count"
+                          name="Số phiếu"
+                          radius={[10, 10, 0, 0]}
+                          animationBegin={categoryIndex * 180}
+                          animationDuration={1400}
+                          animationEasing="ease-out"
+                        >
+                          {chartData.map((option) => (
+                            <Cell
+                              fill={
+                                option.isWinner
+                                  ? "var(--publish-red-bright)"
+                                  : "var(--publish-red)"
+                              }
+                              key={option.label}
+                            />
+                          ))}
+                          <LabelList
+                            dataKey="count"
+                            position="top"
+                            fill="var(--publish-white)"
+                            fontSize={18}
+                            fontWeight={800}
+                          />
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </article>
+            );
           })}
         </div>
       </section>
-      <button type="button" className="publish-code-music-toggle" onClick={musicOn ? stopMusic : startMusic} aria-pressed={musicOn} aria-label={musicOn ? "Tắt nhạc Halloween" : "Bật nhạc Halloween"}>
-        {musicOn ? <Volume2 size={17} /> : <VolumeX size={17} />}
-        <span>{musicOn ? "Tắt nhạc" : "Bật nhạc"}</span>
-      </button>
     </main>
   );
 };

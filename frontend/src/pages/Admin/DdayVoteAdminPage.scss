@@ -21,10 +21,10 @@
 }
 
 .dday-admin-header h1 {
-  margin: .45rem 0 .6rem;
+  margin: 0.45rem 0 0.6rem;
   font-size: clamp(2.4rem, 5vw, 4.8rem);
-  letter-spacing: -.08em;
-  line-height: .9;
+  letter-spacing: -0.08em;
+  line-height: 0.9;
 }
 
 .dday-admin-header p {
@@ -32,11 +32,24 @@
   color: #707782;
 }
 
+.dday-admin-header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.dday-admin-header__actions .dday-admin-button,
+.dday-admin-header__actions .dday-admin-refresh {
+  white-space: nowrap;
+}
+
 .dday-admin-kicker {
   color: #c90016;
-  font-size: .7rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  letter-spacing: .13em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
@@ -47,13 +60,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .4rem;
+  gap: 0.4rem;
   font: inherit;
   cursor: pointer;
 }
 
 .dday-admin-refresh {
-  padding: .7rem 1rem;
+  padding: 0.7rem 1rem;
   border: 1px solid #ffd8dd;
   border-radius: 8px;
   background: #fff;
@@ -64,16 +77,16 @@
 .dday-admin-refresh:disabled,
 .dday-admin-button:disabled,
 .dday-icon-button:disabled {
-  opacity: .55;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
 .dday-admin-error {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
   margin-bottom: 1rem;
-  padding: .85rem 1rem;
+  padding: 0.85rem 1rem;
   border: 1px solid #efb9b9;
   border-radius: 10px;
   background: #fff4f4;
@@ -90,8 +103,8 @@
 .dday-admin-metrics {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: .75rem;
-  margin-bottom: .75rem;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .dday-admin-metrics > div {
@@ -108,16 +121,16 @@
 
 .dday-admin-metrics small {
   color: #707782;
-  font-size: .74rem;
+  font-size: 0.74rem;
 }
 
 .dday-admin-metrics strong {
-  margin-top: .3rem;
+  margin-top: 0.3rem;
   font-size: 1.2rem;
 }
 
 .dday-admin-card {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   padding: 1.25rem;
   background: #fff;
   border: 1px solid #e6e2dc;
@@ -133,21 +146,30 @@
 }
 
 .dday-admin-card__heading h2 {
-  margin: .35rem 0 0;
+  margin: 0.35rem 0 0;
   font-size: 1.25rem;
-  letter-spacing: -.04em;
+  letter-spacing: -0.04em;
 }
 
 .dday-admin-status {
-  padding: .35rem .65rem;
+  padding: 0.35rem 0.65rem;
   border-radius: 99px;
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 800;
 }
 
-.dday-admin-status--draft { background: #fff1d7; color: #765519; }
-.dday-admin-status--open { background: #dff4e5; color: #12612d; }
-.dday-admin-status--closed { background: #eee8e2; color: #635d56; }
+.dday-admin-status--draft {
+  background: #fff1d7;
+  color: #765519;
+}
+.dday-admin-status--open {
+  background: #dff4e5;
+  color: #12612d;
+}
+.dday-admin-status--closed {
+  background: #eee8e2;
+  color: #635d56;
+}
 
 .dday-admin-grid {
   display: grid;
@@ -160,19 +182,19 @@
 .dday-admin-category__fields label,
 .dday-admin-option label {
   display: grid;
-  gap: .4rem;
+  gap: 0.4rem;
 }
 
 .dday-admin-grid label > span {
   color: #707782;
-  font-size: .78rem;
+  font-size: 0.78rem;
   font-weight: 700;
 }
 
 .dday-admin-category__fields label > span,
 .dday-admin-option label > span {
   color: #707782;
-  font-size: .76rem;
+  font-size: 0.76rem;
   font-weight: 700;
 }
 
@@ -183,15 +205,18 @@
 .dday-admin-modal-field input {
   width: 100%;
   box-sizing: border-box;
-  padding: .7rem .75rem;
+  padding: 0.7rem 0.75rem;
   border: 1px solid #ddd8d1;
   border-radius: 8px;
   background: #fff;
   color: #20242b;
   font: inherit;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-.dday-admin-grid textarea { resize: vertical; }
+.dday-admin-grid textarea {
+  resize: vertical;
+}
 
 .dday-admin-grid > label:first-child input,
 .dday-admin-grid > label:nth-child(2) textarea {
@@ -204,14 +229,9 @@
 .dday-admin-option input:disabled {
   background: #fff;
   color: #707782;
-  opacity: .9;
+  opacity: 0.9;
 }
 
-.dday-admin-grid input:focus,
-.dday-admin-grid textarea:focus,
-.dday-admin-category input:focus,
-.dday-admin-option input:focus,
-.dday-admin-modal-field input:focus,
 .dday-admin-button:focus-visible,
 .dday-admin-refresh:focus-visible,
 .dday-admin-link:focus-visible,
@@ -220,29 +240,49 @@
   outline-offset: 2px;
 }
 
+.dday-admin-grid input:focus,
+.dday-admin-grid textarea:focus,
+.dday-admin-category input:focus,
+.dday-admin-option input:focus,
+.dday-admin-modal-field input:focus {
+  border-color: #ddd8d1;
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(201 0 22 / 12%);
+}
+
 .dday-admin-section-heading {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 1rem;
-  margin: 1.7rem 0 .8rem;
+  margin: 1.7rem 0 0.8rem;
   padding-top: 1.2rem;
   border-top: 1px solid #eeeae5;
 }
 
-.dday-admin-section-heading h3 { margin: 0; font-size: 1rem; }
-.dday-admin-section-heading p { margin: .3rem 0 0; color: #707782; font-size: .78rem; }
+.dday-admin-section-heading h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.dday-admin-section-heading p {
+  margin: 0.3rem 0 0;
+  color: #707782;
+  font-size: 0.78rem;
+}
 
 .dday-admin-link {
   padding: 0;
   border: 0;
   background: none;
   color: #c90016;
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 800;
 }
 
-.dday-admin-categories { display: grid; gap: .75rem; }
+.dday-admin-categories {
+  display: grid;
+  gap: 0.75rem;
+}
 
 .dday-admin-category {
   padding: 1rem;
@@ -255,20 +295,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: .7rem;
+  margin-bottom: 0.7rem;
 }
 
 .dday-admin-category__fields {
   grid-template-columns: 1fr;
-  margin-bottom: .7rem;
+  margin-bottom: 0.7rem;
 }
 
-.dday-admin-options { display: grid; gap: .5rem; }
+.dday-admin-options {
+  display: grid;
+  gap: 0.5rem;
+}
 
 .dday-admin-option {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .dday-icon-button {
@@ -277,45 +320,87 @@
   padding: 0;
   border: 0;
   border-radius: 6px;
-  background: #eee8e2;
+  background: none;
   color: #707782;
 }
 
-.dday-icon-button:hover { color: #c90016; }
-.dday-admin-category > .dday-admin-link { margin-top: .7rem; }
+.dday-icon-button:hover {
+  color: #c90016;
+}
+.dday-admin-category > .dday-admin-link {
+  margin-top: 0.7rem;
+}
 
 .dday-admin-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .6rem;
+  gap: 0.6rem;
   margin-top: 1.3rem;
   padding-top: 1.2rem;
   border-top: 1px solid #eeeae5;
 }
 
-.dday-admin-actions--management { margin-top: 1rem; }
+.dday-admin-actions--management {
+  margin-top: 1rem;
+}
 
 .dday-admin-button {
-  padding: .6rem .8rem;
+  padding: 0.6rem 0.8rem;
   border: 1px solid #ffd8dd;
   border-radius: 8px;
   background: #fff;
   color: #ce0000;
-  font-size: .82rem;
+  font-size: 0.82rem;
   font-weight: 700;
 }
 
-.dday-admin-button--primary { background: #ce0000; color: #fff; border-color: #ce0000; }
-.dday-admin-button--dark { background: #fff; color: #ce0000; border-color: #ffd8dd; }
-.dday-admin-button--secondary { background: #fff; color: #20242b; border-color: #e4e6e9; }
-.dday-admin-button--danger { background: #fff0ef; color: #b31725; border: 1px solid #f0b8b8; }
-.dday-admin-reopen-note { flex: 1 1 100%; margin: 0; color: #707782; font-size: .82rem; }
+.dday-admin-button--primary {
+  background: #ce0000;
+  color: #fff;
+  border-color: #ce0000;
+}
+.dday-admin-button--dark {
+  background: #fff;
+  color: #ce0000;
+  border-color: #ffd8dd;
+}
+.dday-admin-button--secondary {
+  background: #fff;
+  color: #20242b;
+  border-color: #e4e6e9;
+}
+.dday-admin-button--danger {
+  background: #fff0ef;
+  color: #b31725;
+  border: 1px solid #f0b8b8;
+}
+.dday-admin-reopen-note {
+  flex: 1 1 100%;
+  margin: 0;
+  color: #707782;
+  font-size: 0.82rem;
+}
 
-.dday-admin-result { display: grid; gap: .45rem; margin-top: 1rem; }
-.dday-admin-result h3 { margin: 0; font-size: .95rem; }
-.dday-admin-result > div { display: flex; justify-content: space-between; padding: .55rem 0; border-top: 1px solid #eeeae5; color: #707782; }
-.dday-admin-result strong { color: #c90016; }
+.dday-admin-result {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 1rem;
+}
+.dday-admin-result h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.dday-admin-result > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.55rem 0;
+  border-top: 1px solid #eeeae5;
+  color: #707782;
+}
+.dday-admin-result strong {
+  color: #c90016;
+}
 
 .dday-admin-modal-backdrop {
   position: fixed;
@@ -325,6 +410,10 @@
   place-items: center;
   padding: 1rem;
   background: #20242bcc;
+}
+
+.dday-admin-modal-backdrop--fullscreen {
+  padding: 0;
 }
 
 .dday-admin-modal {
@@ -338,6 +427,19 @@
   box-shadow: 0 24px 70px #20242b40;
 }
 
+.dday-admin-modal--fullscreen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  max-height: none;
+  overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 3rem);
+  border: 0;
+  border-radius: 0;
+}
+
 .dday-admin-modal__heading {
   display: flex;
   align-items: flex-start;
@@ -345,53 +447,330 @@
   gap: 1rem;
 }
 
-.dday-admin-modal__heading h2 { margin: 0; font-size: 1.25rem; letter-spacing: -.04em; }
-.dday-admin-modal__body p { margin: 1rem 0; color: #707782; line-height: 1.55; }
+.dday-admin-modal__heading h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: -0.04em;
+}
+.dday-admin-modal__body p {
+  margin: 1rem 0;
+  color: #707782;
+  line-height: 1.55;
+}
 
-.dday-admin-modal-field { display: grid; gap: .45rem; margin: 1rem 0; }
-.dday-admin-modal-field span { color: #707782; font-size: .8rem; font-weight: 800; }
-.dday-admin-modal__actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .6rem; margin-top: 1.2rem; }
+.dday-admin-modal--fullscreen .dday-admin-modal__heading {
+  flex: 0 0 auto;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eeeae5;
+}
 
-.dday-admin-countdown { display: grid; justify-items: center; gap: .7rem; padding: 1.5rem 0 .5rem; text-align: center; }
-.dday-admin-countdown > svg { color: #c90016; }
-.dday-admin-countdown strong { font-size: clamp(1.5rem, 5vw, 2.4rem); letter-spacing: -.05em; }
-.dday-admin-countdown p { margin: 0; color: #707782; }
+.dday-admin-modal-field {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1rem 0;
+}
+.dday-admin-modal-field span {
+  color: #707782;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.dday-admin-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
 
-.dday-admin-audit { display: grid; gap: .85rem; }
-.dday-admin-audit__summary { margin: .9rem 0 0; color: #707782; font-size: .82rem; }
-.dday-admin-audit__list { display: grid; gap: .7rem; }
-.dday-admin-audit__entry { padding: .85rem; border: 1px solid #eeeae5; border-radius: 10px; background: #fff; }
-.dday-admin-audit__identity { display: flex; justify-content: space-between; gap: 1rem; }
-.dday-admin-audit__identity > div { display: grid; gap: .2rem; min-width: 0; }
-.dday-admin-audit__identity strong { overflow-wrap: anywhere; color: #20242b; font-size: .88rem; }
-.dday-admin-audit__identity span { overflow-wrap: anywhere; color: #707782; font-size: .78rem; }
-.dday-admin-audit__choices { display: grid; gap: .4rem; margin-top: .75rem; }
-.dday-admin-audit__choice { display: flex; justify-content: space-between; gap: 1rem; padding: .55rem .65rem; border-radius: 7px; background: #f7f5f2; }
-.dday-admin-audit__choice span { color: #707782; font-size: .76rem; }
-.dday-admin-audit__choice strong { color: #c90016; font-size: .8rem; text-align: right; }
-.dday-admin-audit__state { display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: 100px; color: #707782; text-align: center; }
-.dday-admin-audit__state--error { flex-wrap: wrap; color: #a41c1c; }
-.dday-admin-audit__pagination { display: flex; align-items: center; justify-content: space-between; gap: .7rem; padding-top: .35rem; border-top: 1px solid #eeeae5; color: #707782; font-size: .78rem; }
-.dday-admin-audit__pagination .dday-admin-button { white-space: nowrap; }
+.dday-admin-countdown {
+  display: grid;
+  justify-items: center;
+  gap: 0.7rem;
+  padding: 1.5rem 0 0.5rem;
+  text-align: center;
+}
+.dday-admin-countdown > svg {
+  color: #c90016;
+}
+.dday-admin-countdown strong {
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
+  letter-spacing: -0.05em;
+}
+.dday-admin-countdown p {
+  margin: 0;
+  color: #707782;
+}
+
+.dday-admin-countdown-layout {
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
+  flex: 1 1 auto;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  min-height: 0;
+  padding: clamp(1.5rem, 4vh, 3rem) 0;
+}
+
+.dday-admin-countdown-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding-right: clamp(1.5rem, 4vw, 4rem);
+  border-right: 1px solid #eeeae5;
+  text-align: center;
+}
+
+.dday-admin-modal--fullscreen .dday-admin-countdown {
+  gap: 1rem;
+  padding: 1.5rem 0 0.75rem;
+}
+
+.dday-admin-modal--fullscreen .dday-admin-countdown strong {
+  max-width: 100%;
+  color: #20242b;
+  font-size: clamp(1.75rem, 3.2vw, 3.8rem);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.dday-admin-modal--fullscreen .dday-admin-countdown p {
+  font-size: 0.95rem;
+}
+
+.dday-admin-countdown-qr {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(1rem, 3vh, 2rem);
+  padding-top: clamp(1rem, 3vh, 1.75rem);
+  border-top: 1px solid #eeeae5;
+}
+
+.dday-admin-countdown-qr canvas {
+  width: clamp(160px, 18vw, 220px) !important;
+  height: auto !important;
+  border-radius: 8px;
+}
+
+.dday-admin-countdown-qr span {
+  color: #707782;
+  font-size: 0.85rem;
+}
+
+.dday-admin-contestant-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+.dday-admin-contestant-placeholder {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0.8rem;
+  width: min(100%, 760px);
+  height: min(70vh, 620px);
+  min-height: 320px;
+  padding: 2rem;
+  box-sizing: border-box;
+  border: 2px dashed #d9dce1;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #f7f5f2, #eef0f2);
+  color: #89919d;
+  text-align: center;
+}
+
+.dday-admin-contestant-placeholder svg {
+  color: #c90016;
+}
+.dday-admin-contestant-placeholder strong {
+  color: #596574;
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  letter-spacing: 0.08em;
+}
+.dday-admin-contestant-placeholder span {
+  font-size: 0.85rem;
+}
+
+.dday-admin-modal--fullscreen .dday-admin-modal__actions {
+  flex: 0 0 auto;
+  margin-top: 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eeeae5;
+}
+
+.dday-admin-audit {
+  display: grid;
+  gap: 0.85rem;
+}
+.dday-admin-audit__summary {
+  margin: 0.9rem 0 0;
+  color: #707782;
+  font-size: 0.82rem;
+}
+.dday-admin-audit__list {
+  display: grid;
+  gap: 0.7rem;
+}
+.dday-admin-audit__entry {
+  padding: 0.85rem;
+  border: 1px solid #eeeae5;
+  border-radius: 10px;
+  background: #fff;
+}
+.dday-admin-audit__identity {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.dday-admin-audit__identity > div {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.dday-admin-audit__identity strong {
+  overflow-wrap: anywhere;
+  color: #20242b;
+  font-size: 0.88rem;
+}
+.dday-admin-audit__identity span {
+  overflow-wrap: anywhere;
+  color: #707782;
+  font-size: 0.78rem;
+}
+.dday-admin-audit__choices {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.dday-admin-audit__choice {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 7px;
+  background: #f7f5f2;
+}
+.dday-admin-audit__choice span {
+  color: #707782;
+  font-size: 0.76rem;
+}
+.dday-admin-audit__choice strong {
+  color: #c90016;
+  font-size: 0.8rem;
+  text-align: right;
+}
+.dday-admin-audit__state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 100px;
+  color: #707782;
+  text-align: center;
+}
+.dday-admin-audit__state--error {
+  flex-wrap: wrap;
+  color: #a41c1c;
+}
+.dday-admin-audit__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding-top: 0.35rem;
+  border-top: 1px solid #eeeae5;
+  color: #707782;
+  font-size: 0.78rem;
+}
+.dday-admin-audit__pagination .dday-admin-button {
+  white-space: nowrap;
+}
 
 @media (max-width: 760px) {
-  .dday-admin-shell { padding-left: 72px; }
-  .dday-admin-header { align-items: stretch; flex-direction: column; }
-  .dday-admin-refresh { align-self: flex-start; }
+  .dday-admin-shell {
+    padding-left: 72px;
+  }
+  .dday-admin-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .dday-admin-refresh {
+    align-self: flex-start;
+  }
+  .dday-admin-header__actions {
+    justify-content: flex-start;
+  }
+  .dday-admin-modal--fullscreen {
+    overflow: auto;
+    padding: 1rem;
+  }
+  .dday-admin-countdown-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    overflow: visible;
+    padding: 1.5rem 0;
+  }
+  .dday-admin-countdown-panel {
+    padding: 0 0 1.5rem;
+    border-right: 0;
+    border-bottom: 1px solid #eeeae5;
+  }
+  .dday-admin-modal--fullscreen .dday-admin-countdown strong {
+    font-size: clamp(1.5rem, 7vw, 3rem);
+  }
+  .dday-admin-contestant-placeholder {
+    min-height: 260px;
+  }
 }
 
 @media (max-width: 580px) {
-  .dday-admin-main { padding: 2rem 1rem 3rem; }
-  .dday-admin-metrics { grid-template-columns: 1fr; }
-  .dday-admin-grid { grid-template-columns: 1fr; }
-  .dday-admin-section-heading { align-items: flex-start; flex-direction: column; }
+  .dday-admin-main {
+    padding: 2rem 1rem 3rem;
+  }
+  .dday-admin-metrics {
+    grid-template-columns: 1fr;
+  }
+  .dday-admin-grid {
+    grid-template-columns: 1fr;
+  }
+  .dday-admin-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
   .dday-admin-category__fields,
-  .dday-admin-option { grid-template-columns: 1fr; }
-  .dday-admin-actions--management .dday-admin-button { width: 100%; }
-  .dday-admin-modal__actions .dday-admin-button { flex: 1 1 140px; }
-  .dday-admin-audit__choice { align-items: flex-start; flex-direction: column; gap: .2rem; }
-  .dday-admin-audit__choice strong { text-align: left; }
-  .dday-admin-audit__pagination { align-items: stretch; flex-wrap: wrap; }
-  .dday-admin-audit__pagination > span { order: -1; width: 100%; text-align: center; }
-  .dday-admin-audit__pagination .dday-admin-button { flex: 1 1 120px; }
+  .dday-admin-option {
+    grid-template-columns: 1fr;
+  }
+  .dday-admin-actions--management .dday-admin-button {
+    width: 100%;
+  }
+  .dday-admin-modal__actions .dday-admin-button {
+    flex: 1 1 140px;
+  }
+  .dday-admin-audit__choice {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .dday-admin-audit__choice strong {
+    text-align: left;
+  }
+  .dday-admin-audit__pagination {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .dday-admin-audit__pagination > span {
+    order: -1;
+    width: 100%;
+    text-align: center;
+  }
+  .dday-admin-audit__pagination .dday-admin-button {
+    flex: 1 1 120px;
+  }
 }

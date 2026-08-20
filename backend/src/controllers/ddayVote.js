@@ -44,8 +44,12 @@ const closeConfig = (req, res, next) => Promise.resolve(
   ddayVoteService.closeConfig(req.user.id)
 ).then(data => res.status(200).json({ success: true, message: 'Vote campaign closed successfully', data })).catch(next)
 
+const deleteCampaign = (req, res, next) => Promise.resolve(
+  ddayVoteService.deleteCampaign(req.user.id)
+).then(data => res.status(200).json({ success: true, message: 'Vote campaign deleted successfully', data })).catch(next)
+
 const getAudit = (req, res, next) => Promise.resolve(
   ddayVoteService.getAudit(req.query)
 ).then(result => res.status(200).json({ success: true, ...result })).catch(next)
 
-module.exports = { getPublicConfig, createSession, getStatus, createBallot, getResults, getAdminConfig, updateConfig, openConfig, updateCloseTime, closeConfig, getAudit }
+module.exports = { getPublicConfig, createSession, getStatus, createBallot, getResults, getAdminConfig, updateConfig, openConfig, updateCloseTime, closeConfig, deleteCampaign, getAudit }
