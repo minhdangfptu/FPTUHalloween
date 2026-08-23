@@ -3,11 +3,13 @@ import "./CompleteRegister.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 
 function CompleteRegister() {
   const [email, setEmail] = useState("");
   const [showAnimation, setShowAnimation] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const auth = (key, options) => t(`auth.complete.${key}`, options);
 
   useEffect(() => {
@@ -24,8 +26,7 @@ function CompleteRegister() {
   const handleGoToLogin = () => {
     // Clear registration data from localStorage
     localStorage.removeItem("registerEmail");
-    // Redirect to login
-    window.location.href = "/login";
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -37,7 +38,7 @@ function CompleteRegister() {
             <img
               className="fptu-halloween-complete-register-logo"
               src={loginImg}
-              alt="FPTU Halloween"
+              alt={auth("brandAlt")}
             />
             <div className="fptu-halloween-complete-register-panel">
               <div className="fptu-halloween-complete-register-header">
@@ -78,7 +79,7 @@ function CompleteRegister() {
                   {auth("text")}
                 </p>
                 <p className="fptu-halloween-complete-register-email">
-                  Email: <strong>{email}</strong>
+                  {auth("emailLabel")}: <strong>{email}</strong>
                 </p>
                 <p className="fptu-halloween-complete-register-instruction">
                   {auth("instruction")}
@@ -100,8 +101,8 @@ function CompleteRegister() {
               className="fptu-halloween-complete-register-text-muted"
             >
               {auth("support")} {" "}
-              <a
-                href="/contact"
+              <Link
+                to="/contact-us"
                 style={{
                   color: "red",
                   textDecoration: "underline",
@@ -109,7 +110,7 @@ function CompleteRegister() {
                 }}
               >
                 {auth("contact")}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

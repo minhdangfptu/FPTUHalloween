@@ -62,7 +62,7 @@ const HauntedGhost = () => {
           </p>
         </div>
         <div className="haunted-ghost-hero__stamp" aria-hidden="true">
-          <strong>HLW</strong>
+          <strong>{page("brandShort")}</strong>
           <span>2026</span>
         </div>
       </section>
@@ -187,7 +187,7 @@ const HauntedGhost = () => {
                         {new Intl.NumberFormat("vi-VN").format(
                           ticket.ticketTypePrice,
                         )}{" "}
-                        VND
+                        {page("currency")}
                       </strong>
                     </td>
                     <td data-label={page("remaining")}>

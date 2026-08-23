@@ -1,0 +1,40 @@
+.manage-layout {
+  --manage-sidebar-width: 272px;
+  min-width: 0;
+}
+
+.manage-layout--sidebar-collapsed {
+  --manage-sidebar-width: 72px;
+}
+
+.manage-layout__footer {
+  width: calc(100% - var(--manage-sidebar-width));
+  margin-left: var(--manage-sidebar-width);
+  transition:
+    width 0.25s ease,
+    margin-left 0.25s ease;
+}
+
+@media (max-width: 760px) {
+  .manage-layout {
+    --manage-sidebar-width: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manage-layout :where(
+      .manage-header,
+      .manage-sidebar,
+      .manage-layout__footer,
+      .dashboard-shell,
+      .staff-manage-layout,
+      .manage-placeholder-layout,
+      .dday-admin-shell,
+      .hot-news-page,
+      .feedback-page,
+      .admin-feedback-content,
+      .chat-page
+    ) {
+    transition: none;
+  }
+}

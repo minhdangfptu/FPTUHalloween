@@ -7,6 +7,7 @@ import {
   ScanLine,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { DashboardSkeleton } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -23,6 +24,8 @@ import "../../styles/dashboardFilters.scss";
 const dataOf = (response) => response?.data?.data || response?.data || {};
 
 const StaffDashboardPage = () => {
+  const { t, i18n } = useTranslation();
+  const dashboardText = (key, options) => t(`management.dashboard.${key}`, options);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [distributionDate, setDistributionDate] = useState("all");
@@ -30,14 +33,14 @@ const StaffDashboardPage = () => {
 
   const load = async () => {
     const id = "staff-dashboard-loading";
-    toast.loading("Đang tải ca vận hành...", { id });
+    toast.loading(dashboardText("staffLoading"), { id });
     setLoading(true);
     try {
       const response = await axiosClient.get("/tickets", {
         params: { page: 1, pageSize: 100 },
       });
       setTickets(dataOf(response).tickets || []);
-      toast.success("Đã cập nhật dữ liệu ca trực.", { id });
+      toast.success(dashboardText("staffUpdated"), { id });
     } catch (error) {
       toast.error(translateError(error), { id });
     } finally {
@@ -112,21 +115,16 @@ const StaffDashboardPage = () => {
       <main className="dashboard-main">
         <header className="dashboard-hero">
           <div>
-            <p className="dashboard-kicker">Trực bàn Check-in · hôm nay</p>
-            <h1>Nhịp check-in</h1>
-            <p>
-              Bạn chớ nên bỏ cuộc khi bạn vẫn còn điều gì đó để cho đi. Không có
-              gì là hoàn toàn bế tắc, sự việc chỉ thật sự trở nên bế tắc khi bạn
-              thôi không cố gắng nữa. Vậy nên đừng ngừng cố gắng nhé, bạn sẽ làm
-              được thôi! (Minh Đặng không nói thế)
-            </p>
+            <p className="dashboard-kicker">{dashboardText("staffKicker")}</p>
+            <h1>{dashboardText("staffTitle")}</h1>
+            <p>{dashboardText("staffIntro")}</p>
           </div>
           <button
             className="dashboard-refresh"
             onClick={load}
             disabled={loading}
           >
-            <RefreshCw size={16} /> Làm mới
+            <RefreshCw size={16} /> {dashboardText("refresh")}
           </button>
         </header>
 
@@ -134,41 +132,41 @@ const StaffDashboardPage = () => {
         <section className="dashboard-metrics">
           <Metric
             icon={<CheckCircle2 />}
-            label="Đã check-in"
+            label={dashboardText("checkedIn")}
             value={checked.length || "—"}
-            note="Tất cả ca trực"
+            note={dashboardText("allShifts")}
           />
           <Metric
             icon={<ScanLine />}
-            label="Vé trong ngày"
+            label={dashboardText("todayTickets")}
             value={todayTickets.length || "—"}
-            note={`Ngày ${today}`}
+            note={dashboardText("day", { day: today })}
           />
           <Metric
             icon={<Clock3 />}
-            label="Lượt gần nhất"
+            label={dashboardText("latestScan")}
             value={
               checked[0]
-                ? new Date(checked[0].checkedInAt).toLocaleTimeString("vi-VN", {
+                ? new Date(checked[0].checkedInAt).toLocaleTimeString(i18n.language === "en" ? "en-US" : "vi-VN", {
                     hour: "2-digit",
                     minute: "2-digit",
                   })
                 : "—"
             }
-            note="Theo thời gian server"
+            note={dashboardText("serverTime")}
           />
         </section>
 
         <section className="dashboard-grid">
           <ChartCard
-            title="Phân bố vé theo từng mốc giờ"
-            eyebrow="CỘT · QUÉT NHANH"
+            title={dashboardText("ticketDistribution")}
+            eyebrow={dashboardText("quickScanChart")}
             action={
               <DateFilter
                 value={distributionDate}
                 dates={dates}
                 onChange={setDistributionDate}
-                ariaLabel="Lọc phân bố vé theo ngày"
+                ariaLabel={dashboardText("filterDistribution")}
               />
             }
           >
@@ -189,14 +187,14 @@ const StaffDashboardPage = () => {
             </div>
           </ChartCard>
           <ChartCard
-            title="Tiến độ check-in mỗi ngày"
-            eyebrow="PIE · TÌNH HÌNH TẠI CỔNG"
+            title={dashboardText("checkInProgress")}
+            eyebrow={dashboardText("gateStatusChart")}
             action={
               <DateFilter
                 value={checkInDate}
                 dates={dates}
                 onChange={setCheckInDate}
-                ariaLabel="Lọc tiến độ check-in theo ngày"
+                ariaLabel={dashboardText("filterProgress")}
               />
             }
           >
@@ -212,11 +210,11 @@ const StaffDashboardPage = () => {
               <div className="legend">
                 <span>
                   <i className="legend-dot legend-dot--red" />
-                  Đã check-in <b>{checkInCount}</b>
+                  {dashboardText("checkedIn")} <b>{checkInCount}</b>
                 </span>
                 <span>
                   <i className="legend-dot legend-dot--gray" />
-                  Chưa sử dụng{" "}
+                  {dashboardText("unused")} {" "}
                   <b>{Math.max(checkInTickets.length - checkInCount, 0)}</b>
                 </span>
               </div>
@@ -246,23 +244,24 @@ const StaffDashboardPage = () => {
   );
 };
 
-const DateFilter = ({ value, dates, onChange, ariaLabel }) => (
-  <label className="chart-filter">
-    <span>Ngày</span>
+const DateFilter = ({ value, dates, onChange, ariaLabel }) => {
+  const { t } = useTranslation();
+  return <label className="chart-filter">
+    <span>{t("management.dashboard.date")}</span>
     <select
       value={value}
       onChange={(event) => onChange(event.target.value)}
       aria-label={ariaLabel}
     >
-      <option value="all">Tất cả</option>
+      <option value="all">{t("management.common.all")}</option>
       {dates.map((date) => (
         <option key={date} value={date}>
-          Ngày {date}/10
+          {t("management.dashboard.dayInOctober", { day: date })}
         </option>
       ))}
     </select>
-  </label>
-);
+  </label>;
+};
 
 const Metric = ({ icon, label, value, note }) => (
   <article className="metric-card">

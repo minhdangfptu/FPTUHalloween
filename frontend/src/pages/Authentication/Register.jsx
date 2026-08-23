@@ -4,7 +4,7 @@ import "./Login.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { authAPI } from "../../apis/authAPI";
 import toast from "react-hot-toast";
 import {
@@ -109,9 +109,9 @@ function Register() {
 
     // Email validation
     if (!formData.email) {
-      newErrors.email = auth("required", { field: "Email" });
+      newErrors.email = auth("required", { field: auth("email") });
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = auth("invalid", { field: "Email" });
+      newErrors.email = auth("invalid", { field: auth("email") });
     }
 
     // Password validation
@@ -197,7 +197,7 @@ function Register() {
             <div className="fptu-halloween-register-panel">
               <form onSubmit={onSubmit}>
                 <label
-                  className="fptu-halloween-register-form-label"
+                  className="form-label"
                   htmlFor="full_name"
                 >
                   {auth("fullName")}
@@ -205,7 +205,7 @@ function Register() {
                 <input
                   id="full_name"
                   name="full_name"
-                  className="fptu-halloween-register-form-input"
+                  className={`form-input${errors.full_name ? " error" : ""}`}
                   type="text"
                   placeholder={auth("fullNamePlaceholder")}
                   value={formData.full_name}
@@ -220,15 +220,15 @@ function Register() {
                 <div style={{ height: 12 }} />
 
                 <label
-                  className="fptu-halloween-register-form-label"
+                  className="form-label"
                   htmlFor="email"
                 >
-                  Email
+                  {auth("email")}
                 </label>
                 <input
                   id="email"
                   name="email"
-                  className="fptu-halloween-register-form-input"
+                  className={`form-input${errors.email ? " error" : ""}`}
                   type="email"
                   placeholder={auth("emailPlaceholder")}
                   value={formData.email}
@@ -243,7 +243,7 @@ function Register() {
                 <div style={{ height: 12 }} />
 
                 <label
-                  className="fptu-halloween-register-form-label"
+                  className="form-label"
                   htmlFor="phone_number"
                 >
                   {auth("phone")}
@@ -251,7 +251,7 @@ function Register() {
                 <input
                   id="phone_number"
                   name="phone_number"
-                  className="fptu-halloween-register-form-input"
+                  className={`form-input${errors.phone_number ? " error" : ""}`}
                   type="tel"
                   placeholder={auth("phonePlaceholder")}
                   value={formData.phone_number}
@@ -266,7 +266,7 @@ function Register() {
                 <div style={{ height: 12 }} />
 
                 <label
-                  className="fptu-halloween-register-form-label"
+                  className="form-label"
                   htmlFor="password"
                 >
                   {auth("passwordPlaceholder")}
@@ -275,7 +275,7 @@ function Register() {
                   <input
                     id="password"
                     name="password"
-                    className="fptu-halloween-register-form-input"
+                    className={`form-input${errors.password ? " error" : ""}`}
                     type={showPassword ? "text" : "password"}
                     placeholder={auth("passwordPlaceholder")}
                     value={formData.password}
@@ -299,7 +299,7 @@ function Register() {
                 <div style={{ height: 12 }} />
 
                 <label
-                  className="fptu-halloween-register-form-label"
+                  className="form-label"
                   htmlFor="confirmPassword"
                 >
                   {auth("confirmPassword")}
@@ -308,7 +308,7 @@ function Register() {
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
-                    className="fptu-halloween-register-form-input"
+                    className={`form-input${errors.confirmPassword ? " error" : ""}`}
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder={auth("confirmPlaceholder")}
                     value={confirmPassword}
@@ -385,7 +385,7 @@ function Register() {
                 <span aria-hidden className="google-swatch">
                   <GoogleIcon />
                 </span>
-                <span style={{ color: "black" }}>{auth("google")}</span>
+                <span className="oauth-btn__label">{auth("google")}</span>
               </button>
             </div>
 
@@ -394,8 +394,8 @@ function Register() {
               className="fptu-halloween-register-text-muted"
             >
               {auth("hasAccount")} {" "}
-              <a
-                href="/login"
+              <Link
+                to="/login"
                 style={{
                   color: "red",
                   textDecoration: "underline",
@@ -403,7 +403,7 @@ function Register() {
                 }}
               >
                 {auth("login")}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

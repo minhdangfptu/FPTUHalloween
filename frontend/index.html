@@ -2,6 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (() => {
+        try {
+          const storedTheme = localStorage.getItem("theme");
+          if (storedTheme === "dark" || storedTheme === "light") {
+            document.documentElement.dataset.theme = storedTheme;
+            document.documentElement.style.colorScheme = storedTheme;
+          }
+        } catch {
+          // Keep the default theme when storage is unavailable.
+        }
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FPTU Halloween</title>

@@ -8,6 +8,7 @@ import {
   Users,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { DashboardSkeleton } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import orderAPI from "../../apis/orderAPI";
@@ -22,11 +23,15 @@ import {
 import "./AdminDashboard.scss";
 import "../../styles/dashboardFilters.scss";
 
-const money = (value) =>
-  `${new Intl.NumberFormat("vi-VN").format(value || 0)} đ`;
 const payload = (response) => response?.data?.data || response?.data || {};
 
 const AdminDashboard = () => {
+  const { t, i18n } = useTranslation();
+  const dashboardText = (key, options) => t(`management.dashboard.${key}`, options);
+  const money = (value) => new Intl.NumberFormat(i18n.language === "en" ? "en-US" : "vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(value || 0);
   const [orders, setOrders] = useState([]);
   const [tickets, setTickets] = useState([]);
   const [users, setUsers] = useState([]);
@@ -36,7 +41,7 @@ const AdminDashboard = () => {
 
   const load = async () => {
     const toastId = "admin-dashboard-loading";
-    toast.loading("Đang tải dữ liệu tổng quan...", { id: toastId });
+    toast.loading(dashboardText("adminLoading"), { id: toastId });
     setLoading(true);
     try {
       const [ordersResponse, ticketsResponse, usersResponse] =
@@ -51,7 +56,7 @@ const AdminDashboard = () => {
       setOrders(orderData.orders || []);
       setTickets(ticketData.tickets || []);
       setUsers(userData.users || userData.data || []);
-      toast.success("Đã cập nhật dashboard.", { id: toastId });
+      toast.success(dashboardText("adminUpdated"), { id: toastId });
     } catch (error) {
       toast.error(translateError(error), { id: toastId });
     } finally {
@@ -105,16 +110,16 @@ const AdminDashboard = () => {
       <main className="dashboard-main">
         <header className="dashboard-hero">
           <div>
-            <p className="dashboard-kicker">Bảng điều phối · 2025</p>
-            <h1>Toàn cảnh sự kiện</h1>
-            <p>Nhịp vận hành, doanh thu và sức khỏe vé trong một màn hình.</p>
+            <p className="dashboard-kicker">{dashboardText("adminKicker")}</p>
+            <h1>{dashboardText("adminTitle")}</h1>
+            <p>{dashboardText("adminIntro")}</p>
           </div>
           <button
             className="dashboard-refresh"
             onClick={load}
             disabled={loading}
           >
-            <RefreshCw size={16} /> Làm mới
+            <RefreshCw size={16} /> {dashboardText("refresh")}
           </button>
         </header>
 
@@ -122,44 +127,44 @@ const AdminDashboard = () => {
         <section className="dashboard-metrics">
           <Metric
             icon={<CircleDollarSign />}
-            label="Doanh thu tổng"
+            label={dashboardText("totalRevenue")}
             value={money(revenue)}
-            note={`${paidOrders.length} đơn đã thanh toán`}
+            note={dashboardText("paidOrders", { count: paidOrders.length })}
           />
           <Metric
             icon={<Ticket />}
-            label="Tổng vé phát hành"
+            label={dashboardText("issuedTickets")}
             value={tickets.length || "—"}
-            note={`${checked.length} vé đã check-in`}
+            note={dashboardText("checkedTickets", { count: checked.length })}
           />
           <Metric
             icon={<Users />}
-            label="Tài khoản người dùng"
+            label={dashboardText("userAccounts")}
             value={users.length || "—"}
-            note="Dữ liệu tài khoản hiện tại"
+            note={dashboardText("currentAccountData")}
           />
           <Metric
             icon={<PackageCheck />}
-            label="Tỷ lệ sử dụng vé"
+            label={dashboardText("usageRate")}
             value={
               tickets.length
                 ? `${Math.round((checked.length / tickets.length) * 100)}%`
                 : "—"
             }
-            note="Theo trạng thái check-in"
+            note={dashboardText("byCheckInStatus")}
           />
         </section>
 
         <section className="dashboard-grid">
           <ChartCard
-            title="Phân bố vé theo từng mốc giờ"
-            eyebrow="CỘT · LỊCH SỰ KIỆN"
+            title={dashboardText("ticketDistribution")}
+            eyebrow={dashboardText("eventScheduleChart")}
             action={
               <DateFilter
                 value={distributionDate}
                 dates={dates}
                 onChange={setDistributionDate}
-                ariaLabel="Lọc phân bố vé theo ngày"
+                ariaLabel={dashboardText("filterDistribution")}
               />
             }
           >
@@ -180,14 +185,14 @@ const AdminDashboard = () => {
             </div>
           </ChartCard>
           <ChartCard
-            title="Tiến độ check-in mỗi ngày"
-            eyebrow="PIE · TẠI CỔNG"
+            title={dashboardText("checkInProgress")}
+            eyebrow={dashboardText("atGateChart")}
             action={
               <DateFilter
                 value={checkInDate}
                 dates={dates}
                 onChange={setCheckInDate}
-                ariaLabel="Lọc tiến độ check-in theo ngày"
+                ariaLabel={dashboardText("filterProgress")}
               />
             }
           >
@@ -203,11 +208,11 @@ const AdminDashboard = () => {
               <div className="legend">
                 <span>
                   <i className="legend-dot legend-dot--red" />
-                  Đã check-in <b>{checkInCount}</b>
+                  {dashboardText("checkedIn")} <b>{checkInCount}</b>
                 </span>
                 <span>
                   <i className="legend-dot legend-dot--gray" />
-                  Chưa sử dụng{" "}
+                  {dashboardText("unused")} {" "}
                   <b>{Math.max(checkInTickets.length - checkInCount, 0)}</b>
                 </span>
               </div>
@@ -237,23 +242,24 @@ const AdminDashboard = () => {
   );
 };
 
-const DateFilter = ({ value, dates, onChange, ariaLabel }) => (
-  <label className="chart-filter">
-    <span>Ngày</span>
+const DateFilter = ({ value, dates, onChange, ariaLabel }) => {
+  const { t } = useTranslation();
+  return <label className="chart-filter">
+    <span>{t("management.dashboard.date")}</span>
     <select
       value={value}
       onChange={(event) => onChange(event.target.value)}
       aria-label={ariaLabel}
     >
-      <option value="all">Tất cả</option>
+      <option value="all">{t("management.common.all")}</option>
       {dates.map((date) => (
         <option key={date} value={date}>
-          Ngày {date}/10
+          {t("management.dashboard.dayInOctober", { day: date })}
         </option>
       ))}
     </select>
-  </label>
-);
+  </label>;
+};
 
 const Metric = ({ icon, label, value, note }) => (
   <article className="metric-card">

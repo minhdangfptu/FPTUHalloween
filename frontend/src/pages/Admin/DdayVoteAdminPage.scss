@@ -1,8 +1,9 @@
 .dday-admin-shell {
   min-height: 100vh;
-  padding-left: 272px;
+  padding-left: var(--manage-sidebar-width, 272px);
   background: #f5f2ed;
   color: #20242b;
+  transition: padding-left 0.25s ease;
 }
 
 .dday-admin-main {
@@ -694,7 +695,7 @@
 
 @media (max-width: 760px) {
   .dday-admin-shell {
-    padding-left: 72px;
+    padding-left: var(--manage-sidebar-width, 72px);
   }
   .dday-admin-header {
     align-items: stretch;

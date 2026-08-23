@@ -304,7 +304,7 @@ function ContactUsPage() {
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="FPT University Location"
+                title={contact("mapTitle")}
                 className="fptu-halloween-contact-map-iframe"
               ></iframe>
             </div>
@@ -318,9 +318,9 @@ function ContactUsPage() {
                   <Ghost size={24} />
                 </div>
                 <div className="fptu-halloween-contact-info-content">
-                  <h3 className="fptu-halloween-contact-info-title">Fanpage</h3>
+                  <h3 className="fptu-halloween-contact-info-title">{contact("fanpage")}</h3>
                   <p className="fptu-halloween-contact-info-text">
-                    FPTU Halloween
+                    {contact("halloweenPage")}
                   </p>
                 </div>
               </div>
@@ -332,9 +332,9 @@ function ContactUsPage() {
                   <Dices size={24} />
                 </div>
                 <div className="fptu-halloween-contact-info-content">
-                  <h3 className="fptu-halloween-contact-info-title">Fanpage</h3>
+                  <h3 className="fptu-halloween-contact-info-title">{contact("fanpage")}</h3>
                   <p className="fptu-halloween-contact-info-text">
-                    FPTU Board Game Club
+                    {contact("clubPage")}
                   </p>
                 </div>
               </div>
@@ -348,7 +348,7 @@ function ContactUsPage() {
                 <div className="fptu-halloween-contact-info-content">
                   <h3 className="fptu-halloween-contact-info-title">{contact("address")}</h3>
                   <p className="fptu-halloween-contact-info-text">
-                    FPT University
+                    {contact("university")}
                   </p>
                 </div>
               </div>
@@ -360,9 +360,9 @@ function ContactUsPage() {
                   <Mail size={24} />
                 </div>
                 <div className="fptu-halloween-contact-info-content">
-                  <h3 className="fptu-halloween-contact-info-title">Email</h3>
+                  <h3 className="fptu-halloween-contact-info-title">{contact("emailLabel")}</h3>
                   <p className="fptu-halloween-contact-info-text">
-                    fptuhalloween@gmail.com
+                    {contact("emailValue")}
                   </p>
                 </div>
               </div>
@@ -378,7 +378,7 @@ function ContactUsPage() {
                     {contact("organizer")}
                   </h3>
                   <p className="fptu-halloween-contact-info-text">
-                    Nguyễn Thảo Vy - 0338263886
+                    {contact("organizerContact")}
                   </p>
                 </div>
               </div>
@@ -395,7 +395,7 @@ function ContactUsPage() {
                     {contact("communications")}
                   </h3>
                   <p className="fptu-halloween-contact-info-text">
-                    Lê Thị Thuỳ - 0947319889
+                    {contact("communicationsContact")}
                   </p>
                 </div>
               </div>

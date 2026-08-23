@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Plus, X } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import ticketTypeAPI from "../apis/ticketTypeAPI";
 import { translateError, translateSuccess } from "../utils/translateResponse";
 import "./AddTicketType.scss";
@@ -25,6 +26,8 @@ const getStoredRole = () => {
 };
 
 const AddTicketType = ({ onCreated }) => {
+  const { t } = useTranslation();
+  const componentText = (key, options) => t(`components.${key}`, options);
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +41,7 @@ const AddTicketType = ({ onCreated }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const loadingToast = toast.loading("Đang tạo loại vé...");
+    const loadingToast = toast.loading(componentText("creatingTicket"));
     setIsSubmitting(true);
     try {
       const result = await ticketTypeAPI.create({
@@ -63,25 +66,25 @@ const AddTicketType = ({ onCreated }) => {
   return (
     <>
       <button className="add-ticket-type__trigger" type="button" onClick={() => setIsOpen(true)}>
-        <Plus size={17} /> Thêm loại vé
+        <Plus size={17} /> {componentText("addTicket")}
       </button>
       {isOpen && (
         <div className="add-ticket-type__overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setIsOpen(false)}>
           <form className="add-ticket-type__modal" onSubmit={handleSubmit}>
             <div className="add-ticket-type__heading">
-              <div><span>Ticket type</span><h2>Thêm loại vé</h2></div>
-              <button type="button" aria-label="Đóng" onClick={() => setIsOpen(false)}><X size={20} /></button>
+              <div><span>{componentText("ticketType")}</span><h2>{componentText("addTicket")}</h2></div>
+              <button type="button" aria-label={componentText("close")} onClick={() => setIsOpen(false)}><X size={20} /></button>
             </div>
             <div className="add-ticket-type__fields">
-              <label>Tên loại vé<input name="ticketTypeName" value={form.ticketTypeName} onChange={updateField} required /></label>
-              <label>Giá vé<input name="ticketTypePrice" type="number" min="0" value={form.ticketTypePrice} onChange={updateField} required /></label>
-              <label>Ngày<input name="ticketTypeDate" type="date" value={form.ticketTypeDate} onChange={updateField} required /></label>
-              <label>Giờ<input name="ticketTypeTime" type="time" value={form.ticketTypeTime} onChange={updateField} required /></label>
-              <label>Số vé còn lại<input name="availableQuantity" type="number" min="0" value={form.availableQuantity} onChange={updateField} required /></label>
-              <label>Tổng số vé<input name="totalQuantity" type="number" min="0" value={form.totalQuantity} onChange={updateField} required /></label>
-              <label className="add-ticket-type__full">Mô hình 3D<input name="ticketType3dModel" value={form.ticketType3dModel} onChange={updateField} required /></label>
+              <label>{componentText("ticketName")}<input name="ticketTypeName" value={form.ticketTypeName} onChange={updateField} required /></label>
+              <label>{componentText("ticketPriceLabel")}<input name="ticketTypePrice" type="number" min="0" value={form.ticketTypePrice} onChange={updateField} required /></label>
+              <label>{componentText("date")}<input name="ticketTypeDate" type="date" value={form.ticketTypeDate} onChange={updateField} required /></label>
+              <label>{componentText("time")}<input name="ticketTypeTime" type="time" value={form.ticketTypeTime} onChange={updateField} required /></label>
+              <label>{componentText("availableQuantity")}<input name="availableQuantity" type="number" min="0" value={form.availableQuantity} onChange={updateField} required /></label>
+              <label>{componentText("totalQuantity")}<input name="totalQuantity" type="number" min="0" value={form.totalQuantity} onChange={updateField} required /></label>
+              <label className="add-ticket-type__full">{componentText("model3d")}<input name="ticketType3dModel" value={form.ticketType3dModel} onChange={updateField} required /></label>
             </div>
-            <div className="add-ticket-type__actions"><button type="button" onClick={() => setIsOpen(false)}>Hủy</button><button type="submit" disabled={isSubmitting}>{isSubmitting ? "Đang lưu..." : "Tạo loại vé"}</button></div>
+            <div className="add-ticket-type__actions"><button type="button" onClick={() => setIsOpen(false)}>{componentText("cancel")}</button><button type="submit" disabled={isSubmitting}>{isSubmitting ? componentText("saving") : componentText("create")}</button></div>
           </form>
         </div>
       )}

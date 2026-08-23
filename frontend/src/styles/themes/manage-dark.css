@@ -1,0 +1,1121 @@
+/* Shared dark palette for admin and staff workspaces. */
+:root[data-theme='dark'] {
+  --manage-dark-bg: #0e131a;
+  --manage-dark-surface: #1a2029;
+  --manage-dark-surface-raised: #232c37;
+  --manage-dark-ink: #f1f5f9;
+  --manage-dark-muted: #a8b2bf;
+  --manage-dark-faint: #7f8b99;
+  --manage-dark-line: #344050;
+  --manage-dark-line-soft: #293441;
+  --manage-dark-accent: #ff5360;
+  --manage-dark-accent-strong: #ff717b;
+  --manage-dark-accent-soft: #3a2025;
+  --manage-dark-success: #8ee0ad;
+  --manage-dark-success-soft: #173b2b;
+  --manage-dark-warning: #f0d58a;
+  --manage-dark-warning-soft: #493b1f;
+  --manage-dark-info: #9fc4ff;
+  --manage-dark-info-soft: #1d3554;
+  --manage-dark-danger: #ff9ba4;
+  --manage-dark-danger-soft: #492229;
+  --manage-dark-shadow: rgb(0 0 0 / 42%);
+}
+
+/* Management shell, sidebar and header. */
+:root[data-theme='dark'] .manage-layout,
+:root[data-theme='dark'] .manage-layout__footer,
+:root[data-theme='dark'] .staff-manage-layout,
+:root[data-theme='dark'] .manage-placeholder-layout {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] .manage-sidebar {
+  --sidebar-red: var(--manage-dark-accent);
+  --sidebar-red-dark: var(--manage-dark-accent-strong);
+  --sidebar-ink: var(--manage-dark-ink);
+  --sidebar-muted: var(--manage-dark-muted);
+  color: var(--manage-dark-ink);
+  background: #141a22;
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] .manage-sidebar__collapse,
+:root[data-theme='dark'] .manage-sidebar__account-dropdown,
+:root[data-theme='dark'] .manage-header__dropdown {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 18px 40px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] .manage-sidebar__item:hover,
+:root[data-theme='dark'] .manage-sidebar__item--active,
+:root[data-theme='dark'] .manage-sidebar__item--active:hover,
+:root[data-theme='dark'] .manage-sidebar__account-button:hover,
+:root[data-theme='dark'] .manage-sidebar__account-dropdown button:hover,
+:root[data-theme='dark'] .manage-header__dropdown button:hover {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-accent-soft);
+}
+
+:root[data-theme='dark'] .manage-sidebar__account-button,
+:root[data-theme='dark'] .manage-sidebar__account-greeting,
+:root[data-theme='dark'] .manage-sidebar__account-dropdown button,
+:root[data-theme='dark'] .manage-header__greeting,
+:root[data-theme='dark'] .manage-header__dropdown button {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] .manage-sidebar__account-greeting,
+:root[data-theme='dark'] .manage-header__greeting {
+  color: var(--manage-dark-accent);
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .manage-sidebar .manage-sidebar__footer > .manage-sidebar__logout,
+:root[data-theme='dark'] .manage-sidebar__account {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .manage-header {
+  color: #fff;
+  background: #981b25;
+  border-color: #c43b45;
+  box-shadow: 0 5px 18px rgb(0 0 0 / 22%);
+}
+
+:root[data-theme='dark'] .manage-header__user-copy small {
+  color: #ffd5d8;
+}
+
+:root[data-theme='dark'] .manage-header__notification span {
+  color: #9b1d27;
+  background: #fff;
+  border-color: #fff;
+}
+
+:root[data-theme='dark'] .manage-sidebar button:focus-visible,
+:root[data-theme='dark'] .manage-header button:focus-visible {
+  outline-color: rgb(255 113 123 / 58%);
+}
+
+/* Dashboards. */
+:root[data-theme='dark'] .admin-dashboard,
+:root[data-theme='dark'] .staff-dashboard {
+  --dash-ink: var(--manage-dark-ink);
+  --dash-muted: var(--manage-dark-muted);
+  --dash-line: var(--manage-dark-line);
+  --dash-paper: var(--manage-dark-bg);
+  --dash-control: var(--manage-dark-surface-raised);
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] .chart-filter select {
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] .admin-dashboard {
+  --dash-accent: var(--manage-dark-accent);
+}
+
+:root[data-theme='dark'] .staff-dashboard {
+  --dash-accent: #65d7ad;
+}
+
+:root[data-theme='dark'] .dashboard-refresh,
+:root[data-theme='dark'] .metric-card,
+:root[data-theme='dark'] .chart-card {
+  color: var(--dash-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--dash-line);
+  box-shadow: 0 10px 28px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] .metric-icon {
+  color: var(--dash-accent);
+  background: color-mix(in srgb, var(--dash-accent) 14%, var(--manage-dark-surface));
+}
+
+:root[data-theme='dark'] .bar-track {
+  background: var(--manage-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .pie-chart {
+  background: conic-gradient(var(--dash-accent) var(--pie-progress), var(--manage-dark-line) 0);
+}
+
+:root[data-theme='dark'] .pie-chart::after {
+  background: var(--manage-dark-surface);
+}
+
+:root[data-theme='dark'] .legend-dot--gray {
+  background: #657386;
+}
+
+:root[data-theme='dark'] .line-chart svg {
+  background: linear-gradient(to bottom, transparent 49%, var(--manage-dark-line-soft) 50%, transparent 51%);
+}
+
+:root[data-theme='dark'] .line-chart circle {
+  fill: var(--manage-dark-surface);
+}
+
+/* User, contact and order directories. */
+:root[data-theme='dark'] :is(.admin-user-page, .admin-contact-page, .admin-order-page),
+:root[data-theme='dark'] :is(.admin-user-list, .admin-contact-list, .admin-order-list) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-list__header,
+    .admin-contact-list__header,
+    .admin-order-list__header
+  ) > div > p:last-child,
+:root[data-theme='dark'] :is(
+    .admin-user-list__summary,
+    .admin-contact-list__summary,
+    .admin-order-card__toolbar,
+    .admin-user-pagination,
+    .admin-contact-pagination,
+    .admin-order-pagination,
+    .admin-user-list__empty,
+    .admin-contact-list__empty,
+    .admin-order-empty
+  ) {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-list__card,
+    .admin-contact-list__card,
+    .admin-order-card,
+    .admin-order-stats article
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 10px 28px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-list__summary,
+    .admin-contact-list__summary,
+    .admin-order-card__toolbar,
+    .admin-user-pagination,
+    .admin-contact-pagination,
+    .admin-order-pagination
+  ) {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-filter,
+    .admin-contact-filter,
+    .admin-order-search,
+    .admin-order-select
+  ) {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-filter--search,
+    .admin-contact-filter--search,
+    .admin-order-search,
+    .admin-order-select
+  ) {
+  color: var(--manage-dark-muted);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-filter select,
+    .admin-user-filter input,
+    .admin-contact-filter select,
+    .admin-contact-filter input,
+    .admin-order-search input,
+    .admin-order-select select
+  ) {
+  color: var(--manage-dark-ink);
+  background-color: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-table th,
+    .admin-contact-table th,
+    .admin-order-table th
+  ) {
+  color: var(--manage-dark-muted);
+  background: var(--manage-dark-surface-raised);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-table td,
+    .admin-contact-table td,
+    .admin-order-table td
+  ) {
+  color: var(--manage-dark-ink);
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-table small,
+    .admin-user-table__contact span,
+    .admin-contact-table__person span,
+    .admin-contact-table td small,
+    .admin-contact-table__message,
+    .admin-contact-table__id,
+    .admin-order-table td small,
+    .admin-order-date,
+    .admin-order-stats small
+  ) {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-list__refresh,
+    .admin-user-action,
+    .admin-user-pagination button,
+    .admin-contact-list__refresh,
+    .admin-contact-action,
+    .admin-contact-pagination button,
+    .admin-order-list__refresh,
+    .admin-order-view,
+    .admin-order-pagination button
+  ) {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-surface-raised);
+  border-color: #633640;
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-list__refresh,
+    .admin-user-action,
+    .admin-user-pagination button,
+    .admin-contact-list__refresh,
+    .admin-contact-action,
+    .admin-contact-pagination button,
+    .admin-order-list__refresh,
+    .admin-order-view,
+    .admin-order-pagination button
+  ):hover:not(:disabled) {
+  color: var(--manage-dark-accent-strong);
+  background: var(--manage-dark-accent-soft);
+}
+
+/* Directory badges retain their meaning without using bright pastel fills. */
+:root[data-theme='dark'] :is(
+    .admin-user-status.is-active,
+    .admin-contact-status.is-done,
+    .admin-order-status.is-paid
+  ) {
+  color: var(--manage-dark-success);
+  background: var(--manage-dark-success-soft);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-status.is-disabled,
+    .admin-contact-status.is-pending,
+    .admin-order-status.is-pending
+  ) {
+  color: var(--manage-dark-warning);
+  background: var(--manage-dark-warning-soft);
+}
+
+:root[data-theme='dark'] .admin-order-status.is-processing {
+  color: var(--manage-dark-info);
+  background: var(--manage-dark-info-soft);
+}
+
+:root[data-theme='dark'] :is(.admin-order-status.is-cancelled, .admin-user-role) {
+  color: var(--manage-dark-danger);
+  background: var(--manage-dark-danger-soft);
+}
+
+/* User and order detail modals. */
+:root[data-theme='dark'] :is(.admin-user-detail__overlay, .admin-order-modal) {
+  background: rgb(3 7 12 / 76%);
+  backdrop-filter: blur(3px);
+}
+
+:root[data-theme='dark'] :is(.admin-user-detail, .admin-order-dialog) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 26px 70px rgb(0 0 0 / 55%);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-detail__header,
+    .admin-order-dialog > header
+  ) {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .admin-user-detail__grid {
+  background: var(--manage-dark-line-soft);
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .admin-user-detail__grid > div,
+:root[data-theme='dark'] .admin-order-dialog__summary div,
+:root[data-theme='dark'] .admin-order-dialog__tickets > div {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .admin-user-detail__grid span,
+:root[data-theme='dark'] .admin-order-dialog h3,
+:root[data-theme='dark'] .admin-order-dialog__tickets > div > span {
+  color: var(--manage-dark-ink);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-user-detail__grid small,
+    .admin-user-detail__footer,
+    .admin-order-dialog__meta,
+    .admin-order-dialog__summary small,
+    .admin-order-dialog__tickets small,
+    .admin-order-dialog__loading
+  ) {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] .admin-order-dialog header button {
+  color: var(--manage-dark-muted);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] .admin-order-dialog header button:hover {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-accent-soft);
+  border-color: #633640;
+}
+
+/* Vote administration and its fullscreen management modals. */
+:root[data-theme='dark'] .dday-admin-shell {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(
+    .dday-admin-header,
+    .dday-admin-section-heading,
+    .dday-admin-actions,
+    .dday-admin-result > div,
+    .dday-admin-modal--fullscreen .dday-admin-modal__heading,
+    .dday-admin-countdown-panel,
+    .dday-admin-countdown-qr,
+    .dday-admin-modal--fullscreen .dday-admin-modal__actions,
+    .dday-admin-audit__pagination
+  ) {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] :is(
+    .dday-admin-header p,
+    .dday-admin-loading,
+    .dday-admin-empty,
+    .dday-admin-metrics small,
+    .dday-admin-grid label > span,
+    .dday-admin-category__fields label > span,
+    .dday-admin-option label > span,
+    .dday-admin-section-heading p,
+    .dday-admin-reopen-note,
+    .dday-admin-result > div,
+    .dday-admin-modal__body p,
+    .dday-admin-countdown p,
+    .dday-admin-countdown-qr span,
+    .dday-admin-audit__summary,
+    .dday-admin-audit__identity span,
+    .dday-admin-audit__choice span,
+    .dday-admin-audit__state,
+    .dday-admin-audit__pagination
+  ) {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] :is(
+    .dday-admin-metrics > div,
+    .dday-admin-card,
+    .dday-admin-category,
+    .dday-admin-modal,
+    .dday-admin-audit__entry
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 12px 32px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(
+    .dday-admin-grid input,
+    .dday-admin-grid textarea,
+    .dday-admin-category input,
+    .dday-admin-option input,
+    .dday-admin-modal-field input
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] :is(
+    .dday-admin-grid input:disabled,
+    .dday-admin-grid textarea:disabled,
+    .dday-admin-category input:disabled,
+    .dday-admin-option input:disabled
+  ) {
+  color: var(--manage-dark-muted);
+  background: #202832;
+}
+
+:root[data-theme='dark'] :is(
+    .dday-admin-refresh,
+    .dday-admin-button,
+    .dday-admin-button--dark,
+    .dday-admin-button--secondary
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] :is(.dday-admin-refresh, .dday-admin-button--dark) {
+  color: var(--manage-dark-accent);
+  border-color: #633640;
+}
+
+:root[data-theme='dark'] .dday-admin-button--primary {
+  color: #fff;
+  background: #c92c39;
+  border-color: #c92c39;
+}
+
+:root[data-theme='dark'] .dday-admin-button--danger {
+  color: var(--manage-dark-danger);
+  background: var(--manage-dark-danger-soft);
+  border-color: #78404a;
+}
+
+:root[data-theme='dark'] .dday-admin-status--open {
+  color: var(--manage-dark-success);
+  background: var(--manage-dark-success-soft);
+}
+
+:root[data-theme='dark'] .dday-admin-status--draft {
+  color: var(--manage-dark-warning);
+  background: var(--manage-dark-warning-soft);
+}
+
+:root[data-theme='dark'] .dday-admin-status--closed {
+  color: #c5ced8;
+  background: #2d3744;
+}
+
+:root[data-theme='dark'] .dday-admin-modal-backdrop {
+  background: rgb(3 7 12 / 82%);
+  backdrop-filter: blur(3px);
+}
+
+:root[data-theme='dark'] .dday-admin-modal--fullscreen .dday-admin-countdown strong,
+:root[data-theme='dark'] .dday-admin-audit__identity strong {
+  color: var(--manage-dark-ink);
+}
+
+:root[data-theme='dark'] .dday-admin-contestant-placeholder {
+  color: var(--manage-dark-muted);
+  background: linear-gradient(145deg, #151b24, var(--manage-dark-surface-raised));
+  border-color: #536171;
+}
+
+:root[data-theme='dark'] .dday-admin-contestant-placeholder strong {
+  color: var(--manage-dark-ink);
+}
+
+:root[data-theme='dark'] .dday-admin-audit__choice {
+  background: var(--manage-dark-surface-raised);
+}
+
+/* Hot news uses component tokens, so its dialogs inherit the same palette. */
+:root[data-theme='dark'] .hot-news-page {
+  --hot-news-paper: var(--manage-dark-bg);
+  --hot-news-surface: var(--manage-dark-surface);
+  --hot-news-surface-soft: var(--manage-dark-surface-raised);
+  --hot-news-ink: var(--manage-dark-ink);
+  --hot-news-muted: var(--manage-dark-muted);
+  --hot-news-faint: var(--manage-dark-faint);
+  --hot-news-line: var(--manage-dark-line);
+  --hot-news-accent: var(--manage-dark-accent);
+  --hot-news-accent-dark: #d73845;
+  --hot-news-accent-soft: var(--manage-dark-accent-soft);
+  --hot-news-accent-ink: #fff;
+  --hot-news-success: var(--manage-dark-success);
+  --hot-news-success-soft: var(--manage-dark-success-soft);
+  --hot-news-success-line: #376c50;
+  --hot-news-danger: var(--manage-dark-danger);
+  --hot-news-danger-soft: var(--manage-dark-danger-soft);
+  --hot-news-backdrop: rgb(3 7 12 / 78%);
+  --hot-news-shadow: 0 20px 48px var(--manage-dark-shadow);
+}
+
+/* Staff ticket catalog and detail pages. */
+:root[data-theme='dark'] :is(.staff-ticket-list, .staff-ticket-detail) {
+  --staff-ink: var(--manage-dark-ink);
+  --staff-muted: var(--manage-dark-muted);
+  --staff-paper: var(--manage-dark-bg);
+  --staff-line: var(--manage-dark-line);
+  --staff-red: var(--manage-dark-accent);
+  --staff-red-dark: var(--manage-dark-accent-strong);
+  --staff-yellow: var(--manage-dark-warning);
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(
+    .staff-ticket-card,
+    .staff-ticket-detail__main,
+    .staff-ticket-detail__summary,
+    .staff-ticket-detail__edit-form
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 14px 34px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(
+    .staff-ticket-list__search,
+    .staff-ticket-list__status-filter,
+    .staff-ticket-detail__action--secondary,
+    .staff-ticket-detail__edit-form input
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] .staff-ticket-detail__action--secondary {
+  color: var(--manage-dark-accent);
+  border-color: var(--manage-dark-accent);
+}
+
+:root[data-theme='dark'] .staff-ticket-list__filters {
+  background: var(--manage-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .staff-ticket-list__readonly,
+:root[data-theme='dark'] .staff-ticket-detail__readonly {
+  color: var(--manage-dark-danger);
+  background: var(--manage-dark-danger-soft);
+  border-color: #78404a;
+}
+
+:root[data-theme='dark'] .staff-ticket-card--sold-out {
+  color: var(--manage-dark-faint);
+  background: #202832;
+}
+
+:root[data-theme='dark'] :is(
+    .staff-ticket-card__visual,
+    .staff-ticket-detail__visual
+  ) {
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(
+    .staff-ticket-card__visual,
+    .staff-ticket-detail__visual,
+    .staff-ticket-detail__visual-ticket,
+    .staff-ticket-list__filters button.is-active,
+    .staff-ticket-list__filters button:hover,
+    .staff-ticket-list__state button,
+    .staff-ticket-detail__state button
+  ) {
+  color: #fff;
+}
+
+:root[data-theme='dark'] .staff-ticket-detail__info {
+  background: var(--manage-dark-line-soft);
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .staff-ticket-detail__info > div {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-surface-raised);
+}
+
+/* Ticket check-in pages and camera/detail modals. */
+:root[data-theme='dark'] .staff-checkin-page {
+  --checkin-paper: var(--manage-dark-bg);
+  --checkin-ink: var(--manage-dark-ink);
+  --checkin-muted: var(--manage-dark-muted);
+  --checkin-line: var(--manage-dark-line);
+  --checkin-red: var(--manage-dark-accent);
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(
+    .staff-checkin-stats div,
+    .staff-checkin-card,
+    .staff-checkin-camera-dialog,
+    .staff-checkin-ticket-dialog
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 20px 54px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(
+    .staff-checkin-manual,
+    .staff-checkin-ticket-details
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] :is(
+    .staff-checkin-manual input,
+    .staff-checkin-manual button,
+    .staff-checkin-ticket-dialog__actions button,
+    .staff-checkin-camera-dialog__close
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] :is(
+    .staff-checkin-manual button,
+    .staff-checkin-ticket-dialog__actions button
+  ) {
+  color: var(--manage-dark-accent);
+  border-color: #633640;
+}
+
+:root[data-theme='dark'] .staff-checkin-ticket-dialog__actions button:last-child {
+  color: #fff;
+  background: #c92c39;
+  border-color: #c92c39;
+}
+
+:root[data-theme='dark'] .staff-checkin-list article {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .staff-checkin-ticket-icon {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-accent-soft);
+}
+
+:root[data-theme='dark'] :is(.staff-checkin-camera-modal, .staff-checkin-ticket-modal) {
+  background: rgb(3 7 12 / 78%);
+  backdrop-filter: blur(3px);
+}
+
+:root[data-theme='dark'] :is(
+    .staff-checkin-ticket-notes,
+    .staff-checkin-ticket-alert--wrong-date
+  ) {
+  color: var(--manage-dark-warning);
+  background: var(--manage-dark-warning-soft);
+  border-color: #705d2d;
+}
+
+:root[data-theme='dark'] .staff-checkin-ticket-notes strong {
+  color: #ffe4a8;
+}
+
+:root[data-theme='dark'] .staff-checkin-ticket-alert--already-used {
+  color: var(--manage-dark-danger);
+  background: var(--manage-dark-danger-soft);
+  border-color: #78404a;
+}
+
+:root[data-theme='dark'] .staff-checkin-ticket-dialog__actions button:disabled,
+:root[data-theme='dark'] .staff-checkin-ticket-dialog__actions button.is-disabled {
+  color: var(--manage-dark-faint);
+  background: #202832;
+  border-color: var(--manage-dark-line-soft);
+}
+
+/* Purchased-ticket directory and its detail drawer. */
+:root[data-theme='dark'] .staff-user-ticket-page {
+  --ticket-paper: var(--manage-dark-bg);
+  --ticket-ink: var(--manage-dark-ink);
+  --ticket-muted: var(--manage-dark-muted);
+  --ticket-line: var(--manage-dark-line);
+  --ticket-red: var(--manage-dark-accent);
+  --ticket-red-dark: var(--manage-dark-accent-strong);
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(
+    .user-ticket-summary div,
+    .staff-user-ticket-card,
+    .user-ticket-drawer
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 14px 34px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(
+    .user-ticket-date-filter,
+    .user-ticket-date-filter select,
+    .user-ticket-search,
+    .user-ticket-toolbar select,
+    .user-ticket-action button,
+    .user-ticket-pagination button
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] .user-ticket-action button {
+  color: var(--manage-dark-accent);
+  border-color: #633640;
+}
+
+:root[data-theme='dark'] .user-ticket-table th {
+  color: var(--manage-dark-muted);
+  background: var(--manage-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .user-ticket-table td {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .user-ticket-table tbody tr:hover {
+  background: var(--manage-dark-accent-soft);
+}
+
+:root[data-theme='dark'] .user-ticket-qr-button {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-accent-soft);
+  border-color: #633640;
+}
+
+:root[data-theme='dark'] .user-ticket-overlay {
+  background: rgb(3 7 12 / 76%);
+  backdrop-filter: blur(3px);
+}
+
+/* Shared management modals: ticket type, ticket list and QR preview. */
+:root[data-theme='dark'] :is(
+    .add-ticket-type__overlay,
+    .user-ticket-modal,
+    .qr-modal-overlay
+  ) {
+  background: rgb(3 7 12 / 78%);
+  backdrop-filter: blur(3px);
+}
+
+:root[data-theme='dark'] :is(
+    .add-ticket-type__modal,
+    .user-ticket-dialog,
+    .qr-modal-card
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border: 1px solid var(--manage-dark-line);
+  box-shadow: 0 24px 64px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(
+    .add-ticket-type__heading > button,
+    .add-ticket-type__fields input
+  ) {
+  color: var(--manage-dark-ink) !important;
+  background: var(--manage-dark-surface-raised) !important;
+  border-color: var(--manage-dark-line) !important;
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] .add-ticket-type__heading > button svg {
+  color: var(--manage-dark-ink) !important;
+}
+
+:root[data-theme='dark'] .add-ticket-type__heading > button:hover {
+  color: var(--manage-dark-accent) !important;
+  background: var(--manage-dark-accent-soft) !important;
+  border-color: #633640 !important;
+}
+
+:root[data-theme='dark'] .add-ticket-type__heading > button:hover svg {
+  color: var(--manage-dark-accent) !important;
+}
+
+:root[data-theme='dark'] .add-ticket-type__fields label,
+:root[data-theme='dark'] .user-ticket-card span,
+:root[data-theme='dark'] .user-ticket-dialog__empty,
+:root[data-theme='dark'] .qr-modal-card p,
+:root[data-theme='dark'] .qr-modal-card code {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] .add-ticket-type__actions button:first-child {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .user-ticket-dialog__header {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] .user-ticket-dialog__header h2,
+:root[data-theme='dark'] .qr-modal-card h2 {
+  color: var(--manage-dark-ink);
+}
+
+:root[data-theme='dark'] .user-ticket-card {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] .qr-modal-close {
+  color: var(--manage-dark-muted);
+  background: transparent;
+}
+
+:root[data-theme='dark'] .qr-modal-close:hover {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-accent-soft);
+}
+
+/* QR pixels must remain on a white canvas for reliable scanning. */
+:root[data-theme='dark'] .qr-modal-code {
+  background: #fff;
+  border-color: #d8dde4;
+}
+
+/* Management placeholders. */
+:root[data-theme='dark'] .manage-placeholder {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] .manage-placeholder__card {
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 18px 42px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] .manage-placeholder__description {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] :is(.manage-placeholder__icon, .manage-placeholder__status) {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-accent-soft);
+  border-color: #633640;
+}
+
+/* Admin/staff chat workspace and all chat dialogs. */
+:root[data-theme='dark'] .chat-page {
+  --chat-ink: #f8fafc;
+  --chat-panel: var(--manage-dark-surface);
+  --chat-panel-raised: var(--manage-dark-surface-raised);
+  --chat-border: var(--manage-dark-line);
+  --chat-text: var(--manage-dark-ink);
+  --chat-muted: var(--manage-dark-muted);
+  --chat-hover: #283340;
+  --chat-red: var(--manage-dark-accent);
+  --chat-red-soft: var(--manage-dark-accent-soft);
+  --chat-accent: #c3a3ee;
+  --chat-accent-soft: #332546;
+  --chat-online: #71d99a;
+  --chat-mention: #9fc4ff;
+  --chat-mention-soft: #1d3554;
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(.chat-list, .chat-thread) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] :is(.chat-composer input, .chat-list__search) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] .chat-thread__messages::-webkit-scrollbar-track {
+  background: #202832;
+}
+
+:root[data-theme='dark'] .chat-thread__messages::-webkit-scrollbar-thumb {
+  background: #536171;
+  border-color: #202832;
+}
+
+:root[data-theme='dark'] .chat-thread__messages {
+  scrollbar-color: #536171 #202832;
+}
+
+:root[data-theme='dark'] .chat-bubble__content .chat-mention {
+  color: #b9d6ff;
+  background: #1d3554;
+}
+
+:root[data-theme='dark'] .chat-modal-backdrop {
+  background: rgb(3 7 12 / 78%);
+  backdrop-filter: blur(3px);
+}
+
+:root[data-theme='dark'] .chat-modal {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 24px 64px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(
+    .chat-modal__heading h2,
+    .chat-modal label,
+    .chat-modal__members button
+  ) {
+  color: var(--manage-dark-ink);
+}
+
+:root[data-theme='dark'] :is(
+    .chat-modal input,
+    .chat-modal textarea,
+    .chat-modal__members button,
+    .chat-info-modal__member
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+}
+
+:root[data-theme='dark'] .chat-info-modal__leave {
+  color: var(--manage-dark-danger);
+  background: var(--manage-dark-danger-soft);
+  border-color: #78404a;
+}
+
+:root[data-theme='dark'] :is(
+    .chat-info-modal__leave:hover,
+    .chat-info-modal__remove:hover,
+    .chat-info-modal__remove:focus-visible,
+    .chat-modal__members .chat-modal__member--selected
+  ) {
+  color: var(--manage-dark-danger);
+  background: var(--manage-dark-danger-soft);
+  border-color: #78404a;
+}
+
+:root[data-theme='dark'] .chat-info-modal__member-copy .chat-info-modal__member-meta {
+  color: var(--manage-dark-muted);
+}
+
+/* Admin and staff feedback workspaces share the same semantic tokens. */
+:root[data-theme='dark'] .admin-feedback-page,
+:root[data-theme='dark'] .feedback-management-layout .feedback-page {
+  --feedback-ink: var(--manage-dark-ink);
+  --feedback-muted: var(--manage-dark-muted);
+  --feedback-paper: var(--manage-dark-bg);
+  --feedback-paper-deep: var(--manage-dark-surface-raised);
+  --feedback-night: #111821;
+  --feedback-night-soft: var(--manage-dark-surface-raised);
+  --feedback-accent: var(--manage-dark-accent);
+  --feedback-accent-dark: #d73845;
+  --feedback-line: var(--manage-dark-line);
+  --feedback-white: var(--manage-dark-surface);
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] .admin-feedback-content,
+:root[data-theme='dark'] .feedback-management-layout {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-feedback-page,
+    .feedback-management-layout .feedback-page
+  ) :is(input, select, textarea) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] :is(
+    .admin-feedback-page,
+    .feedback-management-layout .feedback-page
+  ) :is(
+    .feedback-button--accent,
+    .feedback-button--dark,
+    .feedback-hero__stamp,
+    .feedback-success-mark
+  ) {
+  color: #fff;
+}
+
+:root[data-theme='dark'] .admin-feedback-page .feedback-add-question:hover,
+:root[data-theme='dark'] .feedback-management-layout .feedback-options label:has(input:checked)::after {
+  color: #fff;
+}
+
+:root[data-theme='dark'] .feedback-management-layout .feedback-options label:has(input[type='radio']:checked)::after {
+  background: #fff;
+}
+
+:root[data-theme='dark'] .admin-feedback-page .feedback-response-modal {
+  background: rgb(3 7 12 / 80%);
+  backdrop-filter: blur(3px);
+}
+
+:root[data-theme='dark'] .admin-feedback-page .feedback-response-modal__panel {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 24px 64px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] .admin-feedback-page .feedback-builder input[type='datetime-local'] {
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] .admin-feedback-page .feedback-builder input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.78);
+}
+
+/* Use the correct native palette for every management form control. */
+:root[data-theme='dark'] .manage-layout :is(input, select, textarea),
+:root[data-theme='dark'] :is(
+    .dday-admin-modal,
+    .admin-order-dialog,
+    .admin-user-detail,
+    .staff-checkin-camera-dialog,
+    .staff-checkin-ticket-dialog,
+    .add-ticket-type__modal,
+    .chat-modal
+  ) :is(input, select, textarea) {
+  color-scheme: dark;
+}

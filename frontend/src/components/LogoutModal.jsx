@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 import wtm from "../assets/wtm.png";
 import "./LogoutModal.css";
 
-function LogoutModal({ isOpen, onClose, onConfirm, title, description, cancelLabel, confirmLabel, isManagement = false }) {
+function LogoutModal({ isOpen, onClose, onConfirm, title, description, cancelLabel, confirmLabel }) {
   const { t } = useTranslation();
   const componentText = (key) => t(`components.${key}`);
-  const resolvedTitle = title || (isManagement ? "Đăng xuất" : componentText("logoutTitle"));
-  const resolvedDescription = description || (isManagement ? "Bạn đang rời đi<br />Bạn chắc chắn chứ?" : componentText("logoutDescription"));
-  const resolvedCancelLabel = cancelLabel || (isManagement ? "Không, đùa chút thôi" : componentText("logoutCancel"));
-  const resolvedConfirmLabel = confirmLabel || (isManagement ? "Đúng, đăng xuất cho tôi" : componentText("logoutConfirm"));
-  const closeLabel = isManagement ? "Đóng" : componentText("close");
+  const resolvedTitle = title || componentText("logoutTitle");
+  const resolvedDescription = description || componentText("logoutDescription");
+  const resolvedCancelLabel = cancelLabel || componentText("logoutCancel");
+  const resolvedConfirmLabel = confirmLabel || componentText("logoutConfirm");
+  const closeLabel = componentText("close");
 
   if (!isOpen) return null;
 
@@ -21,7 +21,7 @@ function LogoutModal({ isOpen, onClose, onConfirm, title, description, cancelLab
         <button type="button" className="logout-modal-close" onClick={onClose} aria-label={closeLabel}>
           <X size={22} />
         </button>
-        <img className="logout-modal-logo" src={wtm} alt="FPTU Halloween" />
+        <img className="logout-modal-logo" src={wtm} alt={componentText("eventBrand")} />
         <h2 className="logout-modal-title">{resolvedTitle}</h2>
         <p className="logout-modal-desc" dangerouslySetInnerHTML={{ __html: resolvedDescription }} />
         <div className="logout-modal-actions">

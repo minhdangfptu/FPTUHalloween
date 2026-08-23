@@ -132,32 +132,24 @@ const departments = [
 const hierarchyLevels = [
   {
     key: "chair",
-    label: "Tổng phụ trách",
-    note: "01 · Trưởng ban Tổ chức",
     match: (person) => person.role.includes("Trưởng ban Tổ chức"),
   },
   {
     key: "hr",
-    label: "Điều phối nhân sự",
-    note: "02 · HR",
     match: (person) => person.role === "HR",
   },
   {
     key: "lead",
-    label: "Trưởng ban",
-    note: "03 · LEAD",
     match: (person) =>
       person.role.includes("Trưởng ban") && !person.role.includes("Phó ban"),
   },
   {
     key: "sublead",
-    label: "Phó ban / Phó ban",
-    note: "04 · SUBLEAD",
     match: (person) => person.role.includes("Phó ban"),
   },
 ];
 
-const PersonCard = ({ person, index, level }) => (
+const PersonCard = ({ person, index, level, labels }) => (
   <article className={`btc-person-card btc-person-card--${level}`}>
     <div className="btc-person-card__media">
       <img
@@ -172,8 +164,8 @@ const PersonCard = ({ person, index, level }) => (
     </div>
     <div className="btc-person-card__body">
       <div className="btc-person-card__eyebrow">
-        <span>CORE TEAM</span>
-        <span>HLW26</span>
+        <span>{labels.cardKicker}</span>
+        <span>{labels.cardSeason}</span>
       </div>
       <h3>{person.name}</h3>
       <p className="btc-person-card__role">{person.displayRole}</p>
@@ -186,7 +178,7 @@ const PersonCard = ({ person, index, level }) => (
       </a>
     </div>
     <div className="btc-person-card__footer">
-      <span>FPTU HALLOWEEN</span>
+      <span>{labels.brand}</span>
       <ArrowUpRight size={16} aria-hidden="true" />
     </div>
   </article>
@@ -206,7 +198,7 @@ export default function BTCFUHLW() {
     <main className="btc-page">
       <section className="btc-hero">
         <div className="btc-hero__eyebrow">
-          <span /> FPTU HALLOWEEN 2025 · CORE TEAM
+          <span /> {btc.heroLabel}
         </div>
         <div className="btc-hero__content">
           <div>
@@ -214,7 +206,7 @@ export default function BTCFUHLW() {
             <h1>
               {btc.titleBefore}
               <br />
-              <em>{btc.titleAfter}</em> sự kiện.
+              <em>{btc.titleAfter}</em> {btc.titleEnd}
             </h1>
           </div>
           <p className="btc-hero__intro">
@@ -223,8 +215,8 @@ export default function BTCFUHLW() {
         </div>
         <div className="btc-hero__meta">
           <span>01 / {btc.about}</span>
-          <span>Core Team HLW26</span>
-          <span>FPT University · Hà Nội</span>
+          <span>{btc.coreTeam}</span>
+          <span>{btc.location}</span>
         </div>
       </section>
 
@@ -292,7 +284,7 @@ export default function BTCFUHLW() {
               <ShieldCheck size={22} />
             </div>
             <div>
-              <span>CORE TEAM</span>
+              <span>{btc.coreTeamLabel}</span>
               <h3>{btc.boardTitle}</h3>
             </div>
             <Users size={22} className="btc-board-heading__mark" />
@@ -308,7 +300,7 @@ export default function BTCFUHLW() {
                     key={level.key}
                   >
                     <div className="btc-level__heading">
-                      <span>{level.note}</span>
+                      <span>{btc.hierarchyNotes[level.key]}</span>
                       <h3>{translatedHierarchy[level.key]}</h3>
                     </div>
                     <div
@@ -320,6 +312,7 @@ export default function BTCFUHLW() {
                           person={person}
                           index={displayTeam.indexOf(person)}
                           level={level.key}
+                          labels={btc}
                         />
                       ))}
                     </div>
@@ -336,7 +329,7 @@ export default function BTCFUHLW() {
                   key={level.key}
                 >
                   <div className="btc-level__heading">
-                    <span>{level.note}</span>
+                    <span>{btc.hierarchyNotes[level.key]}</span>
                     <h3>{translatedHierarchy[level.key]}</h3>
                   </div>
                   <div
@@ -348,6 +341,7 @@ export default function BTCFUHLW() {
                         person={person}
                         index={displayTeam.indexOf(person)}
                         level={level.key}
+                        labels={btc}
                       />
                     ))}
                   </div>
@@ -362,7 +356,7 @@ export default function BTCFUHLW() {
             <div className="btc-department" key={department}>
               <span>{String(index + 1).padStart(2, "0")}</span>
               <strong>{translatedDepartments[index]}</strong>
-              <small>Team HLW26</small>
+              <small>{btc.departmentTeam}</small>
             </div>
           ))}
         </div>

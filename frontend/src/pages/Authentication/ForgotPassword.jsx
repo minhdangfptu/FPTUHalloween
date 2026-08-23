@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { authAPI } from "../../apis/authAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
@@ -57,14 +57,14 @@ export default function ForgotPassword() {
     <main className="cp-page fp-page">
       <div className="cp-card">
         <div className="cp-card__header">
-          <img className="cp-brand-logo" src={wtmLogo} alt="FPTU Halloween" />
+          <img className="cp-brand-logo" src={wtmLogo} alt={auth("brandAlt")} />
           <h1 className="cp-card__title">{step === 0 ? auth("titleEmail") : step === 1 ? auth("titleOtp") : auth("titleReset")}</h1>
           <p className="cp-card__subtitle">{step === 0 ? auth("subtitleEmail") : step === 1 ? auth("subtitleOtp") : auth("subtitleReset")}</p>
         </div>
 
         <form className="cp-form" onSubmit={submit} noValidate>
-          {step === 0 && <div className="cp-field"><label className="cp-field__label" htmlFor="forgot-email">Email</label><div className="cp-input-shell"><input id="forgot-email" type="email" placeholder={auth("emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} required /></div></div>}
-          {step === 1 && <div className="cp-field"><label className="cp-field__label" htmlFor="forgot-otp">OTP</label><div className="cp-input-shell"><input id="forgot-otp" inputMode="numeric" maxLength={6} placeholder={auth("otpPlaceholder")} value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))} required /></div></div>}
+          {step === 0 && <div className="cp-field"><label className="cp-field__label" htmlFor="forgot-email">{auth("email")}</label><div className="cp-input-shell"><input id="forgot-email" type="email" placeholder={auth("emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} required /></div></div>}
+          {step === 1 && <div className="cp-field"><label className="cp-field__label" htmlFor="forgot-otp">{auth("otp")}</label><div className="cp-input-shell"><input id="forgot-otp" inputMode="numeric" maxLength={6} placeholder={auth("otpPlaceholder")} value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))} required /></div></div>}
           {step === 2 && <>
             <div className="cp-field"><label className="cp-field__label" htmlFor="forgot-password">{auth("password")}</label><div className="cp-input-shell"><input id="forgot-password" type="password" placeholder={auth("passwordPlaceholder")} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} minLength={8} required /></div></div>
             {newPassword.length > 0 && <div className="cp-strength"><div className="cp-strength__bars">{[1, 2, 3, 4].map((n) => <span key={n} className="cp-strength__bar" style={{ background: n <= (passed ? 4 : 1) ? (passed ? "#16a34a" : "#ef4444") : "#e5e7eb" }} />)}</div><p className="cp-strength__label" style={{ color: passed ? "#16a34a" : "#ef4444" }}>{passed ? auth("strong") : auth("weak")}</p></div>}
@@ -72,7 +72,7 @@ export default function ForgotPassword() {
             <div className="cp-field"><label className="cp-field__label" htmlFor="forgot-confirm">{auth("confirm")}</label><div className="cp-input-shell"><input id="forgot-confirm" type="password" placeholder={auth("confirm")} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required /></div>{confirmPassword && !matched && <p className="cp-field__error">{auth("mismatch")}</p>}</div>
           </>}
           <button className="cp-submit" type="submit" disabled={loading}>{loading ? auth("processing") : step === 0 ? auth("send") : step === 1 ? auth("verify") : auth("submit")}</button>
-          <p className="cp-back-link"><a href="/login">{auth("back")}</a></p>
+          <p className="cp-back-link"><Link to="/login">{auth("back")}</Link></p>
         </form>
       </div>
     </main>

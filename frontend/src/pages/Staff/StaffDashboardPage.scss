@@ -1,6 +1,6 @@
 /* Hallmark · dashboard theme: Gate Log · focused operations */
-.dashboard-shell { min-height: 100vh; padding-left: 272px; }
-@media(max-width:760px){.dashboard-shell{padding-left:72px}}
+.dashboard-shell { min-height: 100vh; padding-left: var(--manage-sidebar-width, 272px); transition: padding-left .25s ease; }
+@media(max-width:760px){.dashboard-shell{padding-left:var(--manage-sidebar-width, 72px)}}
 .staff-dashboard{--dash-accent:#087b58;--dash-ink:#20242b;--dash-muted:#707782;--dash-line:#dfe6df;--dash-paper:#f1f4f0;min-height:100vh;background:var(--dash-paper);color:var(--dash-ink)}
 .staff-dashboard .dashboard-refresh:hover{border-color:var(--dash-accent);color:var(--dash-accent)}.staff-dashboard .metric-icon{color:var(--dash-accent);background:#e5f4ec}.staff-dashboard .bar-track i{background:var(--dash-accent)}.staff-dashboard .pie-chart{background:conic-gradient(var(--dash-accent) var(--pie-progress),#dce4dd 0)}.staff-dashboard .line-chart path{stroke:var(--dash-accent)}.staff-dashboard .line-chart circle{stroke:var(--dash-accent)}
 /* Shared dashboard geometry is deliberately local to the dashboard pages. */

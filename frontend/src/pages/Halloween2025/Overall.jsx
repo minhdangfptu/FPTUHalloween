@@ -425,7 +425,7 @@ Sự kiện gồm 4 khu vực chính:
                   variant="body1"
                   sx={{ fontWeight: 500, color: "error.main" }}
                 >
-                  FPTU Board Game Club (FBGC)
+                  {overallText("organizerName")}
                 </Typography>
               </Box>
             </Paper>

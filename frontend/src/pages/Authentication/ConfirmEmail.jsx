@@ -6,6 +6,7 @@ import { authAPI } from "../../apis/authAPI";
 import toast from "react-hot-toast";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 
 function ConfirmEmail() {
   const [verificationCode, setVerificationCode] = useState("");
@@ -14,6 +15,7 @@ function ConfirmEmail() {
   const [resendCountdown, setResendCountdown] = useState(0);
   const [email, setEmail] = useState(""); // Email từ URL params hoặc localStorage
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const auth = (key, options) => t(`auth.confirm.${key}`, options);
 
   useEffect(() => {
@@ -63,7 +65,7 @@ function ConfirmEmail() {
       await authAPI.confirmOtp({ identifier: email, otp: verificationCode, purpose: "register" });
       toast.success(translateSuccess("Registration successful"), { id: loadingToast });
       localStorage.removeItem("registerEmail");
-      window.location.href = "/";
+      navigate("/", { replace: true });
       return;
     } catch (error) {
       console.error("Verification error:", error);
@@ -112,7 +114,7 @@ function ConfirmEmail() {
       <div className="fptu-halloween-confirm-email-left-pane">
         <div className="fptu-halloween-confirm-email-top">
           <div className="fptu-halloween-confirm-email-box">
-            <img className="fptu-halloween-confirm-email-logo" src={loginImg} alt="FPTU Halloween" />
+            <img className="fptu-halloween-confirm-email-logo" src={loginImg} alt={auth("brandAlt")} />
             <div className="fptu-halloween-confirm-email-panel">
               <div className="fptu-halloween-confirm-email-header">
                 <h2>{auth("title")}</h2>
@@ -166,8 +168,8 @@ function ConfirmEmail() {
 
             <div style={{ marginTop: 16 }} className="fptu-halloween-confirm-email-text-muted">
               {auth("back")} {" "}
-              <a
-                href="/register"
+              <Link
+                to="/register"
                 style={{
                   color: "red",
                   textDecoration: "underline",
@@ -175,7 +177,7 @@ function ConfirmEmail() {
                 }}
               >
                 {auth("register")}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

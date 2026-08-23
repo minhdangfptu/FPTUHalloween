@@ -13,15 +13,8 @@ import {
 } from "recharts";
 import ddayVoteAPI from "../../apis/ddayVoteAPI";
 import { translateError } from "../../utils/translateResponse";
+import { useTranslation } from "react-i18next";
 import "./PublishCode.scss";
-
-const formatDate = (value) =>
-  value
-    ? new Date(value).toLocaleString("vi-VN", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      })
-    : "—";
 
 const getChartData = (category) => {
   const options = category.options || [];
@@ -40,17 +33,20 @@ const getChartData = (category) => {
 };
 
 const ChartTooltip = ({ active, payload }) => {
+  const { t } = useTranslation();
   if (!active || !payload?.length) return null;
   const point = payload[0].payload;
   return (
     <div className="publish-code-tooltip">
       <strong>{point.label}</strong>
-      <span>{point.count} phiếu</span>
+      <span>{t("management.publish.votes", { count: point.count })}</span>
     </div>
   );
 };
 
 const PublishCode = () => {
+  const { t } = useTranslation();
+  const publishText = (key, options) => t(`management.publish.${key}`, options);
   const [config, setConfig] = useState(null);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -100,7 +96,7 @@ const PublishCode = () => {
         aria-busy="true"
       >
         <LoaderCircle className="publish-code-spin" size={42} />
-        <p>Đang chuẩn bị màn hình công bố…</p>
+        <p>{publishText("preparing")}</p>
       </main>
     );
   }
@@ -109,14 +105,14 @@ const PublishCode = () => {
     return (
       <main className="publish-code-screen publish-code-screen--state">
         <div className="publish-code-error">
-          <h1>Chưa thể công bố kết quả</h1>
+          <h1>{publishText("errorTitle")}</h1>
           <p>{error}</p>
           <button
             type="button"
             className="publish-code-button publish-code-button--secondary"
             onClick={loadConfig}
           >
-            <RefreshCw size={18} /> Thử lại
+            <RefreshCw size={18} /> {t("management.common.retry")}
           </button>
         </div>
       </main>
@@ -147,7 +143,7 @@ const PublishCode = () => {
             disabled={publishing}
           >
             <Star size={28} />{" "}
-            {publishing ? "Đang tải kết quả…" : "Công bố kết quả"}
+            {publishText(publishing ? "loadingResults" : "publishResults")}
           </button>
         </div>
       </main>
@@ -160,19 +156,19 @@ const PublishCode = () => {
         <div className="publish-code-results__heading">
           <div className="publish-code-results__heading-copy">
             <span className="publish-code-eyebrow">
-              KẾT QUẢ BÌNH CHỌN TRỰC TIẾP
+              {publishText("liveResults")}
             </span>
-            <h1>{results?.title || config?.title || "Kết quả bình chọn"}</h1>
+            <h1>{results?.title || config?.title || publishText("resultsTitle")}</h1>
             {/* <p>
               Đóng lúc {formatDate(results?.closedAt || config?.closedAt)}
             </p> */}
           </div>
           <div
             className="publish-code-results__summary"
-            aria-label="Tổng số lượt bình chọn"
+            aria-label={publishText("totalVotes")}
           >
             <strong>{results?.totalVotes || 0}</strong>
-            <span>lượt bình chọn</span>
+            <span>{publishText("voteCountLabel")}</span>
           </div>
         </div>
         <div className="publish-code-results__grid">
@@ -190,18 +186,18 @@ const PublishCode = () => {
                 <div className="publish-code-category__heading">
                   <div>
                     <span className="publish-code-category__eyebrow">
-                      HẠNG MỤC {String(categoryIndex + 1).padStart(2, "0")}
+                      {publishText("category", { number: String(categoryIndex + 1).padStart(2, "0") })}
                     </span>
                     <h2>{category.label}</h2>
                   </div>
                   <span className="publish-code-category__count">
-                    {categoryTotal} lượt bình chọn
+                    {publishText("votes", { count: categoryTotal })}
                   </span>
                 </div>
                 <div
                   className="publish-code-chart"
                   role="img"
-                  aria-label={`Biểu đồ kết quả ${category.label}`}
+                  aria-label={publishText("chartAria", { category: category.label })}
                 >
                   <div className="publish-code-chart__canvas">
                     <ResponsiveContainer width="100%" height="100%">
@@ -238,7 +234,7 @@ const PublishCode = () => {
                         />
                         <Bar
                           dataKey="count"
-                          name="Số phiếu"
+                          name={publishText("voteNumber")}
                           radius={[10, 10, 0, 0]}
                           animationBegin={categoryIndex * 180}
                           animationDuration={1400}

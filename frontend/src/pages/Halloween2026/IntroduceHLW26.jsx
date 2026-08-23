@@ -7,99 +7,64 @@ import event2022 from "../../assets/hlw/2022.jpg";
 import event2023 from "../../assets/hlw/2023.jpg";
 import event2024 from "../../assets/hlw/2024.jpg";
 import event2025 from "../../assets/hlw/2025.jpg";
+import handleSectionScroll from "../../utils/scroll-to-section";
 import "./IntroduceHLW26.scss";
 
 const sections = [
-  {
-    label: "01",
-    title: "Halloween FPTU là gì?",
-    text: "Halloween FPTU là lễ hội thường niên của sinh viên FPTU — nơi tinh thần sáng tạo, sự kết nối và không khí kỳ bí gặp nhau trong một đêm hội đáng nhớ.",
-  },
-  {
-    label: "02",
-    title: "Sứ mệnh",
-    text: "Tạo ra một không gian để sinh viên được trải nghiệm, thể hiện cá tính và cùng nhau xây dựng những kỷ niệm đặc biệt trong đời sống đại học.",
-  },
-  {
-    label: "03",
-    title: "Giá trị",
-    text: "Sáng tạo · Gắn kết · Dũng cảm · Tôn trọng. Mỗi hoạt động đều được thiết kế để khuyến khích tinh thần tham gia và tôn trọng trải nghiệm của cộng đồng.",
-  },
-  {
-    label: "04",
-    title: "Quy mô",
-    text: "Thông tin quy mô chương trình Halloween FPTU 2026 sẽ được Ban tổ chức cập nhật trong thời gian tới.",
-  },
+  { label: "01", key: "what" },
+  { label: "02", key: "mission" },
+  { label: "03", key: "values" },
+  { label: "04", key: "size" },
 ];
 
 const seasons = [
   {
     year: "2026",
-    title: "FPTU Halloween 2026",
-    concept: "Đang cập nhật",
+    conceptKey: "updating",
     image: null,
-    scale: "Đang cập nhật",
+    scaleKey: "updating",
     detail: "/introduce-hlw26",
   },
   {
     year: "2025",
-    title: "FPTU Halloween 2025",
-    concept: "Wishbound",
+    conceptKey: "wishbound",
     image: event2025,
-    scale: "Đang cập nhật",
+    scaleKey: "updating",
     detail: "/old-event#halloween-2025",
   },
   {
     year: "2024",
-    title: "FPTU Halloween 2024",
-    concept: "U Linh Ký",
+    conceptKey: "uLinhKy",
     image: event2024,
-    scale: "Đang cập nhật",
+    scaleKey: "updating",
     detail: "/old-event#halloween-2024",
   },
   {
     year: "2023",
-    title: "FPTU Halloween 2023",
-    concept: "Haunted Fest",
+    conceptKey: "hauntedFest",
     image: event2023,
-    scale: "Đang cập nhật",
+    scaleKey: "updating",
     detail: "/old-event#halloween-2023",
   },
   {
     year: "2022",
-    title: "FPTU Halloween 2022",
-    concept: "Fear Corner",
+    conceptKey: "fearCorner",
     image: event2022,
-    scale: "Đang cập nhật",
+    scaleKey: "updating",
     detail: "/old-event#halloween-2022",
   },
   {
     year: "2020",
-    title: "FPTU Halloween 2020",
-    concept: "The Haunted Forest",
+    conceptKey: "hauntedForest",
     image: event2020,
-    scale: "Đang cập nhật",
+    scaleKey: "updating",
     detail: "/old-event#halloween-2020",
   },
 ];
 
-const handleSectionScroll = (event) => {
-  event.preventDefault();
-
-  const targetId = event.currentTarget.getAttribute("href");
-  const target = targetId ? document.querySelector(targetId) : null;
-
-  target?.scrollIntoView({
-    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ? "auto"
-      : "smooth",
-    block: "start",
-  });
-};
-
 export default function IntroduceHLW26() {
   const { t } = useTranslation();
-  const page = (key) => t(`eventPages.hlwIntro.${key}`);
+  const page = (key, options) => t(`eventPages.hlwIntro.${key}`, options);
   return (
     <main className="introduce-hlw26">
       <section
@@ -142,16 +107,7 @@ export default function IntroduceHLW26() {
             <br />
             <span>{page("overviewTitleAfter")}</span>
           </h2>
-          <p>
-            Lễ hội Halloween tại Đại học FPT là sự kiện thường niên bùng nổ –
-            một đặc sản văn hóa sinh viên không thể bỏ qua. Được tổ chức bởi
-            FPTU Board Game Club, sự kiện được nhuộm màu ma mị với chủ đề độc
-            đáo mỗi năm, trở thành sân khấu cho những màn hóa trang đỉnh cao và
-            sáng tạo có 1 không 2 của các Cóc. Với những hoạt động như Nhà ma
-            rùng rợn, sự kiện sôi động, hay các cuộc thi gay cấn, Halloween FPT
-            luôn mang đến một đêm hội kỳ bí, chất lừ và đáng nhớ, củng cố tinh
-            thần năng động và gắn kết của cộng đồng sinh viên FPT.F
-          </p>
+          <p>{page("overviewBody")}</p>
         </div>
       </section>
 
@@ -162,8 +118,8 @@ export default function IntroduceHLW26() {
         {sections.map((section) => (
           <article className="introduce-hlw26__fact" key={section.label}>
             <span>{section.label}</span>
-            <h3>{section.title}</h3>
-            <p>{section.text}</p>
+            <h3>{page(`facts.${section.key}.title`)}</h3>
+            <p>{page(`facts.${section.key}.text`)}</p>
           </article>
         ))}
       </section>
@@ -190,7 +146,7 @@ export default function IntroduceHLW26() {
             >
               <div className="introduce-hlw26__season-thumb">
                 {season.image ? (
-                  <img src={season.image} alt={`${season.title} thumbnail`} />
+                  <img src={season.image} alt={page("seasonThumbnail", { year: season.year })} />
                 ) : (
                   <span className="introduce-hlw26__coming-soon">
                     {page("comingSoon")}
@@ -199,9 +155,9 @@ export default function IntroduceHLW26() {
               </div>
               <div>
                 <span>{season.year}</span>
-                <strong>{season.title}</strong>
-                <small>{page("concept")} · {season.concept}</small>
-                <small>{page("scale")} · {season.scale}</small>
+                <strong>{page("seasonTitle", { year: season.year })}</strong>
+                <small>{page("concept")} · {page(`concepts.${season.conceptKey}`)}</small>
+                <small>{page("scale")} · {page(season.scaleKey)}</small>
               </div>
             </a>
           ))}

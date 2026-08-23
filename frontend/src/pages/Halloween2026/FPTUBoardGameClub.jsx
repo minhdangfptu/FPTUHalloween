@@ -11,18 +11,14 @@ import achievementImageTwo from "../../assets/ptxs2.jpg";
 import weeklyImageOne from "../../assets/shht1.jpg";
 import weeklyImageTwo from "../../assets/shht2.jpg";
 import weeklyImageThree from "../../assets/shht3.jpg";
+import handleSectionScroll from "../../utils/scroll-to-section";
 import "./FPTUBoardGameClub.scss";
 
 const clubData = {
-  clubName: "FPTU Board Game Club",
   logoUrl: clubAvatar,
-  clubDescription:
-    "FPTU Boardgame Club là nơi quy tụ những bạn trẻ yêu thích boardgame và tổ chức sự kiện. Sau 6 năm hoạt động, CLB đã ghi dấu ấn với nhiều sự kiện lớn nhỏ như FPTU Halloween (2020–2022–2023) hay BOARDGAME TOURNAMENT mùa 1–2. Với tinh thần sáng tạo và gắn kết, CLB đang trở thành điểm hẹn quen thuộc của sinh viên FPTU để cùng thư giãn và kết nối.",
-  president: "Nguyễn Cảnh Hưng",
   email: "fuboardgameclub@gmail.com",
   facebook: "https://fb.me/fuboardgameclub",
   phone: "0944989980",
-  location: "Sân Băng – Đại học FPT Hà Nội",
   memberCount: 200,
   establishedYear: 2019,
   weeklyImage:
@@ -32,15 +28,16 @@ const clubData = {
 };
 
 const tabItems = [
-  { id: "about", label: "Giới thiệu" },
-  { id: "weekly", label: "Sinh hoạt" },
-  { id: "events", label: "Sự kiện" },
-  { id: "achievements", label: "Thành tích" },
+  { id: "about", labelKey: "tabs.about" },
+  { id: "weekly", labelKey: "tabs.weekly" },
+  { id: "events", labelKey: "tabs.events" },
+  { id: "achievements", labelKey: "tabs.achievements" },
 ];
 
 export default function FPTUBoardGameClub() {
   const [activeTab, setActiveTab] = useState("about");
   const { t } = useTranslation();
+  const club = (key, options) => t(`eventPages.club.${key}`, options);
 
   return (
     <main className="fptu-club-page">
@@ -51,18 +48,21 @@ export default function FPTUBoardGameClub() {
         <div className="fptu-club-hero-overlay" />
         <div className="fptu-club-hero-content">
           <p className="fptu-club-eyebrow">
-            CLUB PROFILE · FPTU BOARD GAME CLUB · NEVER LET YOU ALONE
+            {club("eyebrow")}
           </p>
           <h1>
-            CÂU LẠC BỘ
+            {club("heroTitle")}
             <br />
-            <span>BOARD GAME</span>
+            <span>{club("heroTitleAfter")}</span>
           </h1>
           <p className="fptu-club-hero-lede">
-            Một cộng đồng yêu boardgame, nơi mỗi ván chơi mở ra một cuộc gặp
-            mới.
+            {club("heroLede")}
           </p>
-          <a className="fptu-club-scroll-link" href="#club-profile">
+          <a
+            className="fptu-club-scroll-link"
+            href="#club-profile"
+            onClick={handleSectionScroll}
+          >
             {t("nav.introduceGeneral")} <ClubIcons.ArrowDown size={16} aria-hidden="true" />
           </a>
         </div>
@@ -87,11 +87,11 @@ export default function FPTUBoardGameClub() {
               <span aria-hidden="true">F</span>
             </div>
             <div className="fptu-club-brand-copy">
-              <p className="fptu-club-brand-kicker">FPTU · HÀ NỘI</p>
-              <h2 id="club-profile-title">{clubData.clubName}</h2>
+              <p className="fptu-club-brand-kicker">{club("brandKicker")}</p>
+              <h2 id="club-profile-title">{club("clubName")}</h2>
               <p>
                 <ClubIcons.MapPin size={15} aria-hidden="true" />{" "}
-                {clubData.location}
+                {club("location")}
               </p>
             </div>
           </header>
@@ -101,7 +101,7 @@ export default function FPTUBoardGameClub() {
               <div
                 className="fptu-club-tabs"
                 role="tablist"
-                aria-label="Nội dung về câu lạc bộ"
+                aria-label={club("tabsAria")}
               >
                 {tabItems.map((tab) => (
                   <button
@@ -115,7 +115,7 @@ export default function FPTUBoardGameClub() {
                     tabIndex={activeTab === tab.id ? 0 : -1}
                     onClick={() => setActiveTab(tab.id)}
                   >
-                    {tab.label}
+                    {club(tab.labelKey)}
                   </button>
                 ))}
               </div>
@@ -129,29 +129,23 @@ export default function FPTUBoardGameClub() {
               >
                 {activeTab === "about" && (
                   <>
-                    <p className="fptu-club-lede">{clubData.clubDescription}</p>
-                    <p>
-                      Là CLB tổ chức sự kiện FPTU Halloween thường niên của
-                      trường Đại học FPT Hà Nội, Board Game Club đưa tinh thần
-                      sáng tạo và gắn kết vào từng hoạt động. Với năm 2025, sự
-                      kiện được nhuộm màu “Wishbound” – những giấc mơ và ước mơ
-                      đầy hứa hẹn.
-                    </p>
+                    <p className="fptu-club-lede">{club("description")}</p>
+                    <p>{club("aboutBody")}</p>
                     <div
                       className="fptu-club-stat-row"
-                      aria-label="Thông tin câu lạc bộ"
+                      aria-label={club("statsAria")}
                     >
                       <div>
                         <strong>{clubData.memberCount}</strong>
-                        <span>thành viên</span>
+                        <span>{club("members")}</span>
                       </div>
                       <div>
                         <strong>{clubData.establishedYear}</strong>
-                        <span>năm thành lập</span>
+                        <span>{club("established")}</span>
                       </div>
                       <div>
                         <strong>2024</strong>
-                        <span>CLB PHONG TRÀO XUẤT SẮC</span>
+                        <span>{club("excellentClub")}</span>
                       </div>
                     </div>
                   </>
@@ -159,36 +153,32 @@ export default function FPTUBoardGameClub() {
 
                 {activeTab === "weekly" && (
                   <>
-                    <h3>Sinh hoạt hàng tuần</h3>
-                    <p className="fptu-club-lede">
-                      Đại gia đình Bê Gờ mở cửa chào đón tất cả mọi người đến
-                      sinh hoạt vào thứ 5 hàng tuần, từ 19h30 đến 21h30 tại Sân
-                      Băng.
-                    </p>
+                    <h3>{club("weeklyTitle")}</h3>
+                    <p className="fptu-club-lede">{club("weeklyBody")}</p>
                     <div className="fptu-club-weekly-gallery">
                       <figure className="fptu-club-image-frame">
                         <img
                           src={weeklyImageOne}
-                          alt="Sinh hoạt hàng tuần của FPTU Board Game Club"
+                          alt={club("weeklyAlt1")}
                           loading="lazy"
                         />
-                        <figcaption>Buổi sinh hoạt 01</figcaption>
+                        <figcaption>{club("weeklyCaption1")}</figcaption>
                       </figure>
                       <figure className="fptu-club-image-frame">
                         <img
                           src={weeklyImageTwo}
-                          alt="Thành viên FPTU Board Game Club sinh hoạt"
+                          alt={club("weeklyAlt2")}
                           loading="lazy"
                         />
-                        <figcaption>Buổi sinh hoạt 02</figcaption>
+                        <figcaption>{club("weeklyCaption2")}</figcaption>
                       </figure>
                       <figure className="fptu-club-image-frame">
                         <img
                           src={weeklyImageThree}
-                          alt="Hoạt động board game của câu lạc bộ"
+                          alt={club("weeklyAlt3")}
                           loading="lazy"
                         />
-                        <figcaption>Buổi sinh hoạt 03</figcaption>
+                        <figcaption>{club("weeklyCaption3")}</figcaption>
                       </figure>
                     </div>
                   </>
@@ -196,36 +186,31 @@ export default function FPTUBoardGameClub() {
 
                 {activeTab === "events" && (
                   <div className="fptu-club-empty-state">
-                    <h3>Sự kiện đang được cập nhật</h3>
-                    <p>
-                      Thông tin các sự kiện sắp tới của câu lạc bộ sẽ được công
-                      bố tại đây.
-                    </p>
+                    <h3>{club("eventsTitle")}</h3>
+                    <p>{club("eventsBody")}</p>
                   </div>
                 )}
 
                 {activeTab === "achievements" && (
                   <>
-                    <h3>Thành tích</h3>
-                    <p className="fptu-club-lede">
-                      Câu lạc bộ phong trào xuất sắc kì FA24.
-                    </p>
+                    <h3>{club("achievementsTitle")}</h3>
+                    <p className="fptu-club-lede">{club("achievementsBody")}</p>
                     <div className="fptu-club-achievement-gallery">
                       <figure className="fptu-club-image-frame">
                         <img
                           src={achievementImageOne}
-                          alt="FPTU Board Game Club nhận bằng khen phong trào"
+                          alt={club("achievementAlt1")}
                           loading="lazy"
                         />
-                        <figcaption>Thành tích phong trào</figcaption>
+                        <figcaption>{club("achievementCaption1")}</figcaption>
                       </figure>
                       <figure className="fptu-club-image-frame">
                         <img
                           src={achievementImageTwo}
-                          alt="FPTU Board Game Club tại sự kiện"
+                          alt={club("achievementAlt2")}
                           loading="lazy"
                         />
-                        <figcaption>Dấu ấn hoạt động của CLB</figcaption>
+                        <figcaption>{club("achievementCaption2")}</figcaption>
                       </figure>
                     </div>
                   </>
@@ -238,29 +223,28 @@ export default function FPTUBoardGameClub() {
               aria-labelledby="club-contact-title"
             >
               <div className="fptu-club-contact-mark">
-                <ClubIcons.UserRound size={17} aria-hidden="true" /> Người giữ
-                nhịp
+                <ClubIcons.UserRound size={17} aria-hidden="true" /> {club("contactMark")}
               </div>
-              <h3 id="club-contact-title">Liên hệ CLB</h3>
+              <h3 id="club-contact-title">{club("contactTitle")}</h3>
               <dl>
                 <div className="fptu-club-contact-item">
                   <ClubIcons.UserRound size={17} aria-hidden="true" />
                   <div>
-                    <dt>Chủ nhiệm</dt>
-                    <dd>{clubData.president}</dd>
+                    <dt>{club("presidentLabel")}</dt>
+                    <dd>{club("president")}</dd>
                   </div>
                 </div>
                 <div className="fptu-club-contact-item">
                   <ClubIcons.Share2 size={17} aria-hidden="true" />
                   <div>
-                    <dt>Facebook</dt>
+                    <dt>{club("facebook")}</dt>
                     <dd>
                       <a
                         href={clubData.facebook}
                         target="_blank"
                         rel="noreferrer"
                       >
-                        fb.me/fuboardgameclub
+                        {club("facebookHandle")}
                       </a>
                     </dd>
                   </div>
@@ -268,7 +252,7 @@ export default function FPTUBoardGameClub() {
                 <div className="fptu-club-contact-item">
                   <ClubIcons.Mail size={17} aria-hidden="true" />
                   <div>
-                    <dt>Email</dt>
+                    <dt>{club("email")}</dt>
                     <dd>
                       <a href={`mailto:${clubData.email}`}>{clubData.email}</a>
                     </dd>
@@ -277,7 +261,7 @@ export default function FPTUBoardGameClub() {
                 <div className="fptu-club-contact-item">
                   <ClubIcons.Phone size={17} aria-hidden="true" />
                   <div>
-                    <dt>Điện thoại</dt>
+                    <dt>{club("phone")}</dt>
                     <dd>
                       <a href={`tel:${clubData.phone}`}>{clubData.phone}</a>
                     </dd>
@@ -286,8 +270,8 @@ export default function FPTUBoardGameClub() {
                 <div className="fptu-club-contact-item">
                   <ClubIcons.MapPin size={17} aria-hidden="true" />
                   <div>
-                    <dt>Địa điểm</dt>
-                    <dd>{clubData.location}</dd>
+                    <dt>{club("locationLabel")}</dt>
+                    <dd>{club("location")}</dd>
                   </div>
                 </div>
               </dl>

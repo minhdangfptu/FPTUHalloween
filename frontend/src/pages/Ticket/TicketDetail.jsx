@@ -137,7 +137,7 @@ const TicketDetail = () => {
                 <span className="ticket-detail-model__number">
                   {String(ticketType.ticketTypeDate).padStart(2, "0")}
                 </span>
-                <span className="ticket-detail-model__word">ENTRY PASS</span>
+                <span className="ticket-detail-model__word">{ticket("entryPass")}</span>
                 <span className="ticket-detail-model__tear" />
               </div>
               <span className="ticket-detail-model__caption">

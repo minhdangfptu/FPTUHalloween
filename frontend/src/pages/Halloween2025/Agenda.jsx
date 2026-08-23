@@ -41,7 +41,7 @@ function Agenda() {
           </p>
         </div>
         <p className="fptu-halloween-agenda-hero__year" aria-hidden="true">
-          HLW26
+          {page("brandShort")}
         </p>
       </header>
 

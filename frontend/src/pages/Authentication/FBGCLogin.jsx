@@ -45,7 +45,7 @@ const FBGCLogin = () => {
           <img
             className="fbgc-login-logo"
             src={fbgcLogo}
-            alt="FPTU Board Game Club"
+            alt={auth("brandAlt")}
           />
           <h1>{auth("title")}</h1>
           <p className="fbgc-login-subtitle">

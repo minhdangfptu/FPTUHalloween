@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowUpRight, CheckCircle2, House, Info, LoaderCircle, Mail, RefreshCw, UsersRound, Vote } from "lucide-react";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import ddayVoteAPI from "../../apis/ddayVoteAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
 import "./DdayVotePage.scss";
@@ -17,18 +18,17 @@ const createSubmissionId = () => {
   return id;
 };
 
-const formatDate = (value) =>
-  value
-    ? new Date(value).toLocaleString("vi-VN", { dateStyle: "medium", timeStyle: "short" })
-    : "—";
-
-const statusLabels = {
-  open: "Đang mở",
-  closed: "Đã đóng",
-  draft: "Chưa mở",
-};
-
 const DdayVotePage = () => {
+  const { t, i18n } = useTranslation();
+  const voteText = (key, options) => t(`vote.${key}`, options);
+  const formatDate = (value) => value
+    ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN", { dateStyle: "medium", timeStyle: "short" })
+    : "—";
+  const statusLabels = {
+    open: voteText("statusOpen"),
+    closed: voteText("statusClosed"),
+    draft: voteText("statusDraft"),
+  };
   const [config, setConfig] = useState(null);
   const [results, setResults] = useState(null);
   const [selectedChoices, setSelectedChoices] = useState({});
@@ -99,7 +99,7 @@ const DdayVotePage = () => {
 
   const signInWithGoogle = () => {
     if (!googleClient) {
-      toast.error("Google chưa sẵn sàng. Vui lòng thử lại sau ít giây.");
+      toast.error(voteText("googleNotReady"));
       return;
     }
 
@@ -109,7 +109,7 @@ const DdayVotePage = () => {
       if (googleError || !accessToken) {
         setIsSigningIn(false);
         setIsCheckingVoteStatus(false);
-        toast.error("Không thể xác thực tài khoản Google.");
+        toast.error(voteText("googleAuthError"));
         return;
       }
       try {
@@ -118,7 +118,7 @@ const DdayVotePage = () => {
         setVoteToken(session.voteToken);
         setHasVoted(status.hasVoted);
         if (status.hasVoted) setReceipt(status);
-        toast.success("Xác thực Google thành công.");
+        toast.success(voteText("googleAuthSuccess"));
       } catch (requestError) {
         toast.error(translateError(requestError));
       } finally {
@@ -136,7 +136,7 @@ const DdayVotePage = () => {
   const submitBallot = async () => {
     if (!isComplete || !isOpen) return;
     if (!voteToken) {
-      toast.error("Vui lòng xác thực Google trước khi gửi bình chọn.");
+      toast.error(voteText("verifyBeforeSubmit"));
       return;
     }
 
@@ -161,51 +161,51 @@ const DdayVotePage = () => {
   };
 
   if (isLoading) {
-    return <main className="dday-vote-page"><div className="dday-vote-state"><LoaderCircle className="dday-spin" size={30} /><p>Đang tải thông tin bình chọn…</p></div></main>;
+    return <main className="dday-vote-page"><div className="dday-vote-state"><LoaderCircle className="dday-spin" size={30} /><p>{voteText("loading")}</p></div></main>;
   }
 
   if (error) {
-    return <main className="dday-vote-page"><div className="dday-vote-state"><h1>Không thể tải bình chọn</h1><p>{error}</p><button type="button" className="dday-button dday-button--secondary" onClick={loadConfig}><RefreshCw size={16} /> Thử lại</button></div></main>;
+    return <main className="dday-vote-page"><div className="dday-vote-state"><h1>{voteText("loadError")}</h1><p>{error}</p><button type="button" className="dday-button dday-button--secondary" onClick={loadConfig}><RefreshCw size={16} /> {voteText("retry")}</button></div></main>;
   }
 
   return (
     <main className="dday-vote-page">
       <section className="dday-vote-hero">
-        <div className="dday-vote-kicker"><Vote size={16} /> FPTU Halloween · Bình chọn D-Day</div>
-        <h1>{config?.title || "Bình chọn D-Day"}</h1>
-        <p>{config?.description || "Chọn một phương án ở mỗi hạng mục. Bạn chỉ có thể gửi bình chọn một lần."}</p>
+        <div className="dday-vote-kicker"><Vote size={16} /> {voteText("kicker")}</div>
+        <h1>{config?.title || voteText("title")}</h1>
+        <p>{config?.description || voteText("description")}</p>
         <div className="dday-vote-meta">
-          <span className={`dday-status dday-status--${config?.status || "draft"}`}>{statusLabels[config?.status] || "Chưa mở"}</span>
-          {config?.closeAt && <span>Thời gian kết thúc: {formatDate(config.closeAt)}</span>}
+          <span className={`dday-status dday-status--${config?.status || "draft"}`}>{statusLabels[config?.status] || voteText("statusDraft")}</span>
+          {config?.closeAt && <span>{voteText("closingTime", { time: formatDate(config.closeAt) })}</span>}
         </div>
       </section>
 
       {isOpen && !hasVoted && isCheckingVoteStatus && (
         <section className="dday-vote-card dday-vote-status-card" aria-busy="true" aria-live="polite">
           <LoaderCircle className="dday-spin" size={30} />
-          <h2>Đang kiểm tra trạng thái bình chọn</h2>
-          <p>Vui lòng chờ một chút, chúng tôi đang kiểm tra bạn đã bình chọn chưa.</p>
+          <h2>{voteText("checkingStatus")}</h2>
+          <p>{voteText("checkingStatusText")}</p>
         </section>
       )}
 
       {isOpen && !hasVoted && !isCheckingVoteStatus && !voteToken && (
         <section className="dday-vote-card dday-auth-card">
           <div className="dday-vote-card__intro">
-            <div><span className="dday-vote-eyebrow">Bước 1 · Xác minh tài khoản</span><h2>Đăng nhập Google để bắt đầu</h2><p className="dday-card-description">Bạn cần đăng nhập bằng tài khoản Google để tham gia. Mỗi tài khoản chỉ được gửi một bình chọn.</p></div>
+            <div><span className="dday-vote-eyebrow">{voteText("stepOne")}</span><h2>{voteText("googleTitle")}</h2><p className="dday-card-description">{voteText("googleDescription")}</p></div>
             <button type="button" className="dday-button dday-button--google" onClick={signInWithGoogle} disabled={isSigningIn}>
               <span aria-hidden className="google-swatch"><GoogleIcon /></span>
-              <span>{isSigningIn ? "Đang xác minh…" : "Đăng nhập với Google"}</span>
+              <span>{voteText(isSigningIn ? "verifying" : "signInGoogle")}</span>
             </button>
           </div>
-          <p className="dday-vote-note">Tài khoản Google chỉ được dùng để xác minh và ghi nhận bình chọn của bạn.</p>
+          <p className="dday-vote-note">{voteText("googlePrivacy")}</p>
         </section>
       )}
 
       {isOpen && !hasVoted && !isCheckingVoteStatus && voteToken && (
         <section className="dday-vote-card">
           <div className="dday-vote-card__intro">
-            <div><span className="dday-vote-eyebrow">Bước 2 · Gửi bình chọn</span><h2>Chọn một phương án ở mỗi hạng mục</h2><p className="dday-card-description">Hãy chọn phương án bạn yêu thích, sau đó kiểm tra lại trước khi gửi.</p></div>
-            <span className="dday-authenticated"><CheckCircle2 size={17} /> Đã xác minh bằng Google</span>
+            <div><span className="dday-vote-eyebrow">{voteText("stepTwo")}</span><h2>{voteText("chooseTitle")}</h2><p className="dday-card-description">{voteText("chooseDescription")}</p></div>
+            <span className="dday-authenticated"><CheckCircle2 size={17} /> {voteText("googleVerified")}</span>
           </div>
           <div className="dday-categories">
             {(config?.categories || []).map((category, index) => (
@@ -222,32 +222,32 @@ const DdayVotePage = () => {
               </fieldset>
             ))}
           </div>
-          <button type="button" className="dday-button dday-button--submit" disabled={!isComplete || !voteToken || isSubmitting} onClick={submitBallot}>{isSubmitting ? <><LoaderCircle className="dday-spin" size={17} /> Đang ghi nhận…</> : "Gửi bình chọn"}</button>
-          <p className="dday-vote-note">Sau khi gửi, bình chọn sẽ được ghi nhận và không thể thay đổi. Nếu mạng chập chờn, bạn có thể thử lại an toàn.</p>
+          <button type="button" className="dday-button dday-button--submit" disabled={!isComplete || !voteToken || isSubmitting} onClick={submitBallot}>{isSubmitting ? <><LoaderCircle className="dday-spin" size={17} /> {voteText("submitting")}</> : voteText("submit")}</button>
+          <p className="dday-vote-note">{voteText("submitNote")}</p>
         </section>
       )}
 
       {hasVoted && (
         <section className="dday-vote-card dday-vote-card--success">
           <CheckCircle2 size={44} />
-          <span className="dday-vote-eyebrow">BÌNH CHỌN THÀNH CÔNG</span>
-          <h2>Cảm ơn bạn đã tham gia!</h2>
-          <p>Bình chọn của bạn đã được ghi nhận và không thể thay đổi.</p>
-          {receipt?.submittedAt && <small>Thời gian gửi: {formatDate(receipt.submittedAt)}</small>}
-          <p className="dday-success-links__label">Tham khảo thêm về sự kiện</p>
-          <nav className="dday-success-links" aria-label="Các trang liên quan">
-            <Link className="dday-button dday-button--secondary" to="/btc-fuhlw"><UsersRound size={17} /> Ban tổ chức <ArrowUpRight size={15} /></Link>
-            <Link className="dday-button dday-button--secondary" to="/introduce-hlw26"><Info size={17} /> Giới thiệu sự kiện <ArrowUpRight size={15} /></Link>
-            <Link className="dday-button dday-button--secondary" to="/"><House size={17} /> Trang chủ <ArrowUpRight size={15} /></Link>
-            <Link className="dday-button dday-button--secondary" to="/contact-us"><Mail size={17} /> Liên hệ <ArrowUpRight size={15} /></Link>
+          <span className="dday-vote-eyebrow">{voteText("successLabel")}</span>
+          <h2>{voteText("successTitle")}</h2>
+          <p>{voteText("successText")}</p>
+          {receipt?.submittedAt && <small>{voteText("submittedAt", { time: formatDate(receipt.submittedAt) })}</small>}
+          <p className="dday-success-links__label">{voteText("relatedPages")}</p>
+          <nav className="dday-success-links" aria-label={voteText("relatedPagesAria")}>
+            <Link className="dday-button dday-button--secondary" to="/btc-fuhlw"><UsersRound size={17} /> {voteText("organizers")} <ArrowUpRight size={15} /></Link>
+            <Link className="dday-button dday-button--secondary" to="/introduce-hlw26"><Info size={17} /> {voteText("eventIntroduction")} <ArrowUpRight size={15} /></Link>
+            <Link className="dday-button dday-button--secondary" to="/"><House size={17} /> {voteText("home")} <ArrowUpRight size={15} /></Link>
+            <Link className="dday-button dday-button--secondary" to="/contact-us"><Mail size={17} /> {voteText("contact")} <ArrowUpRight size={15} /></Link>
           </nav>
         </section>
       )}
 
-      {!isOpen && !hasVoted && <section className="dday-vote-card dday-vote-card--closed"><span className="dday-vote-eyebrow">{config?.status === "closed" ? "BÌNH CHỌN ĐÃ ĐÓNG" : "BÌNH CHỌN CHƯA MỞ"}</span><h2>{config?.status === "closed" ? "Thời gian bình chọn đã kết thúc." : "Bình chọn chưa bắt đầu."}</h2><p>{config?.status === "closed" ? "Ban tổ chức sẽ công bố kết quả sau khi hoàn tất kiểm tra." : "Vui lòng quay lại sau khi ban tổ chức mở bình chọn."}</p></section>}
+      {!isOpen && !hasVoted && <section className="dday-vote-card dday-vote-card--closed"><span className="dday-vote-eyebrow">{voteText(config?.status === "closed" ? "closedLabel" : "notOpenLabel")}</span><h2>{voteText(config?.status === "closed" ? "closedTitle" : "notOpenTitle")}</h2><p>{voteText(config?.status === "closed" ? "closedText" : "notOpenText")}</p></section>}
 
       {results && (
-        <section className="dday-results-card"><div className="dday-results-heading"><div><span className="dday-vote-eyebrow">KẾT QUẢ BÌNH CHỌN</span><h2>{results.totalVotes} phiếu đã gửi</h2></div><span>Kết thúc lúc {formatDate(results.closedAt)}</span></div>{results.categories.map((category) => <div className="dday-result-category" key={category.categoryId}><h3>{category.label}</h3>{category.options.map((option) => <div className="dday-result-row" key={option.optionId}><span>{option.label}</span><strong>{option.count}</strong></div>)}</div>)}</section>
+        <section className="dday-results-card"><div className="dday-results-heading"><div><span className="dday-vote-eyebrow">{voteText("resultsLabel")}</span><h2>{voteText("totalVotes", { count: results.totalVotes })}</h2></div><span>{voteText("closedAt", { time: formatDate(results.closedAt) })}</span></div>{results.categories.map((category) => <div className="dday-result-category" key={category.categoryId}><h3>{category.label}</h3>{category.options.map((option) => <div className="dday-result-row" key={option.optionId}><span>{option.label}</span><strong>{option.count}</strong></div>)}</div>)}</section>
       )}
     </main>
   );

@@ -3,7 +3,7 @@ import "./Navbar.css";
 import wtm from "../assets/wtm.png";
 import Tooltip from "@mui/material/Tooltip";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import { useNavigate, useLocation } from "react-router-dom"; // Add useLocation import
+import { Link, useNavigate, useLocation } from "react-router-dom"; // Add useLocation import
 import {
   CircleUserRound,
   KeyRound,
@@ -228,7 +228,7 @@ function Navbar() {
               <img
                 src={wtm}
                 onClick={() => navigate("/")}
-                alt="FPTU Halloween"
+                alt={t("components.eventBrand")}
                 className="fpt-navbar__logo-img"
               />
             </div>
@@ -241,44 +241,47 @@ function Navbar() {
                   className="fpt-navbar__nav-item"
                   onMouseEnter={() => handleMouseEnter(index)}
                   onMouseLeave={handleMouseLeave}
+                  onFocus={() => handleMouseEnter(index)}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget)) {
+                      handleMouseLeave();
+                    }
+                  }}
                 >
-                  <a
-                    href={item.href}
-                    className={`fpt-navbar__nav-link ${
-                      isActive(item.href) || hasActiveChild(item.children)
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={(e) => {
-                      if (item.href !== "#") {
-                        e.preventDefault();
-                        navigate(item.href);
-                      }
-                    }}
-                  >
-                    {t(item.labelKey)}
-                    {item.children && (
+                  {item.href === "#" ? (
+                    <button
+                      type="button"
+                      className={`fpt-navbar__nav-link fpt-navbar__nav-trigger ${
+                        hasActiveChild(item.children) ? "active" : ""
+                      }`}
+                      aria-haspopup="true"
+                      aria-expanded={hoveredItem === index}
+                    >
+                      {t(item.labelKey)}
                       <span className="fpt-navbar__nav-arrow">▼</span>
-                    )}
-                  </a>
+                    </button>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      className={`fpt-navbar__nav-link ${
+                        isActive(item.href) ? "active" : ""
+                      }`}
+                    >
+                      {t(item.labelKey)}
+                    </Link>
+                  )}
                   {item.children && hoveredItem === index && (
                     <div className="fpt-navbar__dropdown">
                       {item.children.map((child) => (
-                        <a
+                        <Link
                           key={child.labelKey}
-                          href={child.href}
+                          to={child.href}
                           className={`fpt-navbar__dropdown-link ${
                             isActive(child.href) ? "active" : ""
                           }`}
-                          onClick={(e) => {
-                            if (child.href !== "#") {
-                              e.preventDefault();
-                              navigate(child.href);
-                            }
-                          }}
                         >
                           {t(child.labelKey)}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -286,35 +289,27 @@ function Navbar() {
               ))}
               {canManageEvents && (
                 <div className="fpt-navbar__nav-item">
-                  <a
-                    href={managementHome}
+                  <Link
+                    to={managementHome}
                     className={`fpt-navbar__nav-link ${
                       location.pathname.startsWith("/staff") ||
                       location.pathname.startsWith("/admin")
                         ? "active"
                         : ""
                     }`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigate(managementHome);
-                    }}
                   >
                     {t("nav.management")}
-                  </a>
+                  </Link>
                 </div>
               )}
               {isRegularUser && hasAvailableFeedback && (
                 <div className="fpt-navbar__nav-item">
-                  <a
-                    href="/feedback"
+                  <Link
+                    to="/feedback"
                     className={`fpt-navbar__nav-link ${isActive("/feedback") ? "active" : ""}`}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      navigate("/feedback");
-                    }}
                   >
                     {t("nav.feedback")}
-                  </a>
+                  </Link>
                 </div>
               )}
               <Tooltip title={t("nav.cart")}>
@@ -364,65 +359,52 @@ function Navbar() {
                           {t("nav.hello", { name: user.fullName || user.name || t("nav.account") })}
                         </span>
                       </div>
-                      {/* {canManageEvents && (
-                        <a
-                          href="/staff/ticket-types"
-                          className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
-                        >
-                          Quản trị sự kiện
-                        </a>
-                      )} */}
-                      <a
-                        href="/user-profile"
+                      <Link
+                        to="/user-profile"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                        onClick={() => setShowUserDropdown(false)}
                       >
                         <WalletCards size={16} /> {t("nav.yourAccount")}
-                      </a>
-                      <a
-                        href="/my-ticket"
+                      </Link>
+                      <Link
+                        to="/my-ticket"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          navigate("/my-ticket");
-                          setShowUserDropdown(false);
-                        }}
+                        onClick={() => setShowUserDropdown(false)}
                       >
                         <Ticket size={16} /> {t("nav.yourTickets")}
-                      </a>
-                      <a
-                        href="/change-password"
+                      </Link>
+                      <Link
+                        to="/change-password"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                        onClick={() => setShowUserDropdown(false)}
                       >
                         <KeyRound size={16} /> {t("nav.changePassword")}
-                      </a>
-                      <a
+                      </Link>
+                      <button
+                        type="button"
                         className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
                         onClick={requestLogout}
                       >
                         <LogOut size={16} /> {t("nav.logout")}
-                      </a>
+                      </button>
                     </div>
                   )}
-                  <a
-                    href="/login"
+                  <Link
+                    to="/login"
                     style={{ display: user ? "none" : undefined }}
                     className="fpt-navbar__dropdown-link"
+                    onClick={() => setShowUserDropdown(false)}
                   >
                     {t("nav.login")}
-                  </a>
-                  <a
-                    href="/register"
+                  </Link>
+                  <Link
+                    to="/register"
                     style={{ display: user ? "none" : undefined }}
                     className="fpt-navbar__dropdown-link"
+                    onClick={() => setShowUserDropdown(false)}
                   >
                     {t("nav.register")}
-                  </a>
-                  {/* <a
-                    href="/forgot-password"
-                    className="fpt-navbar__dropdown-link"
-                  >
-                    🔑 Quên mật khẩu
-                  </a> */}
+                  </Link>
                 </div>
               </div>
             </div>
@@ -462,36 +444,30 @@ function Navbar() {
           <div className="fpt-navbar__mobile-nav">
             {navigationItems.map((item) => (
               <div key={item.labelKey} className="fpt-navbar__mobile-group">
-                <a
-                  href={item.href}
-                  className="fpt-navbar__mobile-link"
-                  onClick={(e) => {
-                    if (item.href !== "#") {
-                      e.preventDefault();
-                      navigate(item.href);
-                    }
-                    handleDrawerToggle();
-                  }}
-                >
-                  {t(item.labelKey)}
-                </a>
+                {item.href === "#" ? (
+                  <div className="fpt-navbar__mobile-link">
+                    {t(item.labelKey)}
+                  </div>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className="fpt-navbar__mobile-link"
+                    onClick={handleDrawerToggle}
+                  >
+                    {t(item.labelKey)}
+                  </Link>
+                )}
                 {item.children && (
                   <div className="fpt-navbar__mobile-sub">
                     {item.children.map((child) => (
-                      <a
+                      <Link
                         key={child.labelKey}
-                        href={child.href}
+                        to={child.href}
                         className="fpt-navbar__mobile-sublink"
-                        onClick={(e) => {
-                          if (child.href !== "#") {
-                            e.preventDefault();
-                            navigate(child.href);
-                          }
-                          handleDrawerToggle();
-                        }}
+                        onClick={handleDrawerToggle}
                       >
                         {t(child.labelKey)}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -499,32 +475,24 @@ function Navbar() {
             ))}
             {canManageEvents && (
               <div className="fpt-navbar__mobile-group">
-                <a
-                  href={managementHome}
+                <Link
+                  to={managementHome}
                   className="fpt-navbar__mobile-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate(managementHome);
-                    handleDrawerToggle();
-                  }}
+                  onClick={handleDrawerToggle}
                 >
-                  QUẢN TRỊ
-                </a>
+                  {t("components.management")}
+                </Link>
               </div>
             )}
             {isRegularUser && hasAvailableFeedback && (
               <div className="fpt-navbar__mobile-group">
-                <a
-                  href="/feedback"
+                <Link
+                  to="/feedback"
                   className={`fpt-navbar__mobile-link ${isActive("/feedback") ? "active" : ""}`}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    navigate("/feedback");
-                    handleDrawerToggle();
-                  }}
+                  onClick={handleDrawerToggle}
                 >
                   {t("components.feedback")}
-                </a>
+                </Link>
               </div>
             )}
             <div className="fpt-navbar__mobile-group">
@@ -538,27 +506,27 @@ function Navbar() {
                     {user.fullName || user.name || t("components.account")}
                   </div>
                   <div className="fpt-navbar__mobile-sub">
-                    <a
-                      href="/user-profile"
+                    <Link
+                      to="/user-profile"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
                       {t("components.yourAccount")}
-                    </a>
-                    <a
-                      href="/my-ticket"
+                    </Link>
+                    <Link
+                      to="/my-ticket"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
                       {t("components.yourTickets")}
-                    </a>
-                    <a
-                      href="/change-password"
+                    </Link>
+                    <Link
+                      to="/change-password"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
                       {t("components.changePassword")}
-                    </a>
+                    </Link>
                     <button
                       type="button"
                       className="fpt-navbar__mobile-sublink fpt-navbar__mobile-action"
@@ -578,20 +546,20 @@ function Navbar() {
                     {t("components.account")}
                   </div>
                   <div className="fpt-navbar__mobile-sub">
-                    <a
-                      href="/login"
+                    <Link
+                      to="/login"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
                       🔐 {t("nav.login")}
-                    </a>
-                    <a
-                      href="/register"
+                    </Link>
+                    <Link
+                      to="/register"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
                       📝 {t("nav.register")}
-                    </a>
+                    </Link>
                   </div>
                 </>
               )}

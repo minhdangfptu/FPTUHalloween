@@ -36,7 +36,7 @@ const CompletePayment = () => {
     <main className="complete-payment-page">
       <section className="complete-payment-card">
         <div className="complete-payment-icon"><CheckCircle2 size={36} /></div>
-        <p className="complete-payment-kicker"><Ticket size={15} /> FPTU Halloween</p>
+        <p className="complete-payment-kicker"><Ticket size={15} /> {page("brand")}</p>
         <h1>{isChecking ? page("checking") : status === "paid" ? page("success") : page("waiting")}</h1>
         <p className="complete-payment-lede">
           {isChecking ? page("checkingText") : status === "paid" ? page("successText") : page("waitingText")}

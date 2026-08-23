@@ -11,6 +11,7 @@ import event2023 from "../../assets/hlw/2023.jpg";
 import event2024 from "../../assets/hlw/2024.jpg";
 import event2025 from "../../assets/hlw/2025.jpg";
 
+// i18n-audit: localized-properties — localizeEvent resolves every displayed field through archive.* keys.
 const eventsData = [
   {
     id: 6,
@@ -210,11 +211,13 @@ export default function OldEvent() {
 
   const localizeEvent = (event) => ({
     ...event,
-    status: archiveText(`event${event.id}Status`, { defaultValue: event.status }),
-    date: archiveText(`event${event.id}Date`, { defaultValue: event.date }),
-    description: archiveText(`event${event.id}Description`, { defaultValue: event.description }),
-    location: archiveText(`event${event.id}Location`, { defaultValue: event.location }),
-    scale: archiveText(`event${event.id}Scale`, { defaultValue: event.scale }),
+    title: archiveText("eventTitle", { year: EVENT_DETAILS[event.id].year }),
+    status: archiveText(`event${event.id}Status`),
+    date: archiveText(`event${event.id}Date`),
+    time: archiveText(`event${event.id}Date`),
+    description: archiveText(`event${event.id}Description`),
+    location: archiveText(`event${event.id}Location`),
+    scale: archiveText(`event${event.id}Scale`),
   });
   const localizedEvents = archivedEvents.map(localizeEvent);
   const openEvent = (event) => setSelectedEvent(localizeEvent(event));
@@ -314,7 +317,7 @@ export default function OldEvent() {
                     <img
                       className="old-event-card-image"
                       src={event.image}
-                      alt={`${event.title} thumbnail`}
+                      alt={archiveText("thumbnailAlt", { title: event.title })}
                       loading="lazy"
                     />
                   ) : (
@@ -354,7 +357,7 @@ export default function OldEvent() {
                       <strong>{event.scale}</strong>
                     </div>
                     <div className="old-event-card-detail">
-                      <span>Concept</span>
+                      <span>{archiveText("concept")}</span>
                       <strong>{event.concept}</strong>
                     </div>
                   </div>

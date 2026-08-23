@@ -19,7 +19,7 @@ const ErrorPageView = ({
   return (
     <main className={`error-page error-page--${variant}`}>
       <div className="error-page__rail" aria-hidden="true">
-        <span>FPTU / HALLOWEEN</span>
+        <span>{t("pages.errors.brand")}</span>
         <strong>{code}</strong>
       </div>
 
@@ -49,12 +49,12 @@ const ErrorPageView = ({
         </div>
 
         <p className="error-page__status" aria-live="polite">
-          <span>STATUS</span>
+          <span>{t("pages.errors.status")}</span>
           <strong>{statusLabel}</strong>
         </p>
       </section>
 
-      <aside className="error-page__visual" aria-label={`${code} illustration`}>
+      <aside className="error-page__visual" aria-label={t("pages.errors.visualAria", { code })}>
         {illustration ? (
           <img
             src={illustration}
@@ -65,7 +65,7 @@ const ErrorPageView = ({
         ) : (
           <div className="error-page__lock-mark" aria-hidden="true">
             <LockKeyhole size={72} strokeWidth={1.25} />
-            <span>ACCESS CHECK</span>
+            <span>{t("pages.errors.accessCheck")}</span>
           </div>
         )}
         <span className="error-page__visual-code" aria-hidden="true">

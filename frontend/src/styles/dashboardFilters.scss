@@ -16,7 +16,7 @@
 .chart-filter select {
   padding: 0.4rem 0.5rem;
   color: var(--dash-ink);
-  background: #fff;
+  background: var(--dash-control, #fff);
   border: 1px solid var(--dash-line);
   border-radius: 6px;
   cursor: pointer;

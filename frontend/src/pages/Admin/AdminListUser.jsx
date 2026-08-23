@@ -9,6 +9,7 @@ import {
   UserRound,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { SkeletonRows } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -20,6 +21,8 @@ import {
 import "./AdminListUser.scss";
 
 const AdminListUser = () => {
+  const { t, i18n } = useTranslation();
+  const userText = (key, options) => t(`management.users.${key}`, options);
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -35,7 +38,7 @@ const AdminListUser = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [nameSearch, setNameSearch] = useState("");
 
-  const getRoleName = (user) => user.roleId?.roleName || "Chưa xác định";
+  const getRoleName = (user) => user.roleId?.roleName || t("management.common.unknown");
   const visibleUsers = useMemo(
     () =>
       users.filter((user) => {
@@ -46,10 +49,10 @@ const AdminListUser = () => {
           roleFilter === "all" || getRoleName(user) === roleFilter;
         const matchesDepartment =
           departmentFilter === "all" ||
-          (user.department || "Chưa cập nhật") === departmentFilter;
+          (user.department || t("management.common.notUpdated")) === departmentFilter;
         const matchesPosition =
           positionFilter === "all" ||
-          (user.department_position || "Chưa cập nhật") === positionFilter;
+          (user.department_position || t("management.common.notUpdated")) === positionFilter;
         const matchesStatus =
           statusFilter === "all" ||
           (statusFilter === "disabled" ? user.isDisabled : !user.isDisabled);
@@ -67,23 +70,24 @@ const AdminListUser = () => {
       positionFilter,
       roleFilter,
       statusFilter,
+      t,
       users,
     ],
   );
 
   const roleOptions = [...new Set(users.map(getRoleName))];
   const departmentOptions = [
-    ...new Set(users.map((user) => user.department || "Chưa cập nhật")),
+    ...new Set(users.map((user) => user.department || t("management.common.notUpdated"))),
   ];
   const positionOptions = [
     ...new Set(
-      users.map((user) => user.department_position || "Chưa cập nhật"),
+      users.map((user) => user.department_position || t("management.common.notUpdated")),
     ),
   ];
 
   const loadUsers = useCallback(
     async (requestedPage = 1) => {
-      const loadingToast = toast.loading("Đang tải danh sách người dùng...");
+      const loadingToast = toast.loading(t("management.users.loading"));
       setIsLoading(true);
       try {
         const response = await axiosClient.get("/users", {
@@ -116,7 +120,7 @@ const AdminListUser = () => {
         setIsLoading(false);
       }
     },
-    [departmentFilter, nameSearch, positionFilter, roleFilter, statusFilter],
+    [departmentFilter, nameSearch, positionFilter, roleFilter, statusFilter, t],
   );
 
   useEffect(() => {
@@ -128,7 +132,7 @@ const AdminListUser = () => {
       const response = await axiosClient.get(`/users/${user._id}`);
       setSelectedUser(response.data);
     } catch (error) {
-      toast.error(translateError(error), { id: loadingToast });
+      toast.error(translateError(error));
     }
   };
 
@@ -136,8 +140,8 @@ const AdminListUser = () => {
     const isDisabling = !user.isDisabled;
     const loadingToast = toast.loading(
       isDisabling
-        ? "Đang vô hiệu hóa tài khoản..."
-        : "Đang gỡ vô hiệu hóa tài khoản...",
+        ? userText("disabling")
+        : userText("enabling"),
     );
     try {
       const endpoint = isDisabling ? "disable" : "enable";
@@ -163,7 +167,7 @@ const AdminListUser = () => {
   };
 
   const formatDate = (date) =>
-    date ? new Date(date).toLocaleDateString("vi-VN") : "—";
+    date ? new Date(date).toLocaleDateString(i18n.language === "en" ? "en-US" : "vi-VN") : "—";
   return (
     <div className="staff-manage-layout admin-user-page">
       <ManageSidebar role="admin" activeItem="users" />
@@ -171,13 +175,10 @@ const AdminListUser = () => {
         <header className="admin-user-list__header">
           <div>
             <p className="admin-user-list__kicker">
-              <ShieldCheck size={16} /> Quản trị người dùng
+              <ShieldCheck size={16} /> {userText("kicker")}
             </p>
-            <h1>Danh sách người dùng</h1>
-            <p>
-              Theo dõi thông tin tài khoản và trạng thái hoạt động trong hệ
-              thống.
-            </p>
+            <h1>{userText("title")}</h1>
+            <p>{userText("intro")}</p>
           </div>
           <button
             className="admin-user-list__refresh"
@@ -185,35 +186,35 @@ const AdminListUser = () => {
             onClick={() => loadUsers(1)}
             disabled={isLoading}
           >
-            <RefreshCw size={16} /> Làm mới
+            <RefreshCw size={16} /> {t("management.common.refresh")}
           </button>
         </header>
 
         <section
           className="admin-user-list__card"
-          aria-label="Danh sách người dùng"
+          aria-label={userText("title")}
         >
           <div className="admin-user-list__summary">
             <strong>{pagination.total ?? users.length}</strong>
-            <span>người dùng</span>
+            <span>{userText("users")}</span>
             <div className="admin-user-list__filters">
               <label className="admin-user-filter admin-user-filter--search">
                 <Search size={15} />
                 <input
                   value={nameSearch}
                   onChange={(event) => setNameSearch(event.target.value)}
-                  placeholder="Tìm theo tên..."
-                  aria-label="Tìm theo tên"
+                  placeholder={userText("searchPlaceholder")}
+                  aria-label={userText("search")}
                 />
               </label>
               <label className="admin-user-filter">
-                <span>Role</span>
+                <span>{userText("role")}</span>
                 <select
                   value={roleFilter}
                   onChange={(event) => setRoleFilter(event.target.value)}
-                  aria-label="Lọc theo role"
+                  aria-label={userText("filterRole")}
                 >
-                  <option value="all">Tất cả</option>
+                  <option value="all">{t("management.common.all")}</option>
                   {roleOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -222,13 +223,13 @@ const AdminListUser = () => {
                 </select>
               </label>
               <label className="admin-user-filter">
-                <span>Phòng ban</span>
+                <span>{userText("department")}</span>
                 <select
                   value={departmentFilter}
                   onChange={(event) => setDepartmentFilter(event.target.value)}
-                  aria-label="Lọc theo phòng ban"
+                  aria-label={userText("filterDepartment")}
                 >
-                  <option value="all">Tất cả</option>
+                  <option value="all">{t("management.common.all")}</option>
                   {departmentOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -237,13 +238,13 @@ const AdminListUser = () => {
                 </select>
               </label>
               <label className="admin-user-filter">
-                <span>Vị trí</span>
+                <span>{userText("position")}</span>
                 <select
                   value={positionFilter}
                   onChange={(event) => setPositionFilter(event.target.value)}
-                  aria-label="Lọc theo position"
+                  aria-label={userText("filterPosition")}
                 >
-                  <option value="all">Tất cả</option>
+                  <option value="all">{t("management.common.all")}</option>
                   {positionOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -252,15 +253,15 @@ const AdminListUser = () => {
                 </select>
               </label>
               <label className="admin-user-filter">
-                <span>Trạng thái</span>
+                <span>{t("management.common.status")}</span>
                 <select
                   value={statusFilter}
                   onChange={(event) => setStatusFilter(event.target.value)}
-                  aria-label="Lọc theo trạng thái"
+                  aria-label={userText("filterStatus")}
                 >
-                  <option value="all">Tất cả</option>
-                  <option value="active">Đang hoạt động</option>
-                  <option value="disabled">Đã vô hiệu hóa</option>
+                  <option value="all">{t("management.common.all")}</option>
+                  <option value="active">{t("management.common.active")}</option>
+                  <option value="disabled">{t("management.common.disabled")}</option>
                 </select>
               </label>
             </div>
@@ -269,23 +270,23 @@ const AdminListUser = () => {
             <SkeletonRows rows={7} columns={6} />
           ) : users.length === 0 ? (
             <div className="admin-user-list__empty">
-              Chưa có người dùng nào.
+              {userText("empty")}
             </div>
           ) : visibleUsers.length === 0 ? (
             <div className="admin-user-list__empty">
-              Không tìm thấy người dùng phù hợp.
+              {userText("noMatch")}
             </div>
           ) : (
             <div className="admin-user-table-wrap">
               <table className="admin-user-table">
                 <thead>
                   <tr>
-                    <th>Người dùng</th>
-                    <th>Liên hệ</th>
-                    <th>Phòng ban</th>
-                    <th>Role</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
+                    <th>{userText("user")}</th>
+                    <th>{userText("contact")}</th>
+                    <th>{userText("department")}</th>
+                    <th>{userText("role")}</th>
+                    <th>{t("management.common.status")}</th>
+                    <th>{t("management.common.actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -294,7 +295,7 @@ const AdminListUser = () => {
                       <td>
                         <div className="admin-user-table__person">
                           <UserRound size={18} />
-                          <strong>{user.fullName || "Chưa cập nhật"}</strong>
+                          <strong>{user.fullName || t("management.common.notUpdated")}</strong>
                         </div>
                       </td>
                       <td>
@@ -305,12 +306,12 @@ const AdminListUser = () => {
                           </span>
                           <span>
                             <Phone size={14} />
-                            {user.phone || "Chưa cập nhật"}
+                            {user.phone || t("management.common.notUpdated")}
                           </span>
                         </div>
                       </td>
                       <td>
-                        <strong>{user.department || "Chưa cập nhật"}</strong>
+                        <strong>{user.department || t("management.common.notUpdated")}</strong>
                         <small>{user.department_position || "—"}</small>
                       </td>
                       <td>
@@ -322,12 +323,10 @@ const AdminListUser = () => {
                         <span
                           className={`admin-user-status ${user.isDisabled ? "is-disabled" : "is-active"}`}
                         >
-                          {user.isDisabled
-                            ? "Đã vô hiệu hóa"
-                            : "Đang hoạt động"}
+                          {t(`management.common.${user.isDisabled ? "disabled" : "active"}`)}
                         </span>
                         <small>
-                          {user.isVerified ? "Đã xác thực" : "Chưa xác thực"}
+                          {userText(user.isVerified ? "verified" : "unverified")}
                         </small>
                       </td>
                       <td>
@@ -336,7 +335,7 @@ const AdminListUser = () => {
                           type="button"
                           onClick={() => handleViewDetail(user)}
                         >
-                          <Eye size={16} /> Chi tiết
+                          <Eye size={16} /> {t("management.common.details")}
                         </button>
                       </td>
                     </tr>
@@ -352,17 +351,17 @@ const AdminListUser = () => {
                 disabled={pagination.page <= 1}
                 onClick={() => loadUsers(pagination.page - 1)}
               >
-                Trước
+                {t("management.common.previous")}
               </button>
               <span>
-                Trang {pagination.page} / {pagination.totalPages}
+                {userText("pageOf", { page: pagination.page, total: pagination.totalPages })}
               </span>
               <button
                 type="button"
                 disabled={pagination.page >= pagination.totalPages}
                 onClick={() => loadUsers(pagination.page + 1)}
               >
-                Sau
+                {t("management.common.next")}
               </button>
             </div>
           )}

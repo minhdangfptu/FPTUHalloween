@@ -1,0 +1,899 @@
+/* Public-surface dark theme.
+ * Accent reds stay unchanged; neutral paper, ink, muted, border and icon
+ * colors are remapped so every public screen remains readable in dark mode.
+ */
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --public-dark-bg: #0e131a;
+  --public-dark-surface: #1a2029;
+  --public-dark-surface-raised: #232c37;
+  --public-dark-ink: #f1f5f9;
+  --public-dark-muted: #a8b2bf;
+  --public-dark-faint: #7f8b99;
+  --public-dark-line: #344050;
+  --public-dark-line-soft: #293441;
+  --public-dark-hero: #090e16;
+  --public-dark-white: #f8fafc;
+  --public-dark-shadow: rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme='dark'] .fpt-navbar {
+  border-bottom: 1px solid var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .fpt-footer {
+  border-top-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .fpt-footer__divider {
+  background-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .fpt-navbar__mobile-link,
+:root[data-theme='dark'] .fpt-navbar__mobile-sublink {
+  border-bottom-color: var(--public-dark-line);
+}
+
+/* Home */
+:root[data-theme='dark'] .home-page {
+  --home-ink: var(--public-dark-ink);
+  --home-muted: var(--public-dark-muted);
+  --home-paper: var(--public-dark-bg);
+  --home-paper-deep: var(--public-dark-surface);
+  --home-white: var(--public-dark-white);
+  --home-dark: var(--public-dark-hero);
+  --home-dark-soft: #151d28;
+  --home-violet: #9c89e8;
+  --home-orange: #d9954c;
+  --home-yellow: #dfc56b;
+  --home-line: var(--public-dark-line);
+  --home-dark-line: rgb(248 250 252 / 22%);
+  --home-countdown-line: rgb(248 250 252 / 45%);
+  --home-shadow: 0 1.25rem 3rem var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .home-highlight--paper {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface);
+}
+
+/* FAQ, BTC, agenda and feedback use shared root-level token sets. */
+:root[data-theme='dark'] {
+  --faq-paper: var(--public-dark-bg);
+  --faq-surface: var(--public-dark-surface);
+  --faq-ink: var(--public-dark-ink);
+  --faq-muted: var(--public-dark-muted);
+  --faq-faint: var(--public-dark-faint);
+  --faq-line: var(--public-dark-line);
+  --faq-accent-soft: #3a2025;
+  --faq-shadow: var(--public-dark-shadow);
+  --faq-note-bg: rgb(35 44 55 / 82%);
+  --faq-green: #79d49c;
+  --faq-green-soft: #173b2b;
+  --faq-open-bg: var(--public-dark-surface-raised);
+  --faq-contact-muted: #b8c1cc;
+
+  --btc-ink: var(--public-dark-ink);
+  --btc-paper: var(--public-dark-bg);
+  --btc-card: var(--public-dark-surface);
+  --btc-line: rgb(168 178 191 / 28%);
+  --btc-shadow: var(--public-dark-shadow);
+  --btc-shadow-strong: rgba(0, 0, 0, 0.5);
+  --btc-photo-shade: rgba(0, 0, 0, 0.62);
+  --btc-muted: var(--public-dark-muted);
+
+  --agenda-ink: var(--public-dark-ink);
+  --agenda-ink-soft: #d5dce4;
+  --agenda-muted: var(--public-dark-muted);
+  --agenda-paper: var(--public-dark-bg);
+  --agenda-paper-quiet: var(--public-dark-surface);
+  --agenda-paper-deep: var(--public-dark-surface-raised);
+  --agenda-line: var(--public-dark-line);
+  --agenda-line-strong: #536171;
+  --agenda-white: var(--public-dark-white);
+  --agenda-hero-mid: rgb(9 14 22 / 88%);
+  --agenda-hero-light: rgb(9 14 22 / 42%);
+
+  --feedback-ink: var(--public-dark-ink);
+  --feedback-muted: var(--public-dark-muted);
+  --feedback-paper: var(--public-dark-bg);
+  --feedback-paper-deep: var(--public-dark-surface);
+  --feedback-night: #121923;
+  --feedback-night-soft: #1e2936;
+  --feedback-line: var(--public-dark-line);
+  --feedback-white: var(--public-dark-white);
+}
+
+:root[data-theme='dark'] .feedback-page {
+  --feedback-ink: var(--public-dark-ink);
+  --feedback-muted: var(--public-dark-muted);
+  --feedback-paper: var(--public-dark-bg);
+  --feedback-paper-deep: var(--public-dark-surface);
+  --feedback-line: var(--public-dark-line);
+  --feedback-white: var(--public-dark-white);
+}
+
+/* Editorial introduction pages */
+:root[data-theme='dark'] .introduce-hlw26,
+:root[data-theme='dark'] .haunted-ghost-page {
+  --ink: var(--public-dark-ink);
+  --muted: var(--public-dark-muted);
+  --paper: var(--public-dark-bg);
+  --line: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .introduce-hlw26__hero-content > p:not(.introduce-hlw26__eyebrow),
+:root[data-theme='dark'] .introduce-hlw26__fact,
+:root[data-theme='dark'] .haunted-ghost-card,
+:root[data-theme='dark'] .haunted-ghost-ticket {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .introduce-hlw26__fact {
+  background: var(--public-dark-surface);
+}
+
+:root[data-theme='dark'] .introduce-hlw26__hero-content > p:not(.introduce-hlw26__eyebrow) {
+  color: #d5dce4;
+}
+
+:root[data-theme='dark'] .introduce-hlw26__year {
+  color: rgb(248 250 252 / 20%);
+}
+
+:root[data-theme='dark'] .fptu-club-page {
+  --club-ink: var(--public-dark-ink);
+  --club-muted: var(--public-dark-muted);
+  --club-paper: var(--public-dark-bg);
+  --club-surface: var(--public-dark-white);
+  --club-line: var(--public-dark-line);
+  --club-dark: var(--public-dark-hero);
+  --club-focus: #b9a2ff;
+  --club-hero-lede: #d5dce4;
+  --club-overlay-line: rgb(248 250 252 / 60%);
+  --club-hero-number: rgb(248 250 252 / 18%);
+  --club-shadow: 0 16px 40px var(--public-dark-shadow);
+  --club-overlay: linear-gradient(90deg, rgb(9 14 22 / 94%), rgb(9 14 22 / 48%));
+}
+
+/* Tickets and payments */
+:root[data-theme='dark'] .ticket-list-page,
+:root[data-theme='dark'] .ticket-detail-page,
+:root[data-theme='dark'] .ticket-cart-page,
+:root[data-theme='dark'] .ticket-checkout-page,
+:root[data-theme='dark'] .qr-payment-page,
+:root[data-theme='dark'] .complete-payment-page {
+  --ticket-ink: var(--public-dark-ink);
+  --ticket-muted: var(--public-dark-muted);
+  --ticket-paper: var(--public-dark-bg);
+  --ticket-line: var(--public-dark-line);
+  --ticket-yellow: #e1c86e;
+  --ticket-dark: var(--public-dark-hero);
+  --ticket-filter-bg: var(--public-dark-surface-raised);
+
+  --detail-ink: var(--public-dark-ink);
+  --detail-muted: var(--public-dark-muted);
+  --detail-paper: var(--public-dark-bg);
+  --detail-line: var(--public-dark-line);
+  --detail-yellow: #e1c86e;
+  --detail-dark: var(--public-dark-hero);
+
+  --cart-ink: var(--public-dark-ink);
+  --cart-muted: var(--public-dark-muted);
+  --cart-paper: var(--public-dark-bg);
+  --cart-line: var(--public-dark-line);
+  --cart-dark: var(--public-dark-hero);
+
+  --ink: var(--public-dark-ink);
+  --muted: var(--public-dark-muted);
+  --paper: var(--public-dark-bg);
+  --line: var(--public-dark-line);
+  --dark: var(--public-dark-hero);
+}
+
+:root[data-theme='dark'] .ticket-list-page .ticket-search-panel,
+:root[data-theme='dark'] .ticket-list-page .ticket-search-panel__form,
+:root[data-theme='dark'] .ticket-list-page .ticket-card,
+:root[data-theme='dark'] .ticket-detail-page .ticket-detail-card,
+:root[data-theme='dark'] .ticket-detail-page .ticket-detail-purchase,
+:root[data-theme='dark'] .ticket-cart-page .ticket-cart-empty,
+:root[data-theme='dark'] .ticket-cart-page .ticket-cart-items,
+:root[data-theme='dark'] .ticket-cart-page .ticket-cart-item,
+:root[data-theme='dark'] .ticket-cart-page .ticket-cart-summary,
+:root[data-theme='dark'] .ticket-checkout-page .checkout-form,
+:root[data-theme='dark'] .ticket-checkout-page .checkout-summary,
+:root[data-theme='dark'] .ticket-checkout-page .checkout-ticket,
+:root[data-theme='dark'] .ticket-checkout-page .checkout-fields input,
+:root[data-theme='dark'] .ticket-checkout-page .checkout-discount input,
+:root[data-theme='dark'] .qr-payment-page .qr-payment-card,
+:root[data-theme='dark'] .complete-payment-page .complete-payment-card {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .ticket-list-page .ticket-search-fields input:disabled {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface-raised);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .qr-payment-page .qr-payment-code,
+:root[data-theme='dark'] .qr-payment-page .qr-payment-pattern i {
+  border-color: #fff;
+  background: #fff;
+}
+
+:root[data-theme='dark'] .qr-payment-page .qr-payment-pattern i.is-filled {
+  background: var(--dark);
+}
+
+:root[data-theme='dark'] .qr-payment-page .qr-payment-expired-overlay {
+  color: var(--public-dark-ink);
+  background: rgb(14 19 26 / 90%);
+}
+
+:root[data-theme='dark'] .ticket-checkout-page .checkout-fields input,
+:root[data-theme='dark'] .ticket-checkout-page .checkout-discount input {
+  color: var(--public-dark-ink);
+}
+
+/* Policies and contact */
+:root[data-theme='dark'] .rules-page {
+  background: var(--public-dark-bg);
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .rules-shell,
+:root[data-theme='dark'] .rules-hero {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .rules-intro,
+:root[data-theme='dark'] .rules-content p,
+:root[data-theme='dark'] .rules-note {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .rules-note {
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-page,
+:root[data-theme='dark'] .fptu-halloween-overall-container,
+:root[data-theme='dark'] .fptu-halloween-news-container {
+  background: var(--public-dark-bg);
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-page {
+  --contact-ink: var(--public-dark-ink);
+  --contact-muted: var(--public-dark-muted);
+  --contact-paper: var(--public-dark-bg);
+  --contact-line: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-form-card,
+:root[data-theme='dark'] .fptu-halloween-contact-form-section,
+:root[data-theme='dark'] .fptu-halloween-news-featured,
+:root[data-theme='dark'] .fptu-halloween-news-secondary-item {
+  background-color: var(--public-dark-surface);
+  color: var(--public-dark-ink);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-form-input,
+:root[data-theme='dark'] .fptu-halloween-contact-form-textarea,
+:root[data-theme='dark'] .fptu-halloween-contact-form-select {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface-raised);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-form-title,
+:root[data-theme='dark'] .fptu-halloween-contact-info-title,
+:root[data-theme='dark'] .fptu-halloween-contact-form-description,
+:root[data-theme='dark'] .fptu-halloween-contact-info-text,
+:root[data-theme='dark'] .fptu-halloween-contact-google-form-text {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-form-description,
+:root[data-theme='dark'] .fptu-halloween-contact-info-text,
+:root[data-theme='dark'] .fptu-halloween-contact-google-form-text {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-main {
+  background: var(--public-dark-bg);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-form-card,
+:root[data-theme='dark'] .fptu-halloween-contact-map,
+:root[data-theme='dark'] .fptu-halloween-contact-info-card {
+  background: var(--public-dark-surface);
+  box-shadow: 0 4px 16px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-info-card {
+  border: 0;
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-form-input::placeholder,
+:root[data-theme='dark'] .fptu-halloween-contact-form-textarea::placeholder {
+  color: var(--public-dark-muted);
+  opacity: 1;
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-social-icon {
+  color: var(--public-dark-muted);
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .btc-intro__grid p,
+:root[data-theme='dark'] .btc-closing__aside p {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .btc-person-card {
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .btc-department span,
+:root[data-theme='dark'] .btc-department small {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .btc-hero,
+:root[data-theme='dark'] .btc-group-photo figure,
+:root[data-theme='dark'] .btc-department:not(:nth-child(3n)),
+:root[data-theme='dark'] .btc-person-card__media {
+  background: var(--public-dark-hero);
+}
+
+:root[data-theme='dark'] .btc-hero,
+:root[data-theme='dark'] .btc-group-photo figcaption,
+:root[data-theme='dark'] .btc-person-card__media > span,
+:root[data-theme='dark'] .btc-board-heading__icon {
+  color: var(--public-dark-white);
+}
+
+:root[data-theme='dark'] .fp-page {
+  --bg: var(--public-dark-bg);
+  --card: var(--public-dark-surface);
+  --text: var(--public-dark-ink);
+  --muted: var(--public-dark-muted);
+  --border: var(--public-dark-line);
+  --shadow: 0 10px 28px var(--public-dark-shadow);
+  background: var(--bg);
+}
+
+:root[data-theme='dark'] .old-event-page {
+  --old-event-ink: var(--public-dark-ink);
+  --old-event-muted: var(--public-dark-muted);
+  --old-event-paper: var(--public-dark-bg);
+  --old-event-surface: var(--public-dark-surface);
+  --old-event-line: var(--public-dark-line);
+  --old-event-dark-soft: #18212d;
+  --old-event-white: var(--public-dark-white);
+  --old-event-shadow: 0 12px 28px var(--public-dark-shadow);
+  --old-event-shadow-strong: 0 22px 48px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .old-event-dialog-header {
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .old-event-description {
+  color: var(--public-dark-muted);
+}
+
+/* Legacy 2025 pages still have a few neutral literals. */
+:root[data-theme='dark'] .fptu-halloween-overall-hero,
+:root[data-theme='dark'] .fptu-halloween-news-featured-content,
+:root[data-theme='dark'] .fptu-halloween-news-secondary-content {
+  color: var(--public-dark-ink);
+}
+
+/* Remaining public legacy surfaces */
+:root[data-theme='dark'] .fptu-halloween-overall-info-card,
+:root[data-theme='dark'] .fptu-halloween-overall-description-card,
+:root[data-theme='dark'] .fptu-halloween-overall-info-item,
+:root[data-theme='dark'] .fptu-halloween-overall-concept-card,
+:root[data-theme='dark'] .fptu-halloween-overall-concept-text {
+  background: var(--public-dark-surface);
+  color: var(--public-dark-ink);
+  border-color: var(--public-dark-line);
+  box-shadow: 0 10px 30px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .fptu-halloween-overall-info-item,
+:root[data-theme='dark'] .fptu-halloween-overall-concept-card,
+:root[data-theme='dark'] .fptu-halloween-overall-description-text {
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .fptu-halloween-overall-info-label,
+:root[data-theme='dark'] .fptu-halloween-overall-info-value,
+:root[data-theme='dark'] .fptu-halloween-overall-concept-text,
+:root[data-theme='dark'] .fptu-halloween-overall-description-text {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .fptu-halloween-news-featured-main,
+:root[data-theme='dark'] .fptu-halloween-news-secondary-item,
+:root[data-theme='dark'] .fptu-halloween-news-list-item {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+  box-shadow: 0 15px 35px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .fptu-halloween-news-featured-title,
+:root[data-theme='dark'] .fptu-halloween-news-secondary-title,
+:root[data-theme='dark'] .fptu-halloween-news-list-title {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .fptu-halloween-news-featured-time,
+:root[data-theme='dark'] .fptu-halloween-news-featured-views,
+:root[data-theme='dark'] .fptu-halloween-news-secondary-time,
+:root[data-theme='dark'] .fptu-halloween-news-list-time,
+:root[data-theme='dark'] .fptu-halloween-news-list-views {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .fptu-halloween-news-secondary-source,
+:root[data-theme='dark'] .fptu-halloween-news-list-source {
+  color: var(--public-dark-muted);
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .fptu-halloween-fanpage-column {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+  box-shadow: 0 8px 24px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .fptu-halloween-fanpage-right p,
+:root[data-theme='dark'] .fptu-halloween-fanpage-right ul {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .fp-avatar,
+:root[data-theme='dark'] .fp-page .btn,
+:root[data-theme='dark'] .fp-album,
+:root[data-theme='dark'] .fp-post {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+  box-shadow: 0 6px 16px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .fp-page .btn--ghost:hover {
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .fp-page .fp-title {
+  color: var(--public-dark-white);
+}
+
+/* Archive, ticket table and event detail cards */
+:root[data-theme='dark'] .introduce-hlw26__season,
+:root[data-theme='dark'] .introduce-hlw26__season-list {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+  box-shadow: 0 8px 20px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .introduce-hlw26 .introduce-hlw26__season,
+:root[data-theme='dark'] .introduce-hlw26 .introduce-hlw26__season-list {
+  background: var(--public-dark-surface) !important;
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .introduce-hlw26__season-thumb {
+  background: var(--public-dark-hero);
+}
+
+:root[data-theme='dark'] .haunted-ghost-trailer__visual {
+  color: var(--public-dark-white);
+  background: linear-gradient(135deg, #1a2029, #090e16);
+}
+
+:root[data-theme='dark'] .haunted-ghost-trailer__visual span {
+  color: #d5dce4;
+}
+
+:root[data-theme='dark'] .haunted-ghost-ticket,
+:root[data-theme='dark'] .haunted-ghost-table-wrap,
+:root[data-theme='dark'] .haunted-ghost-table tbody tr {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .haunted-ghost-ticket-venue,
+:root[data-theme='dark'] .haunted-ghost-table__availability {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface-raised);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .haunted-ghost-table thead th,
+:root[data-theme='dark'] .haunted-ghost-table__caption {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface-raised);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .haunted-ghost-table tbody tr:hover,
+:root[data-theme='dark'] .haunted-ghost-table__price {
+  background: #293441;
+}
+
+:root[data-theme='dark'] .haunted-ghost-page .haunted-ghost-table tbody tr,
+:root[data-theme='dark'] .haunted-ghost-page .haunted-ghost-table tbody tr:hover {
+  background: var(--public-dark-surface) !important;
+}
+
+:root[data-theme='dark'] .haunted-ghost-page .haunted-ghost-table__price {
+  background: #293441 !important;
+}
+
+/* Public vote */
+:root[data-theme='dark'] .dday-vote-page {
+  --dday-dark-accent: #ff5360;
+  --dday-dark-positive: #8ee0ad;
+  background: var(--public-dark-bg);
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .dday-vote-hero {
+  border-color: var(--public-dark-line-soft);
+}
+
+:root[data-theme='dark'] .dday-vote-card,
+:root[data-theme='dark'] .dday-results-card {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+  box-shadow: 0 12px 32px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .dday-vote-hero h1,
+:root[data-theme='dark'] .dday-vote-card h2,
+:root[data-theme='dark'] .dday-results-card h2,
+:root[data-theme='dark'] .dday-result-category h3,
+:root[data-theme='dark'] .dday-category legend,
+:root[data-theme='dark'] .dday-vote-state h1 {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .dday-vote-hero p,
+:root[data-theme='dark'] .dday-vote-meta,
+:root[data-theme='dark'] .dday-card-description,
+:root[data-theme='dark'] .dday-vote-note,
+:root[data-theme='dark'] .dday-vote-status-card p,
+:root[data-theme='dark'] .dday-vote-card--success p,
+:root[data-theme='dark'] .dday-vote-card--closed p,
+:root[data-theme='dark'] .dday-vote-card--success small,
+:root[data-theme='dark'] .dday-results-heading > span,
+:root[data-theme='dark'] .dday-result-row,
+:root[data-theme='dark'] .dday-vote-state,
+:root[data-theme='dark'] .dday-vote-state p {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .dday-vote-card__intro,
+:root[data-theme='dark'] .dday-results-heading,
+:root[data-theme='dark'] .dday-result-row {
+  border-color: var(--public-dark-line-soft);
+}
+
+:root[data-theme='dark'] .dday-success-links__label::before,
+:root[data-theme='dark'] .dday-success-links__label::after {
+  background: var(--public-dark-line-soft);
+}
+
+:root[data-theme='dark'] .dday-category {
+  color: var(--public-dark-ink);
+  background: #151b24;
+  border-color: var(--public-dark-line-soft);
+}
+
+:root[data-theme='dark'] .dday-option {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .dday-option::after {
+  border-color: #657386;
+}
+
+:root[data-theme='dark'] .dday-option:hover,
+:root[data-theme='dark'] .dday-option--selected,
+:root[data-theme='dark'] .dday-option:focus-within {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface-raised);
+  border-color: #536171;
+  box-shadow: 0 0 0 2px rgb(255 83 96 / 18%);
+}
+
+:root[data-theme='dark'] .dday-button--google {
+  color: var(--public-dark-white);
+  background: var(--public-dark-surface-raised);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .dday-button--google:hover:not(:disabled),
+:root[data-theme='dark'] .dday-button--google:focus,
+:root[data-theme='dark'] .dday-button--google:focus-visible,
+:root[data-theme='dark'] .dday-button--google:active {
+  color: var(--public-dark-white);
+  background: #2a3542;
+  border-color: #536171;
+  box-shadow: 0 0 0 2px rgb(255 83 96 / 18%);
+}
+
+:root[data-theme='dark'] .dday-button--secondary {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface-raised);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .dday-button--secondary:hover:not(:disabled) {
+  color: var(--dday-dark-accent);
+  background: #2a3542;
+  border-color: var(--dday-dark-accent);
+}
+
+:root[data-theme='dark'] .dday-button:focus-visible {
+  outline-color: rgb(255 83 96 / 42%);
+}
+
+:root[data-theme='dark'] .dday-vote-kicker,
+:root[data-theme='dark'] .dday-vote-eyebrow,
+:root[data-theme='dark'] .dday-result-row strong,
+:root[data-theme='dark'] .dday-vote-page .dday-success-links__label,
+:root[data-theme='dark'] .dday-category legend span {
+  color: var(--dday-dark-accent);
+}
+
+:root[data-theme='dark'] .dday-category legend span {
+  background: #3a2025;
+}
+
+:root[data-theme='dark'] .dday-authenticated {
+  color: var(--dday-dark-positive);
+  background: #173b2b;
+}
+
+:root[data-theme='dark'] .dday-vote-card--success > svg {
+  color: var(--dday-dark-positive);
+}
+
+:root[data-theme='dark'] .dday-status--open {
+  color: var(--dday-dark-positive);
+  background: #173b2b;
+}
+
+:root[data-theme='dark'] .dday-status--closed {
+  color: #c5ced8;
+  background: #2d3744;
+}
+
+:root[data-theme='dark'] .dday-status--draft {
+  color: #f0d58a;
+  background: #493b1f;
+}
+
+/* Preserve red accents while keeping form controls and unavailable states legible. */
+:root[data-theme='dark'] .checkout-ticket--unavailable,
+:root[data-theme='dark'] .ticket-cart-item--unavailable {
+  color: var(--public-dark-muted);
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .checkout-ticket__mark,
+:root[data-theme='dark'] .ticket-cart-item--unavailable .ticket-cart-item__visual {
+  background: #536171;
+  color: var(--public-dark-white);
+}
+
+/* Authentication is public-facing too; preserve red actions and recolor only
+ * the neutral canvas, cards, labels, inputs and supporting icons. */
+:root[data-theme='dark'] .login-page,
+:root[data-theme='dark'] .fbgc-login-page,
+:root[data-theme='dark'] .cp-page,
+:root[data-theme='dark'] .fptu-halloween-register-page,
+:root[data-theme='dark'] .fptu-halloween-confirm-email-page,
+:root[data-theme='dark'] .fptu-halloween-complete-register-page {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-bg);
+}
+
+:root[data-theme='dark'] .login-page .left-pane,
+:root[data-theme='dark'] .fbgc-login-form-pane,
+:root[data-theme='dark'] .fptu-halloween-register-left-pane,
+:root[data-theme='dark'] .fptu-halloween-confirm-email-left-pane,
+:root[data-theme='dark'] .fptu-halloween-complete-register-left-pane,
+:root[data-theme='dark'] .login-panel,
+:root[data-theme='dark'] .fbgc-login-form,
+:root[data-theme='dark'] .cp-card,
+:root[data-theme='dark'] .fptu-halloween-register-panel,
+:root[data-theme='dark'] .fptu-halloween-confirm-email-panel,
+:root[data-theme='dark'] .fptu-halloween-complete-register-panel {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .auth-title,
+:root[data-theme='dark'] .cp-card__title,
+:root[data-theme='dark'] .fbgc-login-box h1,
+:root[data-theme='dark'] .fptu-halloween-register-page h1,
+:root[data-theme='dark'] .fptu-halloween-confirm-email-page h1,
+:root[data-theme='dark'] .fptu-halloween-complete-register-page h1 {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .auth-subtitle,
+:root[data-theme='dark'] .text-muted,
+:root[data-theme='dark'] .link-muted,
+:root[data-theme='dark'] .cp-card__subtitle,
+:root[data-theme='dark'] .fbgc-login-subtitle,
+:root[data-theme='dark'] .fbgc-back-link,
+:root[data-theme='dark'] .cp-field__label {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .login-page .form-label,
+:root[data-theme='dark'] .fbgc-login-form label,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-label,
+:root[data-theme='dark'] .fptu-halloween-confirm-email-form-label {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .login-page .form-input,
+:root[data-theme='dark'] .fbgc-login-form input,
+:root[data-theme='dark'] .cp-input-shell input,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-input,
+:root[data-theme='dark'] .fptu-halloween-confirm-email-form-input {
+  color: var(--public-dark-ink) !important;
+  background: var(--public-dark-surface-raised) !important;
+  border-color: var(--public-dark-line) !important;
+}
+
+:root[data-theme='dark'] .login-page .form-input::placeholder,
+:root[data-theme='dark'] .fbgc-login-form input::placeholder,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-input::placeholder {
+  color: var(--public-dark-muted);
+  opacity: 1;
+}
+
+:root[data-theme='dark'] .login-page .form-input:focus,
+:root[data-theme='dark'] .fbgc-login-form input:focus,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-input:focus {
+  border-color: var(--color-button) !important;
+  box-shadow: 0 0 0 3px rgb(215 25 32 / 18%);
+}
+
+:root[data-theme='dark'] .login-page .form-input:-webkit-autofill,
+:root[data-theme='dark'] .login-page .form-input:-webkit-autofill:hover,
+:root[data-theme='dark'] .login-page .form-input:-webkit-autofill:focus,
+:root[data-theme='dark'] .login-page .form-input:-webkit-autofill:active,
+:root[data-theme='dark'] .fbgc-login-form input:-webkit-autofill,
+:root[data-theme='dark'] .fbgc-login-form input:-webkit-autofill:hover,
+:root[data-theme='dark'] .fbgc-login-form input:-webkit-autofill:focus,
+:root[data-theme='dark'] .fbgc-login-form input:-webkit-autofill:active,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-input:-webkit-autofill,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-input:-webkit-autofill:hover,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-input:-webkit-autofill:focus,
+:root[data-theme='dark'] .fptu-halloween-register-page .form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--public-dark-surface-raised) inset !important;
+  -webkit-text-fill-color: var(--public-dark-ink) !important;
+  caret-color: var(--public-dark-ink) !important;
+}
+
+:root[data-theme='dark'] .login-page .password-toggle,
+:root[data-theme='dark'] .fptu-halloween-register-page .password-toggle,
+:root[data-theme='dark'] .fbgc-password-toggle,
+:root[data-theme='dark'] .cp-input-shell__icon,
+:root[data-theme='dark'] .cp-input-shell__toggle {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .oauth-btn {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+/* Signed-in public account screens share the same neutral surfaces. */
+:root[data-theme='dark'] .user-profile-page,
+:root[data-theme='dark'] .my-ticket-page {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-bg);
+}
+
+:root[data-theme='dark'] .my-ticket-toolbar select {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface-raised);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .profile-card,
+:root[data-theme='dark'] .profile-order-row,
+:root[data-theme='dark'] .my-ticket-card,
+:root[data-theme='dark'] .my-ticket-toolbar,
+:root[data-theme='dark'] .my-ticket-state {
+  color: var(--public-dark-ink);
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .profile-summary-meta,
+:root[data-theme='dark'] .profile-card .muted,
+:root[data-theme='dark'] .my-ticket-meta,
+:root[data-theme='dark'] .my-ticket-state p {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .user-profile-page .profile-tab {
+  color: #e63946;
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+  box-shadow: 0 5px 14px var(--public-dark-shadow);
+}
+
+:root[data-theme='dark'] .user-profile-page .profile-email,
+:root[data-theme='dark'] .user-profile-page .detail-item > span,
+:root[data-theme='dark'] .user-profile-page .orders-heading p,
+:root[data-theme='dark'] .user-profile-page .orders-status-filter,
+:root[data-theme='dark'] .user-profile-page .orders-empty {
+  color: var(--public-dark-muted);
+}
+
+:root[data-theme='dark'] .user-profile-page .detail-item > strong {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .user-profile-page .profile-summary-meta strong {
+  color: var(--public-dark-ink);
+}
+
+:root[data-theme='dark'] .user-profile-page .profile-summary-meta {
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .user-profile-page .orders-table {
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .user-profile-page .orders-row--header {
+  color: var(--public-dark-muted);
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .user-profile-page .profile-order-row {
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme='dark'] .user-profile-page .profile-order-row:hover,
+:root[data-theme='dark'] .user-profile-page .profile-order-row:disabled:hover {
+  background: var(--public-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .profile-card input,
+:root[data-theme='dark'] .profile-card select,
+:root[data-theme='dark'] .profile-card textarea {
+  color: var(--public-dark-ink) !important;
+  background: var(--public-dark-surface-raised) !important;
+  border-color: var(--public-dark-line) !important;
+}
+
+:root[data-theme='dark'] .user-profile-page .profile-details .detail-item input {
+  color: var(--public-dark-ink) !important;
+  background: var(--public-dark-surface-raised) !important;
+  border-color: var(--public-dark-line) !important;
+}

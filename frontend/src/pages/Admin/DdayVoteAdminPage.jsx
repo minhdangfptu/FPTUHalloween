@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import ManageSidebar from "../../components/ManageSidebar";
 import LogoutModal from "../../components/LogoutModal";
 import ddayVoteAPI from "../../apis/ddayVoteAPI";
@@ -65,28 +66,19 @@ const toLocalInput = (value) => {
 };
 
 const toIso = (value) => (value ? new Date(value).toISOString() : null);
-const formatDate = (value) =>
-  value
-    ? new Date(value).toLocaleString("vi-VN", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      })
-    : "—";
-const statusLabel = { draft: "Bản nháp", open: "Đang mở", closed: "Đã đóng" };
-
-const formatDuration = (milliseconds) => {
-  if (milliseconds <= 0) return "Đã hết thời gian";
+const formatDuration = (milliseconds, text) => {
+  if (milliseconds <= 0) return text("expired");
   const totalSeconds = Math.floor(milliseconds / 1000);
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
   const parts = [];
-  if (days > 0) parts.push(`${days} ngày`);
-  if (hours > 0) parts.push(`${String(hours).padStart(2, "0")} giờ`);
-  if (minutes > 0) parts.push(`${String(minutes).padStart(2, "0")} phút`);
+  if (days > 0) parts.push(text("days", { count: days }));
+  if (hours > 0) parts.push(text("hours", { count: String(hours).padStart(2, "0") }));
+  if (minutes > 0) parts.push(text("minutes", { count: String(minutes).padStart(2, "0") }));
   if (seconds > 0 || parts.length === 0)
-    parts.push(`${String(seconds || 1).padStart(2, "0")} giây`);
+    parts.push(text("seconds", { count: String(seconds || 1).padStart(2, "0") }));
   return parts.join(" ");
 };
 
@@ -103,7 +95,7 @@ const mapConfig = (value) =>
     }
     : emptyConfig();
 
-const validateConfigForSave = (config) => {
+const validateConfigForSave = (config, text) => {
   const hasCampaignInformation = [
     config.title,
     config.description,
@@ -112,11 +104,11 @@ const validateConfigForSave = (config) => {
   ].every((value) => typeof value === "string" && value.trim());
 
   if (!hasCampaignInformation) {
-    return "Vui lòng nhập đầy đủ thông tin Phiên Vote: tiêu đề, mô tả, thời gian bắt đầu và thời gian đóng.";
+    return text("validationInformation");
   }
 
   if (!Array.isArray(config.categories) || config.categories.length === 0) {
-    return "Vui lòng thêm ít nhất một hạng mục bình chọn và hai đáp án.";
+    return text("validationCategories");
   }
 
   const invalidCategoryIndex = config.categories.findIndex(
@@ -128,7 +120,7 @@ const validateConfigForSave = (config) => {
   );
 
   if (invalidCategoryIndex !== -1) {
-    return `Vui lòng nhập tên hạng mục ${invalidCategoryIndex + 1} và ít nhất hai đáp án.`;
+    return text("validationCategory", { number: invalidCategoryIndex + 1 });
   }
 
   return "";
@@ -140,7 +132,9 @@ const DdayModal = ({
   children,
   closeDisabled = false,
   fullscreen = false,
-}) => (
+}) => {
+  const { t } = useTranslation();
+  return (
   <div
     className={`dday-admin-modal-backdrop${fullscreen ? " dday-admin-modal-backdrop--fullscreen" : ""}`}
     role="presentation"
@@ -161,7 +155,7 @@ const DdayModal = ({
           className="dday-icon-button"
           onClick={onClose}
           disabled={closeDisabled}
-          aria-label="Đóng cửa sổ"
+          aria-label={t("management.common.close")}
         >
           <X size={17} />
         </button>
@@ -169,9 +163,16 @@ const DdayModal = ({
       {children}
     </div>
   </div>
-);
+  );
+};
 
 const DdayVoteAdminPage = () => {
+  const { t, i18n } = useTranslation();
+  const adminVoteText = (key, options) => t(`management.voteAdmin.${key}`, options);
+  const formatDate = (value) => value
+    ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN", { dateStyle: "medium", timeStyle: "short" })
+    : "—";
+  const statusLabel = { draft: adminVoteText("statusDraft"), open: adminVoteText("statusOpen"), closed: adminVoteText("statusClosed") };
   const [config, setConfig] = useState(emptyConfig);
   const [campaignExists, setCampaignExists] = useState(false);
   const [results, setResults] = useState(null);
@@ -332,7 +333,7 @@ const DdayVoteAdminPage = () => {
     event.preventDefault();
     if (config.status !== "draft" || !canEdit || saving) return;
 
-    const validationMessage = validateConfigForSave(config);
+    const validationMessage = validateConfigForSave(config, adminVoteText);
     if (validationMessage) {
       toast.error(validationMessage);
       return;
@@ -408,7 +409,7 @@ const DdayVoteAdminPage = () => {
       return;
     }
     toast.error(
-      "Trình duyệt đã chặn tab mới. Vui lòng cho phép popup để mở màn hình công bố.",
+      adminVoteText("popupBlocked"),
     );
   };
 
@@ -467,12 +468,12 @@ const DdayVoteAdminPage = () => {
     : 0;
   const pendingTitle =
     pendingAction?.type === "close"
-      ? "Xác nhận đóng bình chọn"
+      ? adminVoteText("confirmCloseTitle")
       : pendingAction?.type === "close-time"
-        ? "Xác nhận đổi thời điểm đóng"
+        ? adminVoteText("confirmCloseTimeTitle")
         : pendingAction?.isReopen
-          ? "Xác nhận mở lại bình chọn"
-          : "Xác nhận mở bình chọn";
+          ? adminVoteText("confirmReopenTitle")
+          : adminVoteText("confirmOpenTitle");
 
   return (
     <div className="dday-admin-shell">
@@ -480,9 +481,9 @@ const DdayVoteAdminPage = () => {
       <main className="dday-admin-main">
         <header className="dday-admin-header">
           <div>
-            <span className="dday-admin-kicker">Điều hành bình chọn D-Day</span>
-            <h1>Quản lý bình chọn</h1>
-            <p>Một Phiên Vote duy nhất cho ngày sự kiện.</p>
+            <span className="dday-admin-kicker">{adminVoteText("kicker")}</span>
+            <h1>{adminVoteText("title")}</h1>
+            <p>{adminVoteText("intro")}</p>
           </div>
           <div className="dday-admin-header__actions">
             {campaignExists && !editing && (
@@ -492,7 +493,7 @@ const DdayVoteAdminPage = () => {
                 onClick={() => setDeleteConfirmOpen(true)}
                 disabled={deleteLoading}
               >
-                <Trash2 size={16} /> {deleteLoading ? "Đang xóa…" : "Xóa tất cả dữ liệu"}
+                <Trash2 size={16} /> {adminVoteText(deleteLoading ? "deleting" : "deleteAll")}
               </button>
             )}
             {campaignExists && isDraft && !editing && (
@@ -501,7 +502,7 @@ const DdayVoteAdminPage = () => {
                 className="dday-admin-button dday-admin-button--secondary"
                 onClick={startEditing}
               >
-                <Pencil size={16} /> Chỉnh sửa Phiên Vote
+                <Pencil size={16} /> {adminVoteText("editCampaign")}
               </button>
             )}
             {editing && (
@@ -511,7 +512,7 @@ const DdayVoteAdminPage = () => {
                 onClick={cancelEditing}
                 disabled={saving}
               >
-                Hủy chỉnh sửa
+                {adminVoteText("cancelEditing")}
               </button>
             )}
             <button
@@ -520,7 +521,7 @@ const DdayVoteAdminPage = () => {
               onClick={load}
               disabled={loading || canEdit || deleteLoading}
             >
-              <RefreshCw size={16} /> Làm mới
+              <RefreshCw size={16} /> {t("management.common.refresh")}
             </button>
           </div>
         </header>
@@ -532,21 +533,21 @@ const DdayVoteAdminPage = () => {
         )}
         {loading ? (
           <div className="dday-admin-loading" aria-busy="true">
-            Đang tải cấu hình…
+            {adminVoteText("loadingConfig")}
           </div>
         ) : (
           <>
             <section className="dday-admin-metrics">
               <div>
-                <small>Trạng thái</small>
+                <small>{t("management.common.status")}</small>
                 <strong>{statusLabel[config.status] || config.status}</strong>
               </div>
               <div>
-                <small>Tổng lượt bình chọn</small>
+                <small>{adminVoteText("totalVotes")}</small>
                 <strong>{config.totalVotes || 0}</strong>
               </div>
               <div>
-                <small>Thời điểm đóng</small>
+                <small>{adminVoteText("closingTime")}</small>
                 <strong>{formatDate(config.closeAt)}</strong>
               </div>
             </section>
@@ -555,9 +556,9 @@ const DdayVoteAdminPage = () => {
               <div className="dday-admin-card__heading">
                 <div>
                   <span className="dday-admin-kicker">
-                    Thiết lập Phiên Vote · D-Day
+                    {adminVoteText("setupKicker")}
                   </span>
-                  <h2>Thông tin bình chọn</h2>
+                  <h2>{adminVoteText("information")}</h2>
                 </div>
                 <span
                   className={`dday-admin-status dday-admin-status--${config.status}`}
@@ -567,18 +568,18 @@ const DdayVoteAdminPage = () => {
               </div>
               <div className="dday-admin-grid">
                 <label>
-                  <span>Tiêu đề</span>
+                  <span>{adminVoteText("campaignTitle")}</span>
                   <input
                     value={config.title}
                     onChange={(event) =>
                       updateConfig("title", event.target.value)
                     }
                     disabled={!canEdit}
-                    placeholder="Bình chọn D-Day"
+                    placeholder={adminVoteText("titlePlaceholder")}
                   />
                 </label>
                 <label>
-                  <span>Mô tả hướng dẫn người tham gia</span>
+                  <span>{adminVoteText("description")}</span>
                   <textarea
                     value={config.description}
                     onChange={(event) =>
@@ -586,11 +587,11 @@ const DdayVoteAdminPage = () => {
                     }
                     disabled={!canEdit}
                     rows={3}
-                    placeholder="Ví dụ: Hãy chọn một tiết mục bạn yêu thích ở mỗi hạng mục."
+                    placeholder={adminVoteText("descriptionPlaceholder")}
                   />
                 </label>
                 <label>
-                  <span>Thời điểm bắt đầu dự kiến</span>
+                  <span>{adminVoteText("plannedOpening")}</span>
                   <input
                     type="datetime-local"
                     value={config.openAt}
@@ -601,7 +602,7 @@ const DdayVoteAdminPage = () => {
                   />
                 </label>
                 <label>
-                  <span>Thời điểm tự động đóng</span>
+                  <span>{adminVoteText("automaticClosing")}</span>
                   <input
                     type="datetime-local"
                     value={config.closeAt}
@@ -614,11 +615,8 @@ const DdayVoteAdminPage = () => {
               </div>
               <div className="dday-admin-section-heading">
                 <div>
-                  <h3>Các hạng mục bình chọn</h3>
-                  <p>
-                    Mỗi hạng mục cần ít nhất hai lựa chọn. Mã nội bộ có thể giữ
-                    nguyên nếu không cần thay đổi.
-                  </p>
+                  <h3>{adminVoteText("categories")}</h3>
+                  <p>{adminVoteText("categoriesHelp")}</p>
                 </div>
                 {canEdit && (
                   <button
@@ -626,7 +624,7 @@ const DdayVoteAdminPage = () => {
                     className="dday-admin-link"
                     onClick={addCategory}
                   >
-                    <Plus size={15} /> Thêm hạng mục
+                    <Plus size={15} /> {adminVoteText("addCategory")}
                   </button>
                 )}
               </div>
@@ -637,14 +635,14 @@ const DdayVoteAdminPage = () => {
                     key={`${category.categoryId}-${categoryIndex}`}
                   >
                     <div className="dday-admin-category__heading">
-                      <strong>Hạng mục {categoryIndex + 1}</strong>
+                      <strong>{adminVoteText("categoryNumber", { number: categoryIndex + 1 })}</strong>
                       {canEdit && (
                         <button
                           type="button"
                           className="dday-icon-button"
                           onClick={() => removeCategory(categoryIndex)}
                           disabled={config.categories.length <= 1 || saving}
-                          aria-label="Xóa hạng mục"
+                          aria-label={adminVoteText("deleteCategory")}
                         >
                           <Trash2 size={15} />
                         </button>
@@ -652,7 +650,7 @@ const DdayVoteAdminPage = () => {
                     </div>
                     <div className="dday-admin-category__fields">
                       <label>
-                        <span>Tên hạng mục</span>
+                        <span>{adminVoteText("categoryName")}</span>
                         <input
                           value={category.label}
                           onChange={(event) =>
@@ -663,7 +661,7 @@ const DdayVoteAdminPage = () => {
                             )
                           }
                           disabled={!canEdit}
-                          placeholder="Ví dụ: Tiết mục yêu thích"
+                          placeholder={adminVoteText("categoryPlaceholder")}
                         />
                       </label>
                     </div>
@@ -674,7 +672,7 @@ const DdayVoteAdminPage = () => {
                           key={`${option.optionId}-${optionIndex}`}
                         >
                           <label>
-                            <span>Lựa chọn {optionIndex + 1}</span>
+                            <span>{adminVoteText("optionNumber", { number: optionIndex + 1 })}</span>
                             <input
                               value={option.label}
                               onChange={(event) =>
@@ -685,7 +683,7 @@ const DdayVoteAdminPage = () => {
                                 )
                               }
                               disabled={!canEdit}
-                              placeholder={`Ví dụ: ${optionIndex === 0 ? "MĐ" : "Tên lựa chọn"}`}
+                              placeholder={adminVoteText(optionIndex === 0 ? "optionCodePlaceholder" : "optionNamePlaceholder")}
                             />
                           </label>
                           {canEdit && (
@@ -696,7 +694,7 @@ const DdayVoteAdminPage = () => {
                                 removeOption(categoryIndex, optionIndex)
                               }
                               disabled={category.options.length <= 2 || saving}
-                              aria-label="Xóa lựa chọn"
+                              aria-label={adminVoteText("deleteOption")}
                             >
                               <X size={15} />
                             </button>
@@ -710,7 +708,7 @@ const DdayVoteAdminPage = () => {
                         className="dday-admin-link"
                         onClick={() => addOption(categoryIndex)}
                       >
-                        <Plus size={15} /> Thêm lựa chọn
+                        <Plus size={15} /> {adminVoteText("addOption")}
                       </button>
                     )}
                   </div>
@@ -725,7 +723,7 @@ const DdayVoteAdminPage = () => {
                     onClick={requestOpen}
                     disabled={actionLoading}
                   >
-                    <Check size={16} /> Mở bình chọn
+                    <Check size={16} /> {adminVoteText("openVoting")}
                   </button>
                 </div>
               )}
@@ -738,10 +736,10 @@ const DdayVoteAdminPage = () => {
                   >
                     <Save size={16} />
                     {saving
-                      ? "Đang lưu…"
+                      ? adminVoteText("saving")
                       : campaignExists
-                        ? "Lưu thay đổi"
-                        : "Lưu Phiên Vote"}
+                        ? adminVoteText("saveChanges")
+                        : adminVoteText("saveCampaign")}
                   </button>
                   {campaignExists && (
                     <button
@@ -750,7 +748,7 @@ const DdayVoteAdminPage = () => {
                       onClick={cancelEditing}
                       disabled={saving}
                     >
-                      Hủy
+                      {t("management.common.cancel")}
                     </button>
                   )}
                 </div>
@@ -763,7 +761,7 @@ const DdayVoteAdminPage = () => {
                     onClick={requestCloseTimeEdit}
                     disabled={actionLoading}
                   >
-                    <Clock3 size={16} /> Chỉnh thời điểm đóng
+                    <Clock3 size={16} /> {adminVoteText("editCloseTime")}
                   </button>
                   <button
                     type="button"
@@ -771,7 +769,7 @@ const DdayVoteAdminPage = () => {
                     onClick={() => setCountdownOpen(true)}
                     disabled={actionLoading}
                   >
-                    <Clock3 size={16} /> Xem màn hình đếm ngược
+                    <Clock3 size={16} /> {adminVoteText("viewCountdown")}
                   </button>
                   <button
                     type="button"
@@ -779,15 +777,14 @@ const DdayVoteAdminPage = () => {
                     onClick={requestClose}
                     disabled={actionLoading}
                   >
-                    Đóng bình chọn ngay
+                    {adminVoteText("closeNow")}
                   </button>
                 </div>
               )}
               {config.status === "closed" && (
                 <div className="dday-admin-actions dday-admin-actions--management">
                   <p className="dday-admin-reopen-note">
-                    Bình chọn đã đóng. Bạn có thể mở lại và chọn thời điểm đóng
-                    mới để mở thêm thời gian.
+                    {adminVoteText("reopenNote")}
                   </p>
                   <button
                     type="button"
@@ -795,7 +792,7 @@ const DdayVoteAdminPage = () => {
                     onClick={requestOpen}
                     disabled={actionLoading}
                   >
-                    <Check size={16} /> Mở lại bình chọn
+                    <Check size={16} /> {adminVoteText("reopenVoting")}
                   </button>
                   <button
                     type="button"
@@ -803,7 +800,7 @@ const DdayVoteAdminPage = () => {
                     onClick={openAudit}
                     disabled={actionLoading}
                   >
-                    <Users size={17} /> Xem danh sách người vote
+                    <Users size={17} /> {adminVoteText("viewVoters")}
                   </button>
                   <button
                     type="button"
@@ -811,7 +808,7 @@ const DdayVoteAdminPage = () => {
                     onClick={() => setPublishConfirmOpen(true)}
                     disabled={actionLoading}
                   >
-                    <Monitor size={17} /> Công bố kết quả
+                    <Monitor size={17} /> {adminVoteText("publishResults")}
                   </button>
                 </div>
               )}
@@ -821,8 +818,8 @@ const DdayVoteAdminPage = () => {
               <section className="dday-admin-card">
                 <div className="dday-admin-card__heading">
                   <div>
-                    <span className="dday-admin-kicker">Kết quả tổng hợp</span>
-                    <h2>{results.totalVotes} lượt bình chọn hợp lệ</h2>
+                    <span className="dday-admin-kicker">{adminVoteText("summaryResults")}</span>
+                    <h2>{adminVoteText("validVotes", { count: results.totalVotes })}</h2>
                   </div>
                   <span>{formatDate(results.closedAt)}</span>
                 </div>
@@ -851,28 +848,22 @@ const DdayVoteAdminPage = () => {
         >
           <div className="dday-admin-modal__body">
             {pendingAction.type === "close" && (
-              <p>
-                Bạn có chắc muốn đóng bình chọn ngay không? Người tham gia sẽ
-                không thể gửi lượt bình chọn mới sau thao tác này.
-              </p>
+              <p>{adminVoteText("closeWarning")}</p>
             )}
             {pendingAction.type === "open" && (
               <p>
                 {pendingAction.isReopen
-                  ? "Bình chọn sẽ được mở lại để có thêm thời gian. Hãy chọn thời điểm đóng mới."
-                  : "Bình chọn sẽ bắt đầu nhận lượt bình chọn ngay sau khi xác nhận."}
+                  ? adminVoteText("reopenWarning")
+                  : adminVoteText("openWarning")}
               </p>
             )}
             {pendingAction.type === "close-time" && (
-              <p>
-                Thời điểm đóng hiện tại sẽ được thay bằng thời điểm mới. Người
-                tham gia vẫn có thể bình chọn trong thời gian bình chọn đang mở.
-              </p>
+              <p>{adminVoteText("closeTimeWarning")}</p>
             )}
             {(pendingAction.type === "open" ||
               pendingAction.type === "close-time") && (
               <label className="dday-admin-modal-field">
-                <span>Thời điểm tự động đóng</span>
+                <span>{adminVoteText("automaticClosing")}</span>
                 <input
                   type="datetime-local"
                   value={closeAtDraft}
@@ -889,7 +880,7 @@ const DdayVoteAdminPage = () => {
                 onClick={() => setPendingAction(null)}
                 disabled={actionLoading}
               >
-                Hủy
+                {t("management.common.cancel")}
               </button>
               <button
                 type="button"
@@ -898,14 +889,14 @@ const DdayVoteAdminPage = () => {
                 disabled={actionLoading}
               >
                 {actionLoading
-                  ? "Đang xử lý…"
+                  ? adminVoteText("processing")
                   : pendingAction.type === "close"
-                    ? "Đóng bình chọn"
+                    ? adminVoteText("closeVoting")
                     : pendingAction.type === "close-time"
-                      ? "Lưu thời điểm mới"
+                      ? adminVoteText("saveNewTime")
                       : pendingAction.isReopen
-                        ? "Mở lại và thêm thời gian"
-                        : "Mở bình chọn"}
+                        ? adminVoteText("reopenAndExtend")
+                        : adminVoteText("openVoting")}
               </button>
             </div>
           </div>
@@ -917,35 +908,35 @@ const DdayVoteAdminPage = () => {
           <div className="dday-admin-countdown-layout">
             <section className="dday-admin-countdown-panel" aria-live="polite">
               <span className="dday-admin-kicker">
-                Thời gian bình chọn còn lại
+                {adminVoteText("remainingTime")}
               </span>
               <div className="dday-admin-countdown">
                 <Clock3 size={38} />
-                <strong>{formatDuration(remainingMilliseconds)}</strong>
-                <p>Thời điểm đóng: {formatDate(config.closeAt)}</p>
+                <strong>{formatDuration(remainingMilliseconds, adminVoteText)}</strong>
+                <p>{adminVoteText("closesAt", { time: formatDate(config.closeAt) })}</p>
               </div>
               <div className="dday-admin-countdown-qr">
-                <span>Quét mã để tham gia bình chọn</span>
+                <span>{adminVoteText("scanToVote")}</span>
                 <QRCodeCanvas
                   value={DDAY_VOTE_URL}
                   size={220}
                   includeMargin
-                  aria-label="Mã QR đến trang bình chọn D-Day"
+                  aria-label={adminVoteText("voteQrAria")}
                 />
               </div>
             </section>
             <section
               className="dday-admin-contestant-panel"
-              aria-label="Ảnh thí sinh"
+              aria-label={adminVoteText("contestantImage")}
             >
               <div
                 className="dday-admin-contestant-placeholder"
                 role="img"
-                aria-label="Placeholder ảnh thí sinh"
+                aria-label={adminVoteText("contestantPlaceholderAria")}
               >
                 <Users size={76} strokeWidth={1.3} />
-                <strong>ẢNH THÍ SINH</strong>
-                <span>Placeholder hình ảnh trình chiếu</span>
+                <strong>{adminVoteText("contestantImageLabel")}</strong>
+                <span>{adminVoteText("contestantPlaceholder")}</span>
               </div>
             </section>
           </div>
@@ -963,17 +954,17 @@ const DdayVoteAdminPage = () => {
 
       {auditOpen && (
         <DdayModal
-          title="Danh sách người đã bình chọn"
+          title={adminVoteText("voterList")}
           onClose={() => setAuditOpen(false)}
           closeDisabled={auditLoading}
         >
           <div className="dday-admin-audit">
             <p className="dday-admin-audit__summary">
-              Hiển thị {auditPagination.total} tài khoản đã gửi bình chọn.
+              {adminVoteText("voterSummary", { count: auditPagination.total })}
             </p>
             {auditLoading && (
               <div className="dday-admin-audit__state" aria-live="polite">
-                Đang tải danh sách người vote…
+                {adminVoteText("loadingVoters")}
               </div>
             )}
             {!auditLoading && auditError && (
@@ -988,13 +979,13 @@ const DdayVoteAdminPage = () => {
                   className="dday-admin-button dday-admin-button--secondary"
                   onClick={() => loadAudit(auditPagination.page)}
                 >
-                  Thử lại
+                  {t("management.common.retry")}
                 </button>
               </div>
             )}
             {!auditLoading && !auditError && auditEntries.length === 0 && (
               <div className="dday-admin-audit__state">
-                Chưa có tài khoản nào gửi bình chọn.
+                {adminVoteText("emptyVoters")}
               </div>
             )}
             {!auditLoading && !auditError && auditEntries.length > 0 && (
@@ -1006,8 +997,8 @@ const DdayVoteAdminPage = () => {
                   >
                     <div className="dday-admin-audit__identity">
                       <div>
-                        <strong>{vote.googleName || "Không có tên"}</strong>
-                        <span>{vote.googleEmail || "Không có email"}</span>
+                        <strong>{vote.googleName || adminVoteText("noName")}</strong>
+                        <span>{vote.googleEmail || adminVoteText("noEmail")}</span>
                       </div>
                     </div>
                     <div className="dday-admin-audit__choices">
@@ -1023,8 +1014,8 @@ const DdayVoteAdminPage = () => {
                             className="dday-admin-audit__choice"
                             key={`${choice.categoryId || choiceIndex}-${choice.optionId || choiceIndex}`}
                           >
-                            <span>{category?.label || "Hạng mục"}</span>
-                            <strong>{option?.label || "Lựa chọn"}</strong>
+                            <span>{category?.label || adminVoteText("category")}</span>
+                            <strong>{option?.label || adminVoteText("option")}</strong>
                           </div>
                         );
                       })}
@@ -1041,10 +1032,10 @@ const DdayVoteAdminPage = () => {
                   onClick={() => loadAudit(auditPagination.page - 1)}
                   disabled={auditLoading || auditPagination.page <= 1}
                 >
-                  <ChevronLeft size={16} /> Trước
+                  <ChevronLeft size={16} /> {t("management.common.previous")}
                 </button>
                 <span>
-                  Trang {auditPagination.page} / {auditPagination.totalPages}
+                  {adminVoteText("pageOf", { page: auditPagination.page, total: auditPagination.totalPages })}
                 </span>
                 <button
                   type="button"
@@ -1055,7 +1046,7 @@ const DdayVoteAdminPage = () => {
                     auditPagination.page >= auditPagination.totalPages
                   }
                 >
-                  Sau <ChevronRight size={16} />
+                  {t("management.common.next")} <ChevronRight size={16} />
                 </button>
               </div>
             )}
@@ -1070,10 +1061,10 @@ const DdayVoteAdminPage = () => {
           setDeleteConfirmOpen(false);
           setDeleteFinalConfirmOpen(true);
         }}
-        title="Xác nhận xóa Phiên Vote (1/2)"
-        description="Bạn sắp xóa dữ liệu cổng bình chọn hiện tại cùng toàn bộ dữ liệu bình chọn.<br />Bạn có chắc muốn tiếp tục?"
-        cancelLabel="Hủy"
-        confirmLabel="Tiếp tục"
+        title={adminVoteText("deleteTitleOne")}
+        description={adminVoteText("deleteDescriptionOne")}
+        cancelLabel={t("management.common.cancel")}
+        confirmLabel={adminVoteText("continue")}
         isManagement
       />
 
@@ -1081,10 +1072,10 @@ const DdayVoteAdminPage = () => {
         isOpen={deleteFinalConfirmOpen}
         onClose={() => setDeleteFinalConfirmOpen(false)}
         onConfirm={deleteCampaign}
-        title="Xác nhận xóa Phiên Vote (2/2)"
-        description="Đây là thao tác không thể hoàn tác. Cổng và toàn bộ lượt vote sẽ bị xóa khỏi hệ thống.<br />Bạn có chắc chắn muốn xóa không?"
-        cancelLabel="Hủy"
-        confirmLabel="Xóa cổng và lượt vote"
+        title={adminVoteText("deleteTitleTwo")}
+        description={adminVoteText("deleteDescriptionTwo")}
+        cancelLabel={t("management.common.cancel")}
+        confirmLabel={adminVoteText("deleteConfirm")}
         isManagement
       />
 
@@ -1094,17 +1085,17 @@ const DdayVoteAdminPage = () => {
         onConfirm={save}
         title={
           campaignExists
-            ? "Xác nhận lưu thay đổi"
-            : "Xác nhận lưu Phiên Vote"
+            ? adminVoteText("saveChangesTitle")
+            : adminVoteText("saveCampaignTitle")
         }
         description={
           campaignExists
-            ? "Các thay đổi sẽ cập nhật nội dung Phiên Vote D-Day đang ở bản nháp.<br />Bạn có chắc muốn lưu không?"
-            : "Thông tin Phiên Vote D-Day sẽ được lưu ở trạng thái bản nháp.<br />Bạn có chắc muốn tiếp tục không?"
+            ? adminVoteText("saveChangesDescription")
+            : adminVoteText("saveCampaignDescription")
         }
-        cancelLabel="Hủy"
+        cancelLabel={t("management.common.cancel")}
         confirmLabel={
-          campaignExists ? "Lưu thay đổi" : "Lưu Phiên Vote"
+          campaignExists ? adminVoteText("saveChanges") : adminVoteText("saveCampaign")
         }
         isManagement
       />
@@ -1116,10 +1107,10 @@ const DdayVoteAdminPage = () => {
           setPublishConfirmOpen(false);
           openPublishScreen();
         }}
-        title="Xác nhận công bố kết quả"
-        description="Màn hình công bố sẽ mở ở tab mới để bạn đưa lên màn LED.<br />Bạn có chắc muốn tiếp tục?"
-        cancelLabel="Hủy"
-        confirmLabel="Mở màn hình công bố"
+        title={adminVoteText("publishTitle")}
+        description={adminVoteText("publishDescription")}
+        cancelLabel={t("management.common.cancel")}
+        confirmLabel={adminVoteText("openPublishScreen")}
         isManagement
       />
     </div>

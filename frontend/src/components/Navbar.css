@@ -52,6 +52,13 @@
   transition: all 0.2s ease;
 }
 
+.fpt-navbar__nav-trigger {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .fpt-navbar__nav-link:hover {
   color: var(--color-button);
   background-color: transparent;

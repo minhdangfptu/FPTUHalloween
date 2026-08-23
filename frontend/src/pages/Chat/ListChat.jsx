@@ -9,15 +9,16 @@ import {
   X,
 } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ChatListSkeleton } from "../../components/LoadingSkeletons";
 import "./ListChat.scss";
 
 const getId = (item) => item?._id || item?.id;
-const getName = (item) =>
-  item?.name || item?.fullName || item?.userName || "Không tên";
-const getLastSenderName = (conversation) => {
+const getName = (item, fallback = "Unnamed") =>
+  item?.name || item?.fullName || item?.userName || fallback;
+const getLastSenderName = (conversation, fallback) => {
   const sender = conversation?.lastMessageSender || conversation?.lastSender;
-  return sender ? getName(sender) : "";
+  return sender ? getName(sender, fallback) : "";
 };
 const initials = (name) =>
   getName({ name })
@@ -44,13 +45,16 @@ const ListChat = ({
   onCreateGroup,
   onEditGroup,
 }) => {
+  const { t, i18n } = useTranslation();
+  const chatText = (key, options) => t(`chat.${key}`, options);
+  const displayName = (item) => getName(item, chatText("unnamed"));
   const showResults = searchQuery.trim().length > 0;
   return (
-    <section className="chat-list" aria-label="Danh sách cuộc trò chuyện">
+    <section className="chat-list" aria-label={chatText("conversationList")}>
       <div className="chat-list__heading">
         <div>
-          <span className="chat-list__eyebrow">HolaWeen Chat</span>
-          <h1>Tin nhắn</h1>
+          <span className="chat-list__eyebrow">{chatText("brand")}</span>
+          <h1>{chatText("messages")}</h1>
         </div>
         <div className="chat-list__actions">
           <span className="chat-list__count">{conversations.length}</span>
@@ -61,7 +65,7 @@ const ListChat = ({
               onClick={onCreateGroup}
             >
               <Plus size={15} />
-              <span>Tạo nhóm</span>
+              <span>{chatText("createGroupAction")}</span>
               <ChevronDown size={14} />
             </button>
           )}
@@ -72,14 +76,14 @@ const ListChat = ({
         <input
           value={searchQuery}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Tìm thành viên hoặc nhóm"
-          aria-label="Tìm thành viên hoặc nhóm"
+          placeholder={chatText("searchPlaceholder")}
+          aria-label={chatText("searchPlaceholder")}
         />
         {searchQuery && (
           <button
             type="button"
             onClick={() => onSearchChange("")}
-            aria-label="Xoá tìm kiếm"
+            aria-label={chatText("clearSearch")}
           >
             <X size={16} />
           </button>
@@ -87,11 +91,11 @@ const ListChat = ({
       </label>
       {showResults ? (
         <div className="chat-list__results">
-          <span className="chat-list__section-label">KẾT QUẢ TÌM KIẾM</span>
+          <span className="chat-list__section-label">{chatText("searchResults")}</span>
           {isSearching && (
             <div className="chat-list__search-loading" role="status">
               <span className="chat-list__spinner" aria-hidden="true" />
-              <span>Đang tìm kiếm...</span>
+              <span>{chatText("searching")}</span>
             </div>
           )}
           {!isSearching && searchResults.map((user) => (
@@ -101,16 +105,16 @@ const ListChat = ({
               type="button"
               onClick={() => onSelectUser(user)}
             >
-              <span className="chat-avatar">{initials(getName(user))}</span>
+              <span className="chat-avatar">{initials(displayName(user))}</span>
               <span>
-                <strong>{getName(user)}</strong>
-                <small>@{user.userName || "staff"}</small>
+                <strong>{displayName(user)}</strong>
+                <small>@{user.userName || chatText("staffUsername")}</small>
               </span>
             </button>
           ))}
           {!isSearching && groups
             .filter((group) =>
-              getName(group).toLowerCase().includes(searchQuery.toLowerCase()),
+              displayName(group).toLowerCase().includes(searchQuery.toLowerCase()),
             )
             .map((group) => (
               <button
@@ -123,21 +127,21 @@ const ListChat = ({
                   <UsersRound size={18} />
                 </span>
                 <span>
-                  <strong>{getName(group)}</strong>
-                  <small>Nhóm tin nhắn sự kiện</small>
+                  <strong>{displayName(group)}</strong>
+                  <small>{chatText("eventGroup")}</small>
                 </span>
               </button>
             ))}
           {!isSearching && !searchResults.length &&
             !groups.some((group) =>
-              getName(group).toLowerCase().includes(searchQuery.toLowerCase()),
+              displayName(group).toLowerCase().includes(searchQuery.toLowerCase()),
             ) && (
               <div className="chat-list__no-results" role="status">
                 <span className="chat-list__no-results-icon">
                   <SearchX size={20} />
                 </span>
-                <strong>Không tìm thấy kết quả</strong>
-                <small>Thử tìm bằng tên nhóm hoặc username khác.</small>
+                <strong>{chatText("noResults")}</strong>
+                <small>{chatText("noResultsText")}</small>
               </div>
             )}
         </div>
@@ -151,8 +155,8 @@ const ListChat = ({
             const name =
               conversation.type === "group"
                 ? conversation.name
-                : getName(participant);
-            const lastSenderName = getLastSenderName(conversation);
+                : displayName(participant);
+            const lastSenderName = getLastSenderName(conversation, chatText("unnamed"));
             const online = participant
               ? Boolean(presence[getId(participant)])
               : false;
@@ -192,13 +196,13 @@ const ListChat = ({
                         ? conversation.type === "group" && lastSenderName
                           ? `${lastSenderName}: ${conversation.lastMessagePreview}`
                           : conversation.lastMessagePreview
-                        : "Bắt đầu cuộc trò chuyện"}
+                        : chatText("startConversation")}
                     </small>
                   </span>
                   <time>
                     {conversation.lastMessageAt
                       ? new Date(conversation.lastMessageAt).toLocaleTimeString(
-                          "vi-VN",
+                          i18n.language === "en" ? "en-US" : "vi-VN",
                           { hour: "2-digit", minute: "2-digit" },
                         )
                       : ""}
@@ -206,7 +210,7 @@ const ListChat = ({
                   {isUnread && (
                     <span
                       className="chat-conversation__unread-dot"
-                      aria-label="Chưa đọc"
+                      aria-label={chatText("unread")}
                     />
                   )}
                 </button>
@@ -215,7 +219,7 @@ const ListChat = ({
                     className="chat-conversation__more"
                     type="button"
                     onClick={() => onEditGroup(conversation)}
-                    aria-label={`Chỉnh sửa ${name}`}
+                    aria-label={chatText("editAria", { name })}
                   >
                     <MoreHorizontal size={18} />
                   </button>
@@ -226,8 +230,8 @@ const ListChat = ({
           {!conversations.length && (
             <div className="chat-list__blank">
               <MessageCircle size={26} />
-              <p>Chưa có cuộc trò chuyện</p>
-              <small>Tìm một staff để bắt đầu.</small>
+              <p>{chatText("emptyConversations")}</p>
+              <small>{chatText("emptyConversationsText")}</small>
             </div>
           )}
         </div>

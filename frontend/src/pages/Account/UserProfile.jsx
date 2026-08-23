@@ -239,7 +239,7 @@ export default function UserProfile() {
                   <strong>{value("phone")}</strong>
                 </div>
                 <div>
-                  <span>Email</span>
+                  <span>{profileText("email")}</span>
                   <strong className="muted">{value("email")}</strong>
                 </div>
               </div>
@@ -356,7 +356,7 @@ export default function UserProfile() {
                         {new Intl.NumberFormat("vi-VN").format(
                           order.totalAmount || 0,
                         )}{" "}
-                        VND
+                        {profileText("currency")}
                       </strong>
                       <span
                         className={`profile-order-status profile-order-status--${String(order.orderStatus).toLowerCase()}`}

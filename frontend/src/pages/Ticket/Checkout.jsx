@@ -187,7 +187,7 @@ const Checkout = () => {
           <ArrowLeft size={17} /> {ticket("backCart")}
         </button>
         <header className="checkout-heading">
-          <p>FPTU Halloween 2026</p>
+          <p>{ticket("eventBrand2026")}</p>
           <h1>{ticket("checkoutTitle")}</h1>
           <span>{ticket("stepOne")}</span>
         </header>
@@ -216,7 +216,7 @@ const Checkout = () => {
                   />
                 </label>
                 <label>
-                  Email
+                  {ticket("email")}
                   <input
                     required
                     type="email"
@@ -224,7 +224,7 @@ const Checkout = () => {
                     onChange={(event) =>
                       setCustomer({ ...customer, email: event.target.value })
                     }
-                    placeholder="you@example.com"
+                    placeholder={ticket("emailPlaceholder")}
                   />
                 </label>
                 <label>

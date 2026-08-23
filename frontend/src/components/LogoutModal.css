@@ -1,12 +1,36 @@
 .logout-modal-overlay {
+  --logout-surface: #fff;
+  --logout-title: #222;
+  --logout-muted: #666;
+  --logout-line: #e5e7eb;
+  --logout-close: #777;
+  --logout-close-hover: #fff1f1;
+  --logout-cancel-surface: #f0f0f0;
+  --logout-cancel-hover: #e4e6ea;
+  --logout-cancel-text: #222;
+  --logout-shadow: rgba(0, 0, 0, 0.18);
   position: fixed;
   inset: 0;
-  z-index: 2000;
+  z-index: 11000;
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);
   padding: 20px;
+}
+
+:root[data-theme='dark'] .logout-modal-overlay {
+  --logout-surface: var(--public-dark-surface, #1a2029);
+  --logout-title: var(--public-dark-ink, #f1f5f9);
+  --logout-muted: var(--public-dark-muted, #a8b2bf);
+  --logout-line: var(--public-dark-line, #344050);
+  --logout-close: var(--public-dark-muted, #a8b2bf);
+  --logout-close-hover: var(--public-dark-surface-raised, #232c37);
+  --logout-cancel-surface: var(--public-dark-surface-raised, #232c37);
+  --logout-cancel-hover: #2d3845;
+  --logout-cancel-text: var(--public-dark-ink, #f1f5f9);
+  --logout-shadow: rgba(0, 0, 0, 0.48);
+  background: rgba(3, 7, 12, 0.72);
 }
 
 .logout-modal-card {
@@ -17,9 +41,11 @@
   width: 100%;
   max-width: 320px;
   padding: 36px 28px 28px;
-  background: #fff;
+  color: var(--logout-title);
+  background: var(--logout-surface);
+  border: 1px solid var(--logout-line);
   border-radius: 16px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 16px 48px var(--logout-shadow);
 }
 
 .logout-modal-close {
@@ -34,13 +60,13 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: #777;
+  color: var(--logout-close);
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 .logout-modal-close svg { width: 16px; height: 16px; stroke-width: 2; }
-.logout-modal-close:hover { background: #fff1f1; color: #ce0000; }
+.logout-modal-close:hover { background: var(--logout-close-hover); color: #ce0000; }
 
 .logout-modal-logo {
   display: block;
@@ -54,7 +80,7 @@
   margin: 0 0 8px;
   font-size: 20px;
   font-weight: 700;
-  color: #222;
+  color: var(--logout-title);
   text-align: center;
   letter-spacing: -0.2px;
 }
@@ -62,7 +88,7 @@
 .logout-modal-desc {
   margin: 0 0 24px;
   font-size: 14px;
-  color: #666;
+  color: var(--logout-muted);
   text-align: center;
   line-height: 1.5;
 }
@@ -80,7 +106,18 @@
   transition: background 0.2s ease, transform 0.15s ease;
 }
 
-.logout-modal-cancel { background: #f0f0f0; color: #222; }
-.logout-modal-cancel:hover { background: #e4e6ea; }
+.logout-modal-cancel {
+  color: var(--logout-cancel-text);
+  background: var(--logout-cancel-surface);
+  border: 1px solid var(--logout-line);
+}
+.logout-modal-cancel:hover { background: var(--logout-cancel-hover); }
 .logout-modal-confirm { background: #ce0000; color: #fff; }
 .logout-modal-confirm:hover { background: #a80000; }
+
+.logout-modal-close:focus-visible,
+.logout-modal-cancel:focus-visible,
+.logout-modal-confirm:focus-visible {
+  outline: 2px solid #ce0000;
+  outline-offset: 2px;
+}

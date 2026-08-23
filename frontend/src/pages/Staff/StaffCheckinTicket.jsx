@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -19,6 +20,8 @@ import successSound from "../../assets/success_sound.mp3";
 import "./StaffCheckinTicket.scss";
 
 const StaffCheckinTicket = () => {
+  const { t, i18n } = useTranslation();
+  const checkInText = (key, options) => t(`management.checkIn.${key}`, options);
   const location = useLocation();
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
   const cameraScanInFlightRef = useRef(false);
@@ -53,7 +56,7 @@ const StaffCheckinTicket = () => {
   const previewScan = async (code) => {
     const normalizedCode = String(code || "").trim();
     if (!normalizedCode) {
-      toast.error("Vui lòng cung cấp mã QR hợp lệ.");
+      toast.error(checkInText("invalidQr"));
       return;
     }
     try {
@@ -68,10 +71,10 @@ const StaffCheckinTicket = () => {
       setPendingTicket({
         ...ticket,
         code: ticket.qrCodeData,
-        customerName: ticket.userId?.fullName || "Khách tham gia",
+        customerName: ticket.userId?.fullName || checkInText("attendee"),
         customerEmail: ticket.userId?.email || "—",
         customerPhone: ticket.userId?.phone || "—",
-        ticketName: ticket.ticketTypeId?.ticketTypeName || "Vé FPTU Halloween",
+        ticketName: ticket.ticketTypeId?.ticketTypeName || checkInText("ticketFallback"),
         canCheckIn: !checkInBlockReason,
         checkInBlockReason,
       });
@@ -92,7 +95,7 @@ const StaffCheckinTicket = () => {
       setScannedTickets((tickets) => [checkedTicket, ...tickets]);
       setManualCode("");
       setPendingTicket(null);
-      toast.success("Check-in vé thành công.");
+      toast.success(checkInText("success"));
     } catch (error) {
       toast.error(translateError(error));
     } finally {
@@ -123,11 +126,11 @@ const StaffCheckinTicket = () => {
   const handleCameraError = (error) => {
     console.error("QR scanner error:", error);
     const errorMessages = {
-      "permission-denied": "Trình duyệt chưa được cấp quyền camera.",
-      "no-camera": "Không tìm thấy camera trên thiết bị.",
-      "in-use": "Camera đang được sử dụng ở ứng dụng hoặc tab khác.",
-      "insecure-context": "Trang quét QR phải được mở bằng HTTPS.",
-      unsupported: "Trình duyệt không hỗ trợ quét QR bằng camera.",
+      "permission-denied": checkInText("cameraPermission"),
+      "no-camera": checkInText("cameraMissing"),
+      "in-use": checkInText("cameraInUse"),
+      "insecure-context": checkInText("httpsRequired"),
+      unsupported: checkInText("cameraUnsupported"),
     };
     const message = errorMessages[error?.kind];
     if (!message) return;
@@ -155,33 +158,31 @@ const StaffCheckinTicket = () => {
         <header className="staff-checkin-header">
           <div>
             <p className="staff-checkin-eyebrow">
-              <ScanLine size={16} /> Cổng vào sự kiện
+              <ScanLine size={16} /> {checkInText("kicker")}
             </p>
-            <h1>Check-in vé</h1>
-            <p>
-              Quét mã QR của khách và theo dõi các lượt check-in trong ca trực.
-            </p>
+            <h1>{checkInText("title")}</h1>
+            <p>{checkInText("intro")}</p>
           </div>
           <button
             className="staff-checkin-camera-button"
             type="button"
             onClick={openCamera}
           >
-            <Camera size={18} /> Mở camera check-in
+            <Camera size={18} /> {checkInText("openCamera")}
           </button>
         </header>
 
         <section className="staff-checkin-stats">
           <div>
-            <span>Đã quét hôm nay</span>
+            <span>{checkInText("scannedToday")}</span>
             <strong>{scannedTickets.length}</strong>
           </div>
           <div>
-            <span>Lượt quét gần nhất</span>
+            <span>{checkInText("latestScan")}</span>
             <strong>
               {scannedTickets[0]
                 ? new Date(scannedTickets[0].checkedInAt).toLocaleTimeString(
-                    "vi-VN",
+                    i18n.language === "en" ? "en-US" : "vi-VN",
                   )
                 : "—"}
             </strong>
@@ -191,8 +192,8 @@ const StaffCheckinTicket = () => {
         <section className="staff-checkin-card">
           <div className="staff-checkin-card__header">
             <div>
-              <h2>Vé đã quét</h2>
-              <span>Danh sách lượt check-in trên tài khoản này</span>
+              <h2>{checkInText("scannedTickets")}</h2>
+              <span>{checkInText("scannedList")}</span>
             </div>
             <CheckCircle2 size={22} />
           </div>
@@ -200,20 +201,20 @@ const StaffCheckinTicket = () => {
             <input
               value={manualCode}
               onChange={(event) => setManualCode(event.target.value)}
-              placeholder="Nhập mã QR nếu không dùng camera..."
+              placeholder={checkInText("manualPlaceholder")}
               onKeyDown={(event) => {
                 if (event.key === "Enter") previewScan(manualCode);
               }}
             />
             <button type="button" onClick={() => previewScan(manualCode)}>
-              Xác nhận
+              {checkInText("confirm")}
             </button>
           </div>
           {scannedTickets.length === 0 ? (
             <div className="staff-checkin-empty">
               <ScanLine size={34} />
-              <strong>Chưa có lượt check-in</strong>
-              <span>Mở camera để bắt đầu quét vé của khách.</span>
+              <strong>{checkInText("emptyTitle")}</strong>
+              <span>{checkInText("emptyText")}</span>
             </div>
           ) : (
             <div className="staff-checkin-list">
@@ -225,12 +226,12 @@ const StaffCheckinTicket = () => {
                   <div className="staff-checkin-ticket-copy">
                     <strong>{ticket.qrCodeData}</strong>
                     <span>
-                      <UserRound size={14} /> Khách tham gia
+                      <UserRound size={14} /> {ticket.userId?.fullName || checkInText("attendee")}
                     </span>
                   </div>
                   <time>
                     <Clock3 size={14} />{" "}
-                    {new Date(ticket.checkedInAt).toLocaleString("vi-VN")}
+                    {new Date(ticket.checkedInAt).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN")}
                   </time>
                   <CheckCircle2 className="staff-checkin-ticket-ok" size={19} />
                 </article>
@@ -246,41 +247,40 @@ const StaffCheckinTicket = () => {
             className="staff-checkin-ticket-dialog"
             role="dialog"
             aria-modal="true"
-            aria-label="Thông tin vé"
+            aria-label={checkInText("ticketInfo")}
           >
             <button
               className="staff-checkin-ticket-dialog__close"
               type="button"
               onClick={() => setPendingTicket(null)}
-              aria-label="Đóng"
+              aria-label={t("management.common.close")}
             >
               <X size={20} />
             </button>
             <p className="staff-checkin-eyebrow">
-              <CheckCircle2 size={16} /> Đã nhận diện mã QR
+              <CheckCircle2 size={16} /> {checkInText("qrRecognized")}
             </p>
-            <h2>Thông tin vé</h2>
+            <h2>{checkInText("ticketInfo")}</h2>
             <div className="staff-checkin-ticket-dialog__columns">
               <div className="staff-checkin-ticket-dialog__info">
             <div className="staff-checkin-ticket-details">
               <div>
-                <span>Mã vé</span>
+                <span>{checkInText("ticketCode")}</span>
                 <strong>{pendingTicket.code}</strong>
               </div>
               <div>
-                <span>Khách tham gia</span>
+                <span>{checkInText("attendee")}</span>
                 <strong>{pendingTicket.customerName}</strong>
                 <small>{pendingTicket.customerEmail}</small>
-                <small>Số điện thoại: {pendingTicket.customerPhone}</small>
+                <small>{checkInText("phone", { phone: pendingTicket.customerPhone })}</small>
               </div>
               <div>
-                <span>Loại vé</span>
+                <span>{checkInText("ticketType")}</span>
                 <strong>{pendingTicket.ticketName}</strong>
               </div>
               {!pendingTicket.canCheckIn && (
                 <small>
-                  Vé chỉ được check-in đúng ngày ghi trên vé hoặc vé đã được sử
-                  dụng.
+                  {checkInText("invalidTicketNote")}
                 </small>
               )}
             </div>
@@ -288,23 +288,21 @@ const StaffCheckinTicket = () => {
               <div className="staff-checkin-ticket-dialog__guidance">
             {!pendingTicket.canCheckIn && (
               <div className={`staff-checkin-ticket-alert staff-checkin-ticket-alert--${pendingTicket.checkInBlockReason}`} role="alert">
-                <strong>{pendingTicket.checkInBlockReason === "wrong-date" ? "Vé chưa đúng ngày sử dụng" : "Vé đã hết hiệu lực check-in"}</strong>
-                <span>{pendingTicket.checkInBlockReason === "wrong-date" ? "Vé này chỉ được check-in vào đúng ngày sự kiện ghi trên vé." : "Vé này đã được check-in hoặc không còn ở trạng thái có thể sử dụng."}</span>
+                <strong>{checkInText(pendingTicket.checkInBlockReason === "wrong-date" ? "wrongDateTitle" : "usedTitle")}</strong>
+                <span>{checkInText(pendingTicket.checkInBlockReason === "wrong-date" ? "wrongDateText" : "usedText")}</span>
               </div>
             )}
             <div className="staff-checkin-ticket-notes">
-              <strong>Lưu ý</strong>
+              <strong>{checkInText("notes")}</strong>
               <ul>
                 <li>
-                  Đối chiếu tên và số điện thoại với khách trước khi xác nhận.
+                  {checkInText("noteIdentity")}
                 </li>
                 <li>
-                  Chỉ check-in vé đúng ngày sự kiện, không xác nhận vé đã sử
-                  dụng.
+                  {checkInText("noteDate")}
                 </li>
                 <li>
-                  Nếu thông tin không khớp, giữ vé ở trạng thái chờ và báo
-                  trưởng ban/điều phối.
+                  {checkInText("noteMismatch")}
                 </li>
               </ul>
             </div>
@@ -312,7 +310,7 @@ const StaffCheckinTicket = () => {
             </div>
             <div className="staff-checkin-ticket-dialog__actions">
               <button type="button" onClick={() => setPendingTicket(null)}>
-                Hủy
+                {t("management.common.cancel")}
               </button>
               <button
                 className={isConfirmDisabled ? "is-disabled" : ""}
@@ -328,7 +326,7 @@ const StaffCheckinTicket = () => {
                 aria-disabled={isConfirmDisabled}
               >
                 <CheckCircle2 size={17} />{" "}
-                {isSubmitting ? "Đang xử lý..." : "Xác nhận check-in"}
+                {checkInText(isSubmitting ? "processing" : "confirmCheckIn")}
               </button>
             </div>
           </section>
@@ -347,18 +345,18 @@ const StaffCheckinTicket = () => {
             className="staff-checkin-camera-dialog"
             role="dialog"
             aria-modal="true"
-            aria-label="Quét mã QR"
+            aria-label={checkInText("scanQr")}
           >
             <header>
               <div>
-                <p>Đang quét</p>
-                <h2>Đưa mã QR vào khung</h2>
+                <p>{checkInText("scanning")}</p>
+                <h2>{checkInText("positionQr")}</h2>
               </div>
               <button
                 className="staff-checkin-camera-dialog__close"
                 type="button"
                 onClick={stopCamera}
-                aria-label="Đóng camera"
+                aria-label={checkInText("closeCamera")}
               >
                 <X size={20} />
               </button>
@@ -383,7 +381,7 @@ const StaffCheckinTicket = () => {
               />
             </div>
             <p className="staff-checkin-camera-hint">
-              Giữ mã QR cách camera khoảng 15–30 cm.
+              {checkInText("cameraHint")}
             </p>
           </section>
         </div>

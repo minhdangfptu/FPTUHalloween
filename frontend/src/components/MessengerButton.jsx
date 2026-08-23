@@ -17,16 +17,16 @@ export default function MessengerButton() {
           <div className="popup-header">
             <div className="header-info">
               {/* Bồ nhớ thay link ảnh logo của dự án vào đây nha */}
-              <img src={logo} alt="FPTUHalloween" className="page-avatar" />
+              <img src={logo} alt={t("components.eventBrand")} className="page-avatar" />
               <div className="page-details">
-                <h4>FPTUHalloween</h4>
+                <h4>{t("components.eventBrand")}</h4>
                 <p>{t("components.messengerStatus")}</p>
               </div>
             </div>
           </div>
 
           <div className="popup-body">
-            <div className="chat-bubble">
+            <div className="messenger-chat-bubble">
               {t("components.messengerGreeting")} <br />
               {t("components.messengerHelp")}
             </div>
@@ -52,6 +52,7 @@ export default function MessengerButton() {
           className="messenger-fab"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={t("components.openChat")}
+          aria-expanded={isOpen}
         >
           {isOpen ? (
             <X size={24} aria-hidden="true" />

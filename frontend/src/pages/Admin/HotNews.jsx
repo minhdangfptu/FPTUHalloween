@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -43,15 +44,12 @@ const readIsAdmin = () => {
   }
 };
 
-const formatDate = (date) =>
-  date
-    ? new Date(date).toLocaleString("vi-VN", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      })
-    : "Chưa cập nhật";
-
 const HotNews = () => {
+  const { t, i18n } = useTranslation();
+  const hotNewsText = (key, options) => t(`management.hotNews.${key}`, options);
+  const formatDate = (date) => date
+    ? new Date(date).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN", { dateStyle: "medium", timeStyle: "short" })
+    : t("management.common.notUpdated");
   const [hotNews, setHotNews] = useState([]);
   const [isAdmin] = useState(readIsAdmin);
   const [isLoading, setIsLoading] = useState(true);
@@ -138,7 +136,7 @@ const HotNews = () => {
     };
 
     if (!payload.content) {
-      setFormError("Nội dung thông báo không được để trống.");
+      setFormError(hotNewsText("contentRequired"));
       return;
     }
 
@@ -208,7 +206,7 @@ const HotNews = () => {
     setDeleteTarget(null);
 
     const previousItems = hotNews;
-    const loadingToastId = toast.loading("Đang xóa thông báo...");
+    const loadingToastId = toast.loading(hotNewsText("deleting"));
     setDeletingId(item._id);
     setHotNews((current) =>
       current.filter((currentItem) => currentItem._id !== item._id),
@@ -238,14 +236,14 @@ const HotNews = () => {
     ];
     setHotNews(nextItems);
     setIsReordering(true);
-    const loadingToastId = toast.loading("Đang cập nhật thứ tự...");
+    const loadingToastId = toast.loading(hotNewsText("reordering"));
 
     try {
       const result = await hotNewsAPI.reorder(
         nextItems.map((item) => item._id),
       );
       setHotNews(result.hotNews);
-      toast.success("Đã cập nhật thứ tự hiển thị", { id: loadingToastId });
+      toast.success(hotNewsText("reordered"), { id: loadingToastId });
     } catch (error) {
       setHotNews(previousItems);
       toast.error(translateError(error), { id: loadingToastId });
@@ -258,8 +256,8 @@ const HotNews = () => {
     return (
       <main className="hot-news-access">
         <CircleAlert size={22} />
-        <h1>Không có quyền truy cập</h1>
-        <p>Chỉ quản trị viên mới có thể quản lý thông báo.</p>
+        <h1>{hotNewsText("forbiddenTitle")}</h1>
+        <p>{hotNewsText("forbiddenText")}</p>
       </main>
     );
   }
@@ -271,13 +269,10 @@ const HotNews = () => {
         <header className="hot-news-header">
           <div className="hot-news-header__copy">
             <p className="hot-news-kicker">
-              <Megaphone size={16} /> Bảng tin sự kiện
+              <Megaphone size={16} /> {hotNewsText("kicker")}
             </p>
-            <h1>Thông báo, đúng lúc.</h1>
-            <p>
-              Soạn nội dung ngắn để đưa thông tin quan trọng lên đầu hành trình
-              của người tham dự.
-            </p>
+            <h1>{hotNewsText("title")}</h1>
+            <p>{hotNewsText("intro")}</p>
           </div>
           <div className="hot-news-header__actions">
             <button
@@ -286,14 +281,14 @@ const HotNews = () => {
               onClick={loadHotNews}
               disabled={isLoading}
             >
-              <RefreshCw size={16} /> Làm mới
+              <RefreshCw size={16} /> {t("management.common.refresh")}
             </button>
             <button
               className="hot-news-button hot-news-button--primary"
               type="button"
               onClick={openCreateDialog}
             >
-              <Plus size={17} /> Thêm thông báo
+              <Plus size={17} /> {hotNewsText("add")}
             </button>
           </div>
         </header>
@@ -304,11 +299,11 @@ const HotNews = () => {
         >
           <div className="hot-news-workbench__head">
             <div>
-              <p className="hot-news-workbench__label">Danh sách hiện tại</p>
-              <h2 id="hot-news-list-title">HotNews</h2>
+              <p className="hot-news-workbench__label">{hotNewsText("currentList")}</p>
+              <h2 id="hot-news-list-title">{hotNewsText("listTitle")}</h2>
             </div>
             <span className="hot-news-count" aria-live="polite">
-              {hotNews.length} thông báo
+              {hotNewsText("count", { count: hotNews.length })}
             </span>
           </div>
 
@@ -327,22 +322,20 @@ const HotNews = () => {
               <CircleAlert size={20} />
               <p>{loadError}</p>
               <button type="button" onClick={loadHotNews}>
-                Thử lại
+                {t("management.common.retry")}
               </button>
             </div>
           ) : hotNews.length === 0 ? (
             <div className="hot-news-empty">
               <Megaphone size={24} />
-              <h3>Chưa có thông báo nào.</h3>
-              <p>
-                Thêm thông báo đầu tiên để cập nhật nhanh cho người tham dự.
-              </p>
+              <h3>{hotNewsText("emptyTitle")}</h3>
+              <p>{hotNewsText("emptyText")}</p>
               <button
                 className="hot-news-button hot-news-button--primary"
                 type="button"
                 onClick={openCreateDialog}
               >
-                <Plus size={17} /> Thêm thông báo
+                <Plus size={17} /> {hotNewsText("add")}
               </button>
             </div>
           ) : (
@@ -358,7 +351,7 @@ const HotNews = () => {
                         className={`hot-news-status ${item.isActive ? "is-active" : "is-inactive"}`}
                       >
                         <Power size={13} />{" "}
-                        {item.isActive ? "Đang hiển thị" : "Đang tắt"}
+                        {hotNewsText(item.isActive ? "visible" : "hidden")}
                       </span>
                       <span>
                         <Clock3 size={13} />{" "}
@@ -373,7 +366,7 @@ const HotNews = () => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        <Link2 size={14} /> Mở liên kết
+                        <Link2 size={14} /> {hotNewsText("openLink")}
                       </a>
                     ) : null}
                   </div>
@@ -383,7 +376,7 @@ const HotNews = () => {
                       type="button"
                       onClick={() => openEditDialog(item)}
                     >
-                      <Pencil size={15} /> Sửa
+                      <Pencil size={15} /> {t("management.common.edit")}
                     </button>
                     <button
                       className={`hot-news-action ${item.isActive ? "is-active" : ""}`}
@@ -396,7 +389,7 @@ const HotNews = () => {
                       }
                       onClick={() => handleStatusChange(item)}
                     >
-                      <Power size={15} /> {item.isActive ? "Tắt" : "Bật"}
+                      <Power size={15} /> {hotNewsText(item.isActive ? "turnOff" : "turnOn")}
                     </button>
                     <button
                       className="hot-news-action hot-news-action--order"
@@ -408,8 +401,8 @@ const HotNews = () => {
                         index === 0
                       }
                       onClick={() => handleMove(index, -1)}
-                      aria-label={`Đưa thông báo ${index + 1} lên trước`}
-                      title="Đưa lên"
+                      aria-label={hotNewsText("moveUpAria", { index: index + 1 })}
+                      title={hotNewsText("moveUp")}
                     >
                       <ArrowUp size={15} />
                     </button>
@@ -423,8 +416,8 @@ const HotNews = () => {
                         index === hotNews.length - 1
                       }
                       onClick={() => handleMove(index, 1)}
-                      aria-label={`Đưa thông báo ${index + 1} xuống sau`}
-                      title="Đưa xuống"
+                      aria-label={hotNewsText("moveDownAria", { index: index + 1 })}
+                      title={hotNewsText("moveDown")}
                     >
                       <ArrowDown size={15} />
                     </button>
@@ -438,7 +431,7 @@ const HotNews = () => {
                       }
                       onClick={() => openDeleteModal(item)}
                     >
-                      <Trash2 size={15} /> {deletingId === item._id ? "Đang xóa…" : "Xóa"}
+                      <Trash2 size={15} /> {deletingId === item._id ? hotNewsText("deletingShort") : t("management.common.delete")}
                     </button>
                   </div>
                 </article>
@@ -458,39 +451,39 @@ const HotNews = () => {
         <form className="hot-news-form" onSubmit={handleSubmit}>
           <div className="hot-news-dialog__head">
             <div>
-              <p className="hot-news-workbench__label">Biên tập</p>
+              <p className="hot-news-workbench__label">{hotNewsText("editor")}</p>
               <h2 id="hot-news-dialog-title">
-                {editingId ? "Sửa thông báo" : "Thêm thông báo"}
+                {hotNewsText(editingId ? "edit" : "add")}
               </h2>
             </div>
             <button
               className="hot-news-dialog__close"
               type="button"
               onClick={closeDialog}
-              aria-label="Đóng cửa sổ"
+              aria-label={hotNewsText("closeDialog")}
             >
               <X size={18} />
             </button>
           </div>
           <label className="hot-news-field">
             <span>
-              Nội dung thông báo (Hạn chế dùng icon và hạn chế viết hoa)
+              {hotNewsText("contentLabel")}
             </span>
             <textarea
               name="content"
               value={form.content}
               onChange={handleFormChange}
-              placeholder="Ví dụ: Cổng check-in mở lúc 18:00 tại sảnh chính."
+              placeholder={hotNewsText("contentPlaceholder")}
               rows={5}
               maxLength={500}
               required
               aria-describedby="hot-news-content-help"
             />
-            <small id="hot-news-content-help">Tối đa 500 ký tự.</small>
+            <small id="hot-news-content-help">{hotNewsText("contentHelp")}</small>
           </label>
           <label className="hot-news-field">
             <span>
-              Liên kết <em>(không bắt buộc)</em>
+              {hotNewsText("link")} <em>{hotNewsText("optional")}</em>
             </span>
             <input
               name="link"
@@ -512,7 +505,7 @@ const HotNews = () => {
               onClick={closeDialog}
               disabled={isSubmitting}
             >
-              Hủy
+              {t("management.common.cancel")}
             </button>
             <button
               className="hot-news-button hot-news-button--primary"
@@ -520,10 +513,10 @@ const HotNews = () => {
               disabled={isSubmitting}
             >
               {isSubmitting
-                ? "Đang lưu…"
+                ? hotNewsText("saving")
                 : editingId
-                  ? "Lưu thay đổi"
-                  : "Thêm thông báo"}
+                  ? hotNewsText("saveChanges")
+                  : hotNewsText("add")}
             </button>
           </div>
         </form>
@@ -534,10 +527,10 @@ const HotNews = () => {
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         isManagement
-        title="Xóa thông báo?"
-        description="Thông báo này sẽ bị xóa khỏi bảng tin.<br />Hành động này không thể hoàn tác."
-        cancelLabel="Hủy"
-        confirmLabel="Xóa thông báo"
+        title={hotNewsText("deleteTitle")}
+        description={hotNewsText("deleteDescription")}
+        cancelLabel={t("management.common.cancel")}
+        confirmLabel={hotNewsText("deleteConfirm")}
       />
     </div>
   );

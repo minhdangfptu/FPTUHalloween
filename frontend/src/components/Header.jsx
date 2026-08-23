@@ -6,6 +6,7 @@ import hotNewsAPI from "../apis/hotNewsAPI";
 import { ScrollBasedVelocity } from "./ui/scroll-based-velocity";
 import useTheme from "../hooks/use-theme";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const renderTickerContent = (items) => (
   items.map((item, index) => (
@@ -32,6 +33,7 @@ function Header() {
   const { i18n, t } = useTranslation();
   const [activeHotNews, setActiveHotNews] = useState([]);
   const [hotNewsState, setHotNewsState] = useState("loading");
+  const [isLanguageChanging, setIsLanguageChanging] = useState(false);
   const language = i18n.language === "en" ? "en" : "vi";
 
   useEffect(() => {
@@ -60,6 +62,24 @@ function Header() {
       ? activeHotNews
       : [];
 
+  const handleLanguageChange = async () => {
+    if (isLanguageChanging) return;
+
+    setIsLanguageChanging(true);
+    const loadingToast = toast.loading(t("components.changingLanguage"));
+
+    await new Promise((resolve) => window.setTimeout(resolve, 2000));
+
+    try {
+      await i18n.changeLanguage(language === "vi" ? "en" : "vi");
+      toast.success(i18n.t("components.languageChanged"), { id: loadingToast });
+    } catch {
+      toast.error(i18n.t("components.languageChangeError"), { id: loadingToast });
+    } finally {
+      setIsLanguageChanging(false);
+    }
+  };
+
   return (
     <header className="fpt-header">
       <div className="fpt-header__container">
@@ -83,7 +103,9 @@ function Header() {
             <div className="fpt-header__social">
               <button
                 type="button"
-                onClick={() => i18n.changeLanguage(language === "vi" ? "en" : "vi")}
+                onClick={handleLanguageChange}
+                disabled={isLanguageChanging}
+                aria-busy={isLanguageChanging}
                 className="fpt-header__social-btn fpt-header__social-btn--language"
                 aria-label={language === "vi" ? t("header.switchToEnglish") : t("header.switchToVietnamese")}
                 title={language === "vi" ? t("header.switchToEnglish") : t("header.switchToVietnamese")}

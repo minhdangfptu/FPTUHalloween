@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { io } from "socket.io-client";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import ManageSidebar from "../../components/ManageSidebar";
 import { ChatMessagesSkeleton } from "../../components/LoadingSkeletons";
 import { staffChatAPI } from "../../apis/staffChatAPI";
@@ -17,8 +18,8 @@ import ListChat from "./ListChat";
 import "./ChatPage.scss";
 
 const idOf = (value) => value?._id || value?.id || value;
-const nameOf = (value) =>
-  value?.name || value?.fullName || value?.userName || "Cuộc trò chuyện";
+const nameOf = (value, fallback = "Conversation") =>
+  value?.name || value?.fullName || value?.userName || fallback;
 const initialsOf = (name) =>
   String(name || "?")
     .split(" ")
@@ -68,6 +69,9 @@ const renderMentionText = (content, members = []) => {
 };
 
 const ChatPage = ({ role = "staff" }) => {
+  const { t, i18n } = useTranslation();
+  const chatText = (key, options) => t(`chat.${key}`, options);
+  const getName = (value) => nameOf(value, chatText("conversation"));
   const [conversations, setConversations] = React.useState([]);
   const [groups, setGroups] = React.useState([]);
   const [presence, setPresence] = React.useState({});
@@ -81,7 +85,6 @@ const ChatPage = ({ role = "staff" }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
   const [showGroupModal, setShowGroupModal] = React.useState(false);
   const [editingGroup, setEditingGroup] = React.useState(null);
   const [showConversationInfo, setShowConversationInfo] = React.useState(false);
@@ -106,13 +109,6 @@ const ChatPage = ({ role = "staff" }) => {
   React.useEffect(() => {
     activeRef.current = active;
   }, [active]);
-  React.useEffect(() => {
-    const handleSidebarToggle = (event) =>
-      setIsSidebarCollapsed(Boolean(event.detail));
-    window.addEventListener("manage-sidebar-toggle", handleSidebarToggle);
-    return () =>
-      window.removeEventListener("manage-sidebar-toggle", handleSidebarToggle);
-  }, []);
   React.useEffect(() => {
     conversationsRef.current = conversations;
   }, [conversations]);
@@ -176,7 +172,7 @@ const ChatPage = ({ role = "staff" }) => {
   React.useEffect(() => {
     let mounted = true;
     const load = async () => {
-      const loading = toast.loading("Đang tải cuộc trò chuyện...");
+      const loading = toast.loading(t("chat.loadingConversations"));
       setIsLoading(true);
       try {
         let chatData;
@@ -206,10 +202,10 @@ const ChatPage = ({ role = "staff" }) => {
             Array.isArray(groupData) ? groupData : groupData?.groups || [],
           );
         }
-        toast.success("Đã tải danh sách tin nhắn", { id: loading });
+        toast.success(t("chat.conversationsLoaded"), { id: loading });
       } catch (error) {
         toast.error(
-          error?.response?.data?.message || "Không thể tải tin nhắn",
+          error?.response?.data?.message || t("chat.loadMessagesError"),
           { id: loading },
         );
       } finally {
@@ -220,7 +216,7 @@ const ChatPage = ({ role = "staff" }) => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [t]);
   React.useEffect(() => {
     const timer = setTimeout(async () => {
       if (query.trim().length < 2) {
@@ -233,13 +229,13 @@ const ChatPage = ({ role = "staff" }) => {
         const data = await staffChatAPI.searchUsers(query.trim());
         setResults(Array.isArray(data) ? data : data?.users || []);
       } catch {
-        toast.error("Không thể tìm kiếm staff");
+        toast.error(chatText("searchStaffError"));
       } finally {
         setIsSearching(false);
       }
     }, 350);
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, t]);
   React.useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (!token) return undefined;
@@ -261,7 +257,7 @@ const ChatPage = ({ role = "staff" }) => {
       );
     });
     socket.on("connect_error", () =>
-      toast.error("Không thể kết nối realtime chat"),
+      toast.error(t("chat.realtimeError")),
     );
     socket.on("message:new", (message) => {
       if (idOf(message.conversationId) === idOf(activeRef.current))
@@ -299,7 +295,7 @@ const ChatPage = ({ role = "staff" }) => {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [addMessage, meId]);
+  }, [addMessage, meId, t]);
   React.useEffect(() => {
     const socket = socketRef.current;
     if (!socket?.connected || !conversations.length) return;
@@ -317,24 +313,24 @@ const ChatPage = ({ role = "staff" }) => {
     setMentionQuery(null);
     setMentionStart(-1);
     const conversationId = idOf(conversation);
-    const loading = toast.loading("Đang tải tin nhắn...");
+    const loading = toast.loading(chatText("loadingMessages"));
     setIsLoadingMessages(true);
     try {
       const data = await staffChatAPI.getMessages(conversationId);
       setMessages(Array.isArray(data) ? data : data?.messages || []);
-      toast.success("Đã mở cuộc trò chuyện", { id: loading });
+      toast.success(chatText("conversationOpened"), { id: loading });
       socketRef.current?.emit(
         "conversation:join",
         { conversationId },
         (ack) => {
           if (!ack?.ok)
-            toast.error(ack?.message || "Không thể tham gia đoạn chat");
+            toast.error(ack?.message || chatText("joinError"));
         },
       );
       socketRef.current?.emit("conversation:read", { conversationId });
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Không thể mở cuộc trò chuyện",
+        error?.response?.data?.message || chatText("openError"),
         { id: loading },
       );
     } finally {
@@ -342,16 +338,16 @@ const ChatPage = ({ role = "staff" }) => {
     }
   };
   const selectUser = async (user) => {
-    const loading = toast.loading("Đang tạo cuộc trò chuyện...");
+    const loading = toast.loading(chatText("creatingConversation"));
     try {
       const conversation = await staffChatAPI.createDirectConversation(
         idOf(user),
       );
-      toast.success("Đã sẵn sàng nhắn tin", { id: loading });
+      toast.success(chatText("readyToMessage"), { id: loading });
       await selectConversation(conversation);
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Không thể tạo cuộc trò chuyện",
+        error?.response?.data?.message || chatText("createConversationError"),
         { id: loading },
       );
     }
@@ -360,9 +356,9 @@ const ChatPage = ({ role = "staff" }) => {
     event.preventDefault();
     if (editingGroup) return updateExistingGroup(event);
     if (!groupName.trim() || selectedMembers.length === 0)
-      return toast.error("Vui lòng nhập tên và chọn thành viên");
+      return toast.error(chatText("groupValidation"));
     setIsCreatingGroup(true);
-    const loading = toast.loading("Đang tạo nhóm...");
+    const loading = toast.loading(chatText("creatingGroup"));
     try {
       const group = await staffChatAPI.createGroup({
         name: groupName.trim(),
@@ -376,9 +372,9 @@ const ChatPage = ({ role = "staff" }) => {
       setGroupDescription("");
       setSelectedMembers([]);
       setMemberQuery("");
-      toast.success("Đã tạo nhóm", { id: loading });
+      toast.success(chatText("groupCreated"), { id: loading });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Không thể tạo nhóm", {
+      toast.error(error?.response?.data?.message || chatText("createGroupError"), {
         id: loading,
       });
     } finally {
@@ -392,7 +388,7 @@ const ChatPage = ({ role = "staff" }) => {
       const data = await staffChatAPI.searchUsers(value.trim());
       setResults(Array.isArray(data) ? data : data?.users || []);
     } catch {
-      toast.error("Không thể tìm thành viên");
+      toast.error(chatText("searchMembersError"));
     }
   };
   const openCreateGroup = () => {
@@ -413,7 +409,7 @@ const ChatPage = ({ role = "staff" }) => {
   };
   const updateExistingGroup = async (event) => {
     event.preventDefault();
-    if (!groupName.trim()) return toast.error("Vui lòng nhập tên nhóm");
+    if (!groupName.trim()) return toast.error(chatText("groupNameRequired"));
     const currentMemberIds = (editingGroup.members || []).map(idOf);
     const selectedMemberIds = selectedMembers.map(idOf);
     const memberIdsToAdd = selectedMemberIds.filter(
@@ -435,11 +431,11 @@ const ChatPage = ({ role = "staff" }) => {
         (memberId) => String(memberId) === String(creatorId),
       )
     ) {
-      return toast.error("Không thể xóa người tạo nhóm");
+      return toast.error(chatText("cannotRemoveCreator"));
     }
 
     setIsCreatingGroup(true);
-    const loading = toast.loading("Đang cập nhật nhóm...");
+    const loading = toast.loading(chatText("updatingGroup"));
     try {
       let group = await staffChatAPI.updateGroup(idOf(editingGroup), {
         name: groupName.trim(),
@@ -472,9 +468,9 @@ const ChatPage = ({ role = "staff" }) => {
       setGroupDescription("");
       setSelectedMembers([]);
       setMemberQuery("");
-      toast.success("Đã cập nhật nhóm", { id: loading });
+      toast.success(chatText("groupUpdated"), { id: loading });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Không thể cập nhật nhóm", {
+      toast.error(error?.response?.data?.message || chatText("updateGroupError"), {
         id: loading,
       });
     } finally {
@@ -483,7 +479,7 @@ const ChatPage = ({ role = "staff" }) => {
   };
   const leaveGroup = async () => {
     if (!active) return;
-    const loading = toast.loading("Đang rời nhóm...");
+    const loading = toast.loading(chatText("leavingGroup"));
     try {
       await staffChatAPI.removeGroupMember(idOf(active), meId);
       setConversations((items) =>
@@ -493,16 +489,16 @@ const ChatPage = ({ role = "staff" }) => {
       setActive(null);
       setShowConversationInfo(false);
       setConfirmLeaveGroup(false);
-      toast.success("Đã rời nhóm", { id: loading });
+      toast.success(chatText("groupLeft"), { id: loading });
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Không thể rời nhóm", {
+      toast.error(error?.response?.data?.message || chatText("leaveGroupError"), {
         id: loading,
       });
     }
   };
   const removeMember = async () => {
     if (!active || !memberToRemove || isRemovingMember) return;
-    const loading = toast.loading("Đang xóa thành viên...");
+    const loading = toast.loading(chatText("removingMember"));
     setIsRemovingMember(true);
     try {
       const group = await staffChatAPI.removeGroupMember(
@@ -518,10 +514,10 @@ const ChatPage = ({ role = "staff" }) => {
       setActive(group);
       activeRef.current = group;
       setMemberToRemove(null);
-      toast.success("Đã xóa thành viên khỏi nhóm", { id: loading });
+      toast.success(chatText("memberRemoved"), { id: loading });
     } catch (error) {
       toast.error(
-        error?.response?.data?.message || "Không thể xóa thành viên",
+        error?.response?.data?.message || chatText("removeMemberError"),
         { id: loading },
       );
     } finally {
@@ -533,7 +529,7 @@ const ChatPage = ({ role = "staff" }) => {
     const content = draft.trim();
     if (!content || !active) return;
     if (!socketRef.current?.connected)
-      return toast.error("Kết nối realtime chưa sẵn sàng");
+      return toast.error(chatText("realtimeNotReady"));
     socketRef.current.emit(
       "message:send",
       { conversationId: idOf(active), content },
@@ -543,7 +539,7 @@ const ChatPage = ({ role = "staff" }) => {
         } else {
           const sentMessage = response?.message || response?.data || response;
           if (!sentMessage?.content || !idOf(sentMessage)) {
-            toast.error("Không nhận được tin nhắn từ máy chủ");
+            toast.error(chatText("serverMessageError"));
             return;
           }
           addMessage(sentMessage);
@@ -626,7 +622,7 @@ const ChatPage = ({ role = "staff" }) => {
   const activeName = active
     ? active.type === "group"
       ? active.name || "Nhóm staff"
-      : nameOf(activeMember)
+      : getName(activeMember)
     : "Chọn một cuộc trò chuyện";
   const activeOnline = activeMember
     ? Boolean(presence[idOf(activeMember)])
@@ -635,7 +631,7 @@ const ChatPage = ({ role = "staff" }) => {
     <>
       <ManageSidebar role={role} activeItem="chat" />
       <main
-        className={`chat-page ${mobileOpen ? "chat-page--conversation-open" : ""} ${isSidebarCollapsed ? "chat-page--sidebar-collapsed" : ""}`}
+        className={`chat-page ${mobileOpen ? "chat-page--conversation-open" : ""}`}
       >
         <ListChat
           conversations={conversations}
@@ -660,7 +656,7 @@ const ChatPage = ({ role = "staff" }) => {
               className="chat-thread__back"
               type="button"
               onClick={() => setMobileOpen(false)}
-              aria-label="Quay lại danh sách"
+              aria-label={chatText("backToList")}
             >
               <ArrowLeft size={18} />
             </button>
@@ -678,13 +674,13 @@ const ChatPage = ({ role = "staff" }) => {
               <p>
                 {active
                   ? typing
-                    ? "Đang nhập..."
+                    ? chatText("typing")
                     : active.type === "group"
-                      ? "Nhóm tin nhắn sự kiện"
+                      ? chatText("eventGroup")
                       : activeOnline
-                        ? "Đang hoạt động"
-                        : "Ngoại tuyến"
-                  : "Kênh trao đổi nội bộ"}
+                        ? chatText("online")
+                        : chatText("offline")
+                  : chatText("internalChannel")}
               </p>
             </div>
             <button
@@ -692,7 +688,7 @@ const ChatPage = ({ role = "staff" }) => {
               type="button"
               disabled={!active}
               onClick={() => setShowConversationInfo(true)}
-              aria-label="Thông tin cuộc trò chuyện"
+              aria-label={chatText("conversationInfo")}
             >
               <Info size={19} />
             </button>
@@ -714,7 +710,7 @@ const ChatPage = ({ role = "staff" }) => {
                     >
                       {!mine && (
                         <span className="chat-bubble__avatar" aria-hidden="true">
-                          {initialsOf(nameOf(message.sender))}
+                          {initialsOf(getName(message.sender))}
                         </span>
                       )}
                       <div className="chat-bubble">
@@ -724,7 +720,7 @@ const ChatPage = ({ role = "staff" }) => {
                         <small>
                           {message.createdAt
                             ? new Date(message.createdAt).toLocaleTimeString(
-                                "vi-VN",
+                                i18n.language === "en" ? "en-US" : "vi-VN",
                                 { hour: "2-digit", minute: "2-digit" },
                               )
                             : ""}
@@ -737,8 +733,8 @@ const ChatPage = ({ role = "staff" }) => {
                 {!messages.length && (
                   <div className="chat-thread__empty">
                     <MessageIcon />
-                    <strong>Chưa có tin nhắn</strong>
-                    <span>Hãy bắt đầu trao đổi với {activeName}.</span>
+                    <strong>{chatText("emptyMessages")}</strong>
+                    <span>{chatText("startChatWith", { name: activeName })}</span>
                   </div>
                 )}
               </div>
@@ -754,10 +750,10 @@ const ChatPage = ({ role = "staff" }) => {
                         onClick={() => insertMention(member)}
                       >
                         <span className="chat-avatar">
-                          {initialsOf(nameOf(member))}
+                          {initialsOf(getName(member))}
                         </span>
                         <span>
-                          <strong>{nameOf(member)}</strong>
+                          <strong>{getName(member)}</strong>
                           <small>@{member.userName}</small>
                         </span>
                       </button>
@@ -768,10 +764,10 @@ const ChatPage = ({ role = "staff" }) => {
                   ref={composerRef}
                   value={draft}
                   onChange={handleDraft}
-                  placeholder="Viết tin nhắn..."
-                  aria-label="Nội dung tin nhắn"
+                  placeholder={chatText("messagePlaceholder")}
+                  aria-label={chatText("messageContent")}
                 />
-                <button type="submit" aria-label="Gửi tin nhắn">
+                <button type="submit" aria-label={chatText("sendMessage")}>
                   <Send size={18} />
                 </button>
               </form>
@@ -779,8 +775,8 @@ const ChatPage = ({ role = "staff" }) => {
           ) : (
             <div className="chat-thread__empty chat-thread__empty--welcome">
               <MessageIcon />
-              <strong>Chào mừng đến HolaWeen Chat</strong>
-              <span>Chọn thành viên hoặc nhóm ở bên trái để bắt đầu.</span>
+              <strong>{chatText("welcome")}</strong>
+              <span>{chatText("welcomeText")}</span>
             </div>
           )}
         </section>
@@ -797,13 +793,13 @@ const ChatPage = ({ role = "staff" }) => {
           <div className="chat-modal chat-info-modal">
             <div className="chat-modal__heading">
               <div>
-                <span className="chat-list__eyebrow">Thông tin đoạn chat</span>
+                <span className="chat-list__eyebrow">{chatText("chatInfo")}</span>
                 <h2>{active.type === "group" ? active.name : activeName}</h2>
               </div>
               <button
                 type="button"
                 onClick={() => setShowConversationInfo(false)}
-                aria-label="Đóng"
+                aria-label={t("management.common.close")}
               >
                 ×
               </button>
@@ -811,22 +807,22 @@ const ChatPage = ({ role = "staff" }) => {
             {active.type === "group" ? (
               <>
                 <p className="chat-info-modal__description">
-                  {active.description || "Nhóm trao đổi nội bộ"}
+                  {active.description || chatText("internalGroup")}
                 </p>
-                <strong>Thành viên ({active.members?.length || 0})</strong>
+                <strong>{chatText("members", { count: active.members?.length || 0 })}</strong>
                 <div className="chat-info-modal__member-list">
                   {active.members?.map((member) => (
                     <div className="chat-info-modal__member" key={idOf(member)}>
                       <span className="chat-avatar">
-                        {initialsOf(nameOf(member))}
+                        {initialsOf(getName(member))}
                       </span>
                       <span className="chat-info-modal__member-copy">
-                        <strong>{nameOf(member)}</strong>
-                        <small>@{member.userName || "staff"}</small>
+                        <strong>{getName(member)}</strong>
+                        <small>@{member.userName || chatText("staffUsername")}</small>
                         <small className="chat-info-modal__member-meta">
                           {[member.department, member.department_position]
                             .filter(Boolean)
-                            .join(" · ") || "Chưa cập nhật bộ phận / chức vụ"}
+                            .join(" · ") || chatText("departmentMissing")}
                         </small>
                       </span>
                       {role === "admin" &&
@@ -836,8 +832,8 @@ const ChatPage = ({ role = "staff" }) => {
                             className="chat-info-modal__remove"
                             type="button"
                             onClick={() => setMemberToRemove(member)}
-                            aria-label={`Xóa ${nameOf(member)} khỏi nhóm`}
-                            title="Xóa khỏi nhóm"
+                            aria-label={chatText("removeMemberAria", { name: getName(member) })}
+                            title={chatText("removeFromGroup")}
                           >
                             <Trash2 size={16} />
                           </button>
@@ -850,15 +846,15 @@ const ChatPage = ({ role = "staff" }) => {
                   type="button"
                   onClick={() => setConfirmLeaveGroup(true)}
                 >
-                  Rời nhóm
+                  {chatText("leaveGroup")}
                 </button>
               </>
             ) : (
               <div className="chat-info-modal__profile">
                 <div className="chat-avatar">{initialsOf(activeName)}</div>
                 <strong>{activeName}</strong>
-                <span>@{activeMember?.userName || "staff"}</span>
-                <small>{activeMember?.role || "Staff"}</small>
+                <span>@{activeMember?.userName || chatText("staffUsername")}</span>
+                <small>{activeMember?.role || t("components.staff")}</small>
               </div>
             )}
           </div>
@@ -873,8 +869,8 @@ const ChatPage = ({ role = "staff" }) => {
               width: "min(390px, calc(100vw - 32px))",
             }}
           >
-            <h2>Rời nhóm?</h2>
-            <p>Bạn sẽ không còn nhận được tin nhắn trong nhóm này.</p>
+            <h2>{chatText("leaveConfirmTitle")}</h2>
+            <p>{chatText("leaveConfirmText")}</p>
             <div
               style={{
                 display: "flex",
@@ -885,7 +881,7 @@ const ChatPage = ({ role = "staff" }) => {
               }}
             >
               <button type="button" onClick={() => setConfirmLeaveGroup(false)}>
-                Huỷ
+                {t("management.common.cancel")}
               </button>
               <button
                 type="button"
@@ -898,7 +894,7 @@ const ChatPage = ({ role = "staff" }) => {
                   background: "#ff4747",
                 }}
               >
-                Rời nhóm
+                {chatText("leaveGroup")}
               </button>
             </div>
           </div>
@@ -920,25 +916,22 @@ const ChatPage = ({ role = "staff" }) => {
             aria-modal="true"
             aria-labelledby="remove-member-title"
           >
-            <h2 id="remove-member-title">Xóa thành viên?</h2>
-            <p>
-              Bạn muốn xóa <strong>{nameOf(memberToRemove)}</strong> khỏi nhóm
-              này?
-            </p>
+            <h2 id="remove-member-title">{chatText("removeConfirmTitle")}</h2>
+            <p>{chatText("removeConfirmText", { name: getName(memberToRemove) })}</p>
             <div>
               <button
                 type="button"
                 disabled={isRemovingMember}
                 onClick={() => setMemberToRemove(null)}
               >
-                Hủy
+                {t("management.common.cancel")}
               </button>
               <button
                 type="button"
                 disabled={isRemovingMember}
                 onClick={removeMember}
               >
-                {isRemovingMember ? "Đang xóa..." : "Xóa thành viên"}
+                {chatText(isRemovingMember ? "removing" : "removeMember")}
               </button>
             </div>
           </div>
@@ -955,40 +948,40 @@ const ChatPage = ({ role = "staff" }) => {
           <form className="chat-modal" onSubmit={createGroup}>
             <div className="chat-modal__heading">
               <div>
-                <span className="chat-list__eyebrow">ADMIN TOOL</span>
-                <h2>{editingGroup ? "Chỉnh sửa nhóm chat" : "Tạo nhóm chat"}</h2>
+                <span className="chat-list__eyebrow">{chatText("adminTool")}</span>
+                <h2>{chatText(editingGroup ? "editGroup" : "createGroup")}</h2>
               </div>
               <button
                 type="button"
                 onClick={() => setShowGroupModal(false)}
-                aria-label="Đóng"
+                aria-label={t("management.common.close")}
               >
                 ×
               </button>
             </div>
             <label>
-              Tên nhóm
+              {chatText("groupName")}
               <input
                 value={groupName}
                 onChange={(event) => setGroupName(event.target.value)}
-                placeholder="Ví dụ: Core Truyền thông"
+                placeholder={chatText("groupNamePlaceholder")}
               />
             </label>
             <label>
-              Mô tả
+              {chatText("description")}
               <textarea
                 value={groupDescription}
                 onChange={(event) => setGroupDescription(event.target.value)}
-                placeholder="Mục đích của nhóm (không bắt buộc)"
+                placeholder={chatText("descriptionPlaceholder")}
                 rows="3"
               />
             </label>
             <label>
-              Thêm thành viên
+              {chatText("addMembers")}
               <input
                 value={memberQuery}
                 onChange={(event) => searchMembers(event.target.value)}
-                placeholder="Tìm theo username"
+                placeholder={chatText("searchUsername")}
               />
             </label>
             <div className="chat-modal__members">
@@ -1005,7 +998,7 @@ const ChatPage = ({ role = "staff" }) => {
                       setSelectedMembers((items) => [...items, user])
                     }
                   >
-                    {nameOf(user)} <small>@{user.userName}</small>
+                    {getName(user)} <small>@{user.userName}</small>
                   </button>
                 ))}
               {selectedMembers.map((user) => (
@@ -1019,20 +1012,20 @@ const ChatPage = ({ role = "staff" }) => {
                     )
                   }
                 >
-                  ✓ {nameOf(user)}
+                  ✓ {getName(user)}
                 </button>
               ))}
             </div>
             <div className="chat-modal__footer">
-              <span>{selectedMembers.length} thành viên được chọn</span>
+              <span>{chatText("selectedMembers", { count: selectedMembers.length })}</span>
               <button type="submit" disabled={isCreatingGroup}>
                 {isCreatingGroup
                   ? editingGroup
-                    ? "Đang cập nhật..."
-                    : "Đang tạo..."
+                    ? chatText("updating")
+                    : chatText("creating")
                   : editingGroup
-                    ? "Lưu thay đổi"
-                    : "Tạo nhóm"}
+                    ? chatText("saveChanges")
+                    : chatText("createGroupAction")}
               </button>
             </div>
           </form>

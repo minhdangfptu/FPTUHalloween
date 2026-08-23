@@ -132,7 +132,7 @@ const ListTicketTypePage = () => {
       <section className="ticket-list-hero">
         <div className="ticket-list-hero__copy">
           <p className="ticket-list-kicker">
-            <Ticket size={15} /> FPTU Halloween 2026
+            <Ticket size={15} /> {ticket("eventBrand2026")}
           </p>
           <h1>
             {t("ticketHero.titleBefore")}
@@ -145,7 +145,7 @@ const ListTicketTypePage = () => {
           </div>
         </div>
         <div className="ticket-list-hero__mark" aria-hidden="true">
-          <span style={{ color: "red" }}>HLW</span>
+          <span style={{ color: "red" }}>{ticket("brandShort")}</span>
           <span>2026</span>
         </div>
       </section>
@@ -222,7 +222,7 @@ const ListTicketTypePage = () => {
         >
           <div className="ticket-search-placeholder">
             <Ticket size={42} strokeWidth={1.4} aria-hidden="true" />
-            <strong>ENTRY PASS</strong>
+            <strong>{ticket("entryPass")}</strong>
             <span>2026</span>
           </div>
           <p>{ticket("imagePlaceholder")}</p>
@@ -299,7 +299,7 @@ const ListTicketTypePage = () => {
                   <span className="ticket-card__visual-number">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="ticket-card__visual-word">ENTRY</span>
+                  <span className="ticket-card__visual-word">{ticket("entry")}</span>
                 </div>
                 <div className="ticket-card__body">
                   <div className="ticket-card__title-row">

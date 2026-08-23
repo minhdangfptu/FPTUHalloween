@@ -27,44 +27,26 @@ const getCountdown = () => {
 const highlights = [
   {
     number: "01",
-    title: "Nhà ma",
-    description:
-      "Một tuyến trải nghiệm nhập vai, nơi mỗi cánh cửa mở ra một lớp chuyện mới.",
     tone: "dark",
   },
   {
     number: "02",
-    title: "Game zone",
-    description:
-      "Game sân khấu, big game, minigame và những thử thách kéo mọi người vào cuộc.",
     tone: "red",
   },
   {
     number: "03",
-    title: "Cosplay",
-    description:
-      "Hóa thân theo chủ đề năm và bước vào một đêm Halloween có dấu ấn riêng.",
     tone: "violet",
   },
   {
     number: "04",
-    title: "Photobooth",
-    description:
-      "Một góc lưu lại outfit, hội bạn và những khoảnh khắc không lặp lại.",
     tone: "paper",
   },
   {
     number: "05",
-    title: "Main stage",
-    description:
-      "Tiết mục, khách mời và nhịp sân khấu được xếp thành một đêm diễn liền mạch.",
     tone: "orange",
   },
   {
     number: "06",
-    title: "Lucky draw",
-    description:
-      "Quà tặng và những bất ngờ nhỏ khép lại hành trình của bạn tại lễ hội.",
     tone: "ink",
   },
 ];
@@ -72,31 +54,23 @@ const highlights = [
 const timeline = [
   {
     time: "01",
-    title: "Mở cổng",
-    description: "Đón khách, check-in và nhận thông tin hành trình.",
   },
   {
     time: "02",
-    title: "Khám phá",
-    description: "Nhà ma, game zone, photobooth và các hoạt động bên lề.",
   },
   {
     time: "03",
-    title: "Lên sân khấu",
-    description: "Tiết mục, khách mời và những màn tương tác theo chủ đề.",
   },
   {
     time: "04",
-    title: "Khép đêm",
-    description: "Lucky draw, quà tặng và lời hẹn cho mùa Halloween tiếp theo.",
   },
 ];
 
 const sponsors = [
-  { key: "pdp", label: "PDP", image: pdpLogo, alt: "Logo PDP" },
-  { key: "fptu", label: "FPTU", image: fptuLogo, alt: "Logo FPT University" },
-  { key: "fbgc", label: "FBGC", image: fbgcLogo, alt: "Logo FPTU Board Game Club" },
-  { key: "hlw26", label: "HLW26", image: wtmLogo, alt: "Logo FPTU Halloween 2026" },
+  { key: "pdp", nameKey: "sponsorNames.pdp", image: pdpLogo },
+  { key: "fptu", nameKey: "sponsorNames.fptu", image: fptuLogo },
+  { key: "fbgc", nameKey: "sponsorNames.fbgc", image: fbgcLogo },
+  { key: "hlw26", nameKey: "sponsorNames.hlw26", image: wtmLogo },
 ];
 
 const countdownItems = [
@@ -142,7 +116,7 @@ export default function HomePage() {
     <main className="home-page">
       <section
         className="home-hero"
-        aria-label="FPTU Halloween 2026 hero banner"
+        aria-label={home("heroAria")}
       >
         <img
           className="home-hero__image"
@@ -154,25 +128,25 @@ export default function HomePage() {
       <section className="home-hero-copy" aria-labelledby="home-hero-title">
         <div className="home-hero-copy__inner">
           <div className="home-hero__masthead">
-            <span>FPTU HALLOWEEN</span>
+            <span>{home("brand")}</span>
             <div
               className="home-lockup"
               aria-label={home("lockupAlt")}
             >
               <span className="home-lockup__mark home-lockup__mark--university">
-                FPT UNIVERSITY
+                {home("university")}
               </span>
               <span className="home-lockup__mark home-lockup__mark--pdp">
-                PDP
+                {home("pdp")}
               </span>
               <span className="home-lockup__mark home-lockup__mark--fbgc">
-                FBGC
+                {home("fbgc")}
               </span>
               <span className="home-lockup__mark home-lockup__mark--hlw">
-                HLW26
+                {home("hlw26")}
               </span>
             </div>
-            <span>2026 / FPTU HÀ NỘI</span>
+            <span>{home("eventMeta")}</span>
           </div>
           <p className="home-eyebrow">{home("eyebrow")}</p>
           <h1 id="home-hero-title">
@@ -208,7 +182,7 @@ export default function HomePage() {
         <div className="home-countdown">
           <div className="home-countdown__heading">
             <p id="home-countdown-title" className="home-countdown__label">
-              COUNTDOWN D-DAY
+              {home("countdownLabel")}
             </p>
             <span>
               {countdown.complete ? home("countdownDone") : home("countdownLeft")}
@@ -231,7 +205,7 @@ export default function HomePage() {
         aria-labelledby="home-intro-title"
       >
         <div className="home-section__head">
-          <p className="home-eyebrow">01 · CONCEPT NOTE</p>
+          <p className="home-eyebrow">{home("conceptLabel")}</p>
           <h2 id="home-intro-title">
             {home("concept")}
           </h2>
@@ -251,7 +225,7 @@ export default function HomePage() {
         aria-labelledby="home-highlights-title"
       >
         <div className="home-section__head home-section__head--line">
-          <p className="home-eyebrow">02 · THE NIGHT MAP</p>
+          <p className="home-eyebrow">{home("highlightsLabel")}</p>
           <h2 id="home-highlights-title">{home("highlights")}</h2>
           <p>{home("highlightsIntro")}</p>
         </div>
@@ -279,7 +253,7 @@ export default function HomePage() {
         aria-labelledby="home-timeline-title"
       >
         <div className="home-section__head">
-          <p className="home-eyebrow">03 · RUN OF SHOW</p>
+          <p className="home-eyebrow">{home("timelineLabel")}</p>
           <h2 id="home-timeline-title">{home("timeline")}</h2>
         </div>
         <div className="home-timeline__layout">
@@ -305,7 +279,7 @@ export default function HomePage() {
         aria-labelledby="home-map-title"
       >
         <div className="home-section__head">
-          <p className="home-eyebrow">04 · FIND YOUR WAY</p>
+          <p className="home-eyebrow">{home("mapLabel")}</p>
           <h2 id="home-map-title">{home("map")}</h2>
         </div>
         <div className="home-map">
@@ -319,10 +293,10 @@ export default function HomePage() {
             aria-hidden="true"
           />
           <span className="home-map__point home-map__point--main">
-            MAIN GATE
+            {home("mainGate")}
           </span>
           <span className="home-map__point home-map__point--house">{home("hauntedHouse")}</span>
-          <span className="home-map__point home-map__point--stage">STAGE</span>
+          <span className="home-map__point home-map__point--stage">{home("stage")}</span>
           <span className="home-map__caption">
             {home("mapCaption")}
           </span>
@@ -334,16 +308,16 @@ export default function HomePage() {
         aria-labelledby="home-sponsors-title"
       >
         <div className="home-section__head home-section__head--compact">
-          <p className="home-eyebrow">05 · WITH SUPPORT FROM</p>
+          <p className="home-eyebrow">{home("sponsorsLabel")}</p>
           <h2 id="home-sponsors-title">{home("sponsors")}</h2>
         </div>
         <div className="home-sponsors__row">
           {sponsors.map((sponsor) => (
-            <div className={`home-sponsor home-sponsor--${sponsor.key}`} key={sponsor.label}>
+            <div className={`home-sponsor home-sponsor--${sponsor.key}`} key={sponsor.key}>
               {sponsor.image ? (
-                <img src={sponsor.image} alt={home("sponsorsAlt", { name: sponsor.label })} />
+                <img src={sponsor.image} alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })} />
               ) : (
-                <span>{sponsor.label}</span>
+                <span>{home(sponsor.nameKey)}</span>
               )}
             </div>
           ))}

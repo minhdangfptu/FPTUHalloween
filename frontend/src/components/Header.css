@@ -109,6 +109,11 @@
   background-color: rgba(255, 0, 0, 0.05);
 }
 
+.fpt-header__social-btn:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
 .fpt-header__social-btn--facebook {
   color: #1877f2;
 }

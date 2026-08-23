@@ -2,15 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { CalendarDays, Clock3, Eye, Search, Ticket } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { SkeletonCards } from "../../components/LoadingSkeletons";
 import ManageSidebar from "../../components/ManageSidebar";
 import AddTicketType from "../../components/AddTicketType";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import { translateError } from "../../utils/translateResponse";
 import "./StaffTicketTypeList.scss";
-
-const formatPrice = (price) =>
-  `${new Intl.NumberFormat("vi-VN").format(price || 0)} VND`;
 
 const getStoredRole = () => {
   try {
@@ -22,6 +20,11 @@ const getStoredRole = () => {
 };
 
 const StaffTicketTypeList = () => {
+  const { t, i18n } = useTranslation();
+  const ticketTypeText = (key, options) => t(`management.ticketTypes.${key}`, options);
+  const formatPrice = (price) => new Intl.NumberFormat(i18n.language === "en" ? "en-US" : "vi-VN", {
+    style: "currency", currency: "VND",
+  }).format(price || 0);
   const navigate = useNavigate();
   const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin/") || getStoredRole() === "admin";
@@ -34,7 +37,7 @@ const StaffTicketTypeList = () => {
   const [error, setError] = useState(null);
 
   const loadTicketTypes = useCallback(async () => {
-    const loadingToast = toast.loading("Đang tải danh sách loại vé...");
+    const loadingToast = toast.loading(ticketTypeText("loadingList"));
     setIsLoading(true);
     setError(null);
     try {
@@ -74,12 +77,12 @@ const StaffTicketTypeList = () => {
       <main className="staff-ticket-list">
         <header className="staff-ticket-list__header">
           <div>
-            <p className="staff-ticket-list__kicker"><Ticket size={16} /> Quản lý vé</p>
-            <h1>Danh sách loại vé</h1>
-            <p>Thông tin các loại vé đang được phát hành cho sự kiện.</p>
+            <p className="staff-ticket-list__kicker"><Ticket size={16} /> {ticketTypeText("kicker")}</p>
+            <h1>{ticketTypeText("title")}</h1>
+            <p>{ticketTypeText("intro")}</p>
           </div>
           <div className="staff-ticket-list__header-actions">
-            {!isAdmin && <span className="staff-ticket-list__readonly">Chế độ chỉ xem</span>}
+            {!isAdmin && <span className="staff-ticket-list__readonly">{ticketTypeText("readOnly")}</span>}
             <AddTicketType onCreated={loadTicketTypes} />
           </div>
         </header>
@@ -87,20 +90,20 @@ const StaffTicketTypeList = () => {
         <div className="staff-ticket-list__toolbar">
           <label className="staff-ticket-list__search">
             <Search size={18} />
-            <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Tìm loại vé..." aria-label="Tìm loại vé" />
+            <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={ticketTypeText("searchPlaceholder")} aria-label={ticketTypeText("search")} />
           </label>
-          <div className="staff-ticket-list__filters" role="tablist" aria-label="Lọc theo ngày">
-            <button className={activeFilter === "all" ? "is-active" : ""} type="button" role="tab" aria-selected={activeFilter === "all"} onClick={() => setActiveFilter("all")}>Tất cả</button>
+          <div className="staff-ticket-list__filters" role="tablist" aria-label={ticketTypeText("filterDate")}>
+            <button className={activeFilter === "all" ? "is-active" : ""} type="button" role="tab" aria-selected={activeFilter === "all"} onClick={() => setActiveFilter("all")}>{t("management.common.all")}</button>
             {[27, 28, 29].map((day) => (
               <button className={activeFilter === String(day) ? "is-active" : ""} type="button" role="tab" aria-selected={activeFilter === String(day)} key={day} onClick={() => setActiveFilter(String(day))}>{day}/10</button>
             ))}
           </div>
-          <select className="staff-ticket-list__status-filter" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} aria-label="Lọc theo trạng thái">
-            <option value="all">Tất cả trạng thái</option>
-            <option value="active">Đang bán</option>
-            <option value="inactive">Không bán</option>
+          <select className="staff-ticket-list__status-filter" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} aria-label={ticketTypeText("filterStatus")}>
+            <option value="all">{ticketTypeText("allStatuses")}</option>
+            <option value="active">{ticketTypeText("selling")}</option>
+            <option value="inactive">{ticketTypeText("notSelling")}</option>
           </select>
-          <span>{search || activeFilter !== "all" || statusFilter !== "all" ? `${visibleTickets.length}/${totalTicketTypes}` : totalTicketTypes} loại vé</span>
+          <span>{ticketTypeText("count", { count: search || activeFilter !== "all" || statusFilter !== "all" ? `${visibleTickets.length}/${totalTicketTypes}` : totalTicketTypes })}</span>
         </div>
 
         {isLoading ? (
@@ -108,33 +111,33 @@ const StaffTicketTypeList = () => {
         ) : error ? (
           <div className="staff-ticket-list__state">
             <p>{error}</p>
-            <button type="button" onClick={loadTicketTypes}>Thử lại</button>
+            <button type="button" onClick={loadTicketTypes}>{t("management.common.retry")}</button>
           </div>
         ) : visibleTickets.length === 0 ? (
-          <div className="staff-ticket-list__state">Không tìm thấy loại vé phù hợp.</div>
+          <div className="staff-ticket-list__state">{ticketTypeText("empty")}</div>
         ) : (
-          <section className="staff-ticket-list__grid" aria-label="Danh sách loại vé">
+          <section className="staff-ticket-list__grid" aria-label={ticketTypeText("title")}>
             {visibleTickets.map((ticketType, index) => (
               <article className={`staff-ticket-card${Number(ticketType.availableQuantity) <= 0 ? " staff-ticket-card--sold-out" : ""}`} key={ticketType._id}>
                 <div className="staff-ticket-card__visual">
                   <div className="staff-ticket-card__visual-orbit" />
                   <span>{String(index + 1).padStart(2, "0")}</span>
-                  <small>ENTRY PASS</small>
+                  <small>{ticketTypeText("entryPass")}</small>
                 </div>
                 <div className="staff-ticket-card__body">
                   <div className="staff-ticket-card__title">
                     <h2>{ticketType.ticketTypeName}</h2>
                     <span className="staff-ticket-card__status">
-                      <i /> {Number(ticketType.availableQuantity) <= 0 ? "Đã bán hết" : ticketType.ticketTypeStatus === "active" ? "Đang mở bán" : "Tạm ngưng"}
+                      <i /> {ticketTypeText(Number(ticketType.availableQuantity) <= 0 ? "soldOut" : ticketType.ticketTypeStatus === "active" ? "onSale" : "paused")}
                     </span>
                   </div>
                   <div className="staff-ticket-card__meta">
-                    <span><CalendarDays size={16} /> Ngày {ticketType.ticketTypeDate}/10/2026</span>
-                    <span><Clock3 size={16} /> {ticketType.ticketTypeTime || "Đang cập nhật"}</span>
+                    <span><CalendarDays size={16} /> {ticketTypeText("eventDate", { day: ticketType.ticketTypeDate })}</span>
+                    <span><Clock3 size={16} /> {ticketType.ticketTypeTime || t("management.common.notUpdated")}</span>
                   </div>
                   <div className="staff-ticket-card__bottom">
                     <strong>{formatPrice(ticketType.ticketTypePrice)}</strong>
-                    <button type="button" onClick={() => navigate(`${isAdmin ? "/admin" : "/staff"}/ticket-types/${ticketType._id}`)}><Eye size={17} /> Xem chi tiết</button>
+                    <button type="button" onClick={() => navigate(`${isAdmin ? "/admin" : "/staff"}/ticket-types/${ticketType._id}`)}><Eye size={17} /> {ticketTypeText("viewDetails")}</button>
                   </div>
                 </div>
               </article>

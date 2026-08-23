@@ -14,8 +14,8 @@
   --chat-mention: #1769e0;
   --chat-mention-soft: #e7f0ff;
   --chat-font: "Geist", system-ui, sans-serif;
-  margin-left: 272px;
-  width: calc(100% - 272px);
+  margin-left: var(--manage-sidebar-width, 272px);
+  width: calc(100% - var(--manage-sidebar-width, 272px));
   box-sizing: border-box;
   min-height: calc(100vh - 74px);
   padding: 18px;
@@ -26,10 +26,6 @@
   color: var(--chat-text);
   font-family: var(--chat-font);
   transition: margin-left 0.25s ease, width 0.25s ease;
-}
-.chat-page--sidebar-collapsed {
-  margin-left: 72px;
-  width: calc(100% - 72px);
 }
 .chat-thread {
   min-width: 0;
@@ -287,8 +283,8 @@
 }
 @media (max-width: 820px) {
   .chat-page {
-    margin-left: 72px;
-    width: calc(100% - 72px);
+    margin-left: var(--manage-sidebar-width, 72px);
+    width: calc(100% - var(--manage-sidebar-width, 72px));
     display: block;
     padding: 10px;
   }
@@ -323,7 +319,7 @@
 }
 @media (max-width: 414px) {
   .chat-page {
-    margin-left: 72px;
+    margin-left: var(--manage-sidebar-width, 72px);
     padding: 8px;
   }
   .chat-list,

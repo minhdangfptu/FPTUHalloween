@@ -2,14 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, CalendarDays, Check, Clock3, Edit3, ShieldCheck, Ticket, Users } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { DetailSkeleton } from "../../components/LoadingSkeletons";
 import ManageSidebar from "../../components/ManageSidebar";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
 import "./StaffTicketTypeDetail.scss";
-
-const formatPrice = (price) =>
-  `${new Intl.NumberFormat("vi-VN").format(price || 0)} VND`;
 
 const getStoredRole = () => {
   try {
@@ -33,6 +31,12 @@ const toForm = (ticket) => ({
 });
 
 const StaffTicketTypeDetail = () => {
+  const { t, i18n } = useTranslation();
+  const ticketTypeText = (key, options) => t(`management.ticketTypes.${key}`, options);
+  const componentText = (key) => t(`components.${key}`);
+  const formatPrice = (price) => new Intl.NumberFormat(i18n.language === "en" ? "en-US" : "vi-VN", {
+    style: "currency", currency: "VND",
+  }).format(price || 0);
   const navigate = useNavigate();
   const { ticketTypeId } = useParams();
   const [ticketType, setTicketType] = useState(null);
@@ -44,7 +48,7 @@ const StaffTicketTypeDetail = () => {
   const isAdmin = getStoredRole() === "admin";
 
   const loadTicketType = useCallback(async () => {
-    const loadingToast = toast.loading("Đang tải chi tiết loại vé...");
+    const loadingToast = toast.loading(ticketTypeText("loadingDetail"));
     setIsLoading(true);
     setError(null);
     try {
@@ -67,7 +71,7 @@ const StaffTicketTypeDetail = () => {
 
   const handleUpdate = async (event) => {
     event.preventDefault();
-    const loadingToast = toast.loading("Đang cập nhật loại vé...");
+    const loadingToast = toast.loading(ticketTypeText("updating"));
     setIsSubmitting(true);
     try {
       const result = await ticketTypeAPI.update(ticketTypeId, {
@@ -90,7 +94,7 @@ const StaffTicketTypeDetail = () => {
 
   const handleStatusChange = async () => {
     const nextStatus = ticketType.ticketTypeStatus === "active" ? "inactive" : "active";
-    const loadingToast = toast.loading("Đang cập nhật trạng thái...");
+    const loadingToast = toast.loading(ticketTypeText("updatingStatus"));
     setIsSubmitting(true);
     try {
       const result = await ticketTypeAPI.changeStatus(ticketTypeId, nextStatus);
@@ -112,40 +116,40 @@ const StaffTicketTypeDetail = () => {
       <ManageSidebar role={isAdmin ? "admin" : "staff"} activeItem="ticket-types" />
       <main className="staff-ticket-detail">
         <button className="staff-ticket-detail__back" type="button" onClick={() => navigate(-1)}>
-          <ArrowLeft size={17} /> Quay lại danh sách vé
+          <ArrowLeft size={17} /> {ticketTypeText("back")}
         </button>
 
         {isLoading ? (
           <DetailSkeleton />
         ) : error || !ticketType ? (
           <div className="staff-ticket-detail__state">
-            <p>{error || "Không tìm thấy loại vé."}</p>
-            <button type="button" onClick={loadTicketType}>Thử lại</button>
+            <p>{error || ticketTypeText("notFound")}</p>
+            <button type="button" onClick={loadTicketType}>{t("management.common.retry")}</button>
           </div>
         ) : (
           <>
             <header>
-              <p className="staff-ticket-detail__kicker"><Ticket size={16} /> Chi tiết loại vé</p>
+              <p className="staff-ticket-detail__kicker"><Ticket size={16} /> {ticketTypeText("detailTitle")}</p>
               <h1>{ticketType.ticketTypeName}</h1>
               <div className="staff-ticket-detail__header-actions">
-                {!isAdmin ? <span className="staff-ticket-detail__readonly">Chế độ chỉ xem</span> : (
+                {!isAdmin ? <span className="staff-ticket-detail__readonly">{ticketTypeText("readOnly")}</span> : (
                   <>
-                    <button type="button" className="staff-ticket-detail__action staff-ticket-detail__action--secondary" onClick={() => setIsEditing((current) => !current)}><Edit3 size={16} /> {isEditing ? "Hủy sửa" : "Chỉnh sửa"}</button>
-                    <button type="button" className="staff-ticket-detail__action" onClick={handleStatusChange} disabled={isSubmitting}>{ticketType.ticketTypeStatus === "active" ? "Vô hiệu hóa" : "Mở bán"}</button>
+                    <button type="button" className="staff-ticket-detail__action staff-ticket-detail__action--secondary" onClick={() => setIsEditing((current) => !current)}><Edit3 size={16} /> {ticketTypeText(isEditing ? "cancelEdit" : "edit")}</button>
+                    <button type="button" className="staff-ticket-detail__action" onClick={handleStatusChange} disabled={isSubmitting}>{ticketTypeText(ticketType.ticketTypeStatus === "active" ? "disable" : "enableSale")}</button>
                   </>
                 )}
               </div>
             </header>
             {isEditing && (
               <form className="staff-ticket-detail__edit-form" onSubmit={handleUpdate}>
-                <label>Tên loại vé<input name="ticketTypeName" value={form.ticketTypeName} onChange={updateField} required /></label>
-                <label>Giá vé<input name="ticketTypePrice" type="number" min="0" value={form.ticketTypePrice} onChange={updateField} required /></label>
-                <label>Ngày<input name="ticketTypeDate" type="date" value={form.ticketTypeDate} onChange={updateField} required /></label>
-                <label>Giờ<input name="ticketTypeTime" type="time" value={form.ticketTypeTime} onChange={updateField} required /></label>
-                <label>Vé còn lại<input name="availableQuantity" type="number" min="0" value={form.availableQuantity} onChange={updateField} required /></label>
-                <label>Tổng số vé<input name="totalQuantity" type="number" min="0" value={form.totalQuantity} onChange={updateField} required /></label>
-                <label className="staff-ticket-detail__edit-form-full">Mô hình 3D<input name="ticketType3dModel" value={form.ticketType3dModel} onChange={updateField} required /></label>
-                <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Đang lưu..." : "Lưu thay đổi"}</button>
+                <label>{componentText("ticketName")}<input name="ticketTypeName" value={form.ticketTypeName} onChange={updateField} required /></label>
+                <label>{componentText("ticketPriceLabel")}<input name="ticketTypePrice" type="number" min="0" value={form.ticketTypePrice} onChange={updateField} required /></label>
+                <label>{componentText("date")}<input name="ticketTypeDate" type="date" value={form.ticketTypeDate} onChange={updateField} required /></label>
+                <label>{componentText("time")}<input name="ticketTypeTime" type="time" value={form.ticketTypeTime} onChange={updateField} required /></label>
+                <label>{componentText("availableQuantity")}<input name="availableQuantity" type="number" min="0" value={form.availableQuantity} onChange={updateField} required /></label>
+                <label>{componentText("totalQuantity")}<input name="totalQuantity" type="number" min="0" value={form.totalQuantity} onChange={updateField} required /></label>
+                <label className="staff-ticket-detail__edit-form-full">{componentText("model3d")}<input name="ticketType3dModel" value={form.ticketType3dModel} onChange={updateField} required /></label>
+                <button type="submit" disabled={isSubmitting}>{ticketTypeText(isSubmitting ? "saving" : "saveChanges")}</button>
               </form>
             )}
             <div className="staff-ticket-detail__layout">
@@ -154,32 +158,32 @@ const StaffTicketTypeDetail = () => {
                   <div className="staff-ticket-detail__visual-orbit" />
                   <div className="staff-ticket-detail__visual-ticket">
                     <span>{String(ticketType.ticketTypeDate).padStart(2, "0")}</span>
-                    <small>ENTRY PASS</small>
+                    <small>{ticketTypeText("entryPass")}</small>
                   </div>
-                  <em>{ticketType.ticketType3dModel || "Mô hình 3D vé Nhà Ma"}</em>
+                  <em>{ticketType.ticketType3dModel || ticketTypeText("modelFallback")}</em>
                 </div>
                 <div className="staff-ticket-detail__info">
-                    <div><CalendarDays size={19} /><span><small>Ngày tham gia</small><strong>Ngày {ticketType.ticketTypeDate} tháng 10, 2026</strong></span></div>
-                  <div><Clock3 size={19} /><span><small>Thời gian</small><strong>{ticketType.ticketTypeTime || "Đang cập nhật"}</strong></span></div>
-                  <div><Users size={19} /><span><small>Tổng số lượng</small><strong>{ticketType.totalQuantity || "Đang cập nhật"} vé</strong></span></div>
-                  <div><ShieldCheck size={19} /><span><small>Trạng thái</small><strong>{ticketType.ticketTypeStatus === "active" ? "Đang mở bán" : "Tạm ngưng"}</strong></span></div>
+                    <div><CalendarDays size={19} /><span><small>{ticketTypeText("participationDate")}</small><strong>{ticketTypeText("eventDateLong", { day: ticketType.ticketTypeDate })}</strong></span></div>
+                  <div><Clock3 size={19} /><span><small>{t("management.common.time")}</small><strong>{ticketType.ticketTypeTime || t("management.common.notUpdated")}</strong></span></div>
+                  <div><Users size={19} /><span><small>{ticketTypeText("totalQuantity")}</small><strong>{ticketTypeText("ticketCount", { count: ticketType.totalQuantity || t("management.common.notUpdated") })}</strong></span></div>
+                  <div><ShieldCheck size={19} /><span><small>{t("management.common.status")}</small><strong>{ticketTypeText(ticketType.ticketTypeStatus === "active" ? "onSale" : "paused")}</strong></span></div>
                 </div>
                 <div className="staff-ticket-detail__includes">
-                  <h2>Quyền lợi vé</h2>
+                  <h2>{ticketTypeText("benefits")}</h2>
                   <ul>
-                    <li><Check size={17} /> Quyền tham gia trải nghiệm Nhà Ma</li>
-                    <li><Check size={17} /> Vé điện tử cá nhân</li>
-                    <li><Check size={17} /> Sử dụng trong đúng ngày đã chọn</li>
+                    <li><Check size={17} /> {ticketTypeText("benefitExperience")}</li>
+                    <li><Check size={17} /> {ticketTypeText("benefitPersonal")}</li>
+                    <li><Check size={17} /> {ticketTypeText("benefitDate")}</li>
                   </ul>
                 </div>
               </section>
               <aside className="staff-ticket-detail__summary">
-                <span>Giá vé</span>
+                <span>{componentText("ticketPriceLabel")}</span>
                 <strong>{formatPrice(ticketType.ticketTypePrice)}</strong>
                 <hr />
-                <span>Vé còn lại</span>
+                <span>{ticketTypeText("remaining")}</span>
                 <b>{ticketType.availableQuantity}</b>
-                <small>Mã loại vé: {ticketType._id}</small>
+                <small>{ticketTypeText("typeCode", { code: ticketType._id })}</small>
               </aside>
             </div>
           </>

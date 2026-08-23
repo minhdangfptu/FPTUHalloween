@@ -132,6 +132,37 @@
   background-size: cover;
 }
 
+/* Keep authentication inputs consistent with the public contact form. */
+.fbgc-login-form input {
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 1px solid #e4ddd8 !important;
+  border-radius: 0.5rem;
+  color: #20242c !important;
+  background: #fff !important;
+  font: inherit;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.fbgc-login-form input::placeholder {
+  color: #687180;
+  opacity: 1;
+}
+
+.fbgc-password-field input {
+  padding-right: 42px;
+}
+
+.fbgc-login-form input:hover,
+.fbgc-login-form input:focus {
+  border-color: #d71920 !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(215 25 32 / 12%);
+}
+
 @media (max-width: 640px) {
   .fbgc-login-page {
     display: block;

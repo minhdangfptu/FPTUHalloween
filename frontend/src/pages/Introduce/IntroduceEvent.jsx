@@ -7,15 +7,11 @@ import avatar from "../../assets/wtm.png";
 import avatarriel from "../../assets/avatar.jpg";
 
 const page = {
-  name: "FPTU Halloween",
   username: "@fptuhalloween",
   verified: true,
-  category: "Event · College & University",
   likes: 18342,
   followers: 20105,
   rating: 4.9,
-  about:
-    "Lễ hội Halloween tại Đại học FPT là sự kiện thường niên bùng nổ – một đặc sản văn hóa sinh viên không thể bỏ qua.",
   website: "https://myfevent.fptu.vn/halloween-2025",
   email: "halloween@fptu.edu.vn",
   phone: "0901 234 567",
@@ -23,6 +19,7 @@ const page = {
   hours: "09:00 – 22:00",
 };
 
+// i18n-audit: localized-properties — album titles are rendered through the seasonTitle translation key.
 const albums = [
   { id: 1, title: "FPTU Halloween 2025", thumb: 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/557548210_783742787847613_9207811038853147592_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFUV1lHfyPBqIYOuYAUu1rBmyXqMbmOts-bJeoxuY62z6ItcD8p3wVOS3mNaMqtLoD86ucHQHtCoW3Mc2oGRwTn&_nc_ohc=eKZ5xU-KvCQQ7kNvwGAMcKi&_nc_oc=AdnBYBnyu61rJnWVfc5vTTPwAVSCPI7Vithm7_1u12Vd3YdKn0HqC9EppzQFMLRyRz0&_nc_zt=23&_nc_ht=scontent.fhan2-3.fna&_nc_gid=6Z4wcYkKCCiRYipmbYbqpg&oh=00_Aff9sSwzXD4YOI3rQIwGUPc90Uc0GlYoJa2kbo-lVZlRuA&oe=68F3E60D', count: 'Wishbound' },
   { id: 2, title: "FPTU Halloween 2024", thumb: 'https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/483800792_624546830433877_4457845983010099236_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=86c6b0&_nc_eui2=AeG2-KQ9lknJGqJ9ZWzMKPzle2oQLQ__Yft7ahAtD_9h--of5zYWQDSSPtl117aUcYqNtRnzEnP6RSsRFlhCzGZA&_nc_ohc=86VDQM0OA1cQ7kNvwHt_K67&_nc_oc=AdlXQQxNXpvdnI8YDpZ3ybYJbDr48-wScRO6_ewdfRvANajQsSGGSBOZ89MJhcRNSvA&_nc_zt=23&_nc_ht=scontent.fhan2-3.fna&_nc_gid=33zEXy1us3cClaQzBSRAbQ&oh=00_AffMHoaR-aZiYM2CEJTl0njv72VLfq6K3nF5er70hsgn5A&oe=68F3E304', count: 'U Linh Ký' },
@@ -31,9 +28,11 @@ const albums = [
   { id: 5, title: "FPTU Halloween 2020", thumb: 'https://scontent.fhan2-4.fna.fbcdn.net/v/t1.6435-9/122703558_211287113687074_6599718321829311704_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHYJanfAqo4i6Yct_8FLhUq6zOfo-_8h9DrM5-j7_yH0Jz30o2wGg7DLr2iQ5JO_CMG03IvIwh39FISRwEQT4x6&_nc_ohc=KLcf0dODldQQ7kNvwFC0zs2&_nc_oc=AdkuZcF-mJxc-J3MQ_WbTp6qxLZzmrQPzcFHP_4i6V4XQIC2t-HEYdkY_6ZoCQptF_g&_nc_zt=23&_nc_ht=scontent.fhan2-4.fna&_nc_gid=_HNWI0PVHzCoRzcJn0MQSQ&oh=00_AfcQHDg-xKIP_Onmei8EBEiJrW4LRuCSBueg5cnBUQBSPg&oe=6915927C', count: 'The Haunted Forest' },
 ];
 
+const albumYears = ["2025", "2024", "2023", "2022", "2020"];
+
 export default function IntroduceEvent() {
   const { t } = useTranslation();
-  const copy = (key) => t(`eventPages.introduceEvent.${key}`);
+  const copy = (key, options) => t(`eventPages.introduceEvent.${key}`, options);
   return (
     <div className="fp-page">
       {/* Cover */}
@@ -42,11 +41,11 @@ export default function IntroduceEvent() {
         <div className="fp-cover__overlay" />
         <div className="fp-cover__bar">
           <div className="fp-avatar">
-            <img src={avatarriel} alt="avatar" />
+            <img src={avatarriel} alt={copy("avatarAlt")} />
           </div>
           <div className="fp-head">
             <h1 className="fp-title">
-              {page.name}
+              {copy("name")}
               {page.verified && (
                   <span className="fp-badge" aria-label={copy("verified")}>
                   ✔
@@ -54,7 +53,7 @@ export default function IntroduceEvent() {
               )}
             </h1>
             <div className="fp-sub">
-              {page.username} · {page.category}
+              {page.username} · {copy("category")}
             </div>
             <div className="fp-stats">
               <span>{page.likes.toLocaleString()} {copy("likes")}</span>
@@ -87,8 +86,8 @@ export default function IntroduceEvent() {
         <section className="fp-col fp-col--left">
           <article id="about" className="fp-card">
             <h3 className="fp-card__title">{copy("about")}</h3>
-            <p className="fp-text">{page.about}</p>
-            <p className="fp-text">{copy("organized")} <strong style={{color: 'red'}}>FPTU Board Game Club</strong>.</p>
+            <p className="fp-text">{copy("aboutText")}</p>
+            <p className="fp-text">{copy("organized")} <strong style={{color: 'red'}}>{copy("organizerName")}</strong>.</p>
             <p className="fp-text">{copy("description")}</p>
             {/* <ul className="fp-meta">
               <li>
@@ -140,7 +139,7 @@ export default function IntroduceEvent() {
                 <a key={a.id} href="#" className="fp-album">
                   <img src={a.thumb} alt="" />
                   <div className="fp-album__meta">
-                    <div className="fp-album__title">{a.title}</div>
+                    <div className="fp-album__title">{copy("seasonTitle", { year: albumYears[a.id - 1] })}</div>
                     <div className="fp-album__count">{a.count}</div>
                   </div>
                 </a>

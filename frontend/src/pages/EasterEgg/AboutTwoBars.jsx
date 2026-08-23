@@ -1,5 +1,6 @@
 /* Hallmark · macrostructure: Rainbow directory · tone: botanical carnival · anchor hue: spectral rainbow */
 import "./AboutTwoBars.scss";
+import { useTranslation } from "react-i18next";
 import antonie from "../../assets/easteregg/antonie.jpg";
 import chutich from "../../assets/easteregg/chutich.jpg";
 import cuong from "../../assets/easteregg/cuong.jpg";
@@ -12,61 +13,55 @@ import triet from "../../assets/easteregg/triet.jpg";
 
 const featuredPeople = [
   {
+    key: "president",
     image: chutich,
-    eyebrow: "CHỦ TỊCH TỔNG TÀI",
-    name: "Ngài Chủ tịch vũ trụ",
-    note: "Bận ký giấy tờ, duyệt ngân sách và nhìn deadline bằng ánh mắt khiến deadline tự biến mất.",
     tone: "coral",
   },
 ];
 
 const teamPeople = [
   {
+    key: "rightHand",
     image: antonie,
-    name: "Cánh tay phải",
-    role: "Gọi chủ tịch dậy họp",
     tone: "yellow",
   },
-  { image: gh, name: "Phó tổng", role: "Duyệt meme cấp tốc", tone: "pink" },
+  { key: "deputy", image: gh, tone: "pink" },
   {
+    key: "assistant",
     image: hkc,
-    name: "Trợ lý riêng",
-    role: "Giữ bình tĩnh hộ sếp",
     tone: "blue",
   },
   {
+    key: "drama",
     image: kkb,
-    name: "Giám đốc drama",
-    role: "Tạo plot twist mỗi ngày",
     tone: "orange",
   },
   {
+    key: "wax",
     image: md,
-    name: "Trưởng ban keo nến",
-    role: "Dính là không gỡ",
     tone: "lilac",
   },
   {
+    key: "scare",
     image: td,
-    name: "CEO hù dọa",
-    role: "Chốt đơn cú giật mình",
     tone: "green",
   },
   {
+    key: "joy",
     image: triet,
-    name: "Giám đốc niềm vui",
-    role: "Cười trước, tính sau",
     tone: "aqua",
   },
   {
+    key: "heir",
     image: cuong,
-    name: "Tổng tài dự bị",
-    role: "Ký duyệt bằng ánh mắt",
     tone: "red",
   },
 ];
 
 const AboutTwoBars = () => {
+  const { t } = useTranslation();
+  const easter = (key) => t(`easterEgg.${key}`);
+
   return (
     <main className="easter-page">
       <div className="easter-page__confetti" aria-hidden="true">
@@ -80,12 +75,11 @@ const AboutTwoBars = () => {
       <section className="easter-directory" aria-labelledby="easter-title">
         <header className="easter-directory__masthead">
           <p className="easter-kicker">
-            FPTU HALLOWEEN / HỒ SƠ MẬT CẤP TỔNG TÀI
+            {easter("kicker")}
           </p>
-          <h1 id="easter-title">Biết Chủ tịch này nhé.</h1>
+          <h1 id="easter-title">{easter("title")}</h1>
           <p className="easter-directory__intro">
-            Hồ sơ mật của vị tổng tài đã biến deadline, ngân sách và một ít keo
-            nến thành đế chế Halloween lấp lánh.
+            {easter("intro")}
           </p>
         </header>
 
@@ -93,16 +87,16 @@ const AboutTwoBars = () => {
           {featuredPeople.map((person) => (
             <article
               className={`easter-featured-card easter-featured-card--${person.tone}`}
-              key={person.name}
+              key={person.key}
             >
               <div className="easter-avatar easter-avatar--featured">
                 <img src={person.image} alt="" />
                 <span aria-hidden="true">✦</span>
               </div>
               <div className="easter-featured-card__copy">
-                <p className="easter-label">{person.eyebrow}</p>
-                <h2>{person.name}</h2>
-                <p>{person.note}</p>
+                <p className="easter-label">{easter(`people.${person.key}.eyebrow`)}</p>
+                <h2>{easter(`people.${person.key}.name`)}</h2>
+                <p>{easter(`people.${person.key}.note`)}</p>
               </div>
               <span className="easter-featured-card__number" aria-hidden="true">
                 ✺
@@ -114,8 +108,8 @@ const AboutTwoBars = () => {
 
       <section className="easter-team" aria-labelledby="easter-team-title">
         <div className="easter-team__heading">
-          <p className="easter-kicker">BAN LÃNH ĐẠO KHÔNG AI BỔ NHIỆM</p>
-          <h2 id="easter-team-title">Đội ngũ dưới trướng Chủ tịch.</h2>
+          <p className="easter-kicker">{easter("teamKicker")}</p>
+          <h2 id="easter-team-title">{easter("teamTitle")}</h2>
           <span className="easter-team__orbit" aria-hidden="true" />
         </div>
 
@@ -124,13 +118,13 @@ const AboutTwoBars = () => {
             {[...teamPeople, ...teamPeople].map((person, index) => (
               <article
                 className={`easter-team-card easter-team-card--${person.tone}`}
-                key={`${person.name}-${index}`}
+                key={`${person.key}-${index}`}
               >
                 <div className="easter-avatar">
                   <img src={person.image} alt="" />
                 </div>
-                <p className="easter-team-card__name">{person.name}</p>
-                <p className="easter-team-card__role">{person.role}</p>
+                <p className="easter-team-card__name">{easter(`people.${person.key}.name`)}</p>
+                <p className="easter-team-card__role">{easter(`people.${person.key}.role`)}</p>
                 <span className="easter-team-card__index">
                   0{(index % teamPeople.length) + 1}
                 </span>
@@ -140,14 +134,11 @@ const AboutTwoBars = () => {
         </div>
       </section>
 
-      <section className="easter-closing" aria-label="Lời nhắn của Chủ tịch">
+      <section className="easter-closing" aria-label={easter("closingAria")}>
         <span className="easter-closing__flower" aria-hidden="true">
           ✿
         </span>
-        <p>
-          Đằng sau mỗi cú hù là một đế chế đang vận hành. Và Chủ tịch thì vẫn
-          chưa duyệt đơn xin nghỉ.
-        </p>
+        <p>{easter("closing")}</p>
         <span className="easter-closing__flower" aria-hidden="true">
           ✿
         </span>

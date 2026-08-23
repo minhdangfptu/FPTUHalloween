@@ -2,8 +2,9 @@
   position: relative;
   display: flex;
   min-height: 100vh;
-  padding-left: 272px;
+  padding-left: var(--manage-sidebar-width, 272px);
   background: #f7f8fa;
+  transition: padding-left 0.25s ease;
 }
 
 .staff-ticket-list {
@@ -348,7 +349,7 @@
 
 @media (max-width: 760px) {
   .staff-manage-layout {
-    padding-left: 72px;
+    padding-left: var(--manage-sidebar-width, 72px);
   }
   .staff-ticket-list {
     padding: 2rem 1rem;

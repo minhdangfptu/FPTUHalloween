@@ -35,7 +35,7 @@ const resources = {
         developedBy: 'Phát triển bởi MINH ĐẶNG hẹ hẹ',
       },
       profilePage: { loading: 'Đang tải dữ liệu...', updateLoading: 'Đang cập nhật thông tin...', user: 'Người dùng FPTU', notUpdated: 'Chưa cập nhật', expired: 'Đã hết thời gian', remaining: 'Còn lại {{time}}', pending: 'Chờ thanh toán', processing: 'Đang xử lý', paid: 'Đã thanh toán', cancelled: 'Đã huỷ', detailsTab: 'Chi tiết Người dùng', cancelEdit: 'Hủy chỉnh sửa', edit: 'Chỉnh sửa', delete: 'Xóa tài khoản', deleteUnavailable: 'Xóa tài khoản chưa được hỗ trợ.', disabled: 'Đã vô hiệu hóa', active: 'Đang hoạt động', phone: 'Số điện thoại', details: 'Thông tin chi tiết', verified: 'Đã xác minh', unverified: 'Chưa xác minh', save: 'Lưu thay đổi', orders: 'Đơn hàng của bạn', ordersIntro: 'Theo dõi và xem lại các đơn hàng đã đặt.', filterStatus: 'Lọc trạng thái', filterOrderStatus: 'Lọc trạng thái đơn hàng', all: 'Tất cả', fullName: 'Họ và tên', email: 'Email', joined: 'Ngày tham gia', department: 'Ban Sự kiện', position: 'Chức vụ', authMethod: 'Phương thức đăng nhập', verificationStatus: 'Trạng thái xác minh', orderCode: 'Mã đơn', orderDate: 'Ngày đặt', product: 'Sản phẩm', total: 'Tổng tiền', status: 'Trạng thái', action: 'Thao tác', noOrders: 'Bạn chưa có đơn hàng nào.', tickets: '{{count}} vé', continuePayment: 'Tiếp tục thanh toán', viewTicket: 'Xem vé', unknown: 'Chưa xác định', digitalTickets: 'Vé điện tử của bạn', noTickets: 'Bạn chưa có vé điện tử nào.', ticketFallback: 'Vé FPTU Halloween', ticketStatus: 'Trạng thái: {{status}}', viewQr: 'Xem mã QR', qrPending: 'Chưa phát hành mã QR', googleAccount: 'Tài khoản Google', emailAccount: 'Tài khoản Email' },
-      components: { ticketOrder: 'Đơn hàng #{{code}}', eTickets: 'Vé điện tử của bạn', close: 'Đóng', noIssuedTickets: 'Chưa có vé được phát hành cho đơn hàng này.', loadTicketsError: 'Không thể tải danh sách vé của đơn hàng.', ticketFallback: 'Vé FPTU Halloween', notUpdated: 'Chưa cập nhật', ticketPrice: 'Giá vé: {{price}}', ticketStatus: 'Trạng thái: {{status}}', unknown: 'Chưa xác định', viewQr: 'Xem mã QR', qrPending: 'Chưa phát hành mã QR', qrTitle: 'Mã QR vé điện tử', qrHelp: 'Đưa mã này cho BTC để kiểm tra vé.', logoutTitle: 'Đăng xuất', logoutDescription: 'Bạn đang rời đi<br />Bạn chắc chắn chứ?', logoutCancel: 'Không, đùa chút thôi', logoutConfirm: 'Đúng, đăng xuất cho tôi', creatingTicket: 'Đang tạo loại vé...', addTicket: 'Thêm loại vé', ticketType: 'Loại vé', ticketName: 'Tên loại vé', ticketPriceLabel: 'Giá vé', date: 'Ngày', time: 'Giờ', availableQuantity: 'Số vé còn lại', totalQuantity: 'Tổng số vé', model3d: 'Mô hình 3D', cancel: 'Hủy', saving: 'Đang lưu...', create: 'Tạo loại vé', system: 'Hệ thống quản lý sự kiện', developing: 'Tính năng đang được phát triển', adminProfile: 'Hồ sơ người dùng', active: 'Đang hoạt động', disabled: 'Đã vô hiệu hóa', unknownRole: 'Chưa xác định', fullName: 'Họ và tên', username: 'Tên người dùng', email: 'Email', phone: 'Số điện thoại', authMethod: 'Phương thức đăng nhập', department: 'Phòng ban', position: 'Vị trí', verified: 'Đã xác thực', unverified: 'Chưa xác thực', created: 'Ngày tạo', updated: 'Cập nhật', enableAccount: 'Gỡ vô hiệu hóa', disableAccount: 'Vô hiệu hóa tài khoản', expandSidebar: 'Mở rộng sidebar', collapseSidebar: 'Thu gọn sidebar', manageTitle: 'Hệ thống quản lý và điều hành sự kiện FPTU Halloween Online', unreadMessages: 'Thông báo tin nhắn chưa đọc', messengerStatus: 'Thường trả lời ngay lập tức', messengerGreeting: 'Xin chào!', messengerHelp: 'FPTUHalloween có thể giúp gì cho bạn hôm nay?', messengerChat: 'Chat trên Messenger', openChat: 'Mở khung chat', openFaq: 'Mở trang câu hỏi thường gặp', faq: 'Câu hỏi thường gặp', menu: 'Menu', management: 'QUẢN TRỊ', feedback: 'Đánh giá', account: 'Tài khoản', yourAccount: 'Tài khoản của bạn', yourTickets: 'Vé của bạn', changePassword: 'Đổi mật khẩu', logout: 'Đăng xuất', admin: 'Quản trị viên', staff: 'Thành viên', manageNavigation: 'Điều hướng quản trị', avatarAlt: 'Ảnh đại diện', greeting: 'Xin chào {{name}}', dashboard: 'Tổng quan', chat: 'HolaWeen Chat', checkIn: 'Checkin vé', users: 'Quản lý người dùng', ticketTypes: 'Danh sách loại vé', purchasedTickets: 'Danh sách vé đã mua', orders: 'Đơn hàng', contacts: 'Liên hệ', hotNews: 'Thêm thông báo', feedbackManagement: 'Phản hồi sự kiện', eventHome: 'Về trang sự kiện' },
+      components: { ticketOrder: 'Đơn hàng #{{code}}', eTickets: 'Vé điện tử của bạn', close: 'Đóng', noIssuedTickets: 'Chưa có vé được phát hành cho đơn hàng này.', loadTicketsError: 'Không thể tải danh sách vé của đơn hàng.', ticketFallback: 'Vé FPTU Halloween', notUpdated: 'Chưa cập nhật', ticketPrice: 'Giá vé: {{price}}', ticketStatus: 'Trạng thái: {{status}}', unknown: 'Chưa xác định', viewQr: 'Xem mã QR', qrPending: 'Chưa phát hành mã QR', qrTitle: 'Mã QR vé điện tử', qrHelp: 'Đưa mã này cho BTC để kiểm tra vé.', logoutTitle: 'Đăng xuất', logoutDescription: 'Bạn đang rời đi<br />Bạn chắc chắn chứ?', logoutCancel: 'Không, đùa chút thôi', logoutConfirm: 'Đúng, đăng xuất cho tôi', creatingTicket: 'Đang tạo loại vé...', addTicket: 'Thêm loại vé', ticketType: 'Loại vé', ticketName: 'Tên loại vé', ticketPriceLabel: 'Giá vé', date: 'Ngày', time: 'Giờ', availableQuantity: 'Số vé còn lại', totalQuantity: 'Tổng số vé', model3d: 'Mô hình 3D', cancel: 'Hủy', saving: 'Đang lưu...', create: 'Tạo loại vé', system: 'Hệ thống quản lý sự kiện', developing: 'Tính năng đang được phát triển', adminProfile: 'Hồ sơ người dùng', active: 'Đang hoạt động', disabled: 'Đã vô hiệu hóa', unknownRole: 'Chưa xác định', fullName: 'Họ và tên', username: 'Tên người dùng', email: 'Email', phone: 'Số điện thoại', authMethod: 'Phương thức đăng nhập', department: 'Phòng ban', position: 'Vị trí', verified: 'Đã xác thực', unverified: 'Chưa xác thực', created: 'Ngày tạo', updated: 'Cập nhật', enableAccount: 'Gỡ vô hiệu hóa', disableAccount: 'Vô hiệu hóa tài khoản', expandSidebar: 'Mở rộng sidebar', collapseSidebar: 'Thu gọn sidebar', manageTitle: 'Hệ thống quản lý và điều hành sự kiện FPTU Halloween Toàn cầu', unreadMessages: 'Thông báo tin nhắn chưa đọc', messengerStatus: 'Thường trả lời ngay lập tức', messengerGreeting: 'Xin chào!', messengerHelp: 'FPTUHalloween có thể giúp gì cho bạn hôm nay?', messengerChat: 'Chat trên Messenger', openChat: 'Mở khung chat', openFaq: 'Mở trang câu hỏi thường gặp', faq: 'Câu hỏi thường gặp', menu: 'Menu', management: 'QUẢN TRỊ', feedback: 'Đánh giá', account: 'Tài khoản', yourAccount: 'Tài khoản của bạn', yourTickets: 'Vé của bạn', changePassword: 'Đổi mật khẩu', logout: 'Đăng xuất', admin: 'Quản trị viên', staff: 'Thành viên', manageNavigation: 'Điều hướng quản trị', avatarAlt: 'Ảnh đại diện', greeting: 'Xin chào {{name}}', dashboard: 'Tổng quan', chat: 'HolaWeen Chat', checkIn: 'Checkin vé', users: 'Quản lý người dùng', ticketTypes: 'Danh sách loại vé', purchasedTickets: 'Danh sách vé đã mua', orders: 'Đơn hàng', contacts: 'Liên hệ', hotNews: 'Thêm thông báo', feedbackManagement: 'Phản hồi sự kiện', eventHome: 'Về trang sự kiện' },
       archive: { eyebrow: 'FPTU HALLOWEEN · LƯU TRỮ', heroTitle: 'Những mùa lễ hội,', heroTitleAfter: 'những thế giới khác.', heroLede: 'Một kho lưu trữ những concept đã tạo nên ký ức Halloween FPTU.', viewArchive: 'Xem kho lưu trữ', milestone: 'Dấu mốc', archiveTitle: 'Từ khu rừng ma', archiveTitleAfter: 'đến thị trấn điều ước.', archiveLede: 'Chọn một mùa Halloween để đọc lại concept và câu chuyện phía sau sự kiện.', readConcept: 'Đọc concept {{title}}', comingSoon: 'Sắp ra mắt', year: 'Năm', time: 'Thời gian', location: 'Địa điểm', scale: 'Quy mô', readConceptShort: 'Đọc concept', dialogKicker: 'Kho concept', concept: 'Concept', closeConcept: 'Đóng concept', eventInfo: 'Thông tin {{title}}', event6Status: 'Sắp diễn ra', event6Date: 'Đang cập nhật', event6Location: 'Đang cập nhật', event6Scale: 'Đang cập nhật', event1Status: 'Đã kết thúc', event1Location: 'Đường 30m Đại học FPT Hà Nội (Nhà ma trong tòa Delta)', event1Scale: 'Đang cập nhật', event2Status: 'Đã kết thúc', event2Location: 'Đang cập nhật', event2Scale: 'Đang cập nhật', event3Status: 'Đã kết thúc', event3Location: 'Đang cập nhật', event3Scale: 'Đang cập nhật', event4Status: 'Đã kết thúc', event4Location: 'Sân trước tòa nhà Delta', event4Scale: 'Đang cập nhật', event5Status: 'Đã kết thúc', event5Location: 'Đang cập nhật', event5Scale: 'Đang cập nhật' },
       feedbackPage: { requiredQuestion: 'Vui lòng trả lời câu hỏi {{order}}.', loading: 'Đang mở sổ phản hồi…', errorTitle: 'Cuốn sổ đang khép lại', retry: 'Thử lại', emptyTitle: 'Chưa có biểu mẫu đang mở', emptyText: 'Ban tổ chức sẽ mở sổ phản hồi trong khung thời gian phù hợp.', submittedLabel: 'ĐÃ GHI NHẬN', submittedTitle: 'Cảm ơn bạn đã để lại dấu vết.', submittedText: 'Phản hồi của bạn đã được gửi vào kho lưu trữ của mùa sự kiện.', review: 'Xem lại phản hồi', staffAudience: 'nội bộ vận hành', attendeeAudience: 'người tham dự', eyebrow: 'Phản hồi, đánh giá sự kiện', descriptionFallback: 'Một vài dòng thật lòng để mùa Halloween sau được tổ chức tốt hơn.', open: 'Đang mở', until: 'đến', chooseForm: 'Chọn biểu mẫu', openForm: 'Biểu mẫu đang mở', questions: '{{count}} câu hỏi', answered: '{{count}} đã trả lời', required: 'Bắt buộc', rating: '{{count}} sao', placeholder: 'Viết điều bạn thật sự nghĩ…', savedWithRole: 'Phản hồi sẽ được lưu cùng vai trò {{role}} của bạn.', sending: 'Đang gửi…', submit: 'Gửi phản hồi' },
       normal: {
@@ -111,7 +111,7 @@ const resources = {
         developedBy: 'Developed by MINH ĐẶNG hẹ hẹ',
       },
       profilePage: { loading: 'Loading data...', updateLoading: 'Updating information...', user: 'FPTU user', notUpdated: 'Not updated', expired: 'Time expired', remaining: '{{time}} remaining', pending: 'Awaiting payment', processing: 'Processing', paid: 'Paid', cancelled: 'Cancelled', detailsTab: 'User details', cancelEdit: 'Cancel editing', edit: 'Edit', delete: 'Delete account', deleteUnavailable: 'Account deletion is not supported yet.', disabled: 'Disabled', active: 'Active', phone: 'Phone number', details: 'Details', verified: 'Verified', unverified: 'Not verified', save: 'Save changes', orders: 'Your orders', ordersIntro: 'Track and review the orders you have placed.', filterStatus: 'Filter status', filterOrderStatus: 'Filter order status', all: 'All', fullName: 'Full name', email: 'Email', joined: 'Joined', department: 'Event department', position: 'Position', authMethod: 'Sign-in method', verificationStatus: 'Verification status', orderCode: 'Order code', orderDate: 'Order date', product: 'Product', total: 'Total', status: 'Status', action: 'Action', noOrders: 'You do not have any orders yet.', tickets: '{{count}} tickets', continuePayment: 'Continue payment', viewTicket: 'View tickets', unknown: 'Unknown', digitalTickets: 'Your e-tickets', noTickets: 'You do not have any e-tickets yet.', ticketFallback: 'FPTU Halloween ticket', ticketStatus: 'Status: {{status}}', viewQr: 'View QR code', qrPending: 'QR code not issued', googleAccount: 'Google account', emailAccount: 'Email account' },
-      components: { ticketOrder: 'Order #{{code}}', eTickets: 'Your e-tickets', close: 'Close', noIssuedTickets: 'No tickets have been issued for this order.', loadTicketsError: 'Unable to load tickets for this order.', ticketFallback: 'FPTU Halloween ticket', notUpdated: 'Not updated', ticketPrice: 'Ticket price: {{price}}', ticketStatus: 'Status: {{status}}', unknown: 'Unknown', viewQr: 'View QR code', qrPending: 'QR code not issued', qrTitle: 'E-ticket QR code', qrHelp: 'Show this code to the organizers to verify your ticket.', logoutTitle: 'Log out', logoutDescription: 'You are leaving<br />Are you sure?', logoutCancel: 'No, keep me here', logoutConfirm: 'Yes, log me out', creatingTicket: 'Creating ticket type...', addTicket: 'Add ticket type', ticketType: 'Ticket type', ticketName: 'Ticket type name', ticketPriceLabel: 'Ticket price', date: 'Date', time: 'Time', availableQuantity: 'Tickets remaining', totalQuantity: 'Total tickets', model3d: '3D model', cancel: 'Cancel', saving: 'Saving...', create: 'Create ticket type', system: 'Event management system', developing: 'This feature is under development', adminProfile: 'User profile', active: 'Active', disabled: 'Disabled', unknownRole: 'Unknown', fullName: 'Full name', username: 'Username', email: 'Email', phone: 'Phone number', authMethod: 'Sign-in method', department: 'Department', position: 'Position', verified: 'Verified', unverified: 'Not verified', created: 'Created', updated: 'Updated', enableAccount: 'Enable account', disableAccount: 'Disable account', expandSidebar: 'Expand sidebar', collapseSidebar: 'Collapse sidebar', manageTitle: 'FPTU Halloween Online event management and operations', unreadMessages: 'Unread message notifications', messengerStatus: 'Usually replies instantly', messengerGreeting: 'Hello!', messengerHelp: 'How can FPTUHalloween help you today?', messengerChat: 'Chat on Messenger', openChat: 'Open chat', openFaq: 'Open frequently asked questions', faq: 'Frequently asked questions', menu: 'Menu', management: 'MANAGEMENT', feedback: 'Feedback', account: 'Account', yourAccount: 'Your account', yourTickets: 'Your tickets', changePassword: 'Change password', logout: 'Log out', admin: 'Admin', staff: 'Staff', manageNavigation: 'Management navigation', avatarAlt: 'Profile picture', greeting: 'Hello {{name}}', dashboard: 'Dashboard', chat: 'HolaWeen Chat', checkIn: 'Ticket check-in', users: 'User management', ticketTypes: 'Ticket types', purchasedTickets: 'Purchased tickets', orders: 'Orders', contacts: 'Contacts', hotNews: 'Add announcement', feedbackManagement: 'Event feedback', eventHome: 'Event page' },
+      components: { ticketOrder: 'Order #{{code}}', eTickets: 'Your e-tickets', close: 'Close', noIssuedTickets: 'No tickets have been issued for this order.', loadTicketsError: 'Unable to load tickets for this order.', ticketFallback: 'FPTU Halloween ticket', notUpdated: 'Not updated', ticketPrice: 'Ticket price: {{price}}', ticketStatus: 'Status: {{status}}', unknown: 'Unknown', viewQr: 'View QR code', qrPending: 'QR code not issued', qrTitle: 'E-ticket QR code', qrHelp: 'Show this code to the organizers to verify your ticket.', logoutTitle: 'Log out', logoutDescription: 'You are leaving<br />Are you sure?', logoutCancel: 'No, keep me here', logoutConfirm: 'Yes, log me out', creatingTicket: 'Creating ticket type...', addTicket: 'Add ticket type', ticketType: 'Ticket type', ticketName: 'Ticket type name', ticketPriceLabel: 'Ticket price', date: 'Date', time: 'Time', availableQuantity: 'Tickets remaining', totalQuantity: 'Total tickets', model3d: '3D model', cancel: 'Cancel', saving: 'Saving...', create: 'Create ticket type', system: 'Event management system', developing: 'This feature is under development', adminProfile: 'User profile', active: 'Active', disabled: 'Disabled', unknownRole: 'Unknown', fullName: 'Full name', username: 'Username', email: 'Email', phone: 'Phone number', authMethod: 'Sign-in method', department: 'Department', position: 'Position', verified: 'Verified', unverified: 'Not verified', created: 'Created', updated: 'Updated', enableAccount: 'Enable account', disableAccount: 'Disable account', expandSidebar: 'Expand sidebar', collapseSidebar: 'Collapse sidebar', manageTitle: 'FPTU Halloween Worldwide event management and operations', unreadMessages: 'Unread message notifications', messengerStatus: 'Usually replies instantly', messengerGreeting: 'Hello!', messengerHelp: 'How can FPTUHalloween help you today?', messengerChat: 'Chat on Messenger', openChat: 'Open chat', openFaq: 'Open frequently asked questions', faq: 'Frequently asked questions', menu: 'Menu', management: 'MANAGEMENT', feedback: 'Feedback', account: 'Account', yourAccount: 'Your account', yourTickets: 'Your tickets', changePassword: 'Change password', logout: 'Log out', admin: 'Admin', staff: 'Staff', manageNavigation: 'Management navigation', avatarAlt: 'Profile picture', greeting: 'Hello {{name}}', dashboard: 'Dashboard', chat: 'HolaWeen Chat', checkIn: 'Ticket check-in', users: 'User management', ticketTypes: 'Ticket types', purchasedTickets: 'Purchased tickets', orders: 'Orders', contacts: 'Contacts', hotNews: 'Add announcement', feedbackManagement: 'Event feedback', eventHome: 'Event page' },
       archive: { eyebrow: 'FPTU HALLOWEEN · ARCHIVE', heroTitle: 'Festival seasons,', heroTitleAfter: 'different worlds.', heroLede: 'An archive of concepts that shaped FPTU Halloween memories.', viewArchive: 'View archive', milestone: 'Milestones', archiveTitle: 'From the haunted forest', archiveTitleAfter: 'to the wishbound town.', archiveLede: 'Choose a Halloween season to revisit its concept and story.', readConcept: 'Read the {{title}} concept', comingSoon: 'Coming soon', year: 'Year', time: 'Time', location: 'Location', scale: 'Scale', readConceptShort: 'Read concept', dialogKicker: 'Concept archive', concept: 'Concept', closeConcept: 'Close concept', eventInfo: 'Information about {{title}}', event6Status: 'Upcoming', event6Date: 'To be announced', event6Location: 'To be announced', event6Scale: 'To be announced', event6Description: 'The FPTU Halloween 2026 concept will be announced by the organizing team soon.', event1Status: 'Ended', event1Location: '30m Road, FPT University Hanoi (Haunted House in Delta Building)', event1Scale: 'To be announced', event1Description: 'Wishbound: a mysterious town where every wish has a price, ruled by a cruel Joker who turns hope into a curse. Visitors must risk their souls across four lands shaped by the suits of a deck of cards.', event2Status: 'Ended', event2Location: 'To be announced', event2Scale: 'To be announced', event2Description: 'U Linh Ky – Am Duong Tu Khi: an ancient book draws villagers into a world of Vietnamese spirits, where they must protect their memories and find a way back to the living world.', event3Status: 'Ended', event3Location: 'To be announced', event3Scale: 'To be announced', event3Description: 'Haunted Fest follows the rise of Lucifear and the stolen souls trapped between two worlds. Brave visitors must enter a ghost wedding and survive its terrifying games.', event4Status: 'Ended', event4Location: 'Delta Building front yard', event4Scale: 'To be announced', event4Description: 'Fear Corner turns the FPTU campus into a mysterious Halloween neighborhood where spirits return, visitors disguise themselves and explore eerie stalls, games and performances.', event5Status: 'Ended', event5Location: 'To be announced', event5Scale: 'To be announced', event5Description: 'The Haunted Forest was FPTU Halloween 2020, a first journey into a haunted forest filled with games, cosplay, a haunted house and frightening stories.' },
       feedbackPage: { requiredQuestion: 'Please answer question {{order}}.', loading: 'Opening the feedback book…', errorTitle: 'The book is closed', retry: 'Try again', emptyTitle: 'No feedback form is open', emptyText: 'The organizers will open a feedback form at the right time.', submittedLabel: 'RECEIVED', submittedTitle: 'Thank you for leaving your mark.', submittedText: 'Your feedback has been added to the event season archive.', review: 'Review feedback', staffAudience: 'operations team', attendeeAudience: 'attendee', eyebrow: 'Event feedback and rating', descriptionFallback: 'A few honest lines can help make the next Halloween better.', open: 'Open', until: 'until', chooseForm: 'Choose a form', openForm: 'Open form', questions: '{{count}} questions', answered: '{{count}} answered', required: 'Required', rating: '{{count}} stars', placeholder: 'Write what you really think…', savedWithRole: 'Your feedback will be saved with your role: {{role}}.', sending: 'Sending…', submit: 'Send feedback' },
       normal: {
@@ -144,6 +144,942 @@ const resources = {
     },
   },
 };
+
+Object.assign(resources.vi.translation.components, {
+  ddayVote: 'Bình chọn D-Day',
+  you: 'bạn',
+  eventBrand: 'Sự kiện FPTU',
+  changingLanguage: 'Đang chuyển đổi ngôn ngữ...',
+  languageChanged: 'Đã chuyển đổi ngôn ngữ sang Tiếng Việt',
+  languageChangeError: 'Không thể chuyển đổi ngôn ngữ.',
+});
+
+Object.assign(resources.en.translation.components, {
+  ddayVote: 'D-Day voting',
+  you: 'you',
+  eventBrand: 'FPTU Event',
+  changingLanguage: 'Changing language...',
+  languageChanged: 'Language changed to English',
+  languageChangeError: 'Unable to change language.',
+});
+
+resources.vi.translation.management = {
+  common: {
+    all: 'Tất cả',
+    refresh: 'Làm mới',
+    retry: 'Thử lại',
+    close: 'Đóng',
+    cancel: 'Hủy',
+    save: 'Lưu',
+    saving: 'Đang lưu...',
+    edit: 'Chỉnh sửa',
+    delete: 'Xóa',
+    search: 'Tìm kiếm',
+    status: 'Trạng thái',
+    actions: 'Thao tác',
+    date: 'Ngày',
+    time: 'Thời gian',
+    page: 'Trang',
+    previous: 'Trước',
+    next: 'Sau',
+    notUpdated: 'Chưa cập nhật',
+    unknown: 'Chưa xác định',
+    active: 'Đang hoạt động',
+    disabled: 'Đã vô hiệu hóa',
+    view: 'Xem',
+    details: 'Chi tiết',
+    loading: 'Đang tải...',
+  },
+  dashboard: {
+    adminLoading: 'Đang tải dữ liệu tổng quan...',
+    adminUpdated: 'Đã cập nhật bảng điều khiển.',
+    adminKicker: 'Bảng điều phối · 2025',
+    adminTitle: 'Toàn cảnh sự kiện',
+    adminIntro: 'Nhịp vận hành, doanh thu và sức khỏe vé trong một màn hình.',
+    staffLoading: 'Đang tải ca vận hành...',
+    staffUpdated: 'Đã cập nhật dữ liệu ca trực.',
+    staffKicker: 'Trực bàn Check-in · hôm nay',
+    staffTitle: 'Nhịp check-in',
+    staffIntro: 'Đừng ngừng cố gắng khi bạn vẫn còn điều có thể trao đi. Mỗi lượt check-in chính xác đều góp phần tạo nên một đêm sự kiện trọn vẹn.',
+    refresh: 'Làm mới',
+    totalRevenue: 'Doanh thu tổng',
+    paidOrders: '{{count}} đơn đã thanh toán',
+    issuedTickets: 'Tổng vé phát hành',
+    checkedTickets: '{{count}} vé đã check-in',
+    userAccounts: 'Tài khoản người dùng',
+    currentAccountData: 'Dữ liệu tài khoản hiện tại',
+    usageRate: 'Tỷ lệ sử dụng vé',
+    byCheckInStatus: 'Theo trạng thái check-in',
+    checkedIn: 'Đã check-in',
+    unused: 'Chưa sử dụng',
+    allShifts: 'Tất cả ca trực',
+    todayTickets: 'Vé trong ngày',
+    day: 'Ngày {{day}}',
+    latestScan: 'Lượt gần nhất',
+    serverTime: 'Theo thời gian máy chủ',
+    ticketDistribution: 'Phân bố vé theo từng mốc giờ',
+    checkInProgress: 'Tiến độ check-in mỗi ngày',
+    eventScheduleChart: 'CỘT · LỊCH SỰ KIỆN',
+    quickScanChart: 'CỘT · QUÉT NHANH',
+    atGateChart: 'TRÒN · TẠI CỔNG',
+    gateStatusChart: 'TRÒN · TÌNH HÌNH TẠI CỔNG',
+    filterDistribution: 'Lọc phân bố vé theo ngày',
+    filterProgress: 'Lọc tiến độ check-in theo ngày',
+    date: 'Ngày',
+    dayInOctober: 'Ngày {{day}}/10',
+  },
+};
+
+resources.en.translation.management = {
+  common: {
+    all: 'All',
+    refresh: 'Refresh',
+    retry: 'Try again',
+    close: 'Close',
+    cancel: 'Cancel',
+    save: 'Save',
+    saving: 'Saving...',
+    edit: 'Edit',
+    delete: 'Delete',
+    search: 'Search',
+    status: 'Status',
+    actions: 'Actions',
+    date: 'Date',
+    time: 'Time',
+    page: 'Page',
+    previous: 'Previous',
+    next: 'Next',
+    notUpdated: 'Not updated',
+    unknown: 'Unknown',
+    active: 'Active',
+    disabled: 'Disabled',
+    view: 'View',
+    details: 'Details',
+    loading: 'Loading...',
+  },
+  dashboard: {
+    adminLoading: 'Loading dashboard data...',
+    adminUpdated: 'Dashboard updated.',
+    adminKicker: 'Operations dashboard · 2025',
+    adminTitle: 'Event overview',
+    adminIntro: 'Operations, revenue and ticket health in one view.',
+    staffLoading: 'Loading shift data...',
+    staffUpdated: 'Shift data updated.',
+    staffKicker: 'Check-in desk · today',
+    staffTitle: 'Check-in pulse',
+    staffIntro: 'Keep going while you still have something to give. Every accurate check-in helps create a complete event night.',
+    refresh: 'Refresh',
+    totalRevenue: 'Total revenue',
+    paidOrders: '{{count}} paid orders',
+    issuedTickets: 'Tickets issued',
+    checkedTickets: '{{count}} checked-in tickets',
+    userAccounts: 'User accounts',
+    currentAccountData: 'Current account data',
+    usageRate: 'Ticket usage rate',
+    byCheckInStatus: 'Based on check-in status',
+    checkedIn: 'Checked in',
+    unused: 'Unused',
+    allShifts: 'All shifts',
+    todayTickets: "Today's tickets",
+    day: 'Day {{day}}',
+    latestScan: 'Latest scan',
+    serverTime: 'Server time',
+    ticketDistribution: 'Ticket distribution by time slot',
+    checkInProgress: 'Daily check-in progress',
+    eventScheduleChart: 'BAR · EVENT SCHEDULE',
+    quickScanChart: 'BAR · QUICK SCANS',
+    atGateChart: 'PIE · AT THE GATE',
+    gateStatusChart: 'PIE · GATE STATUS',
+    filterDistribution: 'Filter ticket distribution by date',
+    filterProgress: 'Filter check-in progress by date',
+    date: 'Date',
+    dayInOctober: 'October {{day}}',
+  },
+};
+
+resources.vi.translation.management.ticketTypes = {
+  loadingList: 'Đang tải danh sách loại vé...', loadingDetail: 'Đang tải chi tiết loại vé...',
+  updating: 'Đang cập nhật loại vé...', updatingStatus: 'Đang cập nhật trạng thái...', kicker: 'Quản lý vé',
+  title: 'Danh sách loại vé', intro: 'Thông tin các loại vé đang được phát hành cho sự kiện.', readOnly: 'Chế độ chỉ xem',
+  search: 'Tìm loại vé', searchPlaceholder: 'Tìm loại vé...', filterDate: 'Lọc theo ngày', filterStatus: 'Lọc theo trạng thái',
+  allStatuses: 'Tất cả trạng thái', selling: 'Đang bán', notSelling: 'Không bán', count: '{{count}} loại vé',
+  empty: 'Không tìm thấy loại vé phù hợp.', entryPass: 'VÉ VÀO CỬA', soldOut: 'Đã bán hết', onSale: 'Đang mở bán',
+  paused: 'Tạm ngưng', eventDate: 'Ngày {{day}}/10/2026', viewDetails: 'Xem chi tiết', back: 'Quay lại danh sách vé',
+  notFound: 'Không tìm thấy loại vé.', detailTitle: 'Chi tiết loại vé', cancelEdit: 'Hủy sửa', edit: 'Chỉnh sửa',
+  disable: 'Vô hiệu hóa', enableSale: 'Mở bán', saving: 'Đang lưu...', saveChanges: 'Lưu thay đổi',
+  modelFallback: 'Mô hình 3D vé Nhà Ma', participationDate: 'Ngày tham gia', eventDateLong: 'Ngày {{day}} tháng 10, 2026',
+  totalQuantity: 'Tổng số lượng', ticketCount: '{{count}} vé', benefits: 'Quyền lợi vé',
+  benefitExperience: 'Quyền tham gia trải nghiệm Nhà Ma', benefitPersonal: 'Vé điện tử cá nhân',
+  benefitDate: 'Sử dụng trong đúng ngày đã chọn', remaining: 'Vé còn lại', typeCode: 'Mã loại vé: {{code}}',
+};
+
+resources.en.translation.management.ticketTypes = {
+  loadingList: 'Loading ticket types...', loadingDetail: 'Loading ticket type details...',
+  updating: 'Updating ticket type...', updatingStatus: 'Updating status...', kicker: 'Ticket management',
+  title: 'Ticket types', intro: 'Information about ticket types currently issued for the event.', readOnly: 'Read-only mode',
+  search: 'Search ticket types', searchPlaceholder: 'Search ticket types...', filterDate: 'Filter by date', filterStatus: 'Filter by status',
+  allStatuses: 'All statuses', selling: 'On sale', notSelling: 'Not on sale', count: '{{count}} ticket types',
+  empty: 'No matching ticket types found.', entryPass: 'ENTRY PASS', soldOut: 'Sold out', onSale: 'On sale',
+  paused: 'Paused', eventDate: 'October {{day}}, 2026', viewDetails: 'View details', back: 'Back to ticket types',
+  notFound: 'Ticket type not found.', detailTitle: 'Ticket type details', cancelEdit: 'Cancel editing', edit: 'Edit',
+  disable: 'Disable', enableSale: 'Put on sale', saving: 'Saving...', saveChanges: 'Save changes',
+  modelFallback: 'Haunted House ticket 3D model', participationDate: 'Event date', eventDateLong: 'October {{day}}, 2026',
+  totalQuantity: 'Total quantity', ticketCount: '{{count}} tickets', benefits: 'Ticket benefits',
+  benefitExperience: 'Access to the Haunted House experience', benefitPersonal: 'Personal e-ticket',
+  benefitDate: 'Valid on the selected date', remaining: 'Tickets remaining', typeCode: 'Ticket type code: {{code}}',
+};
+
+resources.vi.translation.management.contacts = {
+  loading: 'Đang tải danh sách liên hệ...', updatingStatus: 'Đang cập nhật trạng thái...', kicker: 'Hòm thư liên hệ',
+  title: 'Danh sách liên hệ', intro: 'Các yêu cầu và phản hồi được gửi từ người tham dự sự kiện.', contacts: 'liên hệ',
+  search: 'Tìm theo tên', searchPlaceholder: 'Tìm theo tên...', filterStatus: 'Lọc theo trạng thái', pending: 'Chưa xử lý',
+  done: 'Đã xử lý', role: 'Vai trò', filterRole: 'Lọc theo vai trò', user: 'Người dùng', guest: 'Khách',
+  sortDate: 'Sắp xếp theo ngày', newest: 'Mới nhất', oldest: 'Cũ nhất', empty: 'Chưa có liên hệ nào.',
+  sender: 'Người gửi', subject: 'Chủ đề', content: 'Nội dung', markPending: 'Đánh dấu chưa xử lý', markDone: 'Đánh dấu đã xử lý',
+  pageOf: 'Trang {{page}} / {{total}}',
+};
+resources.en.translation.management.contacts = {
+  loading: 'Loading contacts...', updatingStatus: 'Updating status...', kicker: 'Contact inbox',
+  title: 'Contact requests', intro: 'Requests and feedback submitted by event attendees.', contacts: 'contacts',
+  search: 'Search by name', searchPlaceholder: 'Search by name...', filterStatus: 'Filter by status', pending: 'Pending',
+  done: 'Resolved', role: 'Role', filterRole: 'Filter by role', user: 'User', guest: 'Guest',
+  sortDate: 'Sort by date', newest: 'Newest', oldest: 'Oldest', empty: 'No contact requests yet.',
+  sender: 'Sender', subject: 'Subject', content: 'Message', markPending: 'Mark as pending', markDone: 'Mark as resolved',
+  pageOf: 'Page {{page}} / {{total}}',
+};
+
+resources.vi.translation.management.users = {
+  loading: 'Đang tải danh sách người dùng...', disabling: 'Đang vô hiệu hóa tài khoản...', enabling: 'Đang gỡ vô hiệu hóa tài khoản...',
+  kicker: 'Quản trị người dùng', title: 'Danh sách người dùng', intro: 'Theo dõi thông tin tài khoản và trạng thái hoạt động trong hệ thống.',
+  users: 'người dùng', search: 'Tìm theo tên', searchPlaceholder: 'Tìm theo tên...', role: 'Vai trò', filterRole: 'Lọc theo vai trò',
+  department: 'Phòng ban', filterDepartment: 'Lọc theo phòng ban', position: 'Vị trí', filterPosition: 'Lọc theo vị trí',
+  filterStatus: 'Lọc theo trạng thái', empty: 'Chưa có người dùng nào.', noMatch: 'Không tìm thấy người dùng phù hợp.',
+  user: 'Người dùng', contact: 'Liên hệ', verified: 'Đã xác thực', unverified: 'Chưa xác thực', pageOf: 'Trang {{page}} / {{total}}',
+};
+resources.en.translation.management.users = {
+  loading: 'Loading users...', disabling: 'Disabling account...', enabling: 'Enabling account...',
+  kicker: 'User administration', title: 'Users', intro: 'Monitor account information and activity status across the system.',
+  users: 'users', search: 'Search by name', searchPlaceholder: 'Search by name...', role: 'Role', filterRole: 'Filter by role',
+  department: 'Department', filterDepartment: 'Filter by department', position: 'Position', filterPosition: 'Filter by position',
+  filterStatus: 'Filter by status', empty: 'No users yet.', noMatch: 'No matching users found.',
+  user: 'User', contact: 'Contact', verified: 'Verified', unverified: 'Not verified', pageOf: 'Page {{page}} / {{total}}',
+};
+
+resources.vi.translation.management.orders = {
+  loadingList: 'Đang tải danh sách đơn hàng...', loadingDetail: 'Đang tải chi tiết đơn hàng...', detailLoaded: 'Đã tải chi tiết đơn hàng.',
+  guest: 'Khách vãng lai', day: 'Ngày {{day}}', hour: 'Giờ {{time}}', ticketType: 'Loại vé', kicker: 'Vận hành bán vé',
+  title: 'Đơn hàng', intro: 'Theo dõi thanh toán, người mua và trạng thái phát hành vé trong một luồng.', overview: 'Tổng quan đơn hàng',
+  pageOrders: 'Tổng đơn trên trang', pageValue: 'Giá trị trên trang', paid: 'Đã thanh toán', list: 'Danh sách đơn hàng', orders: 'đơn hàng',
+  search: 'Tìm đơn hàng', searchPlaceholder: 'Tìm mã đơn, người mua...', empty: 'Không tìm thấy đơn hàng phù hợp.',
+  orderCode: 'Mã đơn', buyer: 'Người mua', createdAt: 'Ngày tạo', ticketQuantity: 'Số vé', value: 'Giá trị', noEmail: 'Chưa có email',
+  pageOf: 'Trang {{page}} / {{total}}', detailTitle: 'Chi tiết đơn hàng', closeDetail: 'Đóng chi tiết', paymentTotal: 'Tổng thanh toán',
+  method: 'Phương thức', onlinePayment: 'Thanh toán trực tuyến', orderTickets: 'Vé trong đơn', viewQr: 'Xem mã QR',
+  qrPending: 'Chưa phát hành mã QR', noIssuedTickets: 'Chưa có vé được phát hành cho đơn này.',
+  statusPending: 'Chờ thanh toán', statusProcessing: 'Đang xử lý', statusPaid: 'Đã thanh toán', statusCancelled: 'Đã hủy', statusUnknown: 'Không rõ',
+  ticketStatusPending: 'Đang chờ sử dụng', ticketStatusChecked: 'Đã sử dụng', ticketStatusCancelled: 'Đã hủy',
+};
+resources.en.translation.management.orders = {
+  loadingList: 'Loading orders...', loadingDetail: 'Loading order details...', detailLoaded: 'Order details loaded.',
+  guest: 'Guest customer', day: 'Date {{day}}', hour: 'Time {{time}}', ticketType: 'Ticket type', kicker: 'Ticket sales operations',
+  title: 'Orders', intro: 'Track payments, buyers and ticket issuance status in one workflow.', overview: 'Order overview',
+  pageOrders: 'Orders on this page', pageValue: 'Value on this page', paid: 'Paid', list: 'Order list', orders: 'orders',
+  search: 'Search orders', searchPlaceholder: 'Search order code or buyer...', empty: 'No matching orders found.',
+  orderCode: 'Order code', buyer: 'Buyer', createdAt: 'Created', ticketQuantity: 'Tickets', value: 'Value', noEmail: 'No email',
+  pageOf: 'Page {{page}} / {{total}}', detailTitle: 'Order details', closeDetail: 'Close details', paymentTotal: 'Payment total',
+  method: 'Method', onlinePayment: 'Online payment', orderTickets: 'Tickets in order', viewQr: 'View QR code',
+  qrPending: 'QR code not issued', noIssuedTickets: 'No tickets have been issued for this order.',
+  statusPending: 'Awaiting payment', statusProcessing: 'Processing', statusPaid: 'Paid', statusCancelled: 'Cancelled', statusUnknown: 'Unknown',
+  ticketStatusPending: 'Pending use', ticketStatusChecked: 'Used', ticketStatusCancelled: 'Cancelled',
+};
+
+resources.vi.translation.management.userTickets = {
+  statusPending: 'Chờ sử dụng', statusChecked: 'Đã sử dụng', statusCancelled: 'Đã hủy', statusUnknown: 'Không rõ',
+  kicker: 'Phát hành & kiểm soát', title: 'Danh sách vé đã mua',
+  intro: 'Tra cứu người sở hữu, loại vé và trạng thái sử dụng trong một bảng điều hành.', ticketDate: 'Ngày vé',
+  filterDate: 'Lọc theo ngày vé', allDates: 'Tất cả ngày', dayInOctober: 'Ngày {{day}}/10',
+  searchPlaceholder: 'Tìm mã vé, người mua...', checkIn: 'Check-in vé', soldTotal: 'Tổng số vé đã bán',
+  checkedTotal: 'Tổng số vé đã check-in', remainingTotal: 'Số vé còn lại', userTickets: 'Vé người dùng',
+  recorded: '{{count}} vé được ghi nhận', filterStatus: 'Lọc trạng thái vé', allStatuses: 'Tất cả trạng thái',
+  owner: 'Người sở hữu', ticketType: 'Loại vé', issuedDate: 'Ngày phát hành', empty: 'Không tìm thấy vé phù hợp.',
+  noEmail: 'Chưa có email', unknownType: 'Loại vé không xác định', pageOf: 'Trang {{page}} / {{total}}',
+  previousPage: 'Trang trước', nextPage: 'Trang sau', closeDetail: 'Đóng chi tiết', detailTitle: 'Chi tiết vé',
+  eventTicket: 'Vé sự kiện', ticketCode: 'Mã vé', viewQr: 'Xem mã QR', order: 'Đơn hàng',
+  issuedAt: 'Phát hành lúc', checkedAt: 'Check-in lúc',
+};
+resources.en.translation.management.userTickets = {
+  statusPending: 'Pending use', statusChecked: 'Used', statusCancelled: 'Cancelled', statusUnknown: 'Unknown',
+  kicker: 'Issuance & control', title: 'Purchased tickets',
+  intro: 'Look up ticket owners, ticket types and usage status in one operations table.', ticketDate: 'Ticket date',
+  filterDate: 'Filter by ticket date', allDates: 'All dates', dayInOctober: 'October {{day}}',
+  searchPlaceholder: 'Search ticket code or buyer...', checkIn: 'Check in tickets', soldTotal: 'Tickets sold',
+  checkedTotal: 'Tickets checked in', remainingTotal: 'Tickets remaining', userTickets: 'User tickets',
+  recorded: '{{count}} tickets recorded', filterStatus: 'Filter ticket status', allStatuses: 'All statuses',
+  owner: 'Owner', ticketType: 'Ticket type', issuedDate: 'Issued date', empty: 'No matching tickets found.',
+  noEmail: 'No email', unknownType: 'Unknown ticket type', pageOf: 'Page {{page}} / {{total}}',
+  previousPage: 'Previous page', nextPage: 'Next page', closeDetail: 'Close details', detailTitle: 'Ticket details',
+  eventTicket: 'Event ticket', ticketCode: 'Ticket code', viewQr: 'View QR code', order: 'Order',
+  issuedAt: 'Issued at', checkedAt: 'Checked in at',
+};
+
+resources.vi.translation.management.checkIn = {
+  invalidQr: 'Vui lòng cung cấp mã QR hợp lệ.', attendee: 'Khách tham gia', ticketFallback: 'Vé FPTU Halloween',
+  success: 'Check-in vé thành công.', cameraPermission: 'Trình duyệt chưa được cấp quyền camera.',
+  cameraMissing: 'Không tìm thấy camera trên thiết bị.', cameraInUse: 'Camera đang được sử dụng ở ứng dụng hoặc tab khác.',
+  httpsRequired: 'Trang quét QR phải được mở bằng HTTPS.', cameraUnsupported: 'Trình duyệt không hỗ trợ quét QR bằng camera.',
+  kicker: 'Cổng vào sự kiện', title: 'Check-in vé', intro: 'Quét mã QR của khách và theo dõi các lượt check-in trong ca trực.',
+  openCamera: 'Mở camera check-in', scannedToday: 'Đã quét hôm nay', latestScan: 'Lượt quét gần nhất',
+  scannedTickets: 'Vé đã quét', scannedList: 'Danh sách lượt check-in trên tài khoản này',
+  manualPlaceholder: 'Nhập mã QR nếu không dùng camera...', confirm: 'Xác nhận', emptyTitle: 'Chưa có lượt check-in',
+  emptyText: 'Mở camera để bắt đầu quét vé của khách.', ticketInfo: 'Thông tin vé', qrRecognized: 'Đã nhận diện mã QR',
+  ticketCode: 'Mã vé', phone: 'Số điện thoại: {{phone}}', ticketType: 'Loại vé',
+  invalidTicketNote: 'Vé chỉ được check-in đúng ngày ghi trên vé và chưa từng được sử dụng.',
+  wrongDateTitle: 'Vé chưa đúng ngày sử dụng', usedTitle: 'Vé đã hết hiệu lực check-in',
+  wrongDateText: 'Vé này chỉ được check-in vào đúng ngày sự kiện ghi trên vé.',
+  usedText: 'Vé này đã được check-in hoặc không còn ở trạng thái có thể sử dụng.', notes: 'Lưu ý',
+  noteIdentity: 'Đối chiếu tên và số điện thoại với khách trước khi xác nhận.',
+  noteDate: 'Chỉ check-in vé đúng ngày sự kiện, không xác nhận vé đã sử dụng.',
+  noteMismatch: 'Nếu thông tin không khớp, giữ vé ở trạng thái chờ và báo trưởng ban hoặc điều phối.',
+  processing: 'Đang xử lý...', confirmCheckIn: 'Xác nhận check-in', scanQr: 'Quét mã QR', scanning: 'Đang quét',
+  positionQr: 'Đưa mã QR vào khung', closeCamera: 'Đóng camera', cameraHint: 'Giữ mã QR cách camera khoảng 15–30 cm.',
+};
+resources.en.translation.management.checkIn = {
+  invalidQr: 'Please provide a valid QR code.', attendee: 'Attendee', ticketFallback: 'FPTU Halloween ticket',
+  success: 'Ticket checked in successfully.', cameraPermission: 'Camera permission has not been granted.',
+  cameraMissing: 'No camera was found on this device.', cameraInUse: 'The camera is being used by another app or tab.',
+  httpsRequired: 'The QR scanner must be opened over HTTPS.', cameraUnsupported: 'This browser does not support camera QR scanning.',
+  kicker: 'Event entrance', title: 'Ticket check-in', intro: 'Scan attendee QR codes and monitor check-ins during your shift.',
+  openCamera: 'Open check-in camera', scannedToday: 'Scanned today', latestScan: 'Latest scan',
+  scannedTickets: 'Scanned tickets', scannedList: 'Check-ins recorded on this account',
+  manualPlaceholder: 'Enter a QR code when not using the camera...', confirm: 'Confirm', emptyTitle: 'No check-ins yet',
+  emptyText: 'Open the camera to start scanning attendee tickets.', ticketInfo: 'Ticket information', qrRecognized: 'QR code recognized',
+  ticketCode: 'Ticket code', phone: 'Phone: {{phone}}', ticketType: 'Ticket type',
+  invalidTicketNote: 'A ticket can be checked in only on its event date and only if it has not been used.',
+  wrongDateTitle: 'Ticket is not valid today', usedTitle: 'Ticket can no longer be checked in',
+  wrongDateText: 'This ticket can be checked in only on the event date printed on it.',
+  usedText: 'This ticket has already been checked in or is no longer usable.', notes: 'Notes',
+  noteIdentity: 'Verify the attendee name and phone number before confirming.',
+  noteDate: 'Check in tickets only on the correct event date and never confirm a used ticket.',
+  noteMismatch: 'If the information does not match, leave the ticket pending and notify the lead or coordinator.',
+  processing: 'Processing...', confirmCheckIn: 'Confirm check-in', scanQr: 'Scan QR code', scanning: 'Scanning',
+  positionQr: 'Place the QR code inside the frame', closeCamera: 'Close camera', cameraHint: 'Hold the QR code 15–30 cm from the camera.',
+};
+
+resources.vi.translation.chat = {
+  conversation: 'Cuộc trò chuyện', unnamed: 'Không tên', brand: 'HolaWeen Chat', messages: 'Tin nhắn',
+  loadingConversations: 'Đang tải cuộc trò chuyện...', conversationsLoaded: 'Đã tải danh sách tin nhắn',
+  loadMessagesError: 'Không thể tải tin nhắn', searchStaffError: 'Không thể tìm kiếm thành viên',
+  realtimeError: 'Không thể kết nối chat thời gian thực', loadingMessages: 'Đang tải tin nhắn...',
+  conversationOpened: 'Đã mở cuộc trò chuyện', joinError: 'Không thể tham gia đoạn chat', openError: 'Không thể mở cuộc trò chuyện',
+  creatingConversation: 'Đang tạo cuộc trò chuyện...', readyToMessage: 'Đã sẵn sàng nhắn tin',
+  createConversationError: 'Không thể tạo cuộc trò chuyện', groupValidation: 'Vui lòng nhập tên và chọn thành viên',
+  creatingGroup: 'Đang tạo nhóm...', groupCreated: 'Đã tạo nhóm', createGroupError: 'Không thể tạo nhóm',
+  searchMembersError: 'Không thể tìm thành viên', groupNameRequired: 'Vui lòng nhập tên nhóm',
+  cannotRemoveCreator: 'Không thể xóa người tạo nhóm', updatingGroup: 'Đang cập nhật nhóm...',
+  groupUpdated: 'Đã cập nhật nhóm', updateGroupError: 'Không thể cập nhật nhóm', leavingGroup: 'Đang rời nhóm...',
+  groupLeft: 'Đã rời nhóm', leaveGroupError: 'Không thể rời nhóm', removingMember: 'Đang xóa thành viên...',
+  memberRemoved: 'Đã xóa thành viên khỏi nhóm', removeMemberError: 'Không thể xóa thành viên',
+  realtimeNotReady: 'Kết nối thời gian thực chưa sẵn sàng', serverMessageError: 'Không nhận được tin nhắn từ máy chủ',
+  backToList: 'Quay lại danh sách', typing: 'Đang nhập...', eventGroup: 'Nhóm tin nhắn sự kiện',
+  online: 'Đang hoạt động', offline: 'Ngoại tuyến', internalChannel: 'Kênh trao đổi nội bộ',
+  conversationInfo: 'Thông tin cuộc trò chuyện', emptyMessages: 'Chưa có tin nhắn',
+  startChatWith: 'Hãy bắt đầu trao đổi với {{name}}.', messagePlaceholder: 'Viết tin nhắn...',
+  messageContent: 'Nội dung tin nhắn', sendMessage: 'Gửi tin nhắn', welcome: 'Chào mừng đến HolaWeen Chat',
+  welcomeText: 'Chọn thành viên hoặc nhóm ở bên trái để bắt đầu.', chatInfo: 'Thông tin đoạn chat',
+  internalGroup: 'Nhóm trao đổi nội bộ', members: 'Thành viên ({{count}})', departmentMissing: 'Chưa cập nhật bộ phận / chức vụ',
+  removeMemberAria: 'Xóa {{name}} khỏi nhóm', removeFromGroup: 'Xóa khỏi nhóm', leaveGroup: 'Rời nhóm',
+  staffUsername: 'staff', leaveConfirmTitle: 'Rời nhóm?', leaveConfirmText: 'Bạn sẽ không còn nhận được tin nhắn trong nhóm này.',
+  removeConfirmTitle: 'Xóa thành viên?', removeConfirmText: 'Bạn muốn xóa {{name}} khỏi nhóm này?',
+  removing: 'Đang xóa...', removeMember: 'Xóa thành viên', adminTool: 'CÔNG CỤ QUẢN TRỊ',
+  editGroup: 'Chỉnh sửa nhóm chat', createGroup: 'Tạo nhóm chat', groupName: 'Tên nhóm',
+  groupNamePlaceholder: 'Ví dụ: Core Truyền thông', description: 'Mô tả',
+  descriptionPlaceholder: 'Mục đích của nhóm (không bắt buộc)', addMembers: 'Thêm thành viên',
+  searchUsername: 'Tìm theo tên người dùng', selectedMembers: '{{count}} thành viên được chọn',
+  updating: 'Đang cập nhật...', creating: 'Đang tạo...', saveChanges: 'Lưu thay đổi', createGroupAction: 'Tạo nhóm',
+  conversationList: 'Danh sách cuộc trò chuyện', searchPlaceholder: 'Tìm thành viên hoặc nhóm', clearSearch: 'Xóa tìm kiếm',
+  searchResults: 'KẾT QUẢ TÌM KIẾM', searching: 'Đang tìm kiếm...', noResults: 'Không tìm thấy kết quả',
+  noResultsText: 'Thử tìm bằng tên nhóm hoặc tên người dùng khác.', startConversation: 'Bắt đầu cuộc trò chuyện',
+  unread: 'Chưa đọc', editAria: 'Chỉnh sửa {{name}}', emptyConversations: 'Chưa có cuộc trò chuyện',
+  emptyConversationsText: 'Tìm một thành viên để bắt đầu.',
+};
+resources.en.translation.chat = {
+  conversation: 'Conversation', unnamed: 'Unnamed', brand: 'HolaWeen Chat', messages: 'Messages',
+  loadingConversations: 'Loading conversations...', conversationsLoaded: 'Message list loaded',
+  loadMessagesError: 'Unable to load messages', searchStaffError: 'Unable to search for staff',
+  realtimeError: 'Unable to connect to realtime chat', loadingMessages: 'Loading messages...',
+  conversationOpened: 'Conversation opened', joinError: 'Unable to join the chat', openError: 'Unable to open the conversation',
+  creatingConversation: 'Creating conversation...', readyToMessage: 'Ready to message',
+  createConversationError: 'Unable to create conversation', groupValidation: 'Enter a name and select at least one member',
+  creatingGroup: 'Creating group...', groupCreated: 'Group created', createGroupError: 'Unable to create group',
+  searchMembersError: 'Unable to search for members', groupNameRequired: 'Please enter a group name',
+  cannotRemoveCreator: 'The group creator cannot be removed', updatingGroup: 'Updating group...',
+  groupUpdated: 'Group updated', updateGroupError: 'Unable to update group', leavingGroup: 'Leaving group...',
+  groupLeft: 'You left the group', leaveGroupError: 'Unable to leave group', removingMember: 'Removing member...',
+  memberRemoved: 'Member removed from group', removeMemberError: 'Unable to remove member',
+  realtimeNotReady: 'Realtime connection is not ready', serverMessageError: 'No message was received from the server',
+  backToList: 'Back to list', typing: 'Typing...', eventGroup: 'Event message group',
+  online: 'Online', offline: 'Offline', internalChannel: 'Internal communication channel',
+  conversationInfo: 'Conversation information', emptyMessages: 'No messages yet',
+  startChatWith: 'Start a conversation with {{name}}.', messagePlaceholder: 'Write a message...',
+  messageContent: 'Message content', sendMessage: 'Send message', welcome: 'Welcome to HolaWeen Chat',
+  welcomeText: 'Choose a member or group on the left to begin.', chatInfo: 'Chat information',
+  internalGroup: 'Internal discussion group', members: 'Members ({{count}})', departmentMissing: 'Department / position not updated',
+  removeMemberAria: 'Remove {{name}} from group', removeFromGroup: 'Remove from group', leaveGroup: 'Leave group',
+  staffUsername: 'staff', leaveConfirmTitle: 'Leave group?', leaveConfirmText: 'You will no longer receive messages from this group.',
+  removeConfirmTitle: 'Remove member?', removeConfirmText: 'Do you want to remove {{name}} from this group?',
+  removing: 'Removing...', removeMember: 'Remove member', adminTool: 'ADMIN TOOL',
+  editGroup: 'Edit chat group', createGroup: 'Create chat group', groupName: 'Group name',
+  groupNamePlaceholder: 'Example: Communications Core', description: 'Description',
+  descriptionPlaceholder: 'Purpose of the group (optional)', addMembers: 'Add members',
+  searchUsername: 'Search by username', selectedMembers: '{{count}} members selected',
+  updating: 'Updating...', creating: 'Creating...', saveChanges: 'Save changes', createGroupAction: 'Create group',
+  conversationList: 'Conversation list', searchPlaceholder: 'Search members or groups', clearSearch: 'Clear search',
+  searchResults: 'SEARCH RESULTS', searching: 'Searching...', noResults: 'No results found',
+  noResultsText: 'Try another group name or username.', startConversation: 'Start a conversation',
+  unread: 'Unread', editAria: 'Edit {{name}}', emptyConversations: 'No conversations yet',
+  emptyConversationsText: 'Find a staff member to begin.',
+};
+
+resources.vi.translation.management.hotNews = {
+  contentRequired: 'Nội dung thông báo không được để trống.', deleting: 'Đang xóa thông báo...',
+  reordering: 'Đang cập nhật thứ tự...', reordered: 'Đã cập nhật thứ tự hiển thị',
+  forbiddenTitle: 'Không có quyền truy cập', forbiddenText: 'Chỉ quản trị viên mới có thể quản lý thông báo.',
+  kicker: 'Bảng tin sự kiện', title: 'Thông báo, đúng lúc.',
+  intro: 'Soạn nội dung ngắn để đưa thông tin quan trọng lên đầu hành trình của người tham dự.',
+  add: 'Thêm thông báo', currentList: 'Danh sách hiện tại', listTitle: 'Thông báo nổi bật', count: '{{count}} thông báo',
+  emptyTitle: 'Chưa có thông báo nào.', emptyText: 'Thêm thông báo đầu tiên để cập nhật nhanh cho người tham dự.',
+  visible: 'Đang hiển thị', hidden: 'Đang tắt', openLink: 'Mở liên kết', turnOff: 'Tắt', turnOn: 'Bật',
+  moveUpAria: 'Đưa thông báo {{index}} lên trước', moveUp: 'Đưa lên', moveDownAria: 'Đưa thông báo {{index}} xuống sau',
+  moveDown: 'Đưa xuống', deletingShort: 'Đang xóa…', editor: 'Biên tập', edit: 'Sửa thông báo',
+  closeDialog: 'Đóng cửa sổ', contentLabel: 'Nội dung thông báo (hạn chế dùng biểu tượng và viết hoa)',
+  contentPlaceholder: 'Ví dụ: Cổng check-in mở lúc 18:00 tại sảnh chính.', contentHelp: 'Tối đa 500 ký tự.',
+  link: 'Liên kết', optional: '(không bắt buộc)', saving: 'Đang lưu…', saveChanges: 'Lưu thay đổi',
+  deleteTitle: 'Xóa thông báo?', deleteDescription: 'Thông báo này sẽ bị xóa khỏi bảng tin.<br />Hành động này không thể hoàn tác.',
+  deleteConfirm: 'Xóa thông báo',
+};
+resources.en.translation.management.hotNews = {
+  contentRequired: 'Announcement content is required.', deleting: 'Deleting announcement...',
+  reordering: 'Updating order...', reordered: 'Display order updated',
+  forbiddenTitle: 'Access denied', forbiddenText: 'Only administrators can manage announcements.',
+  kicker: 'Event bulletin', title: 'The right message, right on time.',
+  intro: 'Write concise updates that put important information at the start of each attendee journey.',
+  add: 'Add announcement', currentList: 'Current list', listTitle: 'Announcements', count: '{{count}} announcements',
+  emptyTitle: 'No announcements yet.', emptyText: 'Add the first announcement to quickly update attendees.',
+  visible: 'Visible', hidden: 'Hidden', openLink: 'Open link', turnOff: 'Turn off', turnOn: 'Turn on',
+  moveUpAria: 'Move announcement {{index}} up', moveUp: 'Move up', moveDownAria: 'Move announcement {{index}} down',
+  moveDown: 'Move down', deletingShort: 'Deleting…', editor: 'Editor', edit: 'Edit announcement',
+  closeDialog: 'Close dialog', contentLabel: 'Announcement content (limit icons and uppercase text)',
+  contentPlaceholder: 'Example: Check-in opens at 18:00 in the main lobby.', contentHelp: 'Maximum 500 characters.',
+  link: 'Link', optional: '(optional)', saving: 'Saving…', saveChanges: 'Save changes',
+  deleteTitle: 'Delete announcement?', deleteDescription: 'This announcement will be removed from the bulletin.<br />This action cannot be undone.',
+  deleteConfirm: 'Delete announcement',
+};
+
+resources.vi.translation.management.feedback = {
+  loading: 'Đang nạp kho phản hồi…', loadError: 'Không mở được kho phản hồi', kicker: 'BÀN PHẢN HỒI',
+  title: 'Kho tiếng nói của mùa lễ hội.', intro: 'Soạn biểu mẫu riêng cho người tham dự và đội ngũ vận hành, rồi đọc tín hiệu sau mỗi lượt gửi.',
+  createAttendeeFirst: 'Hãy tạo biểu mẫu dành cho người tham dự trước', hideFeedback: 'Ẩn nút đánh giá',
+  showFeedback: 'Hiện nút đánh giá', newForm: 'Biểu mẫu mới', forms: 'Biểu mẫu', staffAudience: 'Đội ngũ vận hành',
+  attendeeAudience: 'Người tham dự', staffShort: 'BTC', statusdraft: 'Bản nháp', statuspublished: 'Đang mở', statusclosed: 'Đã đóng',
+  responseCount: '{{count}} phản hồi', opens: 'Mở: {{time}}', closes: 'Đóng: {{time}}',
+  emptyForms: 'Chưa có biểu mẫu nào. Bắt đầu bằng một biểu mẫu mới.', editingLabel: 'ĐANG CHỈNH SỬA',
+  newDraftLabel: 'BẢN NHÁP MỚI', editFormTitle: 'Chỉnh lại biểu mẫu phản hồi', newFormTitle: 'Mở một biểu mẫu mới',
+  deleteForm: 'Xóa biểu mẫu', formTitle: 'Tiêu đề', titlePlaceholder: 'Ví dụ: Tổng kết nội bộ sau sự kiện', audience: 'Đối tượng',
+  description: 'Mô tả', descriptionPlaceholder: 'Nói ngắn gọn vì sao phản hồi này quan trọng…', openForm: 'Mở biểu mẫu',
+  closeForm: 'Đóng biểu mẫu', structure: 'CẤU TRÚC', formQuestions: 'Câu hỏi trong biểu mẫu',
+  questionNumber: 'Câu hỏi số {{number}}', deleteQuestion: 'Xóa câu hỏi', question: 'Câu hỏi',
+  questionPlaceholder: 'Nhập câu hỏi…', answerType: 'Kiểu trả lời', ratingType: 'Chấm điểm 1–5', textType: 'Đoạn văn',
+  singleType: 'Một lựa chọn', multipleType: 'Nhiều lựa chọn', required: 'Bắt buộc trả lời', answerOptions: 'Các phương án trả lời',
+  onePerLine: '(mỗi phương án viết trên một dòng)', optionsPlaceholder: 'Ví dụ:\nRất hài lòng\nBình thường\nCần cải thiện',
+  addAfterQuestion: 'Thêm câu hỏi sau câu {{number}}', timeNotSet: 'Chưa đặt thời gian mở biểu mẫu', saving: 'Đang lưu…',
+  saveForm: 'Lưu biểu mẫu', afterSubmit: 'SAU KHI GỬI', insightsTitle: 'Những gì đang được nói.', responses: 'lượt phản hồi',
+  averageScore: 'ĐIỂM TRUNG BÌNH', choiceDistribution: 'PHÂN BỐ LỰA CHỌN', anonymous: 'Ẩn danh',
+  responseList: 'DANH SÁCH PHẢN HỒI', submissions: '{{count}} lượt gửi', closeResponses: 'Đóng danh sách phản hồi',
+  loadingResponses: 'Đang tải phản hồi…', emptyResponses: 'Chưa có phản hồi nào cho biểu mẫu này.', sender: 'Người gửi {{number}}',
+  editForm: 'Chỉnh sửa biểu mẫu',
+};
+resources.en.translation.management.feedback = {
+  loading: 'Loading feedback archive…', loadError: 'Unable to open the feedback archive', kicker: 'FEEDBACK DESK',
+  title: 'The voice of the festival.', intro: 'Create separate forms for attendees and the operations team, then read the signals after every submission.',
+  createAttendeeFirst: 'Create an attendee feedback form first', hideFeedback: 'Hide feedback button',
+  showFeedback: 'Show feedback button', newForm: 'New form', forms: 'Forms', staffAudience: 'Operations team',
+  attendeeAudience: 'Attendees', staffShort: 'Organizers', statusdraft: 'Draft', statuspublished: 'Open', statusclosed: 'Closed',
+  responseCount: '{{count}} responses', opens: 'Opens: {{time}}', closes: 'Closes: {{time}}',
+  emptyForms: 'No forms yet. Start with a new form.', editingLabel: 'EDITING',
+  newDraftLabel: 'NEW DRAFT', editFormTitle: 'Edit feedback form', newFormTitle: 'Open a new form',
+  deleteForm: 'Delete form', formTitle: 'Title', titlePlaceholder: 'Example: Post-event staff debrief', audience: 'Audience',
+  description: 'Description', descriptionPlaceholder: 'Briefly explain why this feedback matters…', openForm: 'Open form',
+  closeForm: 'Close form', structure: 'STRUCTURE', formQuestions: 'Questions in this form',
+  questionNumber: 'Question {{number}}', deleteQuestion: 'Delete question', question: 'Question',
+  questionPlaceholder: 'Enter a question…', answerType: 'Answer type', ratingType: 'Rating 1–5', textType: 'Paragraph',
+  singleType: 'Single choice', multipleType: 'Multiple choice', required: 'Required answer', answerOptions: 'Answer options',
+  onePerLine: '(one option per line)', optionsPlaceholder: 'Example:\nVery satisfied\nNeutral\nNeeds improvement',
+  addAfterQuestion: 'Add a question after question {{number}}', timeNotSet: 'Form opening time is not set', saving: 'Saving…',
+  saveForm: 'Save form', afterSubmit: 'AFTER SUBMISSION', insightsTitle: 'What people are saying.', responses: 'responses',
+  averageScore: 'AVERAGE SCORE', choiceDistribution: 'CHOICE DISTRIBUTION', anonymous: 'Anonymous',
+  responseList: 'RESPONSE LIST', submissions: '{{count}} submissions', closeResponses: 'Close response list',
+  loadingResponses: 'Loading responses…', emptyResponses: 'No responses for this form yet.', sender: 'Respondent {{number}}',
+  editForm: 'Edit form',
+};
+
+resources.vi.translation.management.voteAdmin = {
+  statusDraft: 'Bản nháp', statusOpen: 'Đang mở', statusClosed: 'Đã đóng', expired: 'Đã hết thời gian',
+  days: '{{count}} ngày', hours: '{{count}} giờ', minutes: '{{count}} phút', seconds: '{{count}} giây',
+  validationInformation: 'Vui lòng nhập đầy đủ thông tin Phiên Vote: tiêu đề, mô tả, thời gian bắt đầu và thời gian đóng.',
+  validationCategories: 'Vui lòng thêm ít nhất một hạng mục bình chọn và hai đáp án.',
+  validationCategory: 'Vui lòng nhập tên hạng mục {{number}} và ít nhất hai đáp án.',
+  popupBlocked: 'Trình duyệt đã chặn tab mới. Vui lòng cho phép cửa sổ bật lên để mở màn hình công bố.',
+  confirmCloseTitle: 'Xác nhận đóng bình chọn', confirmCloseTimeTitle: 'Xác nhận đổi thời điểm đóng',
+  confirmReopenTitle: 'Xác nhận mở lại bình chọn', confirmOpenTitle: 'Xác nhận mở bình chọn',
+  kicker: 'Điều hành bình chọn D-Day', title: 'Quản lý bình chọn', intro: 'Một Phiên Vote duy nhất cho ngày sự kiện.',
+  deleting: 'Đang xóa…', deleteAll: 'Xóa tất cả dữ liệu', editCampaign: 'Chỉnh sửa Phiên Vote',
+  cancelEditing: 'Hủy chỉnh sửa', loadingConfig: 'Đang tải cấu hình…', totalVotes: 'Tổng lượt bình chọn',
+  closingTime: 'Thời điểm đóng', setupKicker: 'Thiết lập Phiên Vote · D-Day', information: 'Thông tin bình chọn',
+  campaignTitle: 'Tiêu đề', titlePlaceholder: 'Bình chọn D-Day', description: 'Mô tả hướng dẫn người tham gia',
+  descriptionPlaceholder: 'Ví dụ: Hãy chọn một tiết mục bạn yêu thích ở mỗi hạng mục.',
+  plannedOpening: 'Thời điểm bắt đầu dự kiến', automaticClosing: 'Thời điểm tự động đóng', categories: 'Các hạng mục bình chọn',
+  categoriesHelp: 'Mỗi hạng mục cần ít nhất hai lựa chọn. Mã nội bộ có thể giữ nguyên nếu không cần thay đổi.',
+  addCategory: 'Thêm hạng mục', categoryNumber: 'Hạng mục {{number}}', deleteCategory: 'Xóa hạng mục', categoryName: 'Tên hạng mục',
+  categoryPlaceholder: 'Ví dụ: Tiết mục yêu thích', optionNumber: 'Lựa chọn {{number}}', optionCodePlaceholder: 'Ví dụ: MĐ',
+  optionNamePlaceholder: 'Ví dụ: Tên lựa chọn', deleteOption: 'Xóa lựa chọn', addOption: 'Thêm lựa chọn', openVoting: 'Mở bình chọn',
+  saving: 'Đang lưu…', saveChanges: 'Lưu thay đổi', saveCampaign: 'Lưu Phiên Vote', editCloseTime: 'Chỉnh thời điểm đóng',
+  viewCountdown: 'Xem màn hình đếm ngược', closeNow: 'Đóng bình chọn ngay',
+  reopenNote: 'Bình chọn đã đóng. Bạn có thể mở lại và chọn thời điểm đóng mới để mở thêm thời gian.',
+  reopenVoting: 'Mở lại bình chọn', viewVoters: 'Xem danh sách người vote', publishResults: 'Công bố kết quả',
+  summaryResults: 'Kết quả tổng hợp', validVotes: '{{count}} lượt bình chọn hợp lệ',
+  closeWarning: 'Bạn có chắc muốn đóng bình chọn ngay không? Người tham gia sẽ không thể gửi lượt bình chọn mới sau thao tác này.',
+  reopenWarning: 'Bình chọn sẽ được mở lại để có thêm thời gian. Hãy chọn thời điểm đóng mới.',
+  openWarning: 'Bình chọn sẽ bắt đầu nhận lượt bình chọn ngay sau khi xác nhận.',
+  closeTimeWarning: 'Thời điểm đóng hiện tại sẽ được thay bằng thời điểm mới. Người tham gia vẫn có thể bình chọn trong thời gian bình chọn đang mở.',
+  processing: 'Đang xử lý…', closeVoting: 'Đóng bình chọn', saveNewTime: 'Lưu thời điểm mới',
+  reopenAndExtend: 'Mở lại và thêm thời gian', remainingTime: 'Thời gian bình chọn còn lại', closesAt: 'Thời điểm đóng: {{time}}',
+  scanToVote: 'Quét mã để tham gia bình chọn', voteQrAria: 'Mã QR đến trang bình chọn D-Day', contestantImage: 'Ảnh thí sinh',
+  contestantPlaceholderAria: 'Vị trí ảnh thí sinh', contestantImageLabel: 'ẢNH THÍ SINH', contestantPlaceholder: 'Vị trí hình ảnh trình chiếu',
+  voterList: 'Danh sách người đã bình chọn', voterSummary: 'Hiển thị {{count}} tài khoản đã gửi bình chọn.',
+  loadingVoters: 'Đang tải danh sách người vote…', emptyVoters: 'Chưa có tài khoản nào gửi bình chọn.',
+  noName: 'Không có tên', noEmail: 'Không có email', category: 'Hạng mục', option: 'Lựa chọn', pageOf: 'Trang {{page}} / {{total}}',
+  deleteTitleOne: 'Xác nhận xóa Phiên Vote (1/2)',
+  deleteDescriptionOne: 'Bạn sắp xóa cổng bình chọn hiện tại cùng toàn bộ dữ liệu bình chọn.<br />Bạn có chắc muốn tiếp tục?',
+  continue: 'Tiếp tục', deleteTitleTwo: 'Xác nhận xóa Phiên Vote (2/2)',
+  deleteDescriptionTwo: 'Đây là thao tác không thể hoàn tác. Cổng và toàn bộ lượt vote sẽ bị xóa khỏi hệ thống.<br />Bạn có chắc chắn muốn xóa không?',
+  deleteConfirm: 'Xóa cổng và lượt vote', saveChangesTitle: 'Xác nhận lưu thay đổi', saveCampaignTitle: 'Xác nhận lưu Phiên Vote',
+  saveChangesDescription: 'Các thay đổi sẽ cập nhật nội dung Phiên Vote D-Day đang ở bản nháp.<br />Bạn có chắc muốn lưu không?',
+  saveCampaignDescription: 'Thông tin Phiên Vote D-Day sẽ được lưu ở trạng thái bản nháp.<br />Bạn có chắc muốn tiếp tục không?',
+  publishTitle: 'Xác nhận công bố kết quả',
+  publishDescription: 'Màn hình công bố sẽ mở ở tab mới để bạn đưa lên màn LED.<br />Bạn có chắc muốn tiếp tục?',
+  openPublishScreen: 'Mở màn hình công bố',
+};
+resources.en.translation.management.voteAdmin = {
+  statusDraft: 'Draft', statusOpen: 'Open', statusClosed: 'Closed', expired: 'Time expired',
+  days: '{{count}} days', hours: '{{count}} hours', minutes: '{{count}} minutes', seconds: '{{count}} seconds',
+  validationInformation: 'Enter all campaign information: title, description, opening time and closing time.',
+  validationCategories: 'Add at least one voting category with two options.',
+  validationCategory: 'Enter a name for category {{number}} and at least two options.',
+  popupBlocked: 'The browser blocked the new tab. Allow popups to open the results screen.',
+  confirmCloseTitle: 'Confirm closing voting', confirmCloseTimeTitle: 'Confirm closing-time change',
+  confirmReopenTitle: 'Confirm reopening voting', confirmOpenTitle: 'Confirm opening voting',
+  kicker: 'D-Day voting operations', title: 'Voting management', intro: 'One voting campaign for event day.',
+  deleting: 'Deleting…', deleteAll: 'Delete all data', editCampaign: 'Edit campaign', cancelEditing: 'Cancel editing',
+  loadingConfig: 'Loading configuration…', totalVotes: 'Total votes', closingTime: 'Closing time',
+  setupKicker: 'Campaign setup · D-Day', information: 'Voting information', campaignTitle: 'Title', titlePlaceholder: 'D-Day Voting',
+  description: 'Instructions for participants', descriptionPlaceholder: 'Example: Choose your favorite performance in each category.',
+  plannedOpening: 'Planned opening time', automaticClosing: 'Automatic closing time', categories: 'Voting categories',
+  categoriesHelp: 'Each category needs at least two options. Keep internal codes unchanged unless necessary.',
+  addCategory: 'Add category', categoryNumber: 'Category {{number}}', deleteCategory: 'Delete category', categoryName: 'Category name',
+  categoryPlaceholder: 'Example: Favorite performance', optionNumber: 'Option {{number}}', optionCodePlaceholder: 'Example: MD',
+  optionNamePlaceholder: 'Example: Option name', deleteOption: 'Delete option', addOption: 'Add option', openVoting: 'Open voting',
+  saving: 'Saving…', saveChanges: 'Save changes', saveCampaign: 'Save campaign', editCloseTime: 'Edit closing time',
+  viewCountdown: 'View countdown screen', closeNow: 'Close voting now',
+  reopenNote: 'Voting is closed. You can reopen it and choose a new closing time to provide more time.',
+  reopenVoting: 'Reopen voting', viewVoters: 'View voter list', publishResults: 'Publish results',
+  summaryResults: 'Results summary', validVotes: '{{count}} valid votes',
+  closeWarning: 'Are you sure you want to close voting now? Participants will not be able to submit new votes afterward.',
+  reopenWarning: 'Voting will reopen for additional time. Choose a new closing time.',
+  openWarning: 'Voting will begin accepting votes immediately after confirmation.',
+  closeTimeWarning: 'The current closing time will be replaced. Participants can continue voting while the campaign remains open.',
+  processing: 'Processing…', closeVoting: 'Close voting', saveNewTime: 'Save new time', reopenAndExtend: 'Reopen and extend',
+  remainingTime: 'Voting time remaining', closesAt: 'Closes at: {{time}}', scanToVote: 'Scan to vote',
+  voteQrAria: 'QR code for the D-Day voting page', contestantImage: 'Contestant image', contestantPlaceholderAria: 'Contestant image placeholder',
+  contestantImageLabel: 'CONTESTANT IMAGE', contestantPlaceholder: 'Presentation image placeholder', voterList: 'Voter list',
+  voterSummary: 'Showing {{count}} accounts that submitted votes.', loadingVoters: 'Loading voters…',
+  emptyVoters: 'No accounts have submitted a vote.', noName: 'No name', noEmail: 'No email', category: 'Category', option: 'Option',
+  pageOf: 'Page {{page}} / {{total}}', deleteTitleOne: 'Confirm campaign deletion (1/2)',
+  deleteDescriptionOne: 'You are about to delete the current voting campaign and all voting data.<br />Do you want to continue?',
+  continue: 'Continue', deleteTitleTwo: 'Confirm campaign deletion (2/2)',
+  deleteDescriptionTwo: 'This action cannot be undone. The campaign and all votes will be removed from the system.<br />Are you sure?',
+  deleteConfirm: 'Delete campaign and votes', saveChangesTitle: 'Confirm saving changes', saveCampaignTitle: 'Confirm saving campaign',
+  saveChangesDescription: 'These changes will update the draft D-Day campaign.<br />Are you sure you want to save?',
+  saveCampaignDescription: 'The D-Day campaign will be saved as a draft.<br />Do you want to continue?',
+  publishTitle: 'Confirm publishing results',
+  publishDescription: 'The publishing screen will open in a new tab for display on the LED screen.<br />Do you want to continue?',
+  openPublishScreen: 'Open publishing screen',
+};
+
+resources.vi.translation.management.publish = {
+  votes: '{{count}} phiếu', preparing: 'Đang chuẩn bị màn hình công bố…', errorTitle: 'Chưa thể công bố kết quả',
+  loadingResults: 'Đang tải kết quả…', publishResults: 'Công bố kết quả', liveResults: 'KẾT QUẢ BÌNH CHỌN TRỰC TIẾP',
+  resultsTitle: 'Kết quả bình chọn', totalVotes: 'Tổng số lượt bình chọn', voteCountLabel: 'lượt bình chọn',
+  category: 'HẠNG MỤC {{number}}', chartAria: 'Biểu đồ kết quả {{category}}', voteNumber: 'Số phiếu',
+};
+resources.en.translation.management.publish = {
+  votes: '{{count}} votes', preparing: 'Preparing the publishing screen…', errorTitle: 'Results cannot be published yet',
+  loadingResults: 'Loading results…', publishResults: 'Publish results', liveResults: 'LIVE VOTING RESULTS',
+  resultsTitle: 'Voting results', totalVotes: 'Total votes', voteCountLabel: 'votes',
+  category: 'CATEGORY {{number}}', chartAria: 'Results chart for {{category}}', voteNumber: 'Votes',
+};
+
+resources.vi.translation.vote = {
+  statusOpen: 'Đang mở', statusClosed: 'Đã đóng', statusDraft: 'Chưa mở',
+  googleNotReady: 'Google chưa sẵn sàng. Vui lòng thử lại sau ít giây.',
+  googleAuthError: 'Không thể xác thực tài khoản Google.', googleAuthSuccess: 'Xác thực Google thành công.',
+  verifyBeforeSubmit: 'Vui lòng xác thực Google trước khi gửi bình chọn.', loading: 'Đang tải thông tin bình chọn…',
+  loadError: 'Không thể tải bình chọn', retry: 'Thử lại', kicker: 'FPTU Halloween · Bình chọn D-Day',
+  title: 'Bình chọn D-Day', description: 'Chọn một phương án ở mỗi hạng mục. Bạn chỉ có thể gửi bình chọn một lần.',
+  closingTime: 'Thời gian kết thúc: {{time}}', checkingStatus: 'Đang kiểm tra trạng thái bình chọn',
+  checkingStatusText: 'Vui lòng chờ một chút, chúng tôi đang kiểm tra bạn đã bình chọn chưa.',
+  stepOne: 'Bước 1 · Xác minh tài khoản', googleTitle: 'Đăng nhập Google để bắt đầu',
+  googleDescription: 'Bạn cần đăng nhập bằng tài khoản Google để tham gia. Mỗi tài khoản chỉ được gửi một bình chọn.',
+  verifying: 'Đang xác minh…', signInGoogle: 'Đăng nhập với Google',
+  googlePrivacy: 'Tài khoản Google chỉ được dùng để xác minh và ghi nhận bình chọn của bạn.',
+  stepTwo: 'Bước 2 · Gửi bình chọn', chooseTitle: 'Chọn một phương án ở mỗi hạng mục',
+  chooseDescription: 'Hãy chọn phương án bạn yêu thích, sau đó kiểm tra lại trước khi gửi.',
+  googleVerified: 'Đã xác minh bằng Google', submitting: 'Đang ghi nhận…', submit: 'Gửi bình chọn',
+  submitNote: 'Sau khi gửi, bình chọn sẽ được ghi nhận và không thể thay đổi. Nếu mạng chập chờn, bạn có thể thử lại an toàn.',
+  successLabel: 'BÌNH CHỌN THÀNH CÔNG', successTitle: 'Cảm ơn bạn đã tham gia!',
+  successText: 'Bình chọn của bạn đã được ghi nhận và không thể thay đổi.', submittedAt: 'Thời gian gửi: {{time}}',
+  relatedPages: 'Tham khảo thêm về sự kiện', relatedPagesAria: 'Các trang liên quan', organizers: 'Ban tổ chức',
+  eventIntroduction: 'Giới thiệu sự kiện', home: 'Trang chủ', contact: 'Liên hệ',
+  closedLabel: 'BÌNH CHỌN ĐÃ ĐÓNG', notOpenLabel: 'BÌNH CHỌN CHƯA MỞ',
+  closedTitle: 'Thời gian bình chọn đã kết thúc.', notOpenTitle: 'Bình chọn chưa bắt đầu.',
+  closedText: 'Ban tổ chức sẽ công bố kết quả sau khi hoàn tất kiểm tra.',
+  notOpenText: 'Vui lòng quay lại sau khi ban tổ chức mở bình chọn.', resultsLabel: 'KẾT QUẢ BÌNH CHỌN',
+  totalVotes: '{{count}} phiếu đã gửi', closedAt: 'Kết thúc lúc {{time}}',
+};
+
+resources.en.translation.vote = {
+  statusOpen: 'Open', statusClosed: 'Closed', statusDraft: 'Not open',
+  googleNotReady: 'Google is not ready. Please try again in a few seconds.',
+  googleAuthError: 'Unable to authenticate your Google account.', googleAuthSuccess: 'Google authentication successful.',
+  verifyBeforeSubmit: 'Please verify with Google before submitting your vote.', loading: 'Loading voting information…',
+  loadError: 'Unable to load voting', retry: 'Try again', kicker: 'FPTU Halloween · D-Day Voting',
+  title: 'D-Day Voting', description: 'Choose one option in each category. You can submit your vote only once.',
+  closingTime: 'Closes at: {{time}}', checkingStatus: 'Checking your voting status',
+  checkingStatusText: 'Please wait while we check whether you have already voted.',
+  stepOne: 'Step 1 · Verify your account', googleTitle: 'Sign in with Google to begin',
+  googleDescription: 'Sign in with a Google account to participate. Each account can submit only one vote.',
+  verifying: 'Verifying…', signInGoogle: 'Sign in with Google',
+  googlePrivacy: 'Your Google account is used only to verify and record your vote.',
+  stepTwo: 'Step 2 · Submit your vote', chooseTitle: 'Choose one option in each category',
+  chooseDescription: 'Choose your favorite options, then review them before submitting.',
+  googleVerified: 'Verified with Google', submitting: 'Recording…', submit: 'Submit vote',
+  submitNote: 'Once submitted, your vote is recorded and cannot be changed. You can safely retry if your connection is unstable.',
+  successLabel: 'VOTE SUBMITTED', successTitle: 'Thank you for participating!',
+  successText: 'Your vote has been recorded and cannot be changed.', submittedAt: 'Submitted at: {{time}}',
+  relatedPages: 'Learn more about the event', relatedPagesAria: 'Related pages', organizers: 'Organizers',
+  eventIntroduction: 'Event introduction', home: 'Home', contact: 'Contact',
+  closedLabel: 'VOTING CLOSED', notOpenLabel: 'VOTING NOT OPEN',
+  closedTitle: 'The voting period has ended.', notOpenTitle: 'Voting has not started.',
+  closedText: 'The organizers will publish the results after verification is complete.',
+  notOpenText: 'Please return after the organizers open voting.', resultsLabel: 'VOTING RESULTS',
+  totalVotes: '{{count}} votes submitted', closedAt: 'Closed at {{time}}',
+};
+
+resources.vi.translation.eventPages.club = {
+  eyebrow: 'HỒ SƠ CLB · FPTU BOARD GAME CLUB · NEVER LET YOU ALONE',
+  heroTitle: 'CÂU LẠC BỘ', heroTitleAfter: 'BOARD GAME',
+  heroLede: 'Một cộng đồng yêu board game, nơi mỗi ván chơi mở ra một cuộc gặp mới.',
+  brandKicker: 'FPTU · HÀ NỘI', clubName: 'FPTU Board Game Club', location: 'Sân Băng – Đại học FPT Hà Nội',
+  tabsAria: 'Nội dung về câu lạc bộ', tabs: { about: 'Giới thiệu', weekly: 'Sinh hoạt', events: 'Sự kiện', achievements: 'Thành tích' },
+  description: 'FPTU Board Game Club là nơi quy tụ những bạn trẻ yêu thích board game và tổ chức sự kiện. Sau 6 năm hoạt động, CLB đã ghi dấu ấn với nhiều sự kiện lớn nhỏ như FPTU Halloween (2020–2022–2023) hay Board Game Tournament mùa 1–2. Với tinh thần sáng tạo và gắn kết, CLB đang trở thành điểm hẹn quen thuộc của sinh viên FPTU để cùng thư giãn và kết nối.',
+  aboutBody: 'Là CLB tổ chức sự kiện FPTU Halloween thường niên của Đại học FPT Hà Nội, Board Game Club đưa tinh thần sáng tạo và gắn kết vào từng hoạt động. Năm 2025, sự kiện được nhuộm màu “Wishbound” – những giấc mơ và ước mơ đầy hứa hẹn.',
+  statsAria: 'Thông tin câu lạc bộ', members: 'thành viên', established: 'năm thành lập', excellentClub: 'CLB PHONG TRÀO XUẤT SẮC',
+  weeklyTitle: 'Sinh hoạt hàng tuần', weeklyBody: 'Đại gia đình Bê Gờ mở cửa chào đón tất cả mọi người đến sinh hoạt vào thứ Năm hàng tuần, từ 19:30 đến 21:30 tại Sân Băng.',
+  weeklyAlt1: 'Sinh hoạt hàng tuần của FPTU Board Game Club', weeklyCaption1: 'Buổi sinh hoạt 01',
+  weeklyAlt2: 'Thành viên FPTU Board Game Club sinh hoạt', weeklyCaption2: 'Buổi sinh hoạt 02',
+  weeklyAlt3: 'Hoạt động board game của câu lạc bộ', weeklyCaption3: 'Buổi sinh hoạt 03',
+  eventsTitle: 'Sự kiện đang được cập nhật', eventsBody: 'Thông tin các sự kiện sắp tới của câu lạc bộ sẽ được công bố tại đây.',
+  achievementsTitle: 'Thành tích', achievementsBody: 'Câu lạc bộ phong trào xuất sắc kỳ FA24.',
+  achievementAlt1: 'FPTU Board Game Club nhận bằng khen phong trào', achievementCaption1: 'Thành tích phong trào',
+  achievementAlt2: 'FPTU Board Game Club tại sự kiện', achievementCaption2: 'Dấu ấn hoạt động của CLB',
+  contactMark: 'Người giữ nhịp', contactTitle: 'Liên hệ CLB', presidentLabel: 'Chủ nhiệm', president: 'Nguyễn Cảnh Hưng',
+  facebook: 'Facebook', facebookHandle: 'fb.me/fuboardgameclub', email: 'Email', phone: 'Điện thoại', locationLabel: 'Địa điểm',
+};
+resources.en.translation.eventPages.club = {
+  eyebrow: 'CLUB PROFILE · FPTU BOARD GAME CLUB · NEVER LET YOU ALONE',
+  heroTitle: 'BOARD GAME', heroTitleAfter: 'CLUB',
+  heroLede: 'A board game community where every match opens the door to a new connection.',
+  brandKicker: 'FPTU · HANOI', clubName: 'FPTU Board Game Club', location: 'Ice Rink – FPT University Hanoi',
+  tabsAria: 'Club information', tabs: { about: 'About', weekly: 'Weekly meetups', events: 'Events', achievements: 'Achievements' },
+  description: 'FPTU Board Game Club brings together young people who love board games and event organizing. Over six years, the club has made its mark through events such as FPTU Halloween and Board Game Tournament. Its creative, welcoming spirit makes it a familiar place for FPTU students to relax and connect.',
+  aboutBody: 'As the organizer of the annual FPTU Halloween event at FPT University Hanoi, the club brings creativity and connection to every activity. In 2025, the event took on the colors of “Wishbound” – a world of promising dreams and wishes.',
+  statsAria: 'Club statistics', members: 'members', established: 'year established', excellentClub: 'OUTSTANDING STUDENT CLUB',
+  weeklyTitle: 'Weekly meetups', weeklyBody: 'The Bê Gờ family welcomes everyone every Thursday from 7:30 PM to 9:30 PM at the Ice Rink.',
+  weeklyAlt1: 'Weekly meetup of FPTU Board Game Club', weeklyCaption1: 'Weekly meetup 01',
+  weeklyAlt2: 'FPTU Board Game Club members at a meetup', weeklyCaption2: 'Weekly meetup 02',
+  weeklyAlt3: 'Board game activity at the club', weeklyCaption3: 'Weekly meetup 03',
+  eventsTitle: 'Events are being updated', eventsBody: 'Information about the club’s upcoming events will be published here.',
+  achievementsTitle: 'Achievements', achievementsBody: 'Outstanding student club of the FA24 semester.',
+  achievementAlt1: 'FPTU Board Game Club receiving an achievement certificate', achievementCaption1: 'Club achievement',
+  achievementAlt2: 'FPTU Board Game Club at an event', achievementCaption2: 'The club in action',
+  contactMark: 'Club lead', contactTitle: 'Contact the club', presidentLabel: 'President', president: 'Nguyễn Cảnh Hưng',
+  facebook: 'Facebook', facebookHandle: 'fb.me/fuboardgameclub', email: 'Email', phone: 'Phone', locationLabel: 'Location',
+};
+
+resources.vi.translation.eventPages.pdp = {
+  eyebrow: 'HỒ SƠ CHƯƠNG TRÌNH · PDP FPTU HÀ NỘI · PHÁT TRIỂN CÁ NHÂN', heroTitle: 'PDP', heroTitleAfter: 'FPTU HÀ NỘI',
+  description: 'Chương trình Phát triển Cá nhân (PDP - Personal Development Program) kiến tạo môi trường trải nghiệm năng động cho sinh viên Trường Đại học FPT Hà Nội.',
+  explore: 'Giới thiệu PDP', logoAlt: 'Logo PDP FPTU Hà Nội', brandKicker: 'FPTU · HÀ NỘI',
+  title: 'PDP - Chương trình Phát triển Cá nhân FPTU Hà Nội', locationValue: 'Trường Đại học FPT Hà Nội',
+  tabsAria: 'Nội dung về chương trình PDP', tabs: { about: 'Tổng quan', pillars: '3 trụ cột', halloween: 'FPTU Halloween', impact: 'Dấu ấn' },
+  support: 'PDP là đơn vị bảo trợ cho sự kiện FPTU Halloween, đồng hành cùng các câu lạc bộ và sinh viên trong những hoạt động trải nghiệm, kết nối và phát triển toàn diện.',
+  statsAria: 'Thông tin chương trình PDP', developmentPillars: 'trụ cột phát triển', followers: 'người theo dõi', following: 'đang theo dõi',
+  pillarsTitle: 'Ba trụ cột phát triển', pillarsBody: 'PDP kết nối sinh viên với những trải nghiệm thực tế thông qua câu lạc bộ, sự kiện và khóa học.',
+  club: 'Câu lạc bộ', events: 'Sự kiện', courses: 'Khóa học', halloweenTitle: 'PDP bảo trợ FPTU Halloween',
+  impactTitle: 'Môi trường phát triển toàn diện', impactLead: 'Từ những hoạt động học tập đến trải nghiệm cộng đồng, PDP giúp sinh viên chủ động khám phá năng lực và xây dựng kết nối tại FPTU Hà Nội.',
+  impactBody: 'Chương trình hướng đến một hành trình phát triển cân bằng: học hỏi, trải nghiệm, kết nối và tạo ra giá trị cho cộng đồng sinh viên.',
+  infoMark: 'PDP · FPTU HÀ NỘI', infoTitle: 'Thông tin chương trình',
+  info: {
+    unit: { label: 'Đơn vị', value: 'PDP FPTU Hà Nội' }, role: { label: 'Vai trò', value: 'Bảo trợ sự kiện FPTU Halloween' },
+    pillars: { label: '3 trụ cột', value: 'Câu lạc bộ · Sự kiện · Khóa học' }, audience: { label: 'Đối tượng', value: 'Sinh viên FPTU Hà Nội' },
+    location: { label: 'Địa điểm', value: 'Trường Đại học FPT Hà Nội' },
+  },
+};
+resources.en.translation.eventPages.pdp = {
+  eyebrow: 'PROGRAM PROFILE · PDP FPTU HANOI · PERSONAL DEVELOPMENT', heroTitle: 'PDP', heroTitleAfter: 'FPTU HANOI',
+  description: 'The Personal Development Program (PDP) creates a dynamic experiential environment for students of FPT University Hanoi.',
+  explore: 'Explore PDP', logoAlt: 'PDP FPTU Hanoi logo', brandKicker: 'FPTU · HANOI',
+  title: 'PDP - Personal Development Program at FPTU Hanoi', locationValue: 'FPT University Hanoi',
+  tabsAria: 'PDP program information', tabs: { about: 'Overview', pillars: '3 pillars', halloween: 'FPTU Halloween', impact: 'Impact' },
+  support: 'PDP supports FPTU Halloween and accompanies clubs and students through experiences that foster connection and well-rounded development.',
+  statsAria: 'PDP program statistics', developmentPillars: 'development pillars', followers: 'followers', following: 'following',
+  pillarsTitle: 'Three development pillars', pillarsBody: 'PDP connects students with hands-on experiences through clubs, events and courses.',
+  club: 'Clubs', events: 'Events', courses: 'Courses', halloweenTitle: 'PDP supports FPTU Halloween',
+  impactTitle: 'A well-rounded development environment', impactLead: 'From learning activities to community experiences, PDP helps students discover their abilities and build connections at FPTU Hanoi.',
+  impactBody: 'The program promotes a balanced journey of learning, experiencing, connecting and creating value for the student community.',
+  infoMark: 'PDP · FPTU HANOI', infoTitle: 'Program information',
+  info: {
+    unit: { label: 'Organization', value: 'PDP FPTU Hanoi' }, role: { label: 'Role', value: 'FPTU Halloween supporting organization' },
+    pillars: { label: '3 pillars', value: 'Clubs · Events · Courses' }, audience: { label: 'Audience', value: 'FPTU Hanoi students' },
+    location: { label: 'Location', value: 'FPT University Hanoi' },
+  },
+};
+
+Object.assign(resources.vi.translation.normal.home, {
+  heroAria: 'Ảnh bìa FPTU Halloween 2026', brand: 'FPTU HALLOWEEN', university: 'FPT UNIVERSITY', pdp: 'PDP', fbgc: 'FBGC', hlw26: 'HLW26',
+  eventMeta: '2026 / FPTU HÀ NỘI', countdownLabel: 'ĐẾM NGƯỢC D-DAY', conceptLabel: '01 · GHI CHÚ CONCEPT',
+  highlightsLabel: '02 · BẢN ĐỒ ĐÊM HỘI', timelineLabel: '03 · LỊCH TRÌNH ĐÊM HỘI', mapLabel: '04 · TÌM ĐƯỜNG',
+  stage: 'SÂN KHẤU', sponsorsLabel: '05 · ĐƠN VỊ ĐỒNG HÀNH',
+  sponsorNames: { pdp: 'PDP', fptu: 'FPTU', fbgc: 'FBGC', hlw26: 'HLW26' },
+});
+Object.assign(resources.en.translation.normal.home, {
+  heroAria: 'FPTU Halloween 2026 hero banner', brand: 'FPTU HALLOWEEN', university: 'FPT UNIVERSITY', pdp: 'PDP', fbgc: 'FBGC', hlw26: 'HLW26',
+  eventMeta: '2026 / FPTU HANOI', countdownLabel: 'COUNTDOWN D-DAY', conceptLabel: '01 · CONCEPT NOTE',
+  highlightsLabel: '02 · THE NIGHT MAP', timelineLabel: '03 · RUN OF SHOW', mapLabel: '04 · FIND YOUR WAY',
+  stage: 'STAGE', sponsorsLabel: '05 · WITH SUPPORT FROM',
+  sponsorNames: { pdp: 'PDP', fptu: 'FPTU', fbgc: 'FBGC', hlw26: 'HLW26' },
+});
+
+Object.assign(resources.vi.translation.eventPages.hlwIntro, {
+  overviewBody: 'Lễ hội Halloween tại Đại học FPT là sự kiện thường niên bùng nổ – một nét văn hóa sinh viên không thể bỏ qua. Được tổ chức bởi FPTU Board Game Club, sự kiện mang một chủ đề kỳ bí riêng mỗi năm và trở thành sân khấu cho những màn hóa trang đầy sáng tạo. Nhà ma, hoạt động sôi động và các cuộc thi gay cấn luôn tạo nên một đêm hội đáng nhớ, gắn kết cộng đồng sinh viên FPT.',
+  facts: {
+    what: { title: 'Halloween FPTU là gì?', text: 'Halloween FPTU là lễ hội thường niên của sinh viên FPTU — nơi tinh thần sáng tạo, sự kết nối và không khí kỳ bí gặp nhau trong một đêm hội đáng nhớ.' },
+    mission: { title: 'Sứ mệnh', text: 'Tạo ra một không gian để sinh viên được trải nghiệm, thể hiện cá tính và cùng nhau xây dựng những kỷ niệm đặc biệt trong đời sống đại học.' },
+    values: { title: 'Giá trị', text: 'Sáng tạo · Gắn kết · Dũng cảm · Tôn trọng. Mỗi hoạt động đều khuyến khích tinh thần tham gia và tôn trọng trải nghiệm cộng đồng.' },
+    size: { title: 'Quy mô', text: 'Thông tin quy mô chương trình Halloween FPTU 2026 sẽ được Ban tổ chức cập nhật trong thời gian tới.' },
+  },
+  seasonTitle: 'FPTU Halloween {{year}}', seasonThumbnail: 'Ảnh đại diện FPTU Halloween {{year}}', updating: 'Đang cập nhật',
+  concepts: { updating: 'Đang cập nhật', wishbound: 'Wishbound', uLinhKy: 'U Linh Ký', hauntedFest: 'Haunted Fest', fearCorner: 'Fear Corner', hauntedForest: 'The Haunted Forest' },
+});
+Object.assign(resources.en.translation.eventPages.hlwIntro, {
+  overviewBody: 'Halloween at FPT University is an explosive annual tradition and an essential part of student culture. Organized by FPTU Board Game Club, it takes on a mysterious new theme every year and showcases outstanding creativity through costumes, a haunted house, lively activities and exciting contests. Each season creates a memorable night that connects the FPT student community.',
+  facts: {
+    what: { title: 'What is FPTU Halloween?', text: 'FPTU Halloween is an annual student festival where creativity, connection and a mysterious atmosphere meet in one memorable night.' },
+    mission: { title: 'Mission', text: 'Create a space for students to experience, express their personalities and build special memories together during university life.' },
+    values: { title: 'Values', text: 'Creativity · Connection · Courage · Respect. Every activity encourages participation and respect for the community experience.' },
+    size: { title: 'Scale', text: 'Details about the scale of FPTU Halloween 2026 will be announced by the organizers.' },
+  },
+  seasonTitle: 'FPTU Halloween {{year}}', seasonThumbnail: 'FPTU Halloween {{year}} thumbnail', updating: 'To be announced',
+  concepts: { updating: 'To be announced', wishbound: 'Wishbound', uLinhKy: 'U Linh Ký', hauntedFest: 'Haunted Fest', fearCorner: 'Fear Corner', hauntedForest: 'The Haunted Forest' },
+});
+
+Object.assign(resources.vi.translation.eventPages.introduceEvent, {
+  name: 'FPTU Halloween', avatarAlt: 'Ảnh đại diện FPTU Halloween', category: 'Sự kiện · Cao đẳng & Đại học',
+  aboutText: 'Lễ hội Halloween tại Đại học FPT là sự kiện thường niên bùng nổ – một nét văn hóa sinh viên không thể bỏ qua.',
+  organizerName: 'FPTU Board Game Club', seasonTitle: 'FPTU Halloween {{year}}',
+});
+Object.assign(resources.en.translation.eventPages.introduceEvent, {
+  name: 'FPTU Halloween', avatarAlt: 'FPTU Halloween profile picture', category: 'Event · College & University',
+  aboutText: 'Halloween at FPT University is an exciting annual event and an essential part of student culture.',
+  organizerName: 'FPTU Board Game Club', seasonTitle: 'FPTU Halloween {{year}}',
+});
+
+Object.assign(resources.vi.translation.normal.contact, {
+  mapTitle: 'Vị trí Đại học FPT', fanpage: 'Fanpage', halloweenPage: 'FPTU Halloween', clubPage: 'FPTU Board Game Club',
+  university: 'Đại học FPT', emailLabel: 'Email', emailValue: 'fptuhalloween@gmail.com',
+  organizerContact: 'Nguyễn Thảo Vy - 0338263886', communicationsContact: 'Lê Thị Thuỳ - 0947319889',
+});
+Object.assign(resources.en.translation.normal.contact, {
+  mapTitle: 'FPT University location', fanpage: 'Fanpage', halloweenPage: 'FPTU Halloween', clubPage: 'FPTU Board Game Club',
+  university: 'FPT University', emailLabel: 'Email', emailValue: 'fptuhalloween@gmail.com',
+  organizerContact: 'Nguyễn Thảo Vy - 0338263886', communicationsContact: 'Lê Thị Thuỳ - 0947319889',
+});
+
+Object.assign(resources.vi.translation.archive, {
+  eventTitle: 'FPTU Halloween {{year}}', thumbnailAlt: 'Ảnh đại diện {{title}}',
+  event1Date: '28/10 - 31/10/2025', event2Date: '29/10 - 31/10/2024', event3Date: '30/10 - 31/10/2023',
+  event4Date: '31/10/2022', event5Date: '30/10 - 31/10/2020',
+  event6Description: 'Thông tin concept Halloween FPTU 2026 sẽ được Ban tổ chức cập nhật trong thời gian tới.',
+  event1Description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟓]: 𝐖𝐈𝐒𝐇𝐁𝐎𝐔𝐍𝐃
+
+😈 Mỗi đêm, vào ngày 31/10 hằng năm, giữa màn sương dày đặc, thị trấn ma quái 𝐖𝐢𝐬𝐡𝐛𝐨𝐮𝐧𝐝 xuất hiện rồi biến mất như chưa từng tồn tại…. Nhưng năm nay, sau hàng thế kỷ ẩn mình, cái tên bao năm ám ảnh thị trấn hóa ra chỉ là một mặt nạ khác của Joker - thực thể tàn nhẫn chỉ sống để đánh tráo điều ước, nuốt chửng linh hồn và biến hy vọng thành lời nguyền. Lúc ấy, ở nơi trung tâm thị trấn mới rõ hình Quán rượu cổ, nơi mọi điều ước đều có giá, mọi “quy tắc trò chơi” chỉ để dẫn dắt những ván đấu chết chóc do hắn bày ra.
+
+👻 Người bước chân vào vùng đất này sẽ phải đặt cược chính linh hồn của mình: thắng sẽ chạm tới điều ước sâu thẳm nhất, còn thua sẽ bị phong ấn vĩnh viễn giữa bốn vùng đất tội lỗi: Cơ, Rô, Bích, Tép - nơi phản chiếu mặt tối của mỗi người.
+
+🎃 Liệu bạn là người chiến thắng… hay là kẻ bị phong ấn?`,
+  event2Description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟒]: U LINH KÝ - ÂM DƯƠNG TỬ KHÍ
+
+👻 Vào ngày lễ 𝐇𝐚𝐥𝐥𝐨𝐰𝐞𝐞𝐧 tại ngôi làng Hola, một quyển sách cổ tên “U linh Ký” vô tình được phát hiện dẫn đến các linh hồn của dân làng bị hút vào một thế giới huyền bí chứa đầy ma quỷ Việt Nam. Trong cõi linh hồn này, dân làng phải đối mặt với hình ảnh thảm thiết của Ma Da, tiếng khóc lóc ỉ ôi của Ma Đói, hồn Ma Lai lang thang dưới bóng đêm, những tiếng cười rùng rợn của Ông Ba Bị và tiếng Ma Trơi văng vẳng bên tai. Những con ma luôn tìm cách đánh cắp ký ức của họ, khiến dân làng dần mất nhận thức và trở thành con mồi cho những ma quỷ âm dương.
+
+💀 Nhưng hồn ma không để ý rằng trong số người dân đã bị cuốn vào, có một người tên Kiến Văn, mang trong mình một tấm bùa hộ mệnh được tổ tiên truyền lại. Nhờ vào tấm bùa đó, Kiến Văn đã thoát khỏi sự mê hoặc của quỷ dữ trước khi ký ức cuối cùng bị đánh mất. Cùng lúc ấy, Kiến Văn nhận ra rằng các loài ma luôn cố gắng đánh cắp đi ký ức của dân làng, và đây chính là chìa khóa để thoát khỏi cõi U Linh man rợ, Kiến Văn quyết định nói cho dân làng phát hiện của mình và tìm cách để lấy lại những mảnh ký ức đã mất.
+
+👿 Nhưng không phải ai cũng đủ tỉnh táo, can đảm và mạnh mẽ để thoát khỏi cõi U linh huyền bí này, liệu rằng những con người vô tội kia có thể vượt qua thử thách gian nan để quay trở về với trần gian?`,
+  event3Description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟑]: 𝐇𝐀𝐔𝐍𝐓𝐄𝐃 𝐅𝐄𝐒𝐓
+
+😈 Vào ngày 31/10 hằng năm, phố Fear chứng kiến sự trỗi dậy của rất nhiều thế lực tà ác vượt ra từ cánh cửa địa ngục, gây náo loạn cuộc sống của người dân nơi đây. Sau sự ra đi của con quỷ Kurbis, chúa tể địa ngục là Lucifear lên ngôi và bắt đầu tuyên bố sự thống trị của mình.
+
+👹 Để gia tăng sức mạnh của mình, Lucifear đã cử hắc miêu (Phasma) - cánh tay phải đắc lực của hắn ta xuống nhân gian và đánh cắp rất nhiều linh hồn của con người. Những linh hồn đó không chỉ gia tăng thêm sức mạnh cho Lucifear mà còn là phần thưởng cho rất nhiều con quỷ đang khao khát thống trị loài người.
+
+👻 Để cứu được những linh hồn vô tội kia, tương truyền rằng có một cây cầu vàng (Spirit Bridge) là cây cầu kết nối giữa hai thế giới tâm linh này. Ngày mà thế giới âm dương hòa vào làm một, người thân của họ phải cải trang thành những ác linh và vượt qua ranh giới của loài người, thông qua con đường vàng và đi giải cứu những linh hồn kia. Họ bắt buộc phải tham gia vào buổi tiệc “Đám cưới ma” - một đám cưới quỷ dị của chúa tể tàn ác Lucifear, nơi hội tụ rất nhiều thế lực hắc ám và các hồn ma đen tối. Muốn vượt qua bữa tiệc kì bí này, con người không những ăn uống, nhảy múa, ca hát mà còn phải tham gia vào các trò chơi rùng rợn nơi đây. Mang trong mình linh hồn thuần khiết và dũng cảm, liệu con người có vượt qua được nỗi sợ hãi, cứu sống những linh hồn oan uổng hay trở thành món ăn tráng miệng dành cho chúa tể quỷ dữ Lucifear?`,
+  event4Description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟐]: 𝐅𝐄𝐀𝐑 𝐂𝐎𝐑𝐍𝐄𝐑
+
+👻 KHÁM PHÁ VÙNG ĐẤT KỲ BÍ - PHỐ FEAR NGAY GIỮA LÒNG FPTU👻
+
+🧙‍♀️ Không còn là những đồn đoán, sự kiện Halloween duy nhất trong năm 2022 - 𝐅𝐞𝐚𝐫 𝐂𝐨𝐫𝐧𝐞𝐫 sẽ chính thức “lên nòng” vào ngày 31/10 - thứ 2 tới đây tại sân trước toà nhà Delta.
+
+Trong buổi tối 31/10 tới đây, BTC sẽ đưa bạn đến với Fear Corner - Khu phố Halloween: Một khu phố đặc biệt, nơi những “linh hồn” có thể trở về trần gian và sống như những người bình thường. Tuy nhiên, đây sẽ là nơi giao giữa âm dương, nên không khí tràn ngập sự ghê rợn, với những cây quỷ, những bóng ma và bộ xương khô đến rợn người.
+
+👻 Đây sẽ là cơ hội để các con dân FPTU thỏa sức bước vào 1 vùng đất vô cùng xa lạ, và khám phá vô vàn những bí ẩn tại đây với các hoạt động:
+
+🎃 Cùng hóa trang để không bị những người âm đánh cắp mất linh hồn.
+🎃 Ghé thăm những ngóc ngách, trải nghiệm các gian hàng tại Phố Fear.
+🎃 Lần đầu trà trộn và check in ngay giữa lòng thế giới cõi âm.
+🎃 Tham gia hoạt động Trick or Treat.
+🎃 Thưởng thức các tiết mục văn nghệ sôi động trong 1 bầu không gian vô cùng đặc biệt… và vân vân những đặc quyền khác.
+
+👻 Sự góp mặt của các bạn tại Phố Fear chắc chắn sẽ đem tới một mùa Halloween vô cùng đáng nhớ tại trường Ép! Còn không mau chuẩn bị một bộ trang phục ấn tượng và sẵn sàng “lên dây cót” cùng BTC để nhận lấy tấm vé đến Vùng đất huyền bí nào các bạn ơi! 🤩`,
+  event5Description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟎]: 𝐓𝐇𝐄 𝐇𝐀𝐔𝐍𝐓𝐄𝐃 𝐅𝐎𝐑𝐄𝐒𝐓
+
+💥🎃 ̼B̼O̼M̼ ̼T̼Ấ̼N̼ ̼H̼A̼L̼L̼O̼W̼E̼E̼N̼ ̼2̼0̼2̼0̼ 🎃💥
+
+🕸️ 𝐺𝑢̛𝑜̛𝑛𝑔 𝑘𝑖𝑎 𝑛𝑔𝑢̛̣ 𝑜̛̉ 𝑡𝑟𝑒̂𝑛 𝑡𝑢̛𝑜̛̀𝑛𝑔
+𝑁𝑔ℎ𝑒 𝑛𝑜́𝑖 𝑡𝑟𝑢̛𝑜̛̀𝑛𝑔 𝐹 𝑐𝑜́ 𝑔𝑖̀ ℎ𝑎𝑦 ℎ𝑜
+🕸️ 𝐾𝑖̀ 𝑏𝑖́, 𝑚𝑎 𝑚𝑖̣, 𝑛ℎ𝑖𝑒̂̀𝑢 𝑡𝑟𝑜̀
+𝐿𝑎̂̀𝑛 đ𝑎̂̀𝑢 𝑥𝑢𝑎̂́𝑡 ℎ𝑖𝑒̣̂𝑛, 𝑛𝑔𝑢̛𝑜̛̀𝑖 𝑛𝑔𝑢̛𝑜̛̀𝑖 đ𝑒̂̀𝑢 𝑚𝑜𝑛𝑔
+
+Nghe nói từ xưa đến nay, mảnh đất xa xôi nội thành này vẫn luôn chứa đựng nhiều bí ẩn, với những câu chuyện kinh dị có thật, các hiện tượng lạ được lan truyền gieo rắc nỗi sợ hãi cho thần dân nơi đây 😰. Nhưng giờ bạn sẽ không chỉ được nghe, mà còn được trải nghiệm nỗi sợ hãi một cách chân thật nhất và thử thách lòng can đảm với sự kiện kinh dị đậm chất FPTU lần này.
+
+🦇 Lễ hội “𝐇▲𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟎” lần đầu tiên xuất hiện tại trường F với chủ đề “The Haunted Forest” hứa hẹn sẽ mang tới những trải nghiệm cực kì thú vị. Đây là dịp để các bạn được tham gia rất nhiều trò chơi đa dạng, thoả sức cosplay, hoá trang, khám phá bí ẩn ngôi nhà ma và giải mã những câu chuyện kinh hoàng!!!
+
+👻 Còn rất nhiều bí mật đang chờ được khám phá, hãy chuẩn bị cho mình một bộ đồ hóa trang thật lộng lẫy và nhanh tay đặt vé để tham gia ngay nào!.`,
+});
+Object.assign(resources.en.translation.archive, {
+  eventTitle: 'FPTU Halloween {{year}}', thumbnailAlt: '{{title}} thumbnail',
+  event1Date: 'October 28–31, 2025', event2Date: 'October 29–31, 2024', event3Date: 'October 30–31, 2023',
+  event4Date: 'October 31, 2022', event5Date: 'October 30–31, 2020',
+});
+
+Object.assign(resources.vi.translation.normal.btc, {
+  heroLabel: 'FPTU HALLOWEEN 2025 · ĐỘI NGŨ CỐT LÕI', titleEnd: 'sự kiện.', coreTeam: 'Đội ngũ HLW26',
+  location: 'Đại học FPT · Hà Nội', coreTeamLabel: 'ĐỘI NGŨ CỐT LÕI', cardKicker: 'ĐỘI NGŨ', cardSeason: 'HLW26',
+  brand: 'FPTU HALLOWEEN', departmentTeam: 'Đội HLW26',
+  hierarchyNotes: { chair: '01 · TRƯỞNG BAN TỔ CHỨC', hr: '02 · NHÂN SỰ', lead: '03 · TRƯỞNG BAN', sublead: '04 · PHÓ BAN' },
+});
+Object.assign(resources.en.translation.normal.btc, {
+  heroLabel: 'FPTU HALLOWEEN 2025 · CORE TEAM', titleEnd: 'the event.', coreTeam: 'Core Team HLW26',
+  location: 'FPT University · Hanoi', coreTeamLabel: 'CORE TEAM', cardKicker: 'CORE TEAM', cardSeason: 'HLW26',
+  brand: 'FPTU HALLOWEEN', departmentTeam: 'Team HLW26',
+  hierarchyNotes: { chair: '01 · HEAD OF ORGANIZATION', hr: '02 · HR', lead: '03 · LEAD', sublead: '04 · SUB-LEAD' },
+});
+
+resources.vi.translation.easterEgg = {
+  kicker: 'FPTU HALLOWEEN / HỒ SƠ MẬT CẤP TỔNG TÀI', title: 'Biết Chủ tịch này nhé.',
+  intro: 'Hồ sơ mật của vị tổng tài đã biến deadline, ngân sách và một ít keo nến thành đế chế Halloween lấp lánh.',
+  teamKicker: 'BAN LÃNH ĐẠO KHÔNG AI BỔ NHIỆM', teamTitle: 'Đội ngũ dưới trướng Chủ tịch.',
+  closingAria: 'Lời nhắn của Chủ tịch', closing: 'Đằng sau mỗi cú hù là một đế chế đang vận hành. Và Chủ tịch thì vẫn chưa duyệt đơn xin nghỉ.',
+  people: {
+    president: { eyebrow: 'CHỦ TỊCH TỔNG TÀI', name: 'Ngài Chủ tịch vũ trụ', note: 'Bận ký giấy tờ, duyệt ngân sách và nhìn deadline bằng ánh mắt khiến deadline tự biến mất.' },
+    rightHand: { name: 'Cánh tay phải', role: 'Gọi chủ tịch dậy họp' }, deputy: { name: 'Phó tổng', role: 'Duyệt meme cấp tốc' },
+    assistant: { name: 'Trợ lý riêng', role: 'Giữ bình tĩnh hộ sếp' }, drama: { name: 'Giám đốc drama', role: 'Tạo plot twist mỗi ngày' },
+    wax: { name: 'Trưởng ban keo nến', role: 'Dính là không gỡ' }, scare: { name: 'CEO hù dọa', role: 'Chốt đơn cú giật mình' },
+    joy: { name: 'Giám đốc niềm vui', role: 'Cười trước, tính sau' }, heir: { name: 'Tổng tài dự bị', role: 'Ký duyệt bằng ánh mắt' },
+  },
+};
+resources.en.translation.easterEgg = {
+  kicker: 'FPTU HALLOWEEN / TOP-SECRET PRESIDENTIAL FILE', title: 'Meet this President.',
+  intro: 'The secret file of the executive who turned deadlines, budgets and a little candle wax into a sparkling Halloween empire.',
+  teamKicker: 'THE LEADERSHIP TEAM NOBODY APPOINTED', teamTitle: 'The President’s inner circle.',
+  closingAria: 'A note from the President', closing: 'Behind every scare is an empire at work. And the President still has not approved anyone’s leave request.',
+  people: {
+    president: { eyebrow: 'EXECUTIVE PRESIDENT', name: 'President of the Universe', note: 'Busy signing papers, approving budgets and staring at deadlines until they disappear.' },
+    rightHand: { name: 'Right-hand person', role: 'Wakes the President for meetings' }, deputy: { name: 'Deputy executive', role: 'Approves memes at speed' },
+    assistant: { name: 'Personal assistant', role: 'Keeps calm for the boss' }, drama: { name: 'Director of drama', role: 'Creates a plot twist every day' },
+    wax: { name: 'Head of candle wax', role: 'Once it sticks, it stays' }, scare: { name: 'Chief scare officer', role: 'Closes every jump-scare deal' },
+    joy: { name: 'Director of joy', role: 'Laugh first, plan later' }, heir: { name: 'Executive in waiting', role: 'Approves with a single look' },
+  },
+};
+
+Object.assign(resources.vi.translation.auth.login, { email: 'Email', clubLogoAlt: 'Logo FPTU Board Game Club' });
+Object.assign(resources.en.translation.auth.login, { email: 'Email', clubLogoAlt: 'FPTU Board Game Club logo' });
+Object.assign(resources.vi.translation.auth.register, { email: 'Email' });
+Object.assign(resources.en.translation.auth.register, { email: 'Email' });
+Object.assign(resources.vi.translation.auth.forgot, { brandAlt: 'FPTU Halloween', email: 'Email', otp: 'Mã OTP' });
+Object.assign(resources.en.translation.auth.forgot, { brandAlt: 'FPTU Halloween', email: 'Email', otp: 'OTP code' });
+Object.assign(resources.vi.translation.auth.changePassword, { brandAlt: 'FPTU Halloween' });
+Object.assign(resources.en.translation.auth.changePassword, { brandAlt: 'FPTU Halloween' });
+Object.assign(resources.vi.translation.auth.complete, { brandAlt: 'FPTU Halloween', emailLabel: 'Email' });
+Object.assign(resources.en.translation.auth.complete, { brandAlt: 'FPTU Halloween', emailLabel: 'Email' });
+Object.assign(resources.vi.translation.auth.confirm, { brandAlt: 'FPTU Halloween' });
+Object.assign(resources.en.translation.auth.confirm, { brandAlt: 'FPTU Halloween' });
+Object.assign(resources.vi.translation.auth.fbgc, { brandAlt: 'Logo FPTU Board Game Club' });
+Object.assign(resources.en.translation.auth.fbgc, { brandAlt: 'FPTU Board Game Club logo' });
+
+Object.assign(resources.vi.translation.ticket, {
+  eventBrand2026: 'FPTU Halloween 2026', email: 'Email', emailPlaceholder: 'ban@example.com', brandShort: 'HLW',
+  entryPass: 'VÉ VÀO CỬA', entry: 'VÀO CỬA', priceVnd: '{{value}} VND', date: 'Ngày', dateLabel: 'Ngày',
+  dateFormat: 'Ngày {{date}} tháng 10, 2026', dayLabel: 'Ngày',
+});
+Object.assign(resources.en.translation.ticket, {
+  eventBrand2026: 'FPTU Halloween 2026', email: 'Email', emailPlaceholder: 'you@example.com', brandShort: 'HLW',
+  entryPass: 'ENTRY PASS', entry: 'ENTRY', priceVnd: 'VND {{value}}',
+});
+Object.assign(resources.vi.translation.pages.payment, { brand: 'FPTU Halloween' });
+Object.assign(resources.en.translation.pages.payment, { brand: 'FPTU Halloween' });
+Object.assign(resources.vi.translation.eventPages.haunted, { brandShort: 'HLW', currency: 'VND' });
+Object.assign(resources.en.translation.eventPages.haunted, { brandShort: 'HLW', currency: 'VND' });
+Object.assign(resources.vi.translation.profilePage, { currency: 'VND' });
+Object.assign(resources.en.translation.profilePage, { currency: 'VND' });
+
+Object.assign(resources.vi.translation.footer, {
+  logoAlt: 'FPTU Halloween', email: 'fptuhalloween@gmail.com', halloweenFacebook: 'Facebook FPTU Halloween',
+  clubFacebook: 'Facebook FPTU Board Game Club', halloweenTiktok: 'TikTok FPTU Halloween',
+});
+Object.assign(resources.en.translation.footer, {
+  logoAlt: 'FPTU Halloween', email: 'fptuhalloween@gmail.com', halloweenFacebook: 'FPTU Halloween on Facebook',
+  clubFacebook: 'FPTU Board Game Club on Facebook', halloweenTiktok: 'FPTU Halloween on TikTok',
+});
+Object.assign(resources.vi.translation.pages.errors, {
+  brand: 'FPTU / HALLOWEEN', status: 'TRẠNG THÁI', visualAria: 'Minh hoạ lỗi {{code}}', accessCheck: 'KIỂM TRA QUYỀN TRUY CẬP',
+});
+Object.assign(resources.en.translation.pages.errors, {
+  brand: 'FPTU / HALLOWEEN', status: 'STATUS', visualAria: '{{code}} error illustration', accessCheck: 'ACCESS CHECK',
+});
+Object.assign(resources.vi.translation.eventPages.agenda, { brandShort: 'HLW26' });
+Object.assign(resources.en.translation.eventPages.agenda, { brandShort: 'HLW26' });
+Object.assign(resources.vi.translation.normal.overall, { organizerName: 'FPTU Board Game Club (FBGC)' });
+Object.assign(resources.en.translation.normal.overall, { organizerName: 'FPTU Board Game Club (FBGC)' });
+resources.vi.translation.normal.aboutPage = { title: 'Giới thiệu' };
+resources.en.translation.normal.aboutPage = { title: 'About us' };
+resources.vi.translation.normal.adminHomePage = { title: 'Trang quản trị' };
+resources.en.translation.normal.adminHomePage = { title: 'Administration' };
 
 i18n.use(initReactI18next).init({
   resources,

@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { SkeletonRows } from "../../components/LoadingSkeletons";
 import ticketAPI from "../../apis/ticketAPI";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -28,27 +29,21 @@ const EMPTY_PAGINATION = {
   totalPages: 1,
 };
 const EMPTY_SUMMARY = { sold: 0, checkedIn: 0, remaining: 0 };
-const STATUS_LABELS = {
-  Pending: "Chờ sử dụng",
-  Checked: "Đã sử dụng",
-  Cancelled: "Đã hủy",
-};
-
 const payloadOf = (response) => response?.data?.data || {};
-const formatDate = (value) =>
-  value ? new Date(value).toLocaleString("vi-VN") : "—";
-const getName = (ticket) =>
-  ticket?.userId?.fullName || ticket?.userId?.email || "Chưa cập nhật";
-
-const StatusBadge = ({ status }) => (
-  <span
+const StatusBadge = ({ status }) => {
+  const { t } = useTranslation();
+  return <span
     className={`user-ticket-status user-ticket-status--${String(status || "pending").toLowerCase()}`}
   >
-    <i /> {STATUS_LABELS[status] || status || "Không rõ"}
+    <i /> {t(`management.userTickets.status${status || "Unknown"}`, { defaultValue: status || t("management.common.unknown") })}
   </span>
-);
+};
 
 const StaffUserTicket = () => {
+  const { t, i18n } = useTranslation();
+  const userTicketText = (key, options) => t(`management.userTickets.${key}`, options);
+  const formatDate = (value) => value ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN") : "—";
+  const getName = (ticket) => ticket?.userId?.fullName || ticket?.userId?.email || t("management.common.notUpdated");
   const [tickets, setTickets] = useState([]);
   const [pagination, setPagination] = useState(EMPTY_PAGINATION);
   const [page, setPage] = useState(1);
@@ -102,7 +97,7 @@ const StaffUserTicket = () => {
         .toLowerCase()
         .includes(query),
     );
-  }, [tickets, search]);
+  }, [tickets, search, t]);
 
   const openDetail = async (ticket) => {
     setSelectedTicket(ticket);
@@ -121,30 +116,25 @@ const StaffUserTicket = () => {
         <header className="user-ticket-header">
           <div>
             <p className="user-ticket-eyebrow">
-              <Ticket size={16} /> Phát hành & kiểm soát
+              <Ticket size={16} /> {userTicketText("kicker")}
             </p>
-            <h1>Danh sách vé đã mua</h1>
-            <p>
-              Tra cứu người sở hữu, loại vé và trạng thái sử dụng trong một bảng
-              điều hành.
-            </p>
+            <h1>{userTicketText("title")}</h1>
+            <p>{userTicketText("intro")}</p>
           </div>
           <div className="user-ticket-header-actions">
             <label className="user-ticket-date-filter">
               <CalendarDays size={17} />
-              <span>Ngày vé</span>
+              <span>{userTicketText("ticketDate")}</span>
               <select
                 value={date}
                 onChange={(event) => {
                   setDate(event.target.value);
                   setPage(1);
                 }}
-                aria-label="Lọc theo ngày vé"
+                aria-label={userTicketText("filterDate")}
               >
-                <option value="">Tất cả ngày</option>
-                <option value="27">Ngày 27/10</option>
-                <option value="28">Ngày 28/10</option>
-                <option value="29">Ngày 29/10</option>
+                <option value="">{userTicketText("allDates")}</option>
+                {[27, 28, 29].map((day) => <option value={day} key={day}>{userTicketText("dayInOctober", { day })}</option>)}
               </select>
             </label>
             <label className="user-ticket-search">
@@ -152,7 +142,7 @@ const StaffUserTicket = () => {
               <input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
-                placeholder="Tìm mã vé, người mua..."
+                placeholder={userTicketText("searchPlaceholder")}
               />
             </label>
             <button
@@ -164,22 +154,22 @@ const StaffUserTicket = () => {
                 )
               }
             >
-              <Ticket size={16} /> Check-in vé <ArrowRight size={16} />
+              <Ticket size={16} /> {userTicketText("checkIn") } <ArrowRight size={16} />
             </button>
           </div>
         </header>
 
         <section className="user-ticket-summary">
           <div>
-            <span>Tổng số vé đã bán</span>
+            <span>{userTicketText("soldTotal")}</span>
             <strong>{summary.sold}</strong>
           </div>
           <div>
-            <span>Tổng số vé đã check-in</span>
+            <span>{userTicketText("checkedTotal")}</span>
             <strong>{summary.checkedIn}</strong>
           </div>
           <div>
-            <span>Số vé còn lại</span>
+            <span>{userTicketText("remainingTotal")}</span>
             <strong>{summary.remaining}</strong>
           </div>
         </section>
@@ -187,8 +177,8 @@ const StaffUserTicket = () => {
         <section className="staff-user-ticket-card">
           <div className="user-ticket-toolbar">
             <div>
-              <h2>Vé người dùng</h2>
-              <span>{pagination.total} vé được ghi nhận</span>
+              <h2>{userTicketText("userTickets")}</h2>
+              <span>{userTicketText("recorded", { count: pagination.total })}</span>
             </div>
             <select
               value={status}
@@ -196,22 +186,22 @@ const StaffUserTicket = () => {
                 setStatus(event.target.value);
                 setPage(1);
               }}
-              aria-label="Lọc trạng thái vé"
+              aria-label={userTicketText("filterStatus")}
             >
-              <option value="">Tất cả trạng thái</option>
-              <option value="Pending">Chờ sử dụng</option>
-              <option value="Checked">Đã sử dụng</option>
-              <option value="Cancelled">Đã hủy</option>
+              <option value="">{userTicketText("allStatuses")}</option>
+              <option value="Pending">{userTicketText("statusPending")}</option>
+              <option value="Checked">{userTicketText("statusChecked")}</option>
+              <option value="Cancelled">{userTicketText("statusCancelled")}</option>
             </select>
           </div>
           <div className="user-ticket-table-wrap">
             <table className="user-ticket-table">
               <thead>
                 <tr>
-                  <th>Người sở hữu</th>
-                  <th>Loại vé</th>
-                  <th>Trạng thái</th>
-                  <th>Ngày phát hành</th>
+                  <th>{userTicketText("owner")}</th>
+                  <th>{userTicketText("ticketType")}</th>
+                  <th>{t("management.common.status")}</th>
+                  <th>{userTicketText("issuedDate")}</th>
                   <th />
                 </tr>
               </thead>
@@ -221,7 +211,7 @@ const StaffUserTicket = () => {
                 ) : visibleTickets.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="user-ticket-empty">
-                      Không tìm thấy vé phù hợp.
+                      {userTicketText("empty")}
                     </td>
                   </tr>
                 ) : (
@@ -229,11 +219,11 @@ const StaffUserTicket = () => {
                     <tr key={ticket._id}>
                       <td>
                         <strong>{getName(ticket)}</strong>
-                        <small>{ticket.userId?.email || "Chưa có email"}</small>
+                        <small>{ticket.userId?.email || userTicketText("noEmail")}</small>
                       </td>
                       <td>
                         {ticket.ticketTypeId?.ticketTypeName ||
-                          "Loại vé không xác định"}
+                          userTicketText("unknownType")}
                       </td>
                       <td>
                         <StatusBadge status={ticket.ticketStatus} />
@@ -249,7 +239,7 @@ const StaffUserTicket = () => {
                           type="button"
                           onClick={() => openDetail(ticket)}
                         >
-                          <Eye size={16} /> Xem
+                          <Eye size={16} /> {t("management.common.view")}
                         </button>
                       </td>
                     </tr>
@@ -260,15 +250,14 @@ const StaffUserTicket = () => {
           </div>
           <footer className="user-ticket-pagination">
             <span>
-              Trang {pagination.page || page} /{" "}
-              {Math.max(1, pagination.totalPages || 1)}
+              {userTicketText("pageOf", { page: pagination.page || page, total: Math.max(1, pagination.totalPages || 1) })}
             </span>
             <div>
               <button
                 type="button"
                 disabled={loading || page <= 1}
                 onClick={() => setPage((value) => value - 1)}
-                aria-label="Trang trước"
+                aria-label={userTicketText("previousPage")}
               >
                 <ChevronLeft size={17} />
               </button>
@@ -276,7 +265,7 @@ const StaffUserTicket = () => {
                 type="button"
                 disabled={loading || page >= (pagination.totalPages || 1)}
                 onClick={() => setPage((value) => value + 1)}
-                aria-label="Trang sau"
+                aria-label={userTicketText("nextPage")}
               >
                 <ChevronRight size={17} />
               </button>
@@ -298,19 +287,19 @@ const StaffUserTicket = () => {
               className="user-ticket-drawer__close"
               type="button"
               onClick={() => setSelectedTicket(null)}
-              aria-label="Đóng chi tiết"
+              aria-label={userTicketText("closeDetail")}
             >
               <X size={20} />
             </button>
             <p className="user-ticket-eyebrow">
-              <Ticket size={16} /> Chi tiết vé
+              <Ticket size={16} /> {userTicketText("detailTitle")}
             </p>
             <h2>
-              {selectedTicket.ticketTypeId?.ticketTypeName || "Vé sự kiện"}
+              {selectedTicket.ticketTypeId?.ticketTypeName || userTicketText("eventTicket")}
             </h2>
             <StatusBadge status={selectedTicket.ticketStatus} />
             <dl>
-              <dt>Mã vé</dt>
+              <dt>{userTicketText("ticketCode")}</dt>
               <dd>
                 {selectedTicket.qrCodeData || selectedTicket._id}
                 {selectedTicket.qrCodeData && (
@@ -319,22 +308,22 @@ const StaffUserTicket = () => {
                     className="user-ticket-qr-button"
                     onClick={() => setSelectedQrCode(selectedTicket.qrCodeData)}
                   >
-                    <QrCode size={16} /> Xem mã QR
+                    <QrCode size={16} /> {userTicketText("viewQr")}
                   </button>
                 )}
               </dd>
-              <dt>Người sở hữu</dt>
+              <dt>{userTicketText("owner")}</dt>
               <dd>
                 {getName(selectedTicket)}
                 <small>{selectedTicket.userId?.email}</small>
               </dd>
-              <dt>Đơn hàng</dt>
+              <dt>{userTicketText("order")}</dt>
               <dd>
                 {selectedTicket.orderId?._id || selectedTicket.orderId || "—"}
               </dd>
-              <dt>Phát hành lúc</dt>
+              <dt>{userTicketText("issuedAt")}</dt>
               <dd>{formatDate(selectedTicket.createdAt)}</dd>
-              <dt>Check-in lúc</dt>
+              <dt>{userTicketText("checkedAt")}</dt>
               <dd>{formatDate(selectedTicket.checkedInAt)}</dd>
             </dl>
           </aside>

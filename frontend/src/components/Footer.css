@@ -78,7 +78,7 @@
 .fpt-footer__social-btn {
   width: 40px;
   height: 40px;
-  border: 1px solid #e5e7eb;
+  border: 0;
   border-radius: 4px;
   display: flex;
   align-items: center;

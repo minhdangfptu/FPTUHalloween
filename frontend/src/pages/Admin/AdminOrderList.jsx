@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { SkeletonRows } from "../../components/LoadingSkeletons";
 import orderAPI from "../../apis/orderAPI";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -31,31 +32,8 @@ const EMPTY_PAGINATION = {
   totalPages: 1,
 };
 
-const STATUS_LABELS = {
-  Pending: "Chờ thanh toán",
-  Processing: "Đang xử lý",
-  Paid: "Đã thanh toán",
-  Cancelled: "Đã hủy",
-};
-
-const TICKET_STATUS_LABELS = {
-  Pending: "Đang chờ sử dụng",
-  Checked: "Đã sử dụng",
-  Cancelled: "Đã hủy",
-};
-
-const PAYMENT_METHOD_LABELS = {
-  PayOS: "Thanh toán trực tuyến",
-};
-
 const getOrderPayload = (response) =>
   response?.data?.data || response?.data || {};
-const getCustomerName = (order) =>
-  order?.userId?.fullName || order?.userId?.email || "Khách vãng lai";
-const formatMoney = (amount) =>
-  `${new Intl.NumberFormat("vi-VN").format(Number(amount) || 0)} đ`;
-const formatDate = (value) =>
-  value ? new Date(value).toLocaleString("vi-VN") : "—";
 const getItemCount = (order) => {
   if (order?.itemCount != null) return Number(order.itemCount) || 0;
   return (order?.items || []).reduce(
@@ -65,6 +43,15 @@ const getItemCount = (order) => {
 };
 
 const AdminOrderList = () => {
+  const { t, i18n } = useTranslation();
+  const orderText = (key, options) => t(`management.orders.${key}`, options);
+  const statusLabel = (status) => t(`management.orders.status${status || "Unknown"}`, { defaultValue: status || orderText("statusUnknown") });
+  const ticketStatusLabel = (status) => t(`management.orders.ticketStatus${status || "Pending"}`, { defaultValue: status || orderText("ticketStatusPending") });
+  const getCustomerName = (order) => order?.userId?.fullName || order?.userId?.email || orderText("guest");
+  const formatMoney = (amount) => new Intl.NumberFormat(i18n.language === "en" ? "en-US" : "vi-VN", {
+    style: "currency", currency: "VND",
+  }).format(Number(amount) || 0);
+  const formatDate = (value) => value ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN") : "—";
   const [orders, setOrders] = useState([]);
   const [pagination, setPagination] = useState(EMPTY_PAGINATION);
   const [status, setStatus] = useState("");
@@ -77,7 +64,7 @@ const AdminOrderList = () => {
   const loadOrders = useCallback(
     async (page = 1) => {
       const loadingId = "admin-orders-loading";
-      toast.loading("Đang tải danh sách đơn hàng...", { id: loadingId });
+      toast.loading(t("management.orders.loadingList"), { id: loadingId });
       setIsLoading(true);
       try {
         const response = await orderAPI.getAdminOrders({
@@ -95,7 +82,7 @@ const AdminOrderList = () => {
         setIsLoading(false);
       }
     },
-    [status],
+    [status, t],
   );
 
   useEffect(() => {
@@ -122,7 +109,7 @@ const AdminOrderList = () => {
     setSelectedOrder({ ...order, tickets: [] });
     setIsDetailLoading(true);
     const loadingId = "admin-order-detail-loading";
-    toast.loading("Đang tải chi tiết đơn hàng...", { id: loadingId });
+    toast.loading(orderText("loadingDetail"), { id: loadingId });
     try {
       const response = await orderAPI.getAdminOrderById(order._id);
       const payload = getOrderPayload(response);
@@ -131,8 +118,8 @@ const AdminOrderList = () => {
         const date = ticketType.ticketTypeDate ?? ticket.ticketTypeDate;
         const time = ticketType.ticketTypeTime || ticket.ticketTypeTime;
         const suffix = [
-          date != null ? `Ngày ${date}` : null,
-          time ? `Giờ ${time}` : null,
+          date != null ? orderText("day", { day: date }) : null,
+          time ? orderText("hour", { time }) : null,
         ]
           .filter(Boolean)
           .join(" · ");
@@ -141,7 +128,7 @@ const AdminOrderList = () => {
           ticketTypeId: {
             ...ticketType,
             ticketTypeName: [
-              ticketType.ticketTypeName || ticket.ticketTypeName || "Loại vé",
+              ticketType.ticketTypeName || ticket.ticketTypeName || orderText("ticketType"),
               suffix,
             ]
               .filter(Boolean)
@@ -150,7 +137,7 @@ const AdminOrderList = () => {
         };
       });
       setSelectedOrder(payload);
-      toast.success("Đã tải chi tiết đơn hàng.", { id: loadingId });
+      toast.success(orderText("detailLoaded"), { id: loadingId });
     } catch (error) {
       toast.error(translateError(error), { id: loadingId });
     } finally {
@@ -173,13 +160,10 @@ const AdminOrderList = () => {
         <header className="admin-order-list__header">
           <div>
             <p className="admin-order-list__kicker">
-              <ShoppingBag size={16} /> Vận hành bán vé
+              <ShoppingBag size={16} /> {orderText("kicker")}
             </p>
-            <h1>Đơn hàng</h1>
-            <p>
-              Theo dõi thanh toán, người mua và trạng thái phát hành vé trong
-              một luồng.
-            </p>
+            <h1>{orderText("title")}</h1>
+            <p>{orderText("intro")}</p>
           </div>
           <button
             className="admin-order-list__refresh"
@@ -187,39 +171,39 @@ const AdminOrderList = () => {
             onClick={() => loadOrders(pagination.page)}
             disabled={isLoading}
           >
-            <RefreshCw size={16} /> Làm mới
+            <RefreshCw size={16} /> {t("management.common.refresh")}
           </button>
         </header>
 
-        <section className="admin-order-stats" aria-label="Tổng quan đơn hàng">
+        <section className="admin-order-stats" aria-label={orderText("overview")}>
           <article>
             <FileText size={18} />
             <span>
-              <small>Tổng đơn trên trang</small>
+              <small>{orderText("pageOrders")}</small>
               <strong>{orders.length}</strong>
             </span>
           </article>
           <article>
             <CircleDollarSign size={18} />
             <span>
-              <small>Giá trị trên trang</small>
+              <small>{orderText("pageValue")}</small>
               <strong>{formatMoney(totalValue)}</strong>
             </span>
           </article>
           <article>
             <PackageCheck size={18} />
             <span>
-              <small>Đã thanh toán</small>
+              <small>{orderText("paid")}</small>
               <strong>{paidCount}</strong>
             </span>
           </article>
         </section>
 
-        <section className="admin-order-card" aria-label="Danh sách đơn hàng">
+        <section className="admin-order-card" aria-label={orderText("list")}>
           <div className="admin-order-card__toolbar">
             <div>
               <strong>{pagination.total}</strong>
-              <span>đơn hàng</span>
+              <span>{orderText("orders")}</span>
             </div>
             <div className="admin-order-filters">
               <label className="admin-order-search">
@@ -227,21 +211,21 @@ const AdminOrderList = () => {
                 <input
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Tìm mã đơn, người mua..."
-                  aria-label="Tìm đơn hàng"
+                  placeholder={orderText("searchPlaceholder")}
+                  aria-label={orderText("search")}
                 />
               </label>
               <label className="admin-order-select">
-                <span>Trạng thái</span>
+                <span>{t("management.common.status")}</span>
                 <select
                   value={status}
                   onChange={(event) => setStatus(event.target.value)}
                 >
-                  <option value="">Tất cả</option>
-                  <option value="Pending">Chờ thanh toán</option>
-                  <option value="Processing">Đang xử lý</option>
-                  <option value="Paid">Đã thanh toán</option>
-                  <option value="Cancelled">Đã hủy</option>
+                  <option value="">{t("management.common.all")}</option>
+                  <option value="Pending">{statusLabel("Pending")}</option>
+                  <option value="Processing">{statusLabel("Processing")}</option>
+                  <option value="Paid">{statusLabel("Paid")}</option>
+                  <option value="Cancelled">{statusLabel("Cancelled")}</option>
                 </select>
               </label>
             </div>
@@ -251,19 +235,19 @@ const AdminOrderList = () => {
             <SkeletonRows rows={7} columns={7} />
           ) : visibleOrders.length === 0 ? (
             <div className="admin-order-empty">
-              Không tìm thấy đơn hàng phù hợp.
+              {orderText("empty")}
             </div>
           ) : (
             <div className="admin-order-table-wrap">
               <table className="admin-order-table">
                 <thead>
                   <tr>
-                    <th>Mã đơn</th>
-                    <th>Người mua</th>
-                    <th>Ngày tạo</th>
-                    <th>Số vé</th>
-                    <th>Giá trị</th>
-                    <th>Trạng thái</th>
+                    <th>{orderText("orderCode")}</th>
+                    <th>{orderText("buyer")}</th>
+                    <th>{orderText("createdAt")}</th>
+                    <th>{orderText("ticketQuantity")}</th>
+                    <th>{orderText("value")}</th>
+                    <th>{t("management.common.status")}</th>
                     <th />
                   </tr>
                 </thead>
@@ -282,7 +266,7 @@ const AdminOrderList = () => {
                           <span>
                             <strong>{getCustomerName(order)}</strong>
                             <small>
-                              {order.userId?.email || "Chưa có email"}
+                              {order.userId?.email || orderText("noEmail")}
                             </small>
                           </span>
                         </div>
@@ -301,9 +285,7 @@ const AdminOrderList = () => {
                         <span
                           className={`admin-order-status is-${String(order.orderStatus || "pending").toLowerCase()}`}
                         >
-                          {STATUS_LABELS[order.orderStatus] ||
-                            order.orderStatus ||
-                            "Không rõ"}
+                          {statusLabel(order.orderStatus)}
                         </span>
                       </td>
                       <td>
@@ -312,7 +294,7 @@ const AdminOrderList = () => {
                           type="button"
                           onClick={() => openDetail(order)}
                         >
-                          <Eye size={15} /> Chi tiết
+                          <Eye size={15} /> {t("management.common.details")}
                         </button>
                       </td>
                     </tr>
@@ -328,17 +310,17 @@ const AdminOrderList = () => {
                 disabled={pagination.page <= 1}
                 onClick={() => loadOrders(pagination.page - 1)}
               >
-                <ChevronLeft size={15} /> Trước
+                <ChevronLeft size={15} /> {t("management.common.previous")}
               </button>
               <span>
-                Trang {pagination.page} / {pagination.totalPages}
+                {orderText("pageOf", { page: pagination.page, total: pagination.totalPages })}
               </span>
               <button
                 type="button"
                 disabled={pagination.page >= pagination.totalPages}
                 onClick={() => loadOrders(pagination.page + 1)}
               >
-                Sau <ChevronRight size={15} />
+                {t("management.common.next")} <ChevronRight size={15} />
               </button>
             </div>
           )}
@@ -361,7 +343,7 @@ const AdminOrderList = () => {
           >
             <header>
               <div>
-                <p>Chi tiết đơn hàng</p>
+                <p>{orderText("detailTitle")}</p>
                 <h2 style={{ color: "#ce0000" }} id="order-detail-title">
                   #
                   {String(
@@ -371,7 +353,7 @@ const AdminOrderList = () => {
               </div>
               <button
                 type="button"
-                aria-label="Đóng chi tiết"
+                aria-label={orderText("closeDetail")}
                 onClick={() => setSelectedOrder(null)}
               >
                 <X size={19} />
@@ -379,7 +361,7 @@ const AdminOrderList = () => {
             </header>
             {isDetailLoading ? (
               <div className="admin-order-dialog__loading">
-                <Clock3 size={20} /> Đang tải...
+                <Clock3 size={20} /> {t("management.common.loading")}
               </div>
             ) : (
               <>
@@ -394,48 +376,43 @@ const AdminOrderList = () => {
                   <span
                     className={`admin-order-status is-${String(selectedOrder.orderStatus || "pending").toLowerCase()}`}
                   >
-                    {STATUS_LABELS[selectedOrder.orderStatus] ||
-                      selectedOrder.orderStatus}
+                    {statusLabel(selectedOrder.orderStatus)}
                   </span>
                 </div>
                 <div className="admin-order-dialog__summary">
                   <div>
-                    <small>Tổng thanh toán</small>
+                    <small>{orderText("paymentTotal")}</small>
                     <strong>{formatMoney(selectedOrder.totalAmount)}</strong>
                   </div>
                   <div>
-                    <small>Phương thức</small>
+                    <small>{orderText("method")}</small>
                     <strong>
-                      {PAYMENT_METHOD_LABELS[selectedOrder.paymentMethod] ||
-                        selectedOrder.paymentMethod ||
-                        PAYMENT_METHOD_LABELS.PayOS}
+                      {selectedOrder.paymentMethod === "PayOS" ? orderText("onlinePayment") : selectedOrder.paymentMethod || orderText("onlinePayment")}
                     </strong>
                   </div>
                 </div>
-                <h3>Vé trong đơn</h3>
+                <h3>{orderText("orderTickets")}</h3>
                 <div className="admin-order-dialog__tickets">
                   {(selectedOrder.tickets || []).length ? (
                     selectedOrder.tickets.map((ticket) => (
                       <div key={ticket._id}>
                         <span>
-                          {ticket.ticketTypeId?.ticketTypeName || "Loại vé"}
+                          {ticket.ticketTypeId?.ticketTypeName || orderText("ticketType")}
                         </span>
                         <small>
                           {ticket.qrCodeData ? (
                             <button type="button" className="admin-order-qr-button" onClick={() => setSelectedQrCode(ticket.qrCodeData)}>
-                              Xem mã QR
+                              {orderText("viewQr")}
                             </button>
-                          ) : "Chưa phát hành mã QR"}
+                          ) : orderText("qrPending")}
                         </small>
                         <b>
-                          {TICKET_STATUS_LABELS[ticket.ticketStatus] ||
-                            ticket.ticketStatus ||
-                            TICKET_STATUS_LABELS.Pending}
+                          {ticketStatusLabel(ticket.ticketStatus)}
                         </b>
                       </div>
                     ))
                   ) : (
-                    <p>Chưa có vé được phát hành cho đơn này.</p>
+                    <p>{orderText("noIssuedTickets")}</p>
                   )}
                 </div>
               </>

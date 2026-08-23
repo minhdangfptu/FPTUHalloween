@@ -10,6 +10,7 @@ import {
   UserRound,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { SkeletonRows } from "../../components/LoadingSkeletons";
 import axiosClient from "../../apis/axiosClient";
 import ManageSidebar from "../../components/ManageSidebar";
@@ -20,6 +21,8 @@ import {
 import "./AdminContactList.scss";
 
 const AdminContactList = () => {
+  const { t, i18n } = useTranslation();
+  const contactText = (key, options) => t(`management.contacts.${key}`, options);
   const [contacts, setContacts] = useState([]);
   const [pagination, setPagination] = useState({ page: 1, pageSize: 6, total: 0, totalPages: 1 });
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +33,7 @@ const AdminContactList = () => {
   const [nameSearch, setNameSearch] = useState("");
 
   const loadContacts = useCallback(async (requestedPage = 1) => {
-    const loadingToast = toast.loading("Đang tải danh sách liên hệ...");
+    const loadingToast = toast.loading(t("management.contacts.loading"));
     setIsLoading(true);
     try {
       const response = await axiosClient.get("/contacts", {
@@ -51,7 +54,7 @@ const AdminContactList = () => {
       setIsLoading(false);
       toast.dismiss(loadingToast);
     }
-  }, [nameSearch, roleFilter, sortOrder, statusFilter]);
+  }, [nameSearch, roleFilter, sortOrder, statusFilter, t]);
 
   useEffect(() => {
     loadContacts(1);
@@ -61,7 +64,7 @@ const AdminContactList = () => {
     if (updatingContactId) return;
 
     setUpdatingContactId(contact._id);
-    const loadingToast = toast.loading("Đang cập nhật trạng thái...");
+    const loadingToast = toast.loading(contactText("updatingStatus"));
     try {
       const response = await axiosClient.patch(
         `/contacts/${contact._id}/status`,
@@ -87,7 +90,7 @@ const AdminContactList = () => {
   };
 
   const formatDate = (date) =>
-    date ? new Date(date).toLocaleString("vi-VN") : "—";
+    date ? new Date(date).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN") : "—";
 
   return (
     <div className="staff-manage-layout admin-contact-page">
@@ -96,10 +99,10 @@ const AdminContactList = () => {
         <header className="admin-contact-list__header">
           <div>
             <p className="admin-contact-list__kicker">
-              <MessageSquareText size={16} /> Hòm thư liên hệ
+              <MessageSquareText size={16} /> {contactText("kicker")}
             </p>
-            <h1>Danh sách liên hệ</h1>
-            <p>Các yêu cầu và phản hồi được gửi từ người tham dự sự kiện.</p>
+            <h1>{contactText("title")}</h1>
+            <p>{contactText("intro")}</p>
           </div>
           <button
             className="admin-contact-list__refresh"
@@ -107,62 +110,62 @@ const AdminContactList = () => {
             onClick={() => loadContacts(1)}
             disabled={isLoading}
           >
-            <RefreshCw size={16} /> Làm mới
+            <RefreshCw size={16} /> {t("management.common.refresh")}
           </button>
         </header>
 
         <section
           className="admin-contact-list__card"
-          aria-label="Danh sách liên hệ"
+          aria-label={contactText("title")}
         >
           <div className="admin-contact-list__summary">
             <strong>{pagination.total ?? contacts.length}</strong>
-            <span>liên hệ</span>
+            <span>{contactText("contacts")}</span>
             <div className="admin-contact-list__filters">
               <label className="admin-contact-filter admin-contact-filter--search">
                 <Search size={15} />
                 <input
                   value={nameSearch}
                   onChange={(event) => setNameSearch(event.target.value)}
-                  placeholder="Tìm theo tên..."
-                  aria-label="Tìm theo tên"
+                  placeholder={contactText("searchPlaceholder")}
+                  aria-label={contactText("search")}
                 />
               </label>
               <label className="admin-contact-filter">
-                <span>Trạng thái</span>
+                <span>{t("management.common.status")}</span>
                 <select
                   value={statusFilter}
                   onChange={(event) => setStatusFilter(event.target.value)}
-                  aria-label="Lọc theo trạng thái"
+                  aria-label={contactText("filterStatus")}
                 >
-                  <option value="all">Tất cả</option>
-                  <option value="pending">Chưa xử lý</option>
-                  <option value="done">Đã xử lý</option>
+                  <option value="all">{t("management.common.all")}</option>
+                  <option value="pending">{contactText("pending")}</option>
+                  <option value="done">{contactText("done")}</option>
                 </select>
               </label>
               <label className="admin-contact-filter">
-                <span>Role</span>
+                <span>{contactText("role")}</span>
                 <select
                   value={roleFilter}
                   onChange={(event) => setRoleFilter(event.target.value)}
-                  aria-label="Lọc theo role"
+                  aria-label={contactText("filterRole")}
                 >
-                  <option value="all">Tất cả</option>
-                  <option value="admin">Admin</option>
-                  <option value="staff">Staff</option>
-                  <option value="user">Người dùng</option>
-                  <option value="guest">Khách</option>
+                  <option value="all">{t("management.common.all")}</option>
+                  <option value="admin">{t("components.admin")}</option>
+                  <option value="staff">{t("components.staff")}</option>
+                  <option value="user">{contactText("user")}</option>
+                  <option value="guest">{contactText("guest")}</option>
                 </select>
               </label>
               <label className="admin-contact-filter">
-                <span>Ngày</span>
+                <span>{t("management.common.date")}</span>
                 <select
                   value={sortOrder}
                   onChange={(event) => setSortOrder(event.target.value)}
-                  aria-label="Sắp xếp theo ngày"
+                  aria-label={contactText("sortDate")}
                 >
-                  <option value="newest">Mới nhất</option>
-                  <option value="oldest">Cũ nhất</option>
+                  <option value="newest">{contactText("newest")}</option>
+                  <option value="oldest">{contactText("oldest")}</option>
                 </select>
               </label>
             </div>
@@ -171,18 +174,18 @@ const AdminContactList = () => {
             <SkeletonRows rows={6} columns={5} />
           ) : contacts.length === 0 ? (
             <div className="admin-contact-list__empty">
-              Chưa có liên hệ nào.
+              {contactText("empty")}
             </div>
           ) : (
             <div className="admin-contact-table-wrap">
               <table className="admin-contact-table">
                 <thead>
                   <tr>
-                    <th>Người gửi</th>
-                    <th>Chủ đề</th>
-                    <th>Nội dung</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
+                    <th>{contactText("sender")}</th>
+                    <th>{contactText("subject")}</th>
+                    <th>{contactText("content")}</th>
+                    <th>{t("management.common.status")}</th>
+                    <th>{t("management.common.actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -221,7 +224,7 @@ const AdminContactList = () => {
                         <span
                           className={`admin-contact-status ${contact.isContactted ? "is-done" : "is-pending"}`}
                         >
-                          {contact.isContactted ? "Đã xử lý" : "Chưa xử lý"}
+                          {contactText(contact.isContactted ? "done" : "pending")}
                         </span>
                       </td>
                       <td>
@@ -232,9 +235,7 @@ const AdminContactList = () => {
                           onClick={() => handleStatusChange(contact)}
                         >
                           <Check size={15} />{" "}
-                          {contact.isContactted
-                            ? "Đánh dấu chưa xử lý"
-                            : "Đã xử lý"}
+                          {contactText(contact.isContactted ? "markPending" : "markDone")}
                         </button>
                       </td>
                     </tr>
@@ -245,9 +246,9 @@ const AdminContactList = () => {
           )}
           {!isLoading && contacts.length > 0 && pagination.totalPages > 1 && (
             <div className="admin-contact-pagination">
-              <button type="button" disabled={pagination.page <= 1} onClick={() => loadContacts(pagination.page - 1)}>Trước</button>
-              <span>Trang {pagination.page} / {pagination.totalPages}</span>
-              <button type="button" disabled={pagination.page >= pagination.totalPages} onClick={() => loadContacts(pagination.page + 1)}>Sau</button>
+              <button type="button" disabled={pagination.page <= 1} onClick={() => loadContacts(pagination.page - 1)}>{t("management.common.previous")}</button>
+              <span>{contactText("pageOf", { page: pagination.page, total: pagination.totalPages })}</span>
+              <button type="button" disabled={pagination.page >= pagination.totalPages} onClick={() => loadContacts(pagination.page + 1)}>{t("management.common.next")}</button>
             </div>
           )}
         </section>

@@ -27,12 +27,12 @@ function Footer() {
         <div className="fpt-footer__grid">
           <div className="fpt-footer__contact-section">
             <Link to="/" aria-label={t("footer.homeAria")}>
-              <img src={wtm} alt="FPTU Halloween" className="fpt-footer__logo" />
+              <img src={wtm} alt={t("footer.logoAlt")} className="fpt-footer__logo" />
             </Link>
             <h3 className="fpt-footer__contact-title">{t("footer.contactInfo")}</h3>
             <div className="fpt-footer__contact-item">
               <span className="fpt-footer__contact-icon" aria-hidden="true"><EmailIcon fontSize="small" /></span>
-              <p className="fpt-footer__contact-text">fptuhalloween@gmail.com</p>
+              <p className="fpt-footer__contact-text">{t("footer.email")}</p>
             </div>
             <div className="fpt-footer__contact-item">
               <span className="fpt-footer__contact-icon" aria-hidden="true"><LocationOnIcon fontSize="small" /></span>
@@ -43,9 +43,9 @@ function Footer() {
             </div>
             <h4 className="fpt-footer__social-title">{t("footer.connect")}</h4>
             <div className="fpt-footer__social-buttons">
-              <a href="https://www.facebook.com/fptuhalloween" target="_blank" rel="noreferrer" aria-label="Facebook FPTU Halloween" className="fpt-footer__social-btn fpt-footer__social-btn--facebook"><FacebookIcon /></a>
-              <a href="https://www.facebook.com/fuboardgameclub" target="_blank" rel="noreferrer" aria-label="Facebook FPTU Board Game Club" className="fpt-footer__social-btn fpt-footer__social-btn--instagram"><InstagramIcon /></a>
-              <a href="https://www.tiktok.com/@fptu.halloween2025" target="_blank" rel="noreferrer" aria-label="TikTok FPTU Halloween" className="fpt-footer__social-btn fpt-footer__social-btn--youtube"><YouTubeIcon /></a>
+              <a href="https://www.facebook.com/fptuhalloween" target="_blank" rel="noreferrer" aria-label={t("footer.halloweenFacebook")} className="fpt-footer__social-btn fpt-footer__social-btn--facebook"><FacebookIcon /></a>
+              <a href="https://www.facebook.com/fuboardgameclub" target="_blank" rel="noreferrer" aria-label={t("footer.clubFacebook")} className="fpt-footer__social-btn fpt-footer__social-btn--instagram"><InstagramIcon /></a>
+              <a href="https://www.tiktok.com/@fptu.halloween2025" target="_blank" rel="noreferrer" aria-label={t("footer.halloweenTiktok")} className="fpt-footer__social-btn fpt-footer__social-btn--youtube"><YouTubeIcon /></a>
             </div>
           </div>
 
@@ -71,4 +71,3 @@ function Footer() {
 }
 
 export default Footer;
-

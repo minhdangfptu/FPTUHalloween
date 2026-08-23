@@ -180,7 +180,7 @@ const QRPayment = () => {
           <div className="qr-payment-details">
             <div className="qr-payment-amount">
               <span>{ticket("paymentAmount")}</span>
-              <strong>{new Intl.NumberFormat("vi-VN").format(total)} VND</strong>
+              <strong>{ticket("priceVnd", { value: new Intl.NumberFormat("vi-VN").format(total) })}</strong>
             </div>
             <div className="qr-payment-countdown">
               {ticket("paymentTime")}: <strong>{String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:{String(remainingSeconds % 60).padStart(2, "0")}</strong>

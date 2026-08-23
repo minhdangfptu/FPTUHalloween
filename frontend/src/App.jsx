@@ -58,6 +58,12 @@ import AdminFeedback from "./pages/Admin/AdminFeedback";
 import DdayVotePage from "./pages/Vote/DdayVotePage";
 import DdayVoteAdminPage from "./pages/Admin/DdayVoteAdminPage";
 import PublishCode from "./pages/Admin/PublishCode";
+import {
+  ManageSidebarProvider,
+  useManageSidebar,
+} from "./contexts/manage-sidebar-context";
+import "./styles/manage-layout.scss";
+import "./styles/themes/manage-dark.css";
 
 // Layout component cho các trang có Header, Navbar và Footer
 function Layout({ children }) {
@@ -71,13 +77,33 @@ function Layout({ children }) {
   );
 }
 
-function ManageLayout({ children, role = "staff", showFooter = true }) {
+function ManageLayoutContent({ children, role, showFooter }) {
+  const { isSidebarCollapsed } = useManageSidebar();
+
   return (
-    <>
+    <div
+      className={`manage-layout ${
+        isSidebarCollapsed ? "manage-layout--sidebar-collapsed" : ""
+      }`}
+    >
       <ManageHeader role={role} />
       {children}
-      {showFooter && <Footer />}
-    </>
+      {showFooter && (
+        <div className="manage-layout__footer">
+          <Footer />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ManageLayout({ children, role = "staff", showFooter = true }) {
+  return (
+    <ManageSidebarProvider>
+      <ManageLayoutContent role={role} showFooter={showFooter}>
+        {children}
+      </ManageLayoutContent>
+    </ManageSidebarProvider>
   );
 }
 

@@ -40,9 +40,10 @@ body:has(.hot-news-page) {
 .hot-news-page {
   display: flex;
   min-height: 100dvh;
-  padding-inline-start: 272px;
+  padding-inline-start: var(--manage-sidebar-width, 272px);
   color: var(--hot-news-ink);
   background: var(--hot-news-paper);
+  transition: padding-inline-start 0.25s ease;
 }
 
 .hot-news-main {
@@ -580,7 +581,7 @@ body:has(.hot-news-page) {
 
 @media (max-width: 47.5rem) {
   .hot-news-page {
-    padding-inline-start: 72px;
+    padding-inline-start: var(--manage-sidebar-width, 72px);
   }
 
   .hot-news-main {

@@ -3,7 +3,7 @@ import "./Login.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { authAPI } from "../../apis/authAPI";
 import toast from "react-hot-toast";
 import {
@@ -110,13 +110,13 @@ function Login() {
             <div className="login-panel">
               <form onSubmit={onSubmit}>
                 <label className="form-label" htmlFor="email">
-                  Email
+                  {auth("email")}
                 </label>
                 <input
                   id="email"
                   className="form-input"
                   type="email"
-                  placeholder="Email"
+                  placeholder={auth("email")}
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required
@@ -153,9 +153,9 @@ function Login() {
                   {loading ? auth("loading") : auth("title")}
                 </button>
                 <div style={{ marginTop: 8, textAlign: "center" }}>
-                  <a className="link-muted" href="/forgot-password">
+                  <Link className="link-muted" to="/forgot-password">
                     {auth("forgot")}
-                  </a>
+                  </Link>
                 </div>
               </form>
             </div>
@@ -171,7 +171,7 @@ function Login() {
                 <span aria-hidden className="google-swatch">
                   <GoogleIcon />
                 </span>
-                <span style={{ color: "black" }}>{auth("google")}</span>
+                <span className="oauth-btn__label">{auth("google")}</span>
               </button>
             </div>
             <div style={{ marginTop: 12 }} className="text-muted">
@@ -187,18 +187,16 @@ function Login() {
                   <img
                     style={{ width: 20, height: 20 }}
                     src={fbgc}
-                    alt="FBGC"
+                    alt={auth("clubLogoAlt")}
                   />
                 </span>
-                <span style={{ color: "black" }}>
-                  {auth("fbgc")}
-                </span>
+                <span className="oauth-btn__label">{auth("fbgc")}</span>
               </button>
             </div>
             <div style={{ marginTop: 16 }} className="text-muted">
               {auth("noAccount")} {" "}
-              <a
-                href="/register"
+              <Link
+                to="/register"
                 style={{
                   color: "red",
                   textDecoration: "underline",
@@ -206,7 +204,7 @@ function Login() {
                 }}
               >
                 {auth("register")}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

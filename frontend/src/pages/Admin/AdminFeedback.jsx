@@ -12,6 +12,7 @@ import {
   EyeOff,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import ManageSidebar from "../../components/ManageSidebar";
 import feedbackAPI from "../../apis/feedbackAPI";
 import {
@@ -39,18 +40,14 @@ const EMPTY_FORM = {
 const toLocalInput = (value) =>
   value ? new Date(value).toISOString().slice(0, 16) : "";
 const toIso = (value) => (value ? new Date(value).toISOString() : "");
-const formatDate = (value) =>
-  value
-    ? new Date(value).toLocaleString("vi-VN", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      })
-    : "—";
-
-const getTargetLabel = (targetType) => targetType === "staff" ? "Đội ngũ vận hành" : "Người tham dự";
-const getStatusLabel = (status) => ({ draft: "Bản nháp", published: "Đang mở", closed: "Đã đóng" })[status] || status;
-
 const AdminFeedback = () => {
+  const { t, i18n } = useTranslation();
+  const feedbackText = (key, options) => t(`management.feedback.${key}`, options);
+  const formatDate = (value) => value
+    ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN", { dateStyle: "medium", timeStyle: "short" })
+    : "—";
+  const getTargetLabel = (targetType) => feedbackText(targetType === "staff" ? "staffAudience" : "attendeeAudience");
+  const getStatusLabel = (status) => t(`management.feedback.status${status}`, { defaultValue: status });
   const [forms, setForms] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -241,7 +238,7 @@ const AdminFeedback = () => {
         <ManageSidebar role="admin" activeItem="feedback" />
         <div className="admin-feedback-content feedback-state">
           <LoaderCircle className="feedback-spinner" size={28} />
-          <p>Đang nạp kho phản hồi…</p>
+          <p>{feedbackText("loading")}</p>
         </div>
       </main>
     );
@@ -250,14 +247,14 @@ const AdminFeedback = () => {
       <main className="admin-feedback-page">
         <ManageSidebar role="admin" activeItem="feedback" />
         <div className="admin-feedback-content feedback-state feedback-state--error">
-          <h2>Không mở được kho phản hồi</h2>
+          <h2>{feedbackText("loadError")}</h2>
           <p>{error}</p>
           <button
             className="feedback-button feedback-button--dark"
             type="button"
             onClick={loadForms}
           >
-            Thử lại
+            {t("management.common.retry")}
           </button>
         </div>
       </main>
@@ -270,13 +267,10 @@ const AdminFeedback = () => {
         <header className="admin-feedback-heading">
           <div>
             <p className="feedback-eyebrow">
-              <ClipboardPenLine size={14} /> Feedback desk
+              <ClipboardPenLine size={14} /> {feedbackText("kicker")}
             </p>
-            <h1>Kho tiếng nói của mùa lễ hội.</h1>
-            <p>
-              Soạn form riêng cho người tham dự và đội ngũ vận hành, rồi đọc tín
-              hiệu sau mỗi lượt gửi.
-            </p>
+            <h1>{feedbackText("title")}</h1>
+            <p>{feedbackText("intro")}</p>
           </div>
           <div className="feedback-heading-actions">
             <button
@@ -284,24 +278,24 @@ const AdminFeedback = () => {
               type="button"
               onClick={toggleFeedbackNav}
               disabled={!attendeeForm || isTogglingFeedbackNav}
-              title={!attendeeForm ? "Hãy tạo form dành cho người tham dự trước" : undefined}
+              title={!attendeeForm ? feedbackText("createAttendeeFirst") : undefined}
             >
               {isFeedbackNavEnabled ? <EyeOff size={17} /> : <Eye size={17} />}
-              {isFeedbackNavEnabled ? "Ẩn nút đánh giá" : "Hiện nút đánh giá"}
+              {feedbackText(isFeedbackNavEnabled ? "hideFeedback" : "showFeedback")}
             </button>
             <button
               className="feedback-button feedback-button--accent"
               type="button"
               onClick={() => selectForm(null)}
             >
-              <Plus size={17} /> Form mới
+              <Plus size={17} /> {feedbackText("newForm")}
             </button>
           </div>
         </header>
         <div className="admin-feedback-layout">
           <aside className="feedback-form-index">
             <div className="feedback-form-index__heading">
-              <span>Biểu mẫu</span>
+              <span>{feedbackText("forms")}</span>
               <b>{forms.length}</b>
             </div>
             {forms.map((item) => (
@@ -314,10 +308,10 @@ const AdminFeedback = () => {
                 <span>
                   <strong>{item.title}</strong>
                   <small className="feedback-form-index__audience">{getTargetLabel(item.targetType)}</small>
-                  <small className="feedback-form-index__status">{getStatusLabel(item.status)} · {item.responseCount || 0} phản hồi</small>
-                  <small className="feedback-form-index__dates">Mở: {formatDate(item.openAt)}<br />Đóng: {formatDate(item.closeAt)}</small>
+                  <small className="feedback-form-index__status">{getStatusLabel(item.status)} · {feedbackText("responseCount", { count: item.responseCount || 0 })}</small>
+                  <small className="feedback-form-index__dates">{feedbackText("opens", { time: formatDate(item.openAt) })}<br />{feedbackText("closes", { time: formatDate(item.closeAt) })}</small>
                   <small>
-                    {item.targetType === "staff" ? "Staff" : "Attendee"} ·{" "}
+                    {getTargetLabel(item.targetType)} ·{" "}
                     {item.status}
                   </small>
                 </span>
@@ -326,7 +320,7 @@ const AdminFeedback = () => {
             ))}
             {forms.length === 0 && (
               <p className="feedback-muted">
-                Chưa có form nào. Bắt đầu bằng một form mới.
+                {feedbackText("emptyForms")}
               </p>
             )}
           </aside>
@@ -335,12 +329,12 @@ const AdminFeedback = () => {
               <div className="feedback-builder__top">
                 <div>
                   <span className="feedback-kicker">
-                    {selectedId ? "ĐANG CHỈNH SỬA" : "BẢN NHÁP MỚI"}
+                    {feedbackText(selectedId ? "editingLabel" : "newDraftLabel")}
                   </span>
                   <h2>
                     {selectedId
-                      ? "Chỉnh lại Form phản hồi"
-                      : "Mở một Form mới"}
+                      ? feedbackText("editFormTitle")
+                      : feedbackText("newFormTitle")}
                   </h2>
                 </div>
                 {selectedId && (
@@ -349,7 +343,7 @@ const AdminFeedback = () => {
                     type="button"
                     onClick={handleDelete}
                     disabled={isDeleting}
-                    aria-label="Xóa form"
+                    aria-label={feedbackText("deleteForm")}
                   >
                     <Trash2 size={17} />
                   </button>
@@ -357,41 +351,41 @@ const AdminFeedback = () => {
               </div>
               <div className="feedback-builder__grid">
                 <label>
-                  Tiêu đề
+                  {feedbackText("formTitle")}
                   <input
                     value={form.title}
                     onChange={(event) =>
                       updateFormField("title", event.target.value)
                     }
                     required
-                    placeholder="Ví dụ: Staff debrief sau sự kiện"
+                    placeholder={feedbackText("titlePlaceholder")}
                   />
                 </label>
                 <label>
-                  Đối tượng
+                  {feedbackText("audience")}
                   <select
                     value={form.targetType}
                     onChange={(event) =>
                       updateFormField("targetType", event.target.value)
                     }
                   >
-                    <option value="attendee">Người tham dự</option>
-                    <option value="staff">BTC</option>
+                    <option value="attendee">{feedbackText("attendeeAudience")}</option>
+                    <option value="staff">{feedbackText("staffShort")}</option>
                   </select>
                 </label>
                 <label className="feedback-builder__wide">
-                  Mô tả
+                  {feedbackText("description")}
                   <textarea
                     value={form.description}
                     onChange={(event) =>
                       updateFormField("description", event.target.value)
                     }
                     rows={2}
-                    placeholder="Nói ngắn gọn vì sao phản hồi này quan trọng…"
+                    placeholder={feedbackText("descriptionPlaceholder")}
                   />
                 </label>
                 <label>
-                  Mở form
+                  {feedbackText("openForm")}
                   <input
                     type="datetime-local"
                     value={form.openAt}
@@ -402,7 +396,7 @@ const AdminFeedback = () => {
                   />
                 </label>
                 <label>
-                  Đóng form
+                  {feedbackText("closeForm")}
                   <input
                     type="datetime-local"
                     value={form.closeAt}
@@ -413,24 +407,24 @@ const AdminFeedback = () => {
                   />
                 </label>
                 <label>
-                  Trạng thái
+                  {t("management.common.status")}
                   <select
                     value={form.status}
                     onChange={(event) =>
                       updateFormField("status", event.target.value)
                     }
                   >
-                    <option value="draft">Bản nháp</option>
-                    <option value="published">Đang mở</option>
-                    <option value="closed">Đã đóng</option>
+                    <option value="draft">{feedbackText("statusdraft")}</option>
+                    <option value="published">{feedbackText("statuspublished")}</option>
+                    <option value="closed">{feedbackText("statusclosed")}</option>
                   </select>
                 </label>
               </div>
               <div className="feedback-builder__questions">
                 <div className="feedback-builder__section-head">
                   <div>
-                    <span className="feedback-kicker">CẤU TRÚC</span>
-                    <h3>Câu hỏi trong form</h3>
+                    <span className="feedback-kicker">{feedbackText("structure")}</span>
+                    <h3>{feedbackText("formQuestions")}</h3>
                   </div>
                 </div>
                 {form.questions.map((question, index) => (
@@ -441,19 +435,19 @@ const AdminFeedback = () => {
                     <article className="feedback-question-card">
                       <div className="feedback-question-card__bar">
                         <span>
-                          CCâu hỏi số {String(index + 1).padStart(2, "0")}
+                          {feedbackText("questionNumber", { number: String(index + 1).padStart(2, "0") })}
                         </span>
                         <button
                           className="feedback-icon-button"
                           type="button"
                           onClick={() => removeQuestion(index)}
-                          aria-label="Xóa câu hỏi"
+                          aria-label={feedbackText("deleteQuestion")}
                         >
                           <Trash2 size={15} />
                         </button>
                       </div>
                       <label>
-                        Câu hỏi
+                        {feedbackText("question")}
                         <input
                           value={question.question}
                           onChange={(event) =>
@@ -464,23 +458,23 @@ const AdminFeedback = () => {
                             )
                           }
                           required
-                          placeholder="Nhập câu hỏi…"
+                          placeholder={feedbackText("questionPlaceholder")}
                         />
                       </label>
                       <div className="feedback-question-card__row">
                         <label>
-                          Kiểu trả lời
+                          {feedbackText("answerType")}
                           <select
                             value={question.type}
                             onChange={(event) =>
                               updateQuestion(index, "type", event.target.value)
                             }
                           >
-                            <option value="rating">Chấm điểm 1–5</option>
-                            <option value="text">Đoạn văn</option>
-                            <option value="single_choice">Một lựa chọn</option>
+                            <option value="rating">{feedbackText("ratingType")}</option>
+                            <option value="text">{feedbackText("textType")}</option>
+                            <option value="single_choice">{feedbackText("singleType")}</option>
                             <option value="multiple_choice">
-                              Nhiều lựa chọn
+                              {feedbackText("multipleType")}
                             </option>
                           </select>
                         </label>
@@ -496,16 +490,16 @@ const AdminFeedback = () => {
                               )
                             }
                           />{" "}
-                          Bắt buộc trả lời
+                          {feedbackText("required")}
                         </label>
                       </div>
                       {["single_choice", "multiple_choice"].includes(
                         question.type,
                       ) && (
                         <label>
-                          Các phương án trả lời{" "}
+                          {feedbackText("answerOptions")}{" "}
                           <span className="feedback-muted">
-                            (mỗi phương án viết trên một dòng)
+                            {feedbackText("onePerLine")}
                           </span>
                           <textarea
                             value={(question.options || []).join("\n")}
@@ -514,7 +508,7 @@ const AdminFeedback = () => {
                             }
                             rows={3}
                             placeholder={
-                              "Ví dụ:\nRất hài lòng\nBình thường\nCần cải thiện"
+                              feedbackText("optionsPlaceholder")
                             }
                             required
                           />
@@ -525,7 +519,7 @@ const AdminFeedback = () => {
                       className="feedback-add-question"
                       type="button"
                       onClick={addQuestion}
-                      aria-label={`Thêm câu hỏi sau câu ${index + 1}`}
+                      aria-label={feedbackText("addAfterQuestion", { number: index + 1 })}
                     >
                       <Plus size={17} />
                     </button>
@@ -536,7 +530,7 @@ const AdminFeedback = () => {
                 <span>
                   {form.openAt && form.closeAt
                     ? `${formatDate(form.openAt)} → ${formatDate(form.closeAt)}`
-                    : "Chưa đặt thời gian mở form"}
+                    : feedbackText("timeNotSet")}
                 </span>
                 <button
                   className="feedback-button feedback-button--accent"
@@ -546,11 +540,11 @@ const AdminFeedback = () => {
                   {isSaving ? (
                     <>
                       <LoaderCircle className="feedback-spinner" size={17} />{" "}
-                      Đang lưu…
+                      {feedbackText("saving")}
                     </>
                   ) : (
                     <>
-                      <Save size={17} /> Lưu form
+                      <Save size={17} /> {feedbackText("saveForm")}
                     </>
                   )}
                 </button>
@@ -562,13 +556,13 @@ const AdminFeedback = () => {
           <section className="feedback-insights">
             <header>
               <div>
-                <p className="feedback-kicker">SAU KHI GỬI</p>
-                <h2>Những gì đang được nói.</h2>
+                <p className="feedback-kicker">{feedbackText("afterSubmit")}</p>
+                <h2>{feedbackText("insightsTitle")}</h2>
               </div>
               <div className="feedback-insight-total">
                 <UsersRound size={18} />
                 <strong>{responses?.pagination?.total || 0}</strong>
-                <span>lượt phản hồi</span>
+                <span>{feedbackText("responses")}</span>
               </div>
             </header>
             <div className="feedback-stat-grid">
@@ -576,8 +570,8 @@ const AdminFeedback = () => {
                 <article key={String(item.questionId)}>
                   <span className="feedback-stat-type">
                     {item.type === "rating"
-                      ? "ĐIỂM TRUNG BÌNH"
-                      : "PHÂN BỐ LỰA CHỌN"}
+                      ? feedbackText("averageScore")
+                      : feedbackText("choiceDistribution")}
                   </span>
                   <h3>{item.question}</h3>
                   {item.type === "rating" ? (
@@ -608,7 +602,7 @@ const AdminFeedback = () => {
               {responses?.responses?.slice(0, 5).map((response) => (
                 <article key={response._id}>
                   <div>
-                    <strong>{response.userId?.fullName || "Ẩn danh"}</strong>
+                    <strong>{response.userId?.fullName || feedbackText("anonymous")}</strong>
                     <span>{formatDate(response.createdAt)}</span>
                   </div>
                   <p>
@@ -631,28 +625,28 @@ const AdminFeedback = () => {
             <section className="feedback-response-modal__panel" role="dialog" aria-modal="true" aria-labelledby="feedback-response-modal-title">
               <header className="feedback-response-modal__header">
                 <div>
-                  <p className="feedback-kicker">DANH SÁCH PHẢN HỒI</p>
+                  <p className="feedback-kicker">{feedbackText("responseList")}</p>
                   <h2 id="feedback-response-modal-title">{form.title}</h2>
-                  <span>{responses?.pagination?.total || 0} lượt gửi</span>
+                  <span>{feedbackText("submissions", { count: responses?.pagination?.total || 0 })}</span>
                 </div>
-                <button className="feedback-icon-button" type="button" onClick={() => setIsResponsesOpen(false)} aria-label="Đóng danh sách phản hồi"><X size={19} /></button>
+                <button className="feedback-icon-button" type="button" onClick={() => setIsResponsesOpen(false)} aria-label={feedbackText("closeResponses")}><X size={19} /></button>
               </header>
               <div className="feedback-response-modal__body">
-                {!responses && <div className="feedback-state feedback-state--compact"><LoaderCircle className="feedback-spinner" size={24} /><p>Đang tải phản hồi…</p></div>}
-                {responses?.responses?.length === 0 && <div className="feedback-state feedback-state--compact"><UsersRound size={25} /><p>Chưa có phản hồi nào cho form này.</p></div>}
+                {!responses && <div className="feedback-state feedback-state--compact"><LoaderCircle className="feedback-spinner" size={24} /><p>{feedbackText("loadingResponses")}</p></div>}
+                {responses?.responses?.length === 0 && <div className="feedback-state feedback-state--compact"><UsersRound size={25} /><p>{feedbackText("emptyResponses")}</p></div>}
                 {responses?.responses?.map((response, responseIndex) => (
                   <article className="feedback-response-entry" key={response._id}>
-                    <div className="feedback-response-entry__meta"><strong>{response.userId?.fullName || `Người gửi ${responseIndex + 1}`}</strong><span>{formatDate(response.createdAt)}</span></div>
+                    <div className="feedback-response-entry__meta"><strong>{response.userId?.fullName || feedbackText("sender", { number: responseIndex + 1 })}</strong><span>{formatDate(response.createdAt)}</span></div>
                     <div className="feedback-response-entry__answers">
                       {response.answers?.map((answer) => {
                         const question = form.questions.find((item) => String(item._id) === String(answer.questionId));
-                        return <div key={String(answer.questionId)}><small>{question?.question || "Câu hỏi"}</small><p>{Array.isArray(answer.value) ? answer.value.join(", ") : String(answer.value)}</p></div>;
+                        return <div key={String(answer.questionId)}><small>{question?.question || feedbackText("question")}</small><p>{Array.isArray(answer.value) ? answer.value.join(", ") : String(answer.value)}</p></div>;
                       })}
                     </div>
                   </article>
                 ))}
               </div>
-              <footer className="feedback-response-modal__footer"><button className="feedback-button feedback-button--quiet" type="button" onClick={() => setIsResponsesOpen(false)}>Đóng</button><button className="feedback-button feedback-button--accent" type="button" onClick={() => setIsResponsesOpen(false)}>Chỉnh sửa form</button></footer>
+              <footer className="feedback-response-modal__footer"><button className="feedback-button feedback-button--quiet" type="button" onClick={() => setIsResponsesOpen(false)}>{t("management.common.close")}</button><button className="feedback-button feedback-button--accent" type="button" onClick={() => setIsResponsesOpen(false)}>{feedbackText("editForm")}</button></footer>
             </section>
           </div>
         )}

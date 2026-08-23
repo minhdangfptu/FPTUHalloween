@@ -114,7 +114,7 @@
 }
 
 .fptu-club-scroll-link svg {
-  transition: transform 220ms var(--club-ease-out);
+  transition: transform 420ms var(--club-ease-out);
 }
 
 .fptu-club-hero-year {
@@ -461,7 +461,8 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .fptu-club-scroll-link:hover svg {
+  .fptu-club-scroll-link:hover svg,
+  .fptu-club-scroll-link:focus-visible svg {
     transform: translateY(0.2rem);
   }
 
@@ -543,5 +544,9 @@
     animation-duration: 150ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 150ms !important;
+  }
+
+  .fptu-club-scroll-link svg {
+    transition: none !important;
   }
 }

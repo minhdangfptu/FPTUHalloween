@@ -4,6 +4,7 @@ import wtmLogo from "../../assets/wtm.png";
 import { authAPI } from "../../apis/authAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 import "./ChangePassword.scss";
 
 function PasswordToggleIcon({ isVisible }) {
@@ -28,6 +29,7 @@ function getStrength(pw) {
 
 export default function ChangePasswordPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const auth = (key) => t(`auth.changePassword.${key}`);
 
   const [oldPassword, setOldPassword] = useState("");
@@ -91,7 +93,7 @@ export default function ChangePasswordPage() {
       });
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      window.location.href = "/login";
+      navigate("/login", { replace: true });
     } catch (err) {
       toast.error(translateError(err), {
         id: loadingToast,
@@ -106,7 +108,7 @@ export default function ChangePasswordPage() {
       <div className="cp-card">
         {/* Header */}
         <div className="cp-card__header">
-          <img className="cp-brand-logo" src={wtmLogo} alt="FPTU Halloween" />
+          <img className="cp-brand-logo" src={wtmLogo} alt={auth("brandAlt")} />
           <h1 className="cp-card__title">
             {isVerified ? auth("enterNew") : auth("verifyOld")}
           </h1>
@@ -157,7 +159,7 @@ export default function ChangePasswordPage() {
             </div>
 
             <p className="cp-change-forgot-hint">
-              <a href="/forgot-password">{auth("forgot")}</a>
+              <Link to="/forgot-password">{auth("forgot")}</Link>
             </p>
 
             <button
@@ -169,7 +171,7 @@ export default function ChangePasswordPage() {
             </button>
 
             <p className="cp-back-link">
-              <a href="/login">{auth("backLogin")}</a>
+              <Link to="/login">{auth("backLogin")}</Link>
             </p>
           </form>
         )}
