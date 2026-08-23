@@ -325,13 +325,22 @@
 }
 .admin-order-dialog header button {
   display: grid;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   place-items: center;
+  flex: 0 0 auto;
+  padding: 0;
   color: #73777d;
   background: white;
   border-radius: 50%;
   cursor: pointer;
+  line-height: 0;
+}
+.admin-order-dialog header button svg {
+  display: block;
+  width: 19px;
+  height: 19px;
+  flex: none;
 }
 .admin-order-dialog header button:hover {
   color: #ce0000;

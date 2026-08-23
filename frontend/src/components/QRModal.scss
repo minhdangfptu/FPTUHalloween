@@ -25,13 +25,21 @@
   right: 12px;
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   border: 0;
   border-radius: 50%;
   background: transparent;
   color: #777;
   cursor: pointer;
+  line-height: 0;
+}
+.qr-modal-close svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  flex: none;
 }
 .qr-modal-close:hover {
   color: #ce0000;

@@ -12,6 +12,14 @@
   --color-dropdown-hover: #f6f7f9;
   --color-header: #e60000;
   --color-header-muted: #ffd2d2;
+  --color-toast-background: #ffffff;
+  --color-toast-text: #111827;
+  --color-toast-border: #e5e7eb;
+  --color-toast-shadow: 0 12px 30px rgb(15 23 42 / 16%);
+  --color-toast-success: #16803c;
+  --color-toast-error: #dc2626;
+  --color-toast-loading: #64748b;
+  --color-toast-loading-track: #e2e8f0;
 }
 
 :root[data-theme='dark'] {
@@ -28,4 +36,12 @@
   --color-dropdown-hover: #27313d;
   --color-header: #941f25;
   --color-header-muted: #ffd5d7;
+  --color-toast-background: #232c37;
+  --color-toast-text: #f1f5f9;
+  --color-toast-border: #3b4858;
+  --color-toast-shadow: 0 14px 34px rgb(0 0 0 / 42%);
+  --color-toast-success: #8ee0ad;
+  --color-toast-error: #ff9ba4;
+  --color-toast-loading: #a8b2bf;
+  --color-toast-loading-track: #465467;
 }
