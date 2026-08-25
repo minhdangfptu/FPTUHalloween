@@ -14,19 +14,13 @@ import ManageSidebar from "../../components/ManageSidebar";
 import { ChatMessagesSkeleton } from "../../components/LoadingSkeletons";
 import { staffChatAPI } from "../../apis/staffChatAPI";
 import { baseUrl } from "../../config";
+import defaultChatAvatar from "../../assets/avatar.jpg";
 import ListChat from "./ListChat";
 import "./ChatPage.scss";
 
 const idOf = (value) => value?._id || value?.id || value;
 const nameOf = (value, fallback = "Conversation") =>
   value?.name || value?.fullName || value?.userName || fallback;
-const initialsOf = (name) =>
-  String(name || "?")
-    .split(" ")
-    .slice(-2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
 const currentUser = () => {
   try {
     return JSON.parse(localStorage.getItem("user") || "null");
@@ -666,7 +660,12 @@ const ChatPage = ({ role = "staff" }) => {
               {active?.type === "group" ? (
                 <UsersRound size={18} />
               ) : (
-                initialsOf(activeName)
+                <img
+                  className="chat-avatar__image"
+                  src={defaultChatAvatar}
+                  alt=""
+                  aria-hidden="true"
+                />
               )}
             </div>
             <div>
@@ -710,7 +709,12 @@ const ChatPage = ({ role = "staff" }) => {
                     >
                       {!mine && (
                         <span className="chat-bubble__avatar" aria-hidden="true">
-                          {initialsOf(getName(message.sender))}
+                          <img
+                            className="chat-avatar__image"
+                            src={defaultChatAvatar}
+                            alt=""
+                            aria-hidden="true"
+                          />
                         </span>
                       )}
                       <div className="chat-bubble">
@@ -750,7 +754,12 @@ const ChatPage = ({ role = "staff" }) => {
                         onClick={() => insertMention(member)}
                       >
                         <span className="chat-avatar">
-                          {initialsOf(getName(member))}
+                          <img
+                            className="chat-avatar__image"
+                            src={defaultChatAvatar}
+                            alt=""
+                            aria-hidden="true"
+                          />
                         </span>
                         <span>
                           <strong>{getName(member)}</strong>
@@ -814,7 +823,12 @@ const ChatPage = ({ role = "staff" }) => {
                   {active.members?.map((member) => (
                     <div className="chat-info-modal__member" key={idOf(member)}>
                       <span className="chat-avatar">
-                        {initialsOf(getName(member))}
+                        <img
+                          className="chat-avatar__image"
+                          src={defaultChatAvatar}
+                          alt=""
+                          aria-hidden="true"
+                        />
                       </span>
                       <span className="chat-info-modal__member-copy">
                         <strong>{getName(member)}</strong>
@@ -851,7 +865,14 @@ const ChatPage = ({ role = "staff" }) => {
               </>
             ) : (
               <div className="chat-info-modal__profile">
-                <div className="chat-avatar">{initialsOf(activeName)}</div>
+                <div className="chat-avatar">
+                  <img
+                    className="chat-avatar__image"
+                    src={defaultChatAvatar}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </div>
                 <strong>{activeName}</strong>
                 <span>@{activeMember?.userName || chatText("staffUsername")}</span>
                 <small>{activeMember?.role || t("components.staff")}</small>

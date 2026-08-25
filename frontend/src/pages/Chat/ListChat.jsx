@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ChatListSkeleton } from "../../components/LoadingSkeletons";
+import defaultChatAvatar from "../../assets/avatar.jpg";
 import "./ListChat.scss";
 
 const getId = (item) => item?._id || item?.id;
@@ -20,14 +21,6 @@ const getLastSenderName = (conversation, fallback) => {
   const sender = conversation?.lastMessageSender || conversation?.lastSender;
   return sender ? getName(sender, fallback) : "";
 };
-const initials = (name) =>
-  getName({ name })
-    .split(" ")
-    .slice(-2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
-
 const ListChat = ({
   conversations = [],
   groups = [],
@@ -105,7 +98,14 @@ const ListChat = ({
               type="button"
               onClick={() => onSelectUser(user)}
             >
-              <span className="chat-avatar">{initials(displayName(user))}</span>
+              <span className="chat-avatar">
+                <img
+                  className="chat-avatar__image"
+                  src={defaultChatAvatar}
+                  alt=""
+                  aria-hidden="true"
+                />
+              </span>
               <span>
                 <strong>{displayName(user)}</strong>
                 <small>@{user.userName || chatText("staffUsername")}</small>
@@ -186,7 +186,12 @@ const ListChat = ({
                     {conversation.type === "group" ? (
                       <UsersRound size={18} />
                     ) : (
-                      initials(name)
+                      <img
+                        className="chat-avatar__image"
+                        src={defaultChatAvatar}
+                        alt=""
+                        aria-hidden="true"
+                      />
                     )}
                   </span>
                   <span className="chat-conversation__copy">

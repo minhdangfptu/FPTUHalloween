@@ -136,6 +136,8 @@
 
 /* Mobile Drawer */
 .fpt-navbar__mobile-drawer {
+  --mobile-nav-accent: var(--color-button);
+  --mobile-nav-accent-hover: var(--color-button-hover);
   position: fixed;
   top: 0;
   left: 0;
@@ -187,7 +189,7 @@
 .fpt-navbar__mobile-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #333;
+  color: var(--color-text);
 }
 
 .fpt-navbar__mobile-close {
@@ -195,13 +197,13 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: #ce0000; /* Đỏ nổi bật */
+  color: var(--mobile-nav-accent);
   font-weight: bold;
   transition: color 0.2s;
 }
 
 .fpt-navbar__mobile-close:hover {
-  color: #222; /* Đậm hơn khi hover */
+  color: var(--mobile-nav-accent-hover);
 }
 
 .fpt-navbar__mobile-link,
@@ -209,9 +211,9 @@
   display: block;
   padding: 12px 0;
   font-size: 1.1rem;
-  color: #222;
+  color: var(--color-text);
   text-decoration: none;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--color-dropdown-border);
 }
 
 .fpt-navbar__mobile-group {
@@ -334,13 +336,18 @@
   font-size: 0.95rem;
   opacity: 0.85;
   text-decoration: none;
-  color: #666;
+  color: var(--color-muted-text);
   padding: 6px 0;
   transition: color 0.2s ease;
 }
 
 .fpt-navbar__mobile-sublink:hover {
-  color: #ce0000;
+  color: var(--mobile-nav-accent);
+}
+
+.fpt-navbar__mobile-link--account {
+  color: var(--mobile-nav-accent);
+  font-weight: 700;
 }
 
 .fpt-navbar__search-btn[data-cart-target] {
@@ -570,12 +577,12 @@
     min-height: 64px;
     margin: 0 -20px 12px;
     padding: 8px 20px;
-    border-bottom: 1px solid #f0f0f0;
-    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid var(--color-dropdown-border);
+    background: var(--color-background);
   }
 
   .fpt-navbar__mobile-header h3 {
-    color: #222;
+    color: var(--color-text);
     font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -588,15 +595,15 @@
     width: 44px;
     height: 44px;
     padding: 0;
-    color: #ce0000;
+    color: var(--mobile-nav-accent);
     border-radius: 10px;
     font-size: 1.75rem;
     line-height: 1;
   }
 
   .fpt-navbar__mobile-close:hover {
-    color: #a00000;
-    background: rgba(230, 0, 0, 0.08);
+    color: var(--mobile-nav-accent-hover);
+    background: var(--color-dropdown-hover);
   }
 
   .fpt-navbar__mobile-nav {
@@ -614,8 +621,8 @@
     min-height: 48px;
     align-items: center;
     padding: 12px 4px;
-    border-bottom: 1px solid #ededed;
-    color: #222;
+    border-bottom: 1px solid var(--color-dropdown-border);
+    color: var(--color-text);
     font-size: 0.98rem;
     font-weight: 500;
     letter-spacing: 0.01em;
@@ -623,8 +630,14 @@
 
   .fpt-navbar__mobile-link:hover,
   .fpt-navbar__mobile-link:focus-visible {
-    color: #ce0000;
-    background: rgba(230, 0, 0, 0.035);
+    color: var(--mobile-nav-accent);
+    background: var(--color-dropdown-hover);
+  }
+
+  .fpt-navbar__mobile-link--account,
+  .fpt-navbar__mobile-link--account:hover,
+  .fpt-navbar__mobile-link--account:focus-visible {
+    color: var(--mobile-nav-accent);
   }
 
   .fpt-navbar__mobile-sub {
@@ -640,15 +653,15 @@
     min-height: 42px;
     align-items: center;
     padding: 10px 8px;
-    border-bottom: 1px solid #f1f1f1;
-    color: #707070;
+    border-bottom: 1px solid var(--color-dropdown-border);
+    color: var(--color-muted-text);
     font-size: 0.92rem;
   }
 
   .fpt-navbar__mobile-sublink:hover,
   .fpt-navbar__mobile-sublink:focus-visible {
-    color: #ce0000;
-    background: rgba(230, 0, 0, 0.035);
+    color: var(--mobile-nav-accent);
+    background: var(--color-dropdown-hover);
   }
 
   .fpt-navbar__mobile-action {

@@ -152,6 +152,11 @@ Object.assign(resources.vi.translation.components, {
   changingLanguage: 'Đang chuyển đổi ngôn ngữ...',
   languageChanged: 'Đã chuyển đổi ngôn ngữ sang Tiếng Việt',
   languageChangeError: 'Không thể chuyển đổi ngôn ngữ.',
+  changingTheme: 'Đang chuyển sang chế độ {{mode}}...',
+  themeChanged: 'Đã chuyển sang chế độ {{mode}}.',
+  themeDark: 'tối',
+  themeLight: 'sáng',
+  themeChangeError: 'Không thể thay đổi chế độ hiển thị.',
 });
 
 Object.assign(resources.en.translation.components, {
@@ -161,6 +166,11 @@ Object.assign(resources.en.translation.components, {
   changingLanguage: 'Changing language...',
   languageChanged: 'Language changed to English',
   languageChangeError: 'Unable to change language.',
+  changingTheme: 'Switching to {{mode}} mode...',
+  themeChanged: 'Switched to {{mode}} mode.',
+  themeDark: 'dark',
+  themeLight: 'light',
+  themeChangeError: 'Unable to change appearance mode.',
 });
 
 resources.vi.translation.management = {

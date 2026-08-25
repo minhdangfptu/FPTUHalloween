@@ -10,10 +10,11 @@ import "./ManageHeader.scss";
 const ManageHeader = () => {
   const { i18n, t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-  const componentText = (key) => t(`components.${key}`);
+  const componentText = (key, options) => t(`components.${key}`, options);
   const language = i18n.language === "en" ? "en" : "vi";
   const { isSidebarCollapsed, toggleSidebar } = useManageSidebar();
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
+  const [isThemeChanging, setIsThemeChanging] = useState(false);
   const [unreadCount, setUnreadCount] = useState(() => Number(localStorage.getItem("staffChatUnreadCount") || 0));
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,6 +36,27 @@ const ManageHeader = () => {
       toast.error(i18n.t("components.languageChangeError"), { id: loadingToast });
     } finally {
       setIsLanguageChanging(false);
+    }
+  };
+
+  const handleThemeChange = async () => {
+    if (isThemeChanging) return;
+
+    setIsThemeChanging(true);
+    const mode = theme === "light"
+      ? componentText("themeDark")
+      : componentText("themeLight");
+    const loadingToast = toast.loading(componentText("changingTheme", { mode }));
+
+    await new Promise((resolve) => window.setTimeout(resolve, 2000));
+
+    try {
+      toggleTheme();
+      toast.success(componentText("themeChanged", { mode }), { id: loadingToast });
+    } catch {
+      toast.error(componentText("themeChangeError"), { id: loadingToast });
+    } finally {
+      setIsThemeChanging(false);
     }
   };
 
@@ -65,7 +87,9 @@ const ManageHeader = () => {
             type="button"
             aria-label={theme === "light" ? t("header.darkMode") : t("header.lightMode")}
             title={theme === "light" ? t("header.darkMode") : t("header.lightMode")}
-            onClick={toggleTheme}
+            onClick={handleThemeChange}
+            disabled={isThemeChanging}
+            aria-busy={isThemeChanging}
           >
             {theme === "light" ? (
               <svg viewBox="0 0 24 24" aria-hidden="true">

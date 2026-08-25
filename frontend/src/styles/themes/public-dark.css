@@ -35,6 +35,11 @@
   border-bottom-color: var(--public-dark-line);
 }
 
+:root[data-theme='dark'] .fpt-navbar__mobile-drawer {
+  --mobile-nav-accent: #ff6b70;
+  --mobile-nav-accent-hover: #ff9296;
+}
+
 /* Home */
 :root[data-theme='dark'] .home-page {
   --home-ink: var(--public-dark-ink);

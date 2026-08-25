@@ -34,6 +34,7 @@ function Header() {
   const [activeHotNews, setActiveHotNews] = useState([]);
   const [hotNewsState, setHotNewsState] = useState("loading");
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
+  const [isThemeChanging, setIsThemeChanging] = useState(false);
   const language = i18n.language === "en" ? "en" : "vi";
 
   useEffect(() => {
@@ -77,6 +78,27 @@ function Header() {
       toast.error(i18n.t("components.languageChangeError"), { id: loadingToast });
     } finally {
       setIsLanguageChanging(false);
+    }
+  };
+
+  const handleThemeChange = async () => {
+    if (isThemeChanging) return;
+
+    setIsThemeChanging(true);
+    const mode = theme === "light"
+      ? t("components.themeDark")
+      : t("components.themeLight");
+    const loadingToast = toast.loading(t("components.changingTheme", { mode }));
+
+    await new Promise((resolve) => window.setTimeout(resolve, 2000));
+
+    try {
+      toggleTheme();
+      toast.success(t("components.themeChanged", { mode }), { id: loadingToast });
+    } catch {
+      toast.error(t("components.themeChangeError"), { id: loadingToast });
+    } finally {
+      setIsThemeChanging(false);
     }
   };
 
@@ -128,7 +150,9 @@ function Header() {
               </button>
               <button
                 type="button"
-                onClick={toggleTheme}
+                onClick={handleThemeChange}
+                disabled={isThemeChanging}
+                aria-busy={isThemeChanging}
                 className="fpt-header__social-btn fpt-header__social-btn--theme"
                 aria-label={theme === "light" ? t("header.darkMode") : t("header.lightMode")}
                 title={theme === "light" ? t("header.darkMode") : t("header.lightMode")}

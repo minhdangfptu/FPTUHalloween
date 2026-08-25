@@ -499,8 +499,7 @@ function Navbar() {
               {user ? (
                 <>
                   <div
-                    className="fpt-navbar__mobile-link"
-                    style={{ fontWeight: "bold", color: "#ce0000" }}
+                    className="fpt-navbar__mobile-link fpt-navbar__mobile-link--account"
                   >
                     <User size={18} aria-hidden="true" />
                     {user.fullName || user.name || t("components.account")}
@@ -539,8 +538,7 @@ function Navbar() {
               ) : (
                 <>
                   <div
-                    className="fpt-navbar__mobile-link"
-                    style={{ fontWeight: "bold", color: "#ce0000" }}
+                    className="fpt-navbar__mobile-link fpt-navbar__mobile-link--account"
                   >
                     <User size={18} aria-hidden="true" />
                     {t("components.account")}

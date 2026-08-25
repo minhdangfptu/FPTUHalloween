@@ -13,7 +13,7 @@
   --chat-online: #2eae58;
   --chat-mention: #1769e0;
   --chat-mention-soft: #e7f0ff;
-  --chat-font: "Geist", system-ui, sans-serif;
+  --chat-font: "Roboto", Arial, sans-serif;
   margin-left: var(--manage-sidebar-width, 272px);
   width: calc(100% - var(--manage-sidebar-width, 272px));
   box-sizing: border-box;
@@ -118,6 +118,13 @@
   background: var(--chat-accent-soft);
   font-size: 9px;
   font-weight: 800;
+}
+.chat-bubble__avatar .chat-avatar__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
 }
 .chat-bubble {
   max-width: min(70%, 520px);
