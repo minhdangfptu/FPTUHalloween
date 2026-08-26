@@ -458,6 +458,7 @@
   display: -webkit-box;
   overflow: hidden;
   margin-top: 0.2rem;
+  min-height: 2.875rem;
   font-size: 1.25rem;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -504,6 +505,7 @@
 .facebook-news-card .facebook-news-meta {
   justify-content: space-between;
   margin-top: auto;
+  padding-top: 1.25rem;
 }
 
 .facebook-news-meta span {
