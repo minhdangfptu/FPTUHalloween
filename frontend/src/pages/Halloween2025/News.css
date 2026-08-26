@@ -1,435 +1,687 @@
-/* ====== News Component Styles ====== */
-.fptu-halloween-news-container {
+/* Hallmark · macrostructure: Marquee Hero · genre: atmospheric · theme: FPTU midnight paper · enrichment: existing haunted-ghost cover · nav/footer: inherited · pre-emit critique: P4 H5 E4 S5 R4 V5 · contrast/slop/honest/chrome/tokens/responsive/icons/mobile: pass */
+.facebook-news-page {
+  --facebook-news-ink: #20242c;
+  --facebook-news-muted: #687180;
+  --facebook-news-paper: #fbfaf8;
+  --facebook-news-surface: #fffdfd;
+  --facebook-news-surface-raised: #f2efeb;
+  --facebook-news-line: #e4ddd8;
+  --facebook-news-red: #d71920;
+  --facebook-news-red-dark: #ad1117;
+  --facebook-news-red-soft: #fff0f1;
+  --facebook-news-hero: #11131a;
+  --facebook-news-hero-muted: #d2d6dd;
+  --facebook-news-hero-accent: #ff6b70;
+  --facebook-news-on-dark: #fffafa;
+  --facebook-news-hero-overlay-strong: rgb(10 10 15 / 94%);
+  --facebook-news-hero-overlay-medium: rgb(10 10 15 / 82%);
+  --facebook-news-hero-overlay-light: rgb(10 10 15 / 42%);
+  --facebook-news-hero-overlay-bottom: rgb(10 10 15 / 86%);
+  --facebook-news-hero-grid: rgb(255 250 250 / 8%);
+  --facebook-news-stamp-surface: rgb(12 12 18 / 48%);
+  --facebook-news-stamp-ring: rgb(215 25 32 / 10%);
+  --facebook-news-search-shadow: rgb(32 36 44 / 8%);
+  --facebook-news-focus: #d71920;
+  --facebook-news-shadow: 0 1.25rem 3rem rgb(32 36 44 / 10%);
+  --news-filter-text: var(--facebook-news-ink);
+  --news-filter-muted: var(--facebook-news-muted);
+  --news-filter-surface: var(--facebook-news-surface);
+  --news-filter-input: var(--facebook-news-surface);
+  --news-filter-disabled: var(--facebook-news-surface-raised);
+  --news-filter-border: var(--facebook-news-line);
+  --news-filter-accent: var(--facebook-news-red);
+  --news-filter-hover: var(--facebook-news-surface-raised);
+  --news-pagination-text: var(--facebook-news-ink);
+  --news-pagination-surface: var(--facebook-news-surface);
+  --news-pagination-border: var(--facebook-news-line);
+  --news-pagination-disabled: var(--facebook-news-surface-raised);
+  --news-pagination-disabled-text: var(--facebook-news-muted);
+  --news-pagination-accent: var(--facebook-news-red);
+  --news-featured-text: var(--facebook-news-ink);
+  --news-featured-muted: var(--facebook-news-muted);
+  --news-featured-surface: var(--facebook-news-surface);
+  --news-featured-card: var(--facebook-news-surface);
+  --news-featured-control: var(--facebook-news-surface);
+  --news-featured-media: var(--facebook-news-surface-raised);
+  --news-featured-border: var(--facebook-news-line);
+  --news-featured-accent: var(--facebook-news-red);
+  --news-featured-hover: var(--facebook-news-red-soft);
+  min-width: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  padding: 40px 0;
-  padding-top: 0;
+  overflow-x: clip;
+  color: var(--facebook-news-ink);
+  background: var(--facebook-news-paper);
+  font-family: "Geist Variable", "Geist", ui-sans-serif, sans-serif;
 }
 
-.fptu-halloween-news-header {
-  background-image: url('../../assets/cover-01.png');
+.facebook-news-page h1,
+.facebook-news-page h2,
+.facebook-news-page h3,
+.facebook-news-page p {
+  min-width: 0;
+}
+
+.facebook-news-hero {
+  position: relative;
+  display: flex;
+  min-height: clamp(32rem, 65vh, 42rem);
+  align-items: flex-end;
+  overflow: hidden;
+  padding: clamp(3rem, 5vw, 4rem) 1rem clamp(4.5rem, 8vw, 6rem);
+  color: var(--facebook-news-on-dark);
+  background-color: var(--facebook-news-hero);
+  background-position: center 42%;
   background-size: cover;
+  isolation: isolate;
+}
+
+.facebook-news-hero::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background:
+    linear-gradient(90deg, var(--facebook-news-hero-overlay-strong) 0%, var(--facebook-news-hero-overlay-medium) 42%, var(--facebook-news-hero-overlay-light) 100%),
+    linear-gradient(0deg, var(--facebook-news-hero-overlay-bottom) 0%, transparent 55%);
+}
+
+.facebook-news-hero::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  opacity: 0.28;
+  background-image:
+    linear-gradient(var(--facebook-news-hero-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--facebook-news-hero-grid) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: linear-gradient(90deg, #000, transparent 72%);
+}
+
+.facebook-news-hero__content,
+.facebook-news-content {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+}
+
+.facebook-news-hero__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(2rem, 8vw, 7rem);
+}
+
+.facebook-news-hero__copy {
+  min-width: 0;
+}
+
+.facebook-news-eyebrow,
+.facebook-news-section-heading span,
+.facebook-news-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.facebook-news-eyebrow {
+  color: var(--facebook-news-hero-accent);
+}
+
+.facebook-news-facebook-mark {
+  display: inline-grid;
+  width: 1rem;
+  height: 1rem;
+  place-items: center;
+  font-size: 1.1rem;
+  font-weight: 850;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.facebook-news-facebook-mark--empty {
+  width: 2rem;
+  height: 2rem;
+  color: var(--facebook-news-red);
+  font-size: 2rem;
+}
+
+.facebook-news-hero h1 {
+  max-width: 8.5ch;
+  margin: 1.2rem 0 0;
+  color: var(--facebook-news-on-dark);
+  font-size: clamp(3.5rem, 8vw, 7.25rem);
+  font-weight: 700;
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+  overflow-wrap: anywhere;
+}
+
+.facebook-news-hero p {
+  max-width: 48ch;
+  margin: 1.5rem 0 0;
+  color: var(--facebook-news-hero-muted);
+  font-size: clamp(0.95rem, 1.5vw, 1.08rem);
+  line-height: 1.7;
+}
+
+.facebook-news-hero__stamp {
+  display: grid;
+  width: clamp(7.5rem, 12vw, 9.5rem);
+  aspect-ratio: 1;
+  place-items: center;
+  align-self: center;
+  color: var(--facebook-news-on-dark);
+  background: var(--facebook-news-stamp-surface);
+  border: 1px solid var(--facebook-news-hero-accent);
+  border-radius: 50%;
+  rotate: -7deg;
+  box-shadow: 0 0 0 0.45rem var(--facebook-news-stamp-ring);
+}
+
+.facebook-news-hero__stamp strong {
+  align-self: end;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+
+.facebook-news-hero__stamp span {
+  align-self: start;
+  color: var(--facebook-news-hero-accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+}
+
+.facebook-news-search {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  width: min(100%, 22rem);
+  min-height: 3rem;
+  gap: 0.7rem;
+  padding: 0.35rem 0.35rem 0.35rem 1rem;
+  color: var(--facebook-news-red);
+  background: var(--facebook-news-surface);
+  border: 1px solid var(--facebook-news-line);
+  border-radius: 0.5rem;
+  box-shadow: none;
+  justify-self: end;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.facebook-news-search input {
+  min-width: 0;
+  min-height: 2.35rem;
+  padding: 0;
+  color: var(--facebook-news-ink);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: inherit;
+}
+
+.facebook-news-search input::placeholder {
+  color: var(--facebook-news-muted);
+}
+
+.facebook-news-search:focus-within {
+  border-color: var(--facebook-news-red);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--facebook-news-red) 12%, transparent);
+}
+
+.facebook-news-search button,
+.facebook-news-state button {
+  display: inline-flex;
+  width: 2.35rem;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.55rem;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 750;
+  white-space: nowrap;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    opacity 180ms ease;
+}
+
+.facebook-news-state button {
+  width: auto;
+  padding: 0.7rem 1rem;
+}
+
+.facebook-news-search button,
+.facebook-news-state button {
+  color: var(--facebook-news-on-dark);
+  background: var(--facebook-news-red);
+}
+
+.facebook-news-search button:active,
+.facebook-news-state button:active {
+  background: var(--facebook-news-red-dark);
+}
+
+.facebook-news-search button:disabled,
+.facebook-news-state button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.facebook-news-content {
+  padding: clamp(4rem, 7vw, 7rem) 1rem;
+}
+
+.facebook-news-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(24rem, 34rem);
+  align-items: end;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--facebook-news-line);
+}
+
+.facebook-news-section-heading__copy {
+  min-width: 0;
+}
+
+.facebook-news-section-heading span,
+.facebook-news-source {
+  color: var(--facebook-news-red);
+}
+
+.facebook-news-section-heading h2 {
+  margin: 0.45rem 0 0;
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  overflow-wrap: anywhere;
+}
+
+.facebook-news-section-heading__count {
+  margin: 0.85rem 0 0;
+  color: var(--facebook-news-muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.facebook-news-featured {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
+  min-height: 26rem;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  background: var(--facebook-news-surface);
+  border: 1px solid var(--facebook-news-line);
+  border-radius: 1rem;
+  box-shadow: var(--facebook-news-shadow);
+}
+
+.facebook-news-featured__media,
+.facebook-news-card__media {
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--facebook-news-surface-raised);
   background-position: center;
   background-repeat: no-repeat;
-  color: white;
-  position: relative;
-  padding: 80px 20px;
-  text-align: center;
-  margin-bottom: 40px;
+  background-size: cover;
 }
 
-.fptu-halloween-news-header::before {
-  content: '';
+.facebook-news-featured__media img,
+.facebook-news-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.facebook-news-featured__copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.facebook-news-featured h3,
+.facebook-news-card h3 {
+  margin: 0.65rem 0 0.75rem;
+  color: var(--facebook-news-ink);
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.facebook-news-featured h3 {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.facebook-news-featured__copy > p,
+.facebook-news-card__body > p {
+  margin: 0;
+  color: var(--facebook-news-muted);
+  line-height: 1.65;
+}
+
+.facebook-news-featured a,
+.facebook-news-card a {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.45rem;
+  margin-top: 1.2rem;
+  color: var(--facebook-news-red);
+  font-weight: 800;
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+  transition: color 180ms ease;
+}
+
+.facebook-news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.facebook-news-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: var(--facebook-news-surface);
+  border: 1px solid var(--facebook-news-line);
+  border-radius: 1rem;
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.facebook-news-card__media {
+  aspect-ratio: 16 / 10;
+}
+
+.facebook-news-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0.85rem 1.25rem 1.25rem;
+}
+
+.facebook-news-card__tag,
+.news-featured-carousel__tag {
+  display: inline-flex;
+  max-width: calc(100% - 1.5rem);
+  align-items: center;
+  overflow: visible;
+  padding: 0.25rem 0.55rem;
+  color: var(--facebook-news-red);
+  background: var(--facebook-news-red-soft);
+  border: 1px solid color-mix(in srgb, var(--facebook-news-red) 22%, var(--facebook-news-line));
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-transform: none;
+  white-space: normal;
+}
+
+.facebook-news-card__tag {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1;
-}
-
-.fptu-halloween-news-banner {
-  position: relative;
+  top: 0.85rem;
+  right: 1.25rem;
   z-index: 2;
 }
 
-.fptu-halloween-news-banner-title {
-  font-size: 3rem;
-  font-weight: 800;
-  margin: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  background: linear-gradient(45deg, #E63946, #ff6b7a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.fptu-halloween-news-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.fptu-halloween-news-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 40px;
-  align-items: start;
-}
-
-/* ====== Featured News ====== */
-.fptu-halloween-news-featured {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.fptu-halloween-news-featured-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #E63946;
-  margin-bottom: 20px;
-  text-align: center;
-  position: relative;
-}
-
-.fptu-halloween-news-featured-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  /* transform: translateX(-50%); */
-  width: 50px;
-  height: 3px;
-  background: linear-gradient(90deg, #E63946, #ff6b7a);
-  border-radius: 2px;
-}
-
-.fptu-halloween-news-featured-main {
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(230, 57, 70, 0.1);
-  /* transition: all 0.3s ease; */
-  position: relative;
-}
-
-.fptu-halloween-news-featured-main::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #E63946, #ff6b7a, #E63946);
-  z-index: 1;
-}
-
-.fptu-halloween-news-featured-main:hover {
-  /* transform: translateY(-8px); */
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-}
-
-.fptu-halloween-news-featured-image {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  /* transition: transform 0.3s ease; */
-}
-
-.fptu-halloween-news-featured-main:hover .fptu-halloween-news-featured-image {
-  transform: scale(1.05);
-}
-
-.fptu-halloween-news-featured-content {
-  padding: 30px;
-}
-
-.fptu-halloween-news-featured-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 20px;
-  line-height: 1.4;
-  /* transition: color 0.3s ease; */
-}
-
-.fptu-halloween-news-featured-main:hover .fptu-halloween-news-featured-title {
-  color: #E63946;
-}
-
-.fptu-halloween-news-featured-meta {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.fptu-halloween-news-featured-source {
-  background: linear-gradient(45deg, #E63946, #ff6b7a);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 15px;
-  font-weight: 600;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.fptu-halloween-news-featured-time {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.fptu-halloween-news-featured-views {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-/* ====== Secondary News ====== */
-.fptu-halloween-news-secondary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 30px;
-}
-
-.fptu-halloween-news-secondary-item {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(230, 57, 70, 0.1);
-  /* transition: all 0.3s ease; */
-  position: relative;
-}
-
-.fptu-halloween-news-secondary-item:hover {
-  /* transform: translateY(-5px); */
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-}
-
-.fptu-halloween-news-secondary-image {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.fptu-halloween-news-secondary-item:hover .fptu-halloween-news-secondary-image {
-  transform: scale(1.05);
-}
-
-.fptu-halloween-news-secondary-content {
-  padding: 20px;
-}
-
-.fptu-halloween-news-secondary-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 15px;
-  line-height: 1.4;
+.facebook-news-card h3 {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin-top: 0.2rem;
+  font-size: 1.25rem;
   -webkit-box-orient: vertical;
-  overflow: hidden;
+  -webkit-line-clamp: 3;
 }
 
-.fptu-halloween-news-secondary-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-.fptu-halloween-news-secondary-source {
-  background: #f0f0f0;
-  color: #666;
-  padding: 4px 8px;
-  border-radius: 10px;
-  font-weight: 500;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-
-.fptu-halloween-news-secondary-time {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #666;
-  font-size: 0.8rem;
-}
-
-/* ====== News List ====== */
-.fptu-halloween-news-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.fptu-halloween-news-sidebar-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #E63946;
-  margin-bottom: 20px;
-  text-align: center;
-  position: relative;
-}
-
-.fptu-halloween-news-sidebar-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  /* transform: translateX(-50%); */
-  width: 50px;
-  height: 3px;
-  background: linear-gradient(90deg, #E63946, #ff6b7a);
-  border-radius: 2px;
-}
-
-.fptu-halloween-news-list-item {
-  background: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(230, 57, 70, 0.1);
-  /* transition: all 0.3s ease; */
-  position: relative;
-  overflow: hidden;
-}
-
-.fptu-halloween-news-list-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #E63946, #ff6b7a);
-  opacity: 0;
-  /* transition: opacity 0.3s ease; */
-}
-
-.fptu-halloween-news-list-item:hover {
-  /* transform: translateX(5px); */
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-}
-
-.fptu-halloween-news-list-item:hover::before {
-  opacity: 1;
-}
-
-.fptu-halloween-news-list-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 15px;
-  line-height: 1.4;
+.facebook-news-card__body > p {
   display: -webkit-box;
   overflow: hidden;
-  /* transition: color 0.3s ease;   */
+  min-height: 4.2rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 
-.fptu-halloween-news-list-item:hover .fptu-halloween-news-list-title {
-  color: #E63946;
+.facebook-news-card a {
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 0;
+  padding-top: 0;
+  border: 1px solid var(--facebook-news-line);
+  border-radius: 0.6rem;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
 }
 
-.fptu-halloween-news-list-meta {
+.facebook-news-meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  color: var(--facebook-news-muted);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.facebook-news-card .facebook-news-meta {
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: auto;
 }
 
-.fptu-halloween-news-list-source {
-  background: #f8f9fa;
-  color: #666;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.75rem;
-}
-
-.fptu-halloween-news-list-time {
-  display: flex;
+.facebook-news-meta span {
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
-  color: #666;
-  font-size: 0.8rem;
+  gap: 0.35rem;
 }
 
-.fptu-halloween-news-list-views {
-  color: #666;
-  font-size: 0.8rem;
-  margin-top: 5px;
+.facebook-news-meta span svg {
+  color: var(--facebook-news-red);
 }
 
-/* ====== Responsive Design ====== */
-@media (max-width: 1200px) {
-  .fptu-halloween-news-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
+.facebook-news-state {
+  display: grid;
+  min-height: 20rem;
+  place-items: center;
+  align-content: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  color: var(--facebook-news-muted);
+  background: var(--facebook-news-surface);
+  border: 1px dashed var(--facebook-news-line);
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.facebook-news-state > svg {
+  color: var(--facebook-news-red);
+}
+
+.facebook-news-state strong {
+  color: var(--facebook-news-ink);
+  font-size: 1.25rem;
+}
+
+.facebook-news-state p {
+  max-width: 52ch;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.facebook-news-state button {
+  margin-top: 0.75rem;
+}
+
+.facebook-news-state--error > svg,
+.facebook-news-state--error strong {
+  color: var(--facebook-news-red);
+}
+
+.facebook-news-search button:focus-visible,
+.facebook-news-state button:focus-visible,
+.facebook-news-featured a:focus-visible,
+.facebook-news-card a:focus-visible {
+  outline: 2px solid var(--facebook-news-focus);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .facebook-news-search button:hover,
+  .facebook-news-state button:hover {
+    background: var(--facebook-news-red-dark);
   }
-  
-  .fptu-halloween-news-sidebar {
-    order: -1;
+
+  .facebook-news-featured:hover img,
+  .facebook-news-card:hover img {
+    transform: scale(1.035);
+  }
+
+  .facebook-news-card:hover {
+    border-color: color-mix(in srgb, var(--facebook-news-red) 50%, var(--facebook-news-line));
+    box-shadow: var(--facebook-news-shadow);
+  }
+
+  .facebook-news-featured a:hover,
+  .facebook-news-card a:hover {
+    color: var(--facebook-news-red-dark);
+    background: var(--facebook-news-red-soft);
+    border-color: var(--facebook-news-red);
+  }
+
+}
+
+@media (max-width: 60rem) {
+  .facebook-news-hero__content {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+  }
+
+  .facebook-news-hero h1 {
+    max-width: 11ch;
+  }
+
+  .facebook-news-section-heading {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .facebook-news-search {
+    width: min(100%, 42rem);
+  }
+
+  .facebook-news-featured {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .facebook-news-featured__media {
+    min-height: 20rem;
+    aspect-ratio: 16 / 9;
+  }
+
+  .facebook-news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 768px) {
-  .fptu-halloween-news-header {
-    padding: 60px 20px;
+@media (max-width: 40rem) {
+  .facebook-news-hero {
+    min-height: auto;
+    padding: 4rem 0.75rem 3.5rem;
+    background-position: 58% center;
   }
-  
-  .fptu-halloween-news-banner-title {
-    font-size: 2.2rem;
+
+  .facebook-news-hero__content {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
   }
-  
-  .fptu-halloween-news-content {
-    padding: 0 15px;
+
+  .facebook-news-hero h1 {
+    font-size: clamp(3rem, 15vw, 4.8rem);
   }
-  
-  .fptu-halloween-news-secondary {
-    grid-template-columns: 1fr;
-    gap: 15px;
+
+  .facebook-news-hero__stamp {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5.5rem;
+    opacity: 0.8;
   }
-  
-  .fptu-halloween-news-featured-content {
-    padding: 20px;
+
+  .facebook-news-eyebrow {
+    max-width: calc(100% - 6.5rem);
   }
-  
-  .fptu-halloween-news-featured-title {
-    font-size: 1.5rem;
+
+  .facebook-news-search {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: 0.55rem 0.55rem 0.55rem 0.75rem;
   }
-  
-  .fptu-halloween-news-featured-image {
-    height: 250px;
+
+  .facebook-news-search button {
+    grid-column: auto;
+    width: 2.35rem;
   }
+
+  .facebook-news-content {
+    padding: 4rem 0.75rem;
+  }
+
+  .facebook-news-section-heading {
+    gap: 1.5rem;
+  }
+
+  .facebook-news-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .facebook-news-featured__media {
+    min-height: 13rem;
+  }
+
 }
 
-@media (max-width: 480px) {
-  .fptu-halloween-news-banner-title {
-    font-size: 1.8rem;
+@media (prefers-reduced-motion: reduce) {
+  .facebook-news-page *,
+  .facebook-news-page *::before,
+  .facebook-news-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  
-  .fptu-halloween-news-featured-image {
-    height: 200px;
-  }
-  
-  .fptu-halloween-news-featured-title {
-    font-size: 1.3rem;
-  }
-}
-
-/* ====== Animations ====== */
-/* @keyframes fptu-halloween-news-fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} */
-
-.fptu-halloween-news-featured-main,
-.fptu-halloween-news-secondary-item,
-.fptu-halloween-news-list-item {
-  animation: fptu-halloween-news-fadeInUp 0.6s ease-out;
-}
-
-.fptu-halloween-news-secondary-item:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.fptu-halloween-news-list-item {
-  animation-delay: calc(var(--item-index, 0) * 0.1s);
 }

@@ -47,6 +47,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminListUser from "./pages/Admin/AdminListUser";
 import AdminOrderList from "./pages/Admin/AdminOrderList";
 import HotNews from "./pages/Admin/HotNews";
+import FacebookNews from "./pages/Admin/FacebookNews";
 import StaffCheckinTicket from "./pages/Staff/StaffCheckinTicket";
 import StaffHomePage from "./pages/Staff/StaffDashboardPage";
 import StaffUserTicket from "./pages/Staff/StaffUserTicket";
@@ -422,6 +423,14 @@ export default function App() {
           element={
             <ManageLayout role="admin">
               <HotNews />
+            </ManageLayout>
+          }
+        />
+        <Route
+          path="/admin/facebook-news"
+          element={
+            <ManageLayout role="admin">
+              <FacebookNews />
             </ManageLayout>
           }
         />

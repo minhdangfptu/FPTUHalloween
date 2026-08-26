@@ -156,6 +156,13 @@ const ERROR_TRANSLATIONS = {
   // --- Server ---
   'Internal Server Error': 'Lỗi hệ thống. Vui lòng thử lại sau.',
   'Service Unavailable': 'Dịch vụ tạm thời không khả dụng. Vui lòng thử lại sau.',
+  'Facebook News sync is not configured': 'Đồng bộ tin Facebook chưa được cấu hình.',
+  'Facebook News sync is already running': 'Tiến trình đồng bộ tin Facebook đang chạy.',
+  'Facebook API request timed out': 'Facebook phản hồi quá lâu. Vui lòng thử lại.',
+  'Unable to reach Facebook API': 'Không thể kết nối Facebook. Vui lòng thử lại sau.',
+  'Facebook API returned an invalid pagination URL': 'Facebook trả về liên kết phân trang không hợp lệ.',
+  'Too many Facebook News sync requests. Please try again later.': 'Bạn đã yêu cầu đồng bộ quá nhiều lần. Vui lòng thử lại sau.',
+  'Too many news requests. Please try again later.': 'Bạn đang tải tin quá nhanh. Vui lòng thử lại sau.',
 };
 
 const ERROR_TRANSLATIONS_EN = Object.fromEntries(
@@ -259,6 +266,7 @@ const SUCCESS_TRANSLATIONS = {
   'Hot news updated successfully': 'Cập nhật thông báo thành công.',
   'Hot news status updated successfully': 'Cập nhật trạng thái thông báo thành công.',
   'Hot news deleted successfully': 'Xóa thông báo thành công.',
+  'Facebook News synchronized successfully': 'Bài viết Facebook đã được cập nhật.',
   'Ticket type created successfully': 'Tạo loại vé thành công.',
   'Ticket type updated successfully': 'Cập nhật loại vé thành công.',
   'Ticket type status updated successfully': 'Cập nhật trạng thái loại vé thành công.',

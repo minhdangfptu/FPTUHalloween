@@ -10,6 +10,7 @@ const { expirePendingOrders } = require('./src/services/adminOrder')
 const { migrateTicketTypeQuantities } = require('./src/services/ticketType')
 const { closeExpired, ensureIndexes } = require('./src/services/ddayVote')
 const { initializeStaffChatSocket } = require('./src/sockets/staffChat')
+const { startFacebookNewsScheduler } = require('./src/services/facebookNewsSync')
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -92,6 +93,7 @@ const startServer = async () => {
     }
     await expirePendingOrders()
     await closeExpired()
+    startFacebookNewsScheduler()
     setInterval(() => {
       expirePendingOrders().catch(error => console.error('Failed to expire pending orders:', error.message))
     }, 30 * 1000)

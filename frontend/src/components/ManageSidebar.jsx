@@ -11,6 +11,7 @@ import {
   Menu,
   Megaphone,
   MessagesSquare,
+  Newspaper,
   ReceiptText,
   Tags,
   TicketCheck,
@@ -43,6 +44,7 @@ const MENU_BY_ROLE = {
     { id: "orders", labelKey: "orders", icon: ReceiptText },
     { id: "contacts", labelKey: "contacts", icon: ContactRound },
     { id: "hot-news", labelKey: "hotNews", icon: Megaphone },
+    { id: "facebook-news", labelKey: "facebookNews", icon: Newspaper },
     { id: "feedback", labelKey: "feedbackManagement", icon: ClipboardPenLine },
     { id: "vote", labelKey: "ddayVote", icon: Vote },
     { id: "home", labelKey: "eventHome", icon: Home },
@@ -138,6 +140,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
     orders: "/admin/orders",
     contacts: "/admin/contacts",
     "hot-news": "/admin/hot-news",
+    "facebook-news": "/admin/facebook-news",
     "ticket-types":
       resolvedRole === "admin" ? "/admin/tickets" : "/staff/ticket-types",
     feedback: resolvedRole === "admin" ? "/admin/feedback" : "/staff/feedback",

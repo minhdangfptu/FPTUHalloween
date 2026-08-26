@@ -3,6 +3,7 @@ module.exports = {
   Role: require('./Role'),
   Contact: require('./Contact'),
   News: require('./News'),
+  KnowledgeSyncState: require('./KnowledgeSyncState'),
   RefreshToken: require('./RefreshToken'),
   Order: require('./Order'),
   TicketType: require('./TicketType'),

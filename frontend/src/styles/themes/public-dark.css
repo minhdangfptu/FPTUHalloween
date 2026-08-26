@@ -63,6 +63,23 @@
   background: var(--public-dark-surface);
 }
 
+/* Facebook News */
+:root[data-theme='dark'] .facebook-news-page {
+  --facebook-news-ink: var(--public-dark-ink);
+  --facebook-news-muted: var(--public-dark-muted);
+  --facebook-news-paper: var(--public-dark-bg);
+  --facebook-news-surface: var(--public-dark-surface);
+  --facebook-news-surface-raised: var(--public-dark-surface-raised);
+  --facebook-news-line: var(--public-dark-line);
+  --facebook-news-red: #ff6b70;
+  --facebook-news-red-dark: #ff9296;
+  --facebook-news-red-soft: #3a2025;
+  --facebook-news-hero: var(--public-dark-hero);
+  --facebook-news-hero-muted: #c7d0da;
+  --facebook-news-focus: #ff9296;
+  --facebook-news-shadow: 0 1.25rem 3rem var(--public-dark-shadow);
+}
+
 /* FAQ, BTC, agenda and feedback use shared root-level token sets. */
 :root[data-theme='dark'] {
   --faq-paper: var(--public-dark-bg);

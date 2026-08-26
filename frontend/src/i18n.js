@@ -13,7 +13,7 @@ const resources = {
         buyTicket: 'MUA VÉ NGAY',
       },
       nav: {
-        home: 'TRANG CHỦ', introduce: 'GIỚI THIỆU', introduceGeneral: 'Giới thiệu chung',
+        home: 'TRANG CHỦ', introduce: 'GIỚI THIỆU', introduceGeneral: 'Giới thiệu chung', news: 'Tin tức',
         boardGameClub: 'Về CLB FPTU Board Game', pdp: 'Về PDP - Chương trình Phát triển Cá nhân FPTU Hà Nội',
         hauntedHouse: 'NHÀ MA HALLOWEEN', story: 'Câu chuyện', tickets: 'Mua vé',
         btc: 'VỀ BTC FPTU HALLOWEEN', contact: 'LIÊN HỆ', management: 'QUẢN TRỊ', feedback: 'ĐÁNH GIÁ',
@@ -91,7 +91,7 @@ const resources = {
         newsLabel: 'Event announcements', darkMode: 'Enable dark mode', lightMode: 'Enable light mode', buyTicket: 'BUY TICKETS', switchToEnglish: 'English', switchToVietnamese: 'Vietnamese',
       },
       nav: {
-        home: 'HOME', introduce: 'ABOUT', introduceGeneral: 'Overview', boardGameClub: 'About FPTU Board Game Club',
+        home: 'HOME', introduce: 'ABOUT', introduceGeneral: 'Overview', news: 'News', boardGameClub: 'About FPTU Board Game Club',
         pdp: 'About PDP - FPTU Hanoi Personal Development Program', hauntedHouse: 'HALLOWEEN HAUNTED HOUSE',
         story: 'The story', tickets: 'Buy tickets', btc: 'ABOUT FPTU HALLOWEEN TEAM', contact: 'CONTACT',
         management: 'MANAGEMENT', feedback: 'FEEDBACK', cart: 'Your cart', cartTickets: '{{count}} tickets in your cart',
@@ -1090,6 +1090,156 @@ resources.vi.translation.normal.aboutPage = { title: 'Giới thiệu' };
 resources.en.translation.normal.aboutPage = { title: 'About us' };
 resources.vi.translation.normal.adminHomePage = { title: 'Trang quản trị' };
 resources.en.translation.normal.adminHomePage = { title: 'Administration' };
+
+Object.assign(resources.vi.translation.components, { facebookNews: 'Tin từ Facebook' });
+Object.assign(resources.en.translation.components, { facebookNews: 'Facebook News' });
+
+resources.vi.translation.eventPages.facebookNews = {
+  eyebrow: 'FANPAGE FPTU HALLOWEEN', title: 'Tin mới từ FPTU Halloween.',
+  sourceName: 'FPTU Halloween',
+  intro: 'Các thông báo, câu chuyện và cập nhật mới nhất từ Fanpage FPTU Halloween.',
+  searchPlaceholder: 'Tìm theo nội dung bài viết…', searchLabel: 'Tìm kiếm tin Facebook', search: 'Tìm kiếm',
+  latest: 'Bản tin mới nhất', officialUpdates: 'Cập nhật từ Fanpage', searchResults: 'Kết quả cho “{{query}}”',
+  resultCount: '{{count}} bài viết', errorTitle: 'Chưa thể mở bản tin', retry: 'Thử lại',
+  featuredCarouselLabel: 'Bài viết đáng chú ý', featuredEyebrow: 'Đáng chú ý', featuredTitle: 'Bài viết được ghim',
+  featuredIntro: 'Những nội dung quan trọng Sự kiện FPTU Halloween.',
+  featuredEmptyTitle: 'Chưa có bài viết đáng chú ý', featuredEmptyText: 'Các bài viết được chọn sẽ xuất hiện tại đây.',
+  pinnedBadge: 'Được ghim', featuredPrevious: 'Bài trước', featuredNext: 'Bài sau',
+  featuredViewNavigation: 'Chọn vị trí bài đáng chú ý', goToFeaturedView: 'Đến bài ở vị trí {{view}}',
+  featuredSlideLabel: 'Bài đáng chú ý {{current}} trên {{total}}', openFeaturedPost: 'Mở bài {{title}} trên Facebook',
+  emptyTitle: 'Chưa có bài viết', emptyText: 'Bản tin sẽ xuất hiện sau lần đồng bộ đầu tiên từ Facebook.',
+  emptySearch: 'Không có bài viết phù hợp với từ khóa này.', notUpdated: 'Chưa cập nhật',
+  emptyFiltered: 'Không có bài viết phù hợp với nội dung hoặc thời gian đã chọn.',
+  reactions: '{{count}} lượt tương tác', viewOnFacebook: 'Xem bài nổi bật trên Facebook', readPost: 'Đọc bài gốc',
+  filterLabel: 'Lọc theo thời gian', yearLabel: 'Năm', monthLabel: 'Tháng', dayLabel: 'Ngày',
+  allYears: 'Tất cả năm', allMonths: 'Tất cả tháng', allDays: 'Tất cả ngày', clearFilters: 'Xóa bộ lọc',
+  paginationLabel: 'Phân trang tin Facebook', firstPage: 'Trang đầu', previous: 'Trang trước', next: 'Trang sau',
+  lastPage: 'Trang cuối', goToPage: 'Đến trang {{page}}', pageOf: 'Trang {{page}} / {{total}}',
+};
+resources.en.translation.eventPages.facebookNews = {
+  eyebrow: 'FANPAGE FPTU HALLOWEEN', title: 'Latest from FPTU Halloween.',
+  sourceName: 'FPTU Halloween',
+  intro: 'Announcements, stories and updates from the official FPTU Halloween Facebook Page.',
+  searchPlaceholder: 'Search post content…', searchLabel: 'Search Facebook News', search: 'Search',
+  latest: 'Latest feed', officialUpdates: 'Updates from Facebook', searchResults: 'Results for “{{query}}”',
+  resultCount: '{{count}} posts', errorTitle: 'The feed is unavailable', retry: 'Try again',
+  featuredCarouselLabel: 'Featured posts', featuredEyebrow: 'Featured', featuredTitle: 'Pinned posts',
+  featuredIntro: 'Important updates FPTU Halloween.',
+  featuredEmptyTitle: 'No featured posts yet', featuredEmptyText: 'Selected posts will appear here.',
+  pinnedBadge: 'Pinned', featuredPrevious: 'Previous post', featuredNext: 'Next post',
+  featuredViewNavigation: 'Choose a featured post position', goToFeaturedView: 'Go to post position {{view}}',
+  featuredSlideLabel: 'Featured post {{current}} of {{total}}', openFeaturedPost: 'Open {{title}} on Facebook',
+  emptyTitle: 'No posts yet', emptyText: 'Posts will appear after the first Facebook synchronization.',
+  emptySearch: 'No posts match this search.', notUpdated: 'Not updated',
+  emptyFiltered: 'No posts match the selected content or date.',
+  reactions: '{{count}} interactions', viewOnFacebook: 'View featured post on Facebook', readPost: 'Read original post',
+  filterLabel: 'Filter by date', yearLabel: 'Year', monthLabel: 'Month', dayLabel: 'Day',
+  allYears: 'All years', allMonths: 'All months', allDays: 'All days', clearFilters: 'Clear filters',
+  paginationLabel: 'Facebook News pagination', firstPage: 'First page', previous: 'Previous', next: 'Next',
+  lastPage: 'Last page', goToPage: 'Go to page {{page}}', pageOf: 'Page {{page}} / {{total}}',
+};
+
+resources.vi.translation.management.facebookNews = {
+  eyebrow: 'Bản tin Facebook', title: 'Cập nhật bài viết từ Fanpage.',
+  intro: 'Theo dõi lần cập nhật gần nhất và đưa các bài mới từ Fanpage lên website.',
+  refresh: 'Làm mới', syncNow: 'Cập nhật bài viết', syncing: 'Đang cập nhật bài viết…', syncingShort: 'Đang cập nhật',
+  updateSuccess: 'Bài viết Facebook đã được cập nhật.',
+  statusSection: 'Tình trạng cập nhật bài viết', syncStatus: 'Kết nối Fanpage', lastSuccess: 'Lần cập nhật gần nhất',
+  lastResult: 'Bài viết vừa cập nhật', syncStats: '{{inserted}} bài mới · {{updated}} bài được làm mới', notYet: 'Chưa có',
+  setupTitle: 'Fanpage chưa được kết nối', setupText: 'Hệ thống chưa thể lấy bài viết. Vui lòng liên hệ người phụ trách để hoàn tất kết nối.',
+  lastError: 'Điều cần kiểm tra', feedEyebrow: 'Nội dung trên website', feedTitle: 'Các bài Facebook gần nhất',
+  featuredCarouselLabel: 'Quản lý bài viết đáng chú ý', featuredEyebrow: 'Đáng chú ý', featuredTitle: 'Bài viết được ghim',
+  featuredIntro: 'Desktop hiển thị 3 bài và mỗi lần chuyển 1 bài. Có thể bỏ ghim tại đây hoặc thay đổi trạng thái trong danh sách bên dưới.',
+  featuredEmptyTitle: 'Chưa chọn bài đáng chú ý', featuredEmptyText: 'Chọn biểu tượng ghim tại một bài viết trong danh sách bên dưới.',
+  pinnedBadge: 'Được ghim', featuredPrevious: 'Bài trước', featuredNext: 'Bài sau',
+  featuredViewNavigation: 'Chọn vị trí bài đáng chú ý', goToFeaturedView: 'Đến bài ở vị trí {{view}}',
+  featuredSlideLabel: 'Bài đáng chú ý {{current}} trên {{total}}', openFeaturedPost: 'Mở bài {{title}} trên Facebook',
+  addFeatured: 'Đưa vào Đáng chú ý', removeFeatured: 'Bỏ khỏi Đáng chú ý',
+  addFeaturedPost: 'Đưa bài {{title}} vào Đáng chú ý', removeFeaturedPost: 'Bỏ bài {{title}} khỏi Đáng chú ý',
+  featuredAddSuccess: 'Đã đưa bài viết vào mục Đáng chú ý.', featuredRemoveSuccess: 'Đã bỏ bài viết khỏi mục Đáng chú ý.',
+  featuredUpdateError: 'Chưa thể thay đổi bài viết Đáng chú ý. Vui lòng thử lại.',
+  showingCount: '{{count}} bài viết phù hợp', emptyTitle: 'Kho tin đang trống',
+  emptyText: 'Sau khi kết nối Fanpage, hãy chọn “Cập nhật bài viết” để lấy các bài mới nhất.',
+  emptyFiltered: 'Không có bài viết trong khoảng thời gian đã chọn.',
+  loadError: 'Chưa thể tải thông tin lúc này. Vui lòng thử lại.',
+  reactions: '{{count}} tương tác', openPostAria: 'Mở bài {{title}} trên Facebook',
+  filterLabel: 'Lọc theo thời gian', yearLabel: 'Năm', monthLabel: 'Tháng', dayLabel: 'Ngày',
+  allYears: 'Tất cả năm', allMonths: 'Tất cả tháng', allDays: 'Tất cả ngày', clearFilters: 'Xóa bộ lọc',
+  paginationLabel: 'Phân trang bài Facebook', firstPage: 'Trang đầu', previous: 'Trang trước', next: 'Trang sau',
+  lastPage: 'Trang cuối', goToPage: 'Đến trang {{page}}',
+  status: { idle: 'Sẵn sàng', running: 'Đang cập nhật', success: 'Hoạt động ổn định', error: 'Cần kiểm tra', unconfigured: 'Chưa kết nối' },
+  issues: {
+    fanpageAccess: 'Kết nối với Fanpage chưa sẵn sàng hoặc quyền truy cập đã thay đổi. Vui lòng liên hệ người phụ trách.',
+    connection: 'Facebook đang phản hồi chậm hoặc mất kết nối. Vui lòng thử lại sau.',
+    interrupted: 'Lần cập nhật trước chưa hoàn tất. Vui lòng thử cập nhật lại.',
+    inProgress: 'Hệ thống đang cập nhật bài viết. Vui lòng chờ trong giây lát.',
+    tooManyRequests: 'Bạn đã yêu cầu cập nhật nhiều lần. Vui lòng chờ vài phút rồi thử lại.',
+    unknown: 'Chưa thể cập nhật bài viết. Vui lòng thử lại hoặc liên hệ người phụ trách.',
+  },
+};
+resources.en.translation.management.facebookNews = {
+  eyebrow: 'Facebook News', title: 'Update posts from the Facebook Page.',
+  intro: 'See the latest update and bring new Facebook Page posts onto the website.',
+  refresh: 'Refresh', syncNow: 'Update posts', syncing: 'Updating Facebook posts…', syncingShort: 'Updating',
+  updateSuccess: 'Facebook posts have been updated.',
+  statusSection: 'Post update status', syncStatus: 'Facebook Page connection', lastSuccess: 'Last update',
+  lastResult: 'Posts from the latest update', syncStats: '{{inserted}} new · {{updated}} refreshed', notYet: 'Not yet',
+  setupTitle: 'The Facebook Page is not connected', setupText: 'Posts cannot be retrieved yet. Please contact the person responsible for completing the connection.',
+  lastError: 'What needs attention', feedEyebrow: 'Content on the website', feedTitle: 'Latest Facebook posts',
+  featuredCarouselLabel: 'Manage featured posts', featuredEyebrow: 'Featured', featuredTitle: 'Pinned posts',
+  featuredIntro: 'Desktop shows 3 posts and advances one post at a time. Remove them here or change their status in the list below.',
+  featuredEmptyTitle: 'No featured posts selected', featuredEmptyText: 'Select the pin icon on a post in the list below.',
+  pinnedBadge: 'Pinned', featuredPrevious: 'Previous post', featuredNext: 'Next post',
+  featuredViewNavigation: 'Choose a featured post position', goToFeaturedView: 'Go to post position {{view}}',
+  featuredSlideLabel: 'Featured post {{current}} of {{total}}', openFeaturedPost: 'Open {{title}} on Facebook',
+  addFeatured: 'Add to Featured', removeFeatured: 'Remove from Featured',
+  addFeaturedPost: 'Add {{title}} to Featured', removeFeaturedPost: 'Remove {{title}} from Featured',
+  featuredAddSuccess: 'The post was added to Featured.', featuredRemoveSuccess: 'The post was removed from Featured.',
+  featuredUpdateError: 'The featured post could not be updated. Please try again.',
+  showingCount: '{{count}} matching posts', emptyTitle: 'The feed is empty',
+  emptyText: 'Once the Facebook Page is connected, select “Update posts” to retrieve the latest posts.',
+  emptyFiltered: 'No posts were published during the selected date.',
+  loadError: 'Information is unavailable right now. Please try again.',
+  reactions: '{{count}} interactions', openPostAria: 'Open {{title}} on Facebook',
+  filterLabel: 'Filter by date', yearLabel: 'Year', monthLabel: 'Month', dayLabel: 'Day',
+  allYears: 'All years', allMonths: 'All months', allDays: 'All days', clearFilters: 'Clear filters',
+  paginationLabel: 'Facebook posts pagination', firstPage: 'First page', previous: 'Previous', next: 'Next',
+  lastPage: 'Last page', goToPage: 'Go to page {{page}}',
+  status: { idle: 'Ready', running: 'Updating', success: 'Working normally', error: 'Needs attention', unconfigured: 'Not connected' },
+  issues: {
+    fanpageAccess: 'The Facebook Page connection is not ready or its access has changed. Please contact the person responsible.',
+    connection: 'Facebook is responding slowly or cannot be reached. Please try again later.',
+    interrupted: 'The previous update did not finish. Please try updating again.',
+    inProgress: 'Posts are being updated. Please wait a moment.',
+    tooManyRequests: 'Updates were requested several times. Please wait a few minutes and try again.',
+    unknown: 'Posts could not be updated. Please try again or contact the person responsible.',
+  },
+};
+
+Object.assign(resources.vi.translation.management.facebookNews, {
+  search: 'Tìm kiếm',
+  searchPlaceholder: 'Tìm theo nội dung bài viết…',
+  searchLabel: 'Tìm kiếm bài Facebook',
+  emptySearch: 'Không có bài viết nào khớp với “{{query}}”.',
+});
+Object.assign(resources.en.translation.management.facebookNews, {
+  search: 'Search',
+  searchPlaceholder: 'Search post content…',
+  searchLabel: 'Search Facebook posts',
+  emptySearch: 'No posts match “{{query}}”.',
+});
+Object.assign(resources.vi.translation.eventPages.facebookNews, {
+  featuredIntro: 'Những thông tin quan trọng của sự kiện FPTU Halloween.',
+});
+Object.assign(resources.en.translation.eventPages.facebookNews, {
+  featuredIntro: 'Important updates FPTU Halloween.',
+});
+Object.assign(resources.vi.translation.management.facebookNews, {
+  featuredIntro: 'Những thông tin quan trọng của sự kiện FPTU Halloween.',
+});
+Object.assign(resources.en.translation.management.facebookNews, {
+  featuredIntro: 'Important updates FPTU Halloween.',
+});
 
 i18n.use(initReactI18next).init({
   resources,

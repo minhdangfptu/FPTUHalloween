@@ -8,6 +8,7 @@ const cartCtrl = require('../controllers/cart')
 const adminOrderCtrl = require('../controllers/adminOrder')
 const adminCtrl = require('../controllers/admin')
 const hotNewsCtrl = require('../controllers/hotNews')
+const newsCtrl = require('../controllers/news')
 const payOSCtrl = require('../controllers/payOS')
 const payOSWebhookCtrl = require('../controllers/payOSWebhook')
 const userTicketCtrl = require('../controllers/userTicket')
@@ -17,7 +18,7 @@ const staffChatRoute = require('./staffChat')
 // const adminCtrl = require('../controllers/admin')
 
 const { requireAuth, requireRole } = require('../middlewares/auth')
-const { ticketRateLimiter, paymentRateLimiter } = require('../middlewares/rateLimiter')
+const { ticketRateLimiter, paymentRateLimiter, newsRateLimiter, facebookSyncRateLimiter } = require('../middlewares/rateLimiter')
 const { requireVoteSession } = require('../middlewares/vote')
 
 // Health (optional)
@@ -67,6 +68,13 @@ router.post('/hot-news', requireAuth, requireRole('Admin'), hotNewsCtrl.create)
 router.put('/hot-news/:id', requireAuth, requireRole('Admin'), hotNewsCtrl.update)
 router.delete('/hot-news/:id', requireAuth, requireRole('Admin'), hotNewsCtrl.remove)
 router.patch('/hot-news/:id/status', requireAuth, requireRole('Admin'), hotNewsCtrl.changeStatus)
+
+// FACEBOOK NEWS
+router.get('/news', newsRateLimiter, newsCtrl.getList)
+router.get('/admin/news/facebook/status', requireAuth, requireRole('Admin'), newsCtrl.getFacebookSyncStatus)
+router.post('/admin/news/facebook/sync', requireAuth, requireRole('Admin'), facebookSyncRateLimiter, newsCtrl.syncFacebookNews)
+router.patch('/admin/news/:id/featured', requireAuth, requireRole('Admin'), newsCtrl.setFeatured)
+router.get('/news/:id', newsRateLimiter, newsCtrl.getDetail)
 
 // USERS
 router.get('/users/me', requireAuth, userCtrl.me)

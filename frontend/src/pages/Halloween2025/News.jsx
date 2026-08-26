@@ -1,201 +1,270 @@
-"use client"
+import "@fontsource-variable/geist";
+import { useCallback, useEffect, useState } from "react";
+import {
+  Clock3,
+  ExternalLink,
+  RefreshCw,
+  Search,
+} from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { SkeletonCards } from "../../components/LoadingSkeletons";
+import NewsDateFilter from "../../components/NewsDateFilter";
+import NewsFeaturedCarousel from "../../components/NewsFeaturedCarousel";
+import NewsMedia from "../../components/NewsMedia";
+import NewsPagination from "../../components/NewsPagination";
+import newsAPI from "../../apis/newsAPI";
+import { translateError } from "../../utils/translateResponse";
+import { getNewsPresentation } from "../../utils/newsPresentation";
+import coverImage from "../../assets/cover-01.png";
+import "./News.css";
 
-import { Box, Container, Typography, Card, CardMedia, CardContent, Grid, Stack } from "@mui/material"
-import { AccessTime } from "@mui/icons-material"
-import { Link } from "react-router-dom"
-import "./News.css"
-import { useTranslation } from "react-i18next"
+// Four complete rows of four regular cards.
+const PAGE_SIZE = 16;
+
+const excerpt = (content, maxLength = 210) => {
+  const value = String(content || "").replace(/\s+/g, " ").trim();
+  return value.length > maxLength ? `${value.slice(0, maxLength).trim()}...` : value;
+};
 
 export default function News() {
-  const { t } = useTranslation()
-  const page = (key, options) => t(`eventPages.news.${key}`, options)
-  const titles = page("titles", { returnObjects: true })
-  // Sample news data
-  const featuredNews = {
-    id: 1,
-    title: titles[0],
-    image: "/halloween-event-2025.jpg",
-    source: "FPTU HALLOWEEN",
-    time: page("hour", { count: 2 }),
-    views: page("views", { count: "1,234" }),
-  }
+  const { t, i18n } = useTranslation();
+  const text = (key, options) => t(`eventPages.facebookNews.${key}`, options);
+  const [items, setItems] = useState([]);
+  const [featuredItems, setFeaturedItems] = useState([]);
+  const [pagination, setPagination] = useState({ page: 1, total: 0, totalPages: 0 });
+  const [page, setPage] = useState(1);
+  const [searchDraft, setSearchDraft] = useState("");
+  const [search, setSearch] = useState("");
+  const [availableYears, setAvailableYears] = useState([]);
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [day, setDay] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const secondaryNews = [
-    {
-      id: 2,
-      title: titles[1],
-      image: "/halloween-art-performance.jpg",
-      source: "FPTU NEWS",
-      time: page("hour", { count: 3 }),
-      views: "",
-    },
-    {
-      id: 3,
-      title: titles[2],
-      image: "/halloween-ticket-guide.jpg",
-      source: "FPTU GUIDE",
-      time: page("hour", { count: 4 }),
-      views: "",
-    },
-  ]
+  const formatDate = (value) => value
+    ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    })
+    : text("notUpdated");
 
-  const newsList = [
-    {
-      id: 4,
-      title: titles[3],
-      image: "/halloween-activities.jpg",
-      source: "FPTU EVENTS",
-      time: page("hour", { count: 5 }),
-      views: page("views", { count: 856 }),
-    },
-    {
-      id: 5,
-      title: titles[4],
-      image: "/halloween-location.jpg",
-      source: "FPTU INFO",
-      time: page("hour", { count: 6 }),
-      views: page("views", { count: 432 }),
-    },
-    {
-      id: 6,
-      title: titles[5],
-      image: "/halloween-tips.jpg",
-      source: "FPTU TIPS",
-      time: page("hour", { count: 7 }),
-      views: page("views", { count: "1,567" }),
-    },
-    {
-      id: 7,
-      title: titles[6],
-      image: "/halloween-discounts.jpg",
-      source: "FPTU OFFERS",
-      time: page("hour", { count: 8 }),
-      views: page("views", { count: "2,345" }),
-    },
-    {
-      id: 8,
-      title: titles[7],
-      image: "/halloween-workshops.jpg",
-      source: "FPTU WORKSHOPS",
-      time: page("hour", { count: 9 }),
-      views: page("views", { count: 789 }),
-    },
-    {
-      id: 9,
-      title: titles[8],
-      image: "/halloween-sponsors.jpg",
-      source: "FPTU SPONSORS",
-      time: page("hour", { count: 10 }),
-      views: page("views", { count: 654 }),
-    },
-  ]
+  const loadNews = useCallback(async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const result = await newsAPI.getList({
+        page,
+        limit: PAGE_SIZE,
+        search,
+        year: year || undefined,
+        month: month || undefined,
+        day: day || undefined,
+      });
+      setItems(result.items);
+      setFeaturedItems(result.featured);
+      setPagination(result.pagination);
+      setAvailableYears(result.filters.years);
+
+      if (result.pagination.totalPages > 0 && page > result.pagination.totalPages) {
+        setPage(result.pagination.totalPages);
+      }
+    } catch (loadError) {
+      setError(translateError(loadError));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [day, month, page, search, year]);
+
+  useEffect(() => {
+    loadNews();
+  }, [loadNews]);
+
+  const submitSearch = (event) => {
+    event.preventDefault();
+    setPage(1);
+    setSearch(searchDraft.trim());
+  };
+
+  const handleYearChange = (value) => {
+    setYear(value);
+    setMonth("");
+    setDay("");
+    setPage(1);
+  };
+
+  const handleMonthChange = (value) => {
+    setMonth(value);
+    setDay("");
+    setPage(1);
+  };
+
+  const clearDateFilters = () => {
+    setYear("");
+    setMonth("");
+    setDay("");
+    setPage(1);
+  };
+
+  const hasDateFilter = Boolean(year || month || day);
 
   return (
-    <div className="fptu-halloween-news-container">
-      <header className="fptu-halloween-contact-header">
-        <div className="fptu-halloween-contact-banner">
-          <h1 className="fptu-halloween-contact-banner-title">
-            {page("title")}
-          </h1>
+    <main className="facebook-news-page">
+      <section
+        className="facebook-news-hero"
+        style={{ backgroundImage: `url(${coverImage})` }}
+      >
+        <div className="facebook-news-hero__content">
+          <div className="facebook-news-hero__copy">
+            <span className="facebook-news-eyebrow">
+              <span className="facebook-news-facebook-mark" aria-hidden="true">f</span>
+              {text("eyebrow")}
+            </span>
+            <h1>{text("title")}</h1>
+            <p>{text("intro")}</p>
+          </div>
+          <div className="facebook-news-hero__stamp" aria-hidden="true">
+            <strong>FPTU</strong>
+            <span>NEWS</span>
+          </div>
         </div>
-      </header>
-      
-      <div className="fptu-halloween-news-content">
-        <div className="fptu-halloween-news-grid">
-          {/* Left Column - Featured and Secondary News */}
-          <div className="fptu-halloween-news-featured">
-            <h2 className="fptu-halloween-news-featured-title">
-              {page("featured")}
-            </h2>
-            {/* Featured News */}
-            <div className="fptu-halloween-news-featured-main">
-              <img 
-                src={featuredNews.image} 
-                alt={featuredNews.title}
-                className="fptu-halloween-news-featured-image"
-              />
-              <div className="fptu-halloween-news-featured-content">
-                <h2 className="fptu-halloween-news-featured-title">
-                  {featuredNews.title}
-                </h2>
-                <div className="fptu-halloween-news-featured-meta">
-                  <span className="fptu-halloween-news-featured-source">
-                    {featuredNews.source}
-                  </span>
-                  <div className="fptu-halloween-news-featured-time">
-                    <AccessTime sx={{ fontSize: 16 }} />
-                    <span>{featuredNews.time}</span>
-                  </div>
-                  {featuredNews.views && (
-                    <span className="fptu-halloween-news-featured-views">
-                      {featuredNews.views}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
+      </section>
 
-            {/* Secondary News */}
-            <div className="fptu-halloween-news-secondary">
-              {secondaryNews.map((news) => (
-                <div key={news.id} className="fptu-halloween-news-secondary-item">
-                  <img 
-                    src={news.image} 
-                    alt={news.title}
-                    className="fptu-halloween-news-secondary-image"
-                  />
-                  <div className="fptu-halloween-news-secondary-content">
-                    <h3 className="fptu-halloween-news-secondary-title">
-                      {news.title}
-                    </h3>
-                    <div className="fptu-halloween-news-secondary-meta">
-                      <span className="fptu-halloween-news-secondary-source">
-                        {news.source}
-                      </span>
-                      <div className="fptu-halloween-news-secondary-time">
-                        <AccessTime sx={{ fontSize: 14 }} />
-                        <span>{news.time}</span>
+      <section className="facebook-news-content" aria-live="polite">
+        <div className="facebook-news-section-heading">
+          <div className="facebook-news-section-heading__copy">
+            <span>{text("latest")}</span>
+            <h2>{search ? text("searchResults", { query: search }) : text("officialUpdates")}</h2>
+            {!isLoading && !error && (
+              <p className="facebook-news-section-heading__count">
+                {text("resultCount", { count: pagination.total || 0 })}
+              </p>
+            )}
+          </div>
+          <form className="facebook-news-search" onSubmit={submitSearch} role="search">
+            <Search size={18} aria-hidden="true" />
+            <input
+              value={searchDraft}
+              onChange={(event) => setSearchDraft(event.target.value)}
+              placeholder={text("searchPlaceholder")}
+              aria-label={text("searchLabel")}
+              maxLength={100}
+            />
+            <button type="submit" aria-label={text("search")} title={text("search")}>
+              <Search size={18} aria-hidden="true" />
+            </button>
+          </form>
+        </div>
+
+        <NewsFeaturedCarousel
+          items={featuredItems}
+          formatDate={formatDate}
+          isLoading={isLoading}
+          labels={{
+            carouselLabel: text("featuredCarouselLabel"),
+            eyebrow: text("featuredEyebrow"),
+            title: text("featuredTitle"),
+            intro: text("featuredIntro"),
+            emptyTitle: text("featuredEmptyTitle"),
+            emptyText: text("featuredEmptyText"),
+            pinnedBadge: text("pinnedBadge"),
+            previous: text("featuredPrevious"),
+            next: text("featuredNext"),
+            viewNavigation: text("featuredViewNavigation"),
+            goToView: (view) => text("goToFeaturedView", { view }),
+            slideLabel: (current, total) => text("featuredSlideLabel", { current, total }),
+            openPost: (title) => text("openFeaturedPost", { title }),
+          }}
+        />
+
+        <NewsDateFilter
+          years={availableYears}
+          year={year}
+          month={month}
+          day={day}
+          language={i18n.language}
+          labels={{
+            filterLabel: text("filterLabel"),
+            yearLabel: text("yearLabel"),
+            monthLabel: text("monthLabel"),
+            dayLabel: text("dayLabel"),
+            allYears: text("allYears"),
+            allMonths: text("allMonths"),
+            allDays: text("allDays"),
+            clearFilters: text("clearFilters"),
+          }}
+          onYearChange={handleYearChange}
+          onMonthChange={handleMonthChange}
+          onDayChange={(value) => { setDay(value); setPage(1); }}
+          onClear={clearDateFilters}
+        />
+
+        {isLoading ? (
+          <SkeletonCards count={16} />
+        ) : error ? (
+          <div className="facebook-news-state facebook-news-state--error">
+            <strong>{text("errorTitle")}</strong>
+            <p>{error}</p>
+            <button type="button" onClick={loadNews}>
+              <RefreshCw size={17} aria-hidden="true" /> {text("retry")}
+            </button>
+          </div>
+        ) : items.length === 0 ? (
+          <div className="facebook-news-state">
+            <span className="facebook-news-facebook-mark facebook-news-facebook-mark--empty" aria-hidden="true">
+              f
+            </span>
+            <strong>{text("emptyTitle")}</strong>
+            <p>{search || hasDateFilter ? text("emptyFiltered") : text("emptyText")}</p>
+          </div>
+        ) : (
+          <>
+            <div className="facebook-news-grid">
+              {items.map((item) => {
+                const post = getNewsPresentation(item);
+                return (
+                  <article className="facebook-news-card" key={item.id}>
+                    {post.tag && <span className="facebook-news-card__tag">{post.tag}</span>}
+                    <NewsMedia className="facebook-news-card__media" images={item.images} />
+                    <div className="facebook-news-card__body">
+                      <h3>{post.title}</h3>
+                      <p>{excerpt(post.content)}</p>
+                      <div className="facebook-news-meta">
+                        <span><Clock3 size={14} aria-hidden="true" /> {formatDate(item.publishedAt)}</span>
+                        {item.permalinkUrl && (
+                          <a
+                            href={item.permalinkUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={text("readPost")}
+                            title={text("readPost")}
+                          >
+                            <ExternalLink size={17} aria-hidden="true" />
+                          </a>
+                        )}
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  </article>
+                );
+              })}
             </div>
-          </div>
 
-          {/* Right Column - News List */}
-          <div className="fptu-halloween-news-sidebar">
-            <h2 className="fptu-halloween-news-sidebar-title">
-              {page("other")}
-            </h2>
-            {newsList.map((news, index) => (
-              <div 
-                key={news.id} 
-                className="fptu-halloween-news-list-item"
-                style={{ '--item-index': index }}
-              >
-                <h3 className="fptu-halloween-news-list-title">
-                  {news.title}
-                </h3>
-                <div className="fptu-halloween-news-list-meta">
-                  <span className="fptu-halloween-news-list-source">
-                    {news.source}
-                  </span>
-                  <div className="fptu-halloween-news-list-time">
-                    <AccessTime sx={{ fontSize: 12 }} />
-                    <span>{news.time}</span>
-                  </div>
-                </div>
-                {news.views && (
-                  <div className="fptu-halloween-news-list-views">
-                    {news.views}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+            <NewsPagination
+              page={pagination.page}
+              totalPages={pagination.totalPages}
+              onPageChange={setPage}
+              labels={{
+                paginationLabel: text("paginationLabel"),
+                firstPage: text("firstPage"),
+                previous: text("previous"),
+                next: text("next"),
+                lastPage: text("lastPage"),
+                goToPage: (targetPage) => text("goToPage", { page: targetPage }),
+              }}
+            />
+          </>
+        )}
+      </section>
+    </main>
+  );
 }

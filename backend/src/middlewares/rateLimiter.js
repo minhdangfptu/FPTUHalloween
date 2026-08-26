@@ -43,4 +43,18 @@ const paymentRateLimiter = createRateLimiter({
   message: 'Too many payment requests. Please try again later.'
 })
 
-module.exports = { ticketRateLimiter, paymentRateLimiter }
+const newsRateLimiter = createRateLimiter({
+  windowMs: 60 * 1000,
+  max: 120,
+  scope: 'news',
+  message: 'Too many news requests. Please try again later.'
+})
+
+const facebookSyncRateLimiter = createRateLimiter({
+  windowMs: 10 * 60 * 1000,
+  max: 5,
+  scope: 'facebook-news-sync',
+  message: 'Too many Facebook News sync requests. Please try again later.'
+})
+
+module.exports = { ticketRateLimiter, paymentRateLimiter, newsRateLimiter, facebookSyncRateLimiter }

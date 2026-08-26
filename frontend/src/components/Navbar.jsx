@@ -33,6 +33,7 @@ const navigationItems = [
     href: "#",
     children: [
       { labelKey: "nav.introduceGeneral", href: "/introduce-hlw26" },
+      { labelKey: "nav.news", href: "/news" },
       { labelKey: "nav.boardGameClub", href: "/fbgc" },
       {
         labelKey: "nav.pdp",

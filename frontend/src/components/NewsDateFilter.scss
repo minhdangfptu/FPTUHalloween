@@ -1,0 +1,118 @@
+.news-date-filter {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  margin: 1.25rem 0 1.75rem;
+  padding: 1rem;
+  color: var(--news-filter-text, #242424);
+  background: var(--news-filter-surface, #fff);
+  border: 1px solid var(--news-filter-border, #e1e1e1);
+  border-radius: 14px;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    gap: 0.5rem;
+    min-width: max-content;
+    color: var(--news-filter-accent, #d71920);
+    font-weight: 700;
+  }
+
+  &__fields {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  label {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+
+    > span {
+      color: var(--news-filter-muted, #676767);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+  }
+
+  select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.65rem 2.25rem 0.65rem 0.75rem;
+    color: inherit;
+    background: var(--news-filter-input, #fff);
+    border: 1px solid var(--news-filter-border, #d6d6d6);
+    border-radius: 10px;
+    font: inherit;
+    cursor: pointer;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease;
+
+    &:disabled {
+      color: var(--news-filter-disabled-text, #9a9a9a);
+      background: var(--news-filter-disabled, #f3f3f3);
+      cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--news-filter-accent, #d71920) 24%, transparent);
+      outline-offset: 1px;
+    }
+  }
+
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 44px;
+    padding: 0.65rem 0.85rem;
+    color: var(--news-filter-accent, #d71920);
+    background: transparent;
+    border: 1px solid var(--news-filter-border, #d6d6d6);
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease;
+
+    &:hover {
+      background: var(--news-filter-hover, #f4f7fb);
+    }
+
+    &:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--news-filter-accent, #d71920) 24%, transparent);
+      outline-offset: 1px;
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  .news-date-filter {
+    align-items: stretch;
+    flex-direction: column;
+
+    &__title {
+      align-self: flex-start;
+    }
+
+    &__clear {
+      align-self: flex-start;
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  .news-date-filter__fields {
+    grid-template-columns: 1fr;
+  }
+}

@@ -4,6 +4,11 @@
   --sidebar-red-dark: #a80000;
   --sidebar-ink: #252525;
   --sidebar-muted: #73777d;
+  --sidebar-inline-padding: 16px;
+  --sidebar-scrollbar-size: 6px;
+  --sidebar-scrollbar-thumb: #c9cdd2;
+  --sidebar-scrollbar-thumb-hover: #aeb4bb;
+  --sidebar-scrollbar-track: transparent;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -98,6 +103,7 @@
   border-radius: 50%;
 }
 .manage-sidebar--collapsed {
+  --sidebar-inline-padding: 10px;
   width: var(--manage-sidebar-width, 72px);
   padding-right: 10px;
   padding-left: 10px;
@@ -154,7 +160,32 @@
 }
 .manage-sidebar__nav {
   display: grid;
+  flex: 1 1 auto;
+  align-content: start;
   gap: 7px;
+  min-height: 0;
+  margin-right: calc(var(--sidebar-inline-padding) * -1);
+  padding-right: calc(var(--sidebar-inline-padding) - var(--sidebar-scrollbar-size));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-color: var(--sidebar-scrollbar-thumb) var(--sidebar-scrollbar-track);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.manage-sidebar__nav::-webkit-scrollbar {
+  width: var(--sidebar-scrollbar-size);
+}
+.manage-sidebar__nav::-webkit-scrollbar-track {
+  background: var(--sidebar-scrollbar-track);
+}
+.manage-sidebar__nav::-webkit-scrollbar-thumb {
+  background: var(--sidebar-scrollbar-thumb);
+  border-radius: 999px;
+}
+.manage-sidebar__nav::-webkit-scrollbar-thumb:hover {
+  background: var(--sidebar-scrollbar-thumb-hover);
 }
 .manage-sidebar__account {
   position: relative;
@@ -283,6 +314,7 @@
 
 @media (max-width: 760px) {
   .manage-sidebar {
+    --sidebar-inline-padding: 10px;
     width: var(--manage-sidebar-width, 72px);
     height: 100vh;
     min-height: 100vh;

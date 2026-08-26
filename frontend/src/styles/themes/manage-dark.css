@@ -36,6 +36,9 @@
   --sidebar-red-dark: var(--manage-dark-accent-strong);
   --sidebar-ink: var(--manage-dark-ink);
   --sidebar-muted: var(--manage-dark-muted);
+  --sidebar-scrollbar-thumb: #526171;
+  --sidebar-scrollbar-thumb-hover: #6b7a8b;
+  --sidebar-scrollbar-track: transparent;
   color: var(--manage-dark-ink);
   background: #141a22;
   border-color: var(--manage-dark-line);
@@ -566,6 +569,28 @@
   --hot-news-danger-soft: var(--manage-dark-danger-soft);
   --hot-news-backdrop: rgb(3 7 12 / 78%);
   --hot-news-shadow: 0 20px 48px var(--manage-dark-shadow);
+}
+
+/* Facebook News follows the shared management palette. */
+:root[data-theme='dark'] .facebook-news-admin {
+  --fb-news-admin-paper: var(--manage-dark-bg);
+  --fb-news-admin-surface: var(--manage-dark-surface);
+  --fb-news-admin-ink: var(--manage-dark-ink);
+  --fb-news-admin-muted: var(--manage-dark-muted);
+  --fb-news-admin-line: var(--manage-dark-line);
+  --fb-news-admin-accent: var(--manage-dark-accent);
+  --fb-news-admin-accent-dark: var(--manage-dark-accent-strong);
+  --fb-news-admin-accent-soft: var(--manage-dark-accent-soft);
+  --fb-news-admin-blue: var(--manage-dark-info);
+  --fb-news-admin-success: var(--manage-dark-success);
+  --fb-news-admin-success-soft: var(--manage-dark-success-soft);
+  --fb-news-admin-warning: var(--manage-dark-warning);
+  --fb-news-admin-warning-soft: var(--manage-dark-warning-soft);
+  --fb-news-admin-warning-line: #756435;
+  --fb-news-admin-danger: var(--manage-dark-danger);
+  --fb-news-admin-danger-soft: var(--manage-dark-danger-soft);
+  --fb-news-admin-danger-line: #743942;
+  --fb-news-admin-shadow: 0 16px 36px var(--manage-dark-shadow);
 }
 
 /* Staff ticket catalog and detail pages. */
