@@ -320,9 +320,13 @@
 @media (max-width: 760px) {
   .manage-sidebar {
     --sidebar-inline-padding: 10px;
+    --sidebar-scrollbar-size: 2px;
     width: var(--manage-sidebar-width, 72px);
     height: 100vh;
     min-height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
     padding: 16px 10px;
   }
   .manage-sidebar__brand {
@@ -348,9 +352,12 @@
     padding: 0;
   }
   .manage-sidebar__nav {
-    margin-right: 0;
-    padding-right: 0;
-    scrollbar-gutter: stable both-edges;
+    margin-right: calc(var(--sidebar-inline-padding) * -1);
+    padding-right: calc(
+      var(--sidebar-inline-padding) - var(--sidebar-scrollbar-size)
+    );
+    scrollbar-gutter: stable;
+    touch-action: pan-y;
   }
   .manage-sidebar__mobile-toggle {
     display: none;

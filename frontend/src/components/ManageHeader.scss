@@ -230,6 +230,9 @@
     margin-left: var(--manage-sidebar-width, 72px);
     padding: 0 16px;
   }
+  .manage-header__menu-button {
+    display: none;
+  }
   .manage-header__title {
     font-size: 12px;
   }
