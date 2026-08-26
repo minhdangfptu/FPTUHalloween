@@ -46,6 +46,7 @@
 
 :root[data-theme='dark'] .manage-sidebar__collapse,
 :root[data-theme='dark'] .manage-sidebar__account-dropdown,
+:root[data-theme='dark'] .manage-header__language-menu,
 :root[data-theme='dark'] .manage-header__dropdown {
   color: var(--manage-dark-ink);
   background: var(--manage-dark-surface);
@@ -58,6 +59,8 @@
 :root[data-theme='dark'] .manage-sidebar__item--active:hover,
 :root[data-theme='dark'] .manage-sidebar__account-button:hover,
 :root[data-theme='dark'] .manage-sidebar__account-dropdown button:hover,
+:root[data-theme='dark'] .manage-header__language-option:hover,
+:root[data-theme='dark'] .manage-header__language-option--active,
 :root[data-theme='dark'] .manage-header__dropdown button:hover {
   color: var(--manage-dark-accent);
   background: var(--manage-dark-accent-soft);
@@ -66,6 +69,7 @@
 :root[data-theme='dark'] .manage-sidebar__account-button,
 :root[data-theme='dark'] .manage-sidebar__account-greeting,
 :root[data-theme='dark'] .manage-sidebar__account-dropdown button,
+:root[data-theme='dark'] .manage-header__language-option,
 :root[data-theme='dark'] .manage-header__greeting,
 :root[data-theme='dark'] .manage-header__dropdown button {
   color: var(--manage-dark-muted);

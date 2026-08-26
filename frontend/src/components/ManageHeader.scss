@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-left: auto;
+  flex: 0 0 auto;
 }
 .manage-header__action-button,
 .manage-header__notification {
@@ -93,14 +93,66 @@
   text-align: center;
 }
 .manage-header__title {
-  position: absolute;
-  left: 50%;
-  max-width: calc(100% - 280px);
-  transform: translateX(-50%);
+  display: -webkit-box;
+  min-width: 0;
+  flex: 1 1 auto;
+  max-height: 2.5em;
   margin: 0;
+  overflow: hidden;
   color: #fff;
   font-size: 18px;
   font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.manage-header__language {
+  position: relative;
+}
+.manage-header__language-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  gap: 4px;
+  min-width: 132px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px #20212438;
+}
+.manage-header__language-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+  padding: 10px;
+  color: #252525;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  white-space: nowrap;
+}
+.manage-header__language-option:hover,
+.manage-header__language-option--active {
+  color: #ce0000;
+  background: #fff4f4;
+}
+.manage-header__language-option--active {
+  font-weight: 700;
+}
+.manage-header__language-option:disabled {
+  opacity: 0.55;
+  cursor: wait;
 }
 .manage-header__account {
   position: relative;
@@ -174,16 +226,12 @@
 }
 @media (max-width: 760px) {
   .manage-header {
+    gap: 8px;
     margin-left: var(--manage-sidebar-width, 72px);
     padding: 0 16px;
   }
   .manage-header__title {
-    left: 50%;
-    max-width: calc(100% - 220px);
-    overflow: hidden;
     font-size: 12px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
   .manage-header__user-copy {
     display: none;
