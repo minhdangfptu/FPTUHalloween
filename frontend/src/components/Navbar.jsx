@@ -60,7 +60,8 @@ const navigationItems = [
 ];
 
 function Navbar() {
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
+  const isJapanese = i18n.resolvedLanguage === "ja";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -221,7 +222,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="fpt-navbar">
+      <nav className={`fpt-navbar${isJapanese ? " fpt-navbar--ja" : ""}`}>
         <div className="fpt-navbar__container">
           <div className="fpt-navbar__content">
             {/* Logo */}

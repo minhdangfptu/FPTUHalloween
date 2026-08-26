@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import ja from './locales/ja.js';
 
 const resources = {
   vi: {
@@ -144,6 +145,8 @@ const resources = {
     },
   },
 };
+
+resources.ja = { translation: ja };
 
 Object.assign(resources.vi.translation.components, {
   ddayVote: 'Bình chọn D-Day',

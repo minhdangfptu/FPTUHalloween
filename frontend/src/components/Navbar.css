@@ -44,6 +44,8 @@
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
+  line-height: 1.25;
+  font-family: inherit;
   padding: 8px 16px;
   border-radius: 4px;
   display: flex;
@@ -52,11 +54,23 @@
   transition: all 0.2s ease;
 }
 
+/* Japanese glyphs have a smaller visual footprint at the base size. */
+.fpt-navbar--ja .fpt-navbar__desktop-nav {
+  gap: 4px;
+}
+
+.fpt-navbar--ja .fpt-navbar__nav-link {
+  font-size: 15px;
+  padding-inline: 12px;
+  letter-spacing: 0;
+}
+
 .fpt-navbar__nav-trigger {
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-family: inherit;
+  margin: 0;
+  line-height: inherit;
 }
 
 .fpt-navbar__nav-link:hover {

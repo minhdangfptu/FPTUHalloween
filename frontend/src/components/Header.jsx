@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Header.css";
 import { Circle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -34,8 +34,33 @@ function Header() {
   const [activeHotNews, setActiveHotNews] = useState([]);
   const [hotNewsState, setHotNewsState] = useState("loading");
   const [isLanguageChanging, setIsLanguageChanging] = useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isThemeChanging, setIsThemeChanging] = useState(false);
-  const language = i18n.language === "en" ? "en" : "vi";
+  const languageMenuRef = useRef(null);
+  const language = ["vi", "en", "ja"].includes(i18n.resolvedLanguage)
+    ? i18n.resolvedLanguage
+    : "vi";
+  const languageOptions = [
+    { code: "vi", label: "Tiếng Việt" },
+    { code: "en", label: "English" },
+    { code: "ja", label: "日本語" },
+  ];
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!languageMenuRef.current?.contains(event.target)) setIsLanguageMenuOpen(false);
+    };
+    const handleEscape = (event) => {
+      if (event.key === "Escape") setIsLanguageMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -63,16 +88,20 @@ function Header() {
       ? activeHotNews
       : [];
 
-  const handleLanguageChange = async () => {
-    if (isLanguageChanging) return;
+  const handleLanguageChange = async (nextLanguage) => {
+    if (isLanguageChanging || nextLanguage === language) {
+      setIsLanguageMenuOpen(false);
+      return;
+    }
 
+    setIsLanguageMenuOpen(false);
     setIsLanguageChanging(true);
     const loadingToast = toast.loading(t("components.changingLanguage"));
 
     await new Promise((resolve) => window.setTimeout(resolve, 2000));
 
     try {
-      await i18n.changeLanguage(language === "vi" ? "en" : "vi");
+      await i18n.changeLanguage(nextLanguage);
       toast.success(i18n.t("components.languageChanged"), { id: loadingToast });
     } catch {
       toast.error(i18n.t("components.languageChangeError"), { id: loadingToast });
@@ -123,15 +152,18 @@ function Header() {
 
           <div className="fpt-header__actions">
             <div className="fpt-header__social">
-              <button
-                type="button"
-                onClick={handleLanguageChange}
-                disabled={isLanguageChanging}
-                aria-busy={isLanguageChanging}
-                className="fpt-header__social-btn fpt-header__social-btn--language"
-                aria-label={language === "vi" ? t("header.switchToEnglish") : t("header.switchToVietnamese")}
-                title={language === "vi" ? t("header.switchToEnglish") : t("header.switchToVietnamese")}
-              >
+              <div className="fpt-header__language" ref={languageMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsLanguageMenuOpen((isOpen) => !isOpen)}
+                  disabled={isLanguageChanging}
+                  aria-busy={isLanguageChanging}
+                  aria-expanded={isLanguageMenuOpen}
+                  aria-haspopup="listbox"
+                  className="fpt-header__social-btn fpt-header__social-btn--language"
+                  aria-label={t("header.selectLanguage", { defaultValue: "Select language" })}
+                  title={t("header.selectLanguage", { defaultValue: "Select language" })}
+                >
                 <svg
                   viewBox="0 0 24 24"
                   width="24"
@@ -147,7 +179,25 @@ function Header() {
                   <path d="M3 12h18" />
                   <path d="M12 3c2.5 2.5 3.8 5.5 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z" />
                 </svg>
-              </button>
+                </button>
+                {isLanguageMenuOpen && (
+                  <div className="fpt-header__language-menu" role="listbox" aria-label={t("header.selectLanguage", { defaultValue: "Select language" })}>
+                    {languageOptions.map((option) => (
+                      <button
+                        key={option.code}
+                        type="button"
+                        role="option"
+                        aria-selected={language === option.code}
+                        className={`fpt-header__language-option${language === option.code ? " fpt-header__language-option--active" : ""}`}
+                        onClick={() => handleLanguageChange(option.code)}
+                        disabled={isLanguageChanging}
+                      >
+                        <span>{option.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <button
                 type="button"
                 onClick={handleThemeChange}
