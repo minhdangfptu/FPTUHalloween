@@ -28,6 +28,7 @@ import News from "./pages/Halloween2025/News";
 import FPTUBoardGameClub from "./pages/Halloween2026/FPTUBoardGameClub";
 import ChangePassword from "./pages/Authentication/ChangePassword";
 import MessengerButton from "./components/MessengerButton";
+import AIFAQModal from "./components/AIFAQModal";
 import UserProfile from "./pages/Account/UserProfile";
 import MyTicket from "./pages/Account/MyTicket";
 import FBGCLogin from "./pages/Authentication/FBGCLogin";
@@ -625,6 +626,7 @@ export default function App() {
         </Routes>
       </FrontendAccessGuard>
       <ConditionalMessengerButton />
+      <AIFAQModal />
     </BrowserRouter>
   );
 }

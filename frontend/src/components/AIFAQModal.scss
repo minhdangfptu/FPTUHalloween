@@ -1,0 +1,909 @@
+/* Hallmark · component: AI FAQ chat modal · genre: atmospheric · theme: FPT light utility
+ * states: default · hover · focus · active · disabled · loading · error · success
+ * contrast: pass (UI text and focus targets) · pre-emit critique: P4 H5 E4 S5 R5 V4
+ */
+.ai-faq-root {
+  --ai-paper: oklch(99% 0.004 25);
+  --ai-paper-soft: oklch(97% 0.008 25);
+  --ai-paper-raised: oklch(94.5% 0.012 25);
+  --ai-ink: oklch(20% 0.02 260);
+  --ai-muted: oklch(45% 0.025 260);
+  --ai-faint: oklch(62% 0.02 260);
+  --ai-line: oklch(88% 0.014 25);
+  --ai-accent: oklch(52% 0.205 27);
+  --ai-accent-strong: oklch(43% 0.18 27);
+  --ai-accent-soft: oklch(95% 0.035 25);
+  --ai-accent-ink: oklch(98% 0.006 25);
+  --ai-brand: oklch(65% 0.18 52);
+  --ai-brand-soft: oklch(95% 0.045 62);
+  --ai-focus: oklch(23% 0.025 260);
+  --ai-success: oklch(47% 0.13 153);
+  --ai-success-soft: oklch(94% 0.04 153);
+  --ai-error: oklch(51% 0.19 27);
+  --ai-error-soft: oklch(95% 0.04 27);
+  --ai-backdrop: oklch(16% 0.015 260 / 0.58);
+  --ai-shadow: oklch(18% 0.025 260 / 0.2);
+  --ai-space-2xs: 0.25rem;
+  --ai-space-xs: 0.5rem;
+  --ai-space-sm: 0.75rem;
+  --ai-space-md: 1rem;
+  --ai-space-lg: 1.5rem;
+  --ai-space-xl: 2.5rem;
+  --ai-radius-sm: 0.5rem;
+  --ai-radius-md: 0.75rem;
+  --ai-radius-lg: 1.25rem;
+  --ai-dur-micro: 120ms;
+  --ai-dur-short: 220ms;
+  --ai-dur-long: 300ms;
+  --ai-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ai-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ai-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ai-z-floating: 500;
+}
+
+.ai-faq-root,
+.ai-faq-root *,
+.ai-faq-root *::before,
+.ai-faq-root *::after {
+  box-sizing: border-box;
+}
+
+:root[data-theme="dark"] .ai-faq-root {
+  --ai-paper: oklch(17% 0.018 260);
+  --ai-paper-soft: oklch(20% 0.02 260);
+  --ai-paper-raised: oklch(24% 0.022 260);
+  --ai-ink: oklch(94% 0.009 260);
+  --ai-muted: oklch(74% 0.018 260);
+  --ai-faint: oklch(61% 0.02 260);
+  --ai-line: oklch(32% 0.025 260);
+  --ai-accent: oklch(64% 0.17 27);
+  --ai-accent-strong: oklch(70% 0.15 27);
+  --ai-accent-soft: oklch(26% 0.055 27);
+  --ai-accent-ink: oklch(16% 0.018 260);
+  --ai-brand: oklch(75% 0.16 62);
+  --ai-brand-soft: oklch(26% 0.055 52);
+  --ai-focus: oklch(94% 0.009 260);
+  --ai-success: oklch(72% 0.12 153);
+  --ai-success-soft: oklch(25% 0.045 153);
+  --ai-error: oklch(72% 0.14 27);
+  --ai-error-soft: oklch(26% 0.055 27);
+  --ai-backdrop: oklch(8% 0.015 260 / 0.76);
+  --ai-shadow: oklch(6% 0.02 260 / 0.48);
+}
+
+.ai-faq-launcher {
+  position: fixed;
+  right: max(var(--ai-space-lg), env(safe-area-inset-right));
+  bottom: max(var(--ai-space-lg), env(safe-area-inset-bottom));
+  z-index: var(--ai-z-floating);
+  display: grid;
+  width: 3.75rem;
+  height: 3.75rem;
+  padding: 0;
+  place-items: center;
+  color: var(--ai-accent-ink);
+  background: linear-gradient(135deg, #f97316, #f59e0b);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 0.5rem 1.5rem var(--ai-shadow);
+  cursor: pointer;
+  font: inherit;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ai-faq-launcher svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.ai-faq-launcher span {
+  position: absolute;
+  right: -0.1rem;
+  bottom: -0.1rem;
+  display: grid;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding-inline: var(--ai-space-2xs);
+  place-items: center;
+  color: var(--ai-ink);
+  background: var(--ai-paper);
+  border: 1px solid var(--ai-line);
+  border-radius: 999rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ai-faq-launcher:active,
+.ai-faq__icon-button:active,
+.ai-faq__new-chat:active,
+.ai-faq__history-item:active,
+.ai-faq__suggestions button:active,
+.ai-faq__send:active {
+  transform: translateY(1px);
+}
+
+.ai-faq-launcher:focus-visible,
+.ai-faq__icon-button:focus-visible,
+.ai-faq__new-chat:focus-visible,
+.ai-faq__history-item:focus-visible,
+.ai-faq__suggestions button:focus-visible,
+.ai-faq__send:focus-visible {
+  outline: 2px solid var(--ai-focus);
+  outline-offset: 2px;
+}
+
+.ai-faq-launcher:disabled,
+.ai-faq__icon-button:disabled,
+.ai-faq__new-chat:disabled,
+.ai-faq__history-item:disabled,
+.ai-faq__suggestions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ai-faq-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  margin-inline-start: auto;
+  padding: 0;
+  overflow: hidden;
+  color: var(--ai-ink);
+  background: var(--ai-paper);
+  border: 0;
+  border-radius: 0;
+  box-shadow: -0.75rem 0 2.5rem var(--ai-shadow);
+  font: inherit;
+}
+
+.ai-faq-dialog[open] {
+  animation: ai-faq-enter var(--ai-dur-long) var(--ai-ease-out) both;
+}
+
+.ai-faq-dialog::backdrop {
+  background: var(--ai-backdrop);
+  animation: ai-faq-backdrop var(--ai-dur-long) var(--ai-ease-out) both;
+}
+
+.ai-faq-dialog[data-closing="true"] {
+  pointer-events: none;
+  animation: ai-faq-exit var(--ai-dur-long) var(--ai-ease-in) both;
+}
+
+.ai-faq-dialog[data-closing="true"]::backdrop {
+  animation: ai-faq-backdrop-exit var(--ai-dur-long) var(--ai-ease-in) both;
+}
+
+.ai-faq__shell,
+.ai-faq__chat {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.ai-faq__chat {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--ai-paper);
+}
+
+.ai-faq__header {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+  align-items: center;
+  gap: var(--ai-space-sm);
+  min-height: 4.5rem;
+  padding: var(--ai-space-sm) var(--ai-space-md);
+  color: var(--ai-ink);
+  background: var(--ai-paper);
+  border-bottom: 1px solid var(--ai-line);
+}
+
+.ai-faq__header > .ai-faq__icon-button:first-child {
+  justify-self: start;
+}
+
+.ai-faq__header > .ai-faq__icon-button:last-child {
+  justify-self: end;
+}
+
+.ai-faq__icon-button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  place-items: center;
+  color: var(--ai-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ai-radius-sm);
+  cursor: pointer;
+  transition:
+    color var(--ai-dur-short) var(--ai-ease-out),
+    background-color var(--ai-dur-short) var(--ai-ease-out),
+    transform var(--ai-dur-micro) var(--ai-ease-out);
+}
+
+.ai-faq__icon-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.ai-faq__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-space-sm);
+  min-width: 0;
+}
+
+.ai-faq__heading > div {
+  min-width: 0;
+}
+
+.ai-faq__message-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--ai-brand);
+  background: var(--ai-brand-soft);
+  border-radius: var(--ai-radius-sm);
+}
+
+.ai-faq__message-avatar svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.ai-faq__heading h2 {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.ai-faq__heading p {
+  display: grid;
+  grid-template-columns: 0.5rem minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--ai-space-2xs);
+  min-width: 0;
+  margin: var(--ai-space-2xs) 0 0;
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.ai-faq__heading p:not(:empty) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ai-faq__status-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  justify-self: center;
+  background: var(--ai-success);
+  border-radius: 50%;
+}
+
+.ai-faq__status-label {
+  min-width: 0;
+  line-height: 1rem;
+}
+
+.ai-faq__messages {
+  min-height: 0;
+  overflow-x: clip;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--ai-faint) transparent;
+  scrollbar-width: thin;
+}
+
+.ai-faq__conversation {
+  width: min(100%, 45rem);
+  min-height: 100%;
+  margin-inline: auto;
+  padding: var(--ai-space-lg) var(--ai-space-md) var(--ai-space-xl);
+}
+
+.ai-faq__message,
+.ai-faq__thinking {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-space-sm);
+  margin-block-end: var(--ai-space-lg);
+}
+
+.ai-faq__message-avatar {
+  width: 2rem;
+  height: 2rem;
+}
+
+.ai-faq__message > div,
+.ai-faq__thinking > div {
+  min-width: 0;
+  max-width: min(100%, 38rem);
+}
+
+.ai-faq__message p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.ai-faq__message--user {
+  justify-content: flex-end;
+}
+
+.ai-faq__message--user > div {
+  padding: var(--ai-space-sm) var(--ai-space-md);
+  color: var(--ai-ink);
+  background: var(--ai-paper-raised);
+  border-radius: var(--ai-radius-lg) var(--ai-radius-lg) var(--ai-space-2xs) var(--ai-radius-lg);
+}
+
+.ai-faq__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ai-space-xs);
+  margin-block-start: var(--ai-space-sm);
+}
+
+.ai-faq__sources span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ai-space-2xs);
+  min-height: 1.75rem;
+  padding-inline: var(--ai-space-xs);
+  color: var(--ai-muted);
+  background: var(--ai-paper-soft);
+  border: 1px solid var(--ai-line);
+  border-radius: 999rem;
+  font-size: 0.7rem;
+  line-height: 1.2;
+}
+
+.ai-faq__sources svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.ai-faq__suggestions {
+  display: grid;
+  gap: var(--ai-space-xs);
+  margin-inline-start: 2.75rem;
+}
+
+.ai-faq__suggestions button {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-space-sm);
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--ai-space-xs) var(--ai-space-sm);
+  color: var(--ai-ink);
+  background: var(--ai-paper);
+  border: 1px solid var(--ai-line);
+  border-radius: var(--ai-radius-md);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  text-align: start;
+  transition:
+    background-color var(--ai-dur-short) var(--ai-ease-out),
+    transform var(--ai-dur-micro) var(--ai-ease-out);
+}
+
+.ai-faq__suggestions svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 1rem;
+  color: var(--ai-accent);
+}
+
+.ai-faq__thinking > div {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-space-xs);
+  min-height: 2rem;
+  color: var(--ai-muted);
+  font-size: 0.85rem;
+}
+
+.ai-faq__thinking > div svg,
+.ai-faq__send[data-state="loading"] svg {
+  width: 1rem;
+  height: 1rem;
+  animation: ai-faq-spin 1s linear infinite;
+}
+
+.ai-faq__composer-area {
+  min-width: 0;
+  padding: var(--ai-space-sm) var(--ai-space-md) max(var(--ai-space-sm), env(safe-area-inset-bottom));
+  overflow-x: clip;
+  color: var(--ai-ink);
+  background: var(--ai-paper);
+  border-top: 1px solid var(--ai-line);
+}
+
+.ai-faq__composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ai-space-xs);
+  width: min(100%, 45rem);
+  margin-inline: auto;
+  padding: var(--ai-space-2xs);
+  color: var(--ai-ink);
+  background: var(--ai-paper-soft);
+  border: 1px solid var(--ai-line);
+  border-radius: var(--ai-radius-lg);
+  outline: none;
+  box-shadow: none;
+  transition:
+    background-color var(--ai-dur-short) var(--ai-ease-out),
+    border-color var(--ai-dur-short) var(--ai-ease-out),
+    box-shadow var(--ai-dur-short) var(--ai-ease-out);
+}
+
+.ai-faq__composer[data-state="error"] {
+  background: var(--ai-error-soft);
+  border-color: var(--ai-error);
+}
+
+.ai-faq__composer:focus-within {
+  background: var(--ai-paper);
+  border-color: var(--ai-accent);
+  box-shadow: 0 0 0 3px rgba(215, 25, 32, 0.12);
+}
+
+.ai-faq__composer textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.25rem;
+  max-height: 8rem;
+  padding: 0.45rem var(--ai-space-xs);
+  overflow-y: auto;
+  color: var(--ai-ink);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  resize: none;
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.ai-faq__composer textarea::placeholder {
+  color: var(--ai-muted);
+  opacity: 1;
+}
+
+.ai-faq__composer textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ai-faq__send {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  place-items: center;
+  color: var(--ai-accent-ink);
+  background: linear-gradient(135deg, #e63946, #ff6b6b);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 0;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ai-faq__send svg {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  place-self: center;
+}
+
+.ai-faq__send:disabled,
+.ai-faq__send[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ai-faq__send[data-state="error"] {
+  color: var(--ai-accent-ink);
+  background: var(--ai-error);
+  border-color: var(--ai-error);
+}
+
+.ai-faq__send[data-state="success"] {
+  color: var(--ai-accent-ink);
+  background: var(--ai-success);
+  border-color: var(--ai-success);
+}
+
+.ai-faq__helper {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ai-space-sm);
+  width: min(100%, 45rem);
+  min-height: 1lh;
+  margin: var(--ai-space-xs) auto 0;
+  color: var(--ai-muted);
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.ai-faq__helper small {
+  flex: 0 0 auto;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-faq__helper-error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ai-space-2xs);
+  color: var(--ai-error);
+}
+
+.ai-faq__helper-error svg {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex: 0 0 0.85rem;
+}
+
+.ai-faq__history {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  width: min(18rem, calc(100% - 3rem));
+  padding: var(--ai-space-md);
+  color: var(--ai-ink);
+  background: var(--ai-paper-soft);
+  border-inline-end: 1px solid var(--ai-line);
+  box-shadow: 0.75rem 0 2rem var(--ai-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100%);
+  transition:
+    opacity var(--ai-dur-short) var(--ai-ease-in),
+    transform var(--ai-dur-short) var(--ai-ease-in);
+}
+
+.ai-faq__history--open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  transition-timing-function: var(--ai-ease-out);
+}
+
+.ai-faq__history-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 0;
+  background: var(--ai-backdrop);
+  border: 0;
+  cursor: pointer;
+  animation: ai-faq-backdrop var(--ai-dur-short) var(--ai-ease-out) both;
+}
+
+.ai-faq__history-header,
+.ai-faq__history-header > div {
+  display: flex;
+  align-items: center;
+}
+
+.ai-faq__history-header {
+  justify-content: space-between;
+  gap: var(--ai-space-sm);
+}
+
+.ai-faq__history-header > div {
+  gap: var(--ai-space-xs);
+}
+
+.ai-faq__history-header > div svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--ai-brand);
+}
+
+.ai-faq__new-chat {
+  display: flex;
+  align-items: center;
+  gap: var(--ai-space-sm);
+  min-height: 2.75rem;
+  margin-block: var(--ai-space-lg);
+  padding-inline: var(--ai-space-sm);
+  color: var(--ai-ink);
+  background: var(--ai-paper);
+  border: 1px solid var(--ai-line);
+  border-radius: var(--ai-radius-md);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    background-color var(--ai-dur-short) var(--ai-ease-out),
+    transform var(--ai-dur-micro) var(--ai-ease-out);
+}
+
+.ai-faq__new-chat svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ai-faq__history-list {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.ai-faq__history-list > p {
+  margin: 0 0 var(--ai-space-xs);
+  color: var(--ai-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.ai-faq__history-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ai-space-xs);
+  width: 100%;
+  min-height: 3.5rem;
+  padding: var(--ai-space-xs);
+  color: var(--ai-ink);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--ai-radius-sm);
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+  transition:
+    background-color var(--ai-dur-short) var(--ai-ease-out),
+    transform var(--ai-dur-micro) var(--ai-ease-out);
+}
+
+.ai-faq__history-item > svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--ai-muted);
+}
+
+.ai-faq__history-item > span {
+  display: grid;
+  gap: var(--ai-space-2xs);
+  min-width: 0;
+}
+
+.ai-faq__history-item strong,
+.ai-faq__history-item small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ai-faq__history-item strong {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ai-faq__history-item small {
+  color: var(--ai-muted);
+  font-size: 0.68rem;
+}
+
+.ai-faq__history-item--active {
+  color: var(--ai-accent-strong);
+  background: var(--ai-accent-soft);
+}
+
+.ai-faq__history-note {
+  margin: var(--ai-space-md) 0 0;
+  color: var(--ai-muted);
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.ai-faq__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ai-faq-launcher:hover {
+    background: linear-gradient(135deg, #ea580c, #d97706);
+    transform: scale(1.05);
+  }
+
+  .ai-faq__history-item:hover,
+  .ai-faq__suggestions button:hover {
+    color: var(--ai-accent-strong);
+    background: var(--ai-accent-soft);
+    border-color: var(--ai-accent);
+  }
+
+  .ai-faq__icon-button:hover {
+    color: var(--ai-accent-strong);
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .ai-faq__new-chat:hover {
+    color: var(--ai-accent-strong);
+    background: var(--ai-accent-soft);
+    border-color: var(--ai-accent);
+  }
+
+  .ai-faq__composer:hover:not([data-state="error"]):not(:focus-within) {
+    background: var(--ai-paper);
+    border-color: var(--ai-accent);
+  }
+
+  .ai-faq__send[data-state="default"]:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c92f3d, #e65353);
+    transform: scale(1.05);
+  }
+
+  .ai-faq-launcher:hover:active,
+  .ai-faq__send[data-state="default"]:hover:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+}
+
+@media (min-width: 40rem) {
+  .ai-faq-dialog {
+    width: 50vw;
+    border-inline-start: 1px solid var(--ai-line);
+    border-radius: var(--ai-radius-lg) 0 0 var(--ai-radius-lg);
+  }
+
+  .ai-faq__composer-area {
+    padding-inline: var(--ai-space-lg);
+  }
+
+  .ai-faq__conversation {
+    padding-inline: var(--ai-space-lg);
+  }
+
+  .ai-faq__suggestions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ai-faq__suggestions button {
+    align-items: flex-start;
+    min-height: 5.5rem;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 64rem) {
+  .ai-faq-dialog {
+    width: 30vw;
+  }
+}
+
+@media (pointer: coarse) {
+  .ai-faq-launcher,
+  .ai-faq__icon-button,
+  .ai-faq__new-chat,
+  .ai-faq__history-item,
+  .ai-faq__suggestions button {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-faq-dialog[open],
+  .ai-faq-dialog::backdrop,
+  .ai-faq__history-scrim {
+    animation-duration: 150ms;
+    animation-name: ai-faq-backdrop;
+  }
+
+  .ai-faq-dialog[data-closing="true"],
+  .ai-faq-dialog[data-closing="true"]::backdrop {
+    animation-duration: 150ms;
+    animation-name: ai-faq-backdrop-exit;
+  }
+
+  .ai-faq-launcher,
+  .ai-faq__icon-button,
+  .ai-faq__new-chat,
+  .ai-faq__history,
+  .ai-faq__history-item,
+  .ai-faq__suggestions button,
+  .ai-faq__composer,
+  .ai-faq__send {
+    transition-duration: 150ms;
+  }
+
+  .ai-faq__history {
+    transform: none;
+  }
+
+  .ai-faq-launcher:active,
+  .ai-faq__icon-button:active,
+  .ai-faq__new-chat:active,
+  .ai-faq__history-item:active,
+  .ai-faq__suggestions button:active,
+  .ai-faq__send:active {
+    transform: none;
+  }
+
+  .ai-faq__thinking > div svg,
+  .ai-faq__send[data-state="loading"] svg {
+    animation-duration: 1.5s;
+  }
+}
+
+@keyframes ai-faq-enter {
+  from {
+    opacity: 0;
+    transform: translateX(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ai-faq-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(1rem);
+  }
+}
+
+@keyframes ai-faq-backdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ai-faq-backdrop-exit {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes ai-faq-spin {
+  to { transform: rotate(360deg); }
+}

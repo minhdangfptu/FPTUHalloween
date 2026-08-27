@@ -2,22 +2,6 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Box,
-  Container,
-  Typography,
-  Tabs,
-  Tab,
-  Paper,
-  Grid,
-  Chip,
-  Button,
-} from "@mui/material";
-import {
-  CalendarToday,
-  LocationOn,
-  ConfirmationNumber,
-} from "@mui/icons-material";
 
 export default function Overall({ event }) {
   const { t } = useTranslation();
@@ -228,8 +212,7 @@ Sự kiện gồm 4 khu vực chính:
                       whiteSpace: "pre-line",
                     }}
                   >
-                    {event.event_description ||
-                      overallText("noDescription")}
+                    {event.event_description || overallText("noDescription")}
                   </Typography>
                 </Box>
               )}
@@ -302,7 +285,6 @@ Sự kiện gồm 4 khu vực chính:
                   </Box>
 
                   {/* Status */}
-                 
                 </Box>
               )}
 
@@ -351,8 +333,8 @@ Sự kiện gồm 4 khu vực chính:
                         {event.event_status === 2
                           ? overallText("registrationEnded")
                           : event.event_status === 3
-                          ? overallText("registrationCancelled")
-                          : overallText("registrationNotOpen")}
+                            ? overallText("registrationCancelled")
+                            : overallText("registrationNotOpen")}
                       </Typography>
                     </Box>
                   )}

@@ -1,10 +1,10 @@
 {
-  "date": "2026-08-02",
-  "fontStack": "Roboto + existing SVN-MidnightMinutes display face",
-  "palette": "existing CSS custom properties plus page-scoped OKLCH tokens",
-  "motion": "framer-motion installed; page uses no new motion interaction",
+  "date": "2026-08-27",
+  "fontStack": "Roboto is active globally; Geist is installed but not active",
+  "palette": "existing CSS custom properties with FPT red plus component-scoped OKLCH tokens",
+  "motion": "framer-motion installed; AI FAQ uses restrained CSS state transitions",
   "spacing": "existing project spacing with rem/clamp values",
   "framework": "React + Vite + SCSS",
   "preserved": ["existing app chrome", "existing assets", "existing route tree"],
-  "introduced": "Rainbow directory / botanical carnival visual language"
+  "introduced": "ChatGPT-inspired AI FAQ utility aligned with the existing FPT interface"
 }
