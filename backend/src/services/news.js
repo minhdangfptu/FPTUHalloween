@@ -169,6 +169,14 @@ const setNewsFeatured = async (id, isFeatured) => {
 
   let featuredOrder = 0
   if (isFeatured) {
+    const featuredCount = await News.countDocuments({
+      isAvailable: { $ne: false },
+      isFeatured: true
+    })
+    if (featuredCount >= MAX_FEATURED_NEWS) {
+      throw buildError(409, `A maximum of ${MAX_FEATURED_NEWS} featured posts is allowed`)
+    }
+
     const highestFeatured = await News.findOne({
       isAvailable: { $ne: false },
       isFeatured: true
@@ -197,4 +205,51 @@ const setNewsFeatured = async (id, isFeatured) => {
   return serializeNews(updated)
 }
 
-module.exports = { getNews, getNewsById, getFeaturedNews, setNewsFeatured, serializeNews }
+const reorderFeaturedNews = async orderedIds => {
+  if (!Array.isArray(orderedIds)) throw buildError(400, 'orderedIds must be an array')
+  if (orderedIds.length > MAX_FEATURED_NEWS) {
+    throw buildError(400, `A maximum of ${MAX_FEATURED_NEWS} featured posts is allowed`)
+  }
+
+  const normalizedIds = orderedIds.map(id => String(id || '').trim())
+  if (normalizedIds.some(id => !mongoose.isValidObjectId(id))) {
+    throw buildError(400, 'Featured post order contains an invalid news ID')
+  }
+  if (new Set(normalizedIds).size !== normalizedIds.length) {
+    throw buildError(400, 'Featured post order contains duplicate news IDs')
+  }
+
+  const featuredItems = await News.find({
+    isAvailable: { $ne: false },
+    isFeatured: true
+  })
+    .select('_id')
+    .lean()
+
+  const featuredIdSet = new Set(featuredItems.map(item => String(item._id)))
+  const hasSameItems = featuredIdSet.size === normalizedIds.length
+    && normalizedIds.every(id => featuredIdSet.has(id))
+  if (!hasSameItems) {
+    throw buildError(409, 'Featured post list changed. Please refresh and try again')
+  }
+
+  if (normalizedIds.length > 0) {
+    await News.bulkWrite(normalizedIds.map((id, index) => ({
+      updateOne: {
+        filter: { _id: id, isAvailable: { $ne: false }, isFeatured: true },
+        update: { $set: { featuredOrder: normalizedIds.length - index } }
+      }
+    })), { ordered: true })
+  }
+
+  return getFeaturedNews()
+}
+
+module.exports = {
+  getNews,
+  getNewsById,
+  getFeaturedNews,
+  setNewsFeatured,
+  reorderFeaturedNews,
+  serializeNews
+}

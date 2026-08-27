@@ -73,6 +73,7 @@ router.patch('/hot-news/:id/status', requireAuth, requireRole('Admin'), hotNewsC
 router.get('/news', newsRateLimiter, newsCtrl.getList)
 router.get('/admin/news/facebook/status', requireAuth, requireRole('Admin'), newsCtrl.getFacebookSyncStatus)
 router.post('/admin/news/facebook/sync', requireAuth, requireRole('Admin'), facebookSyncRateLimiter, newsCtrl.syncFacebookNews)
+router.patch('/admin/news/featured/order', requireAuth, requireRole('Admin'), newsCtrl.reorderFeatured)
 router.patch('/admin/news/:id/featured', requireAuth, requireRole('Admin'), newsCtrl.setFeatured)
 router.get('/news/:id', newsRateLimiter, newsCtrl.getDetail)
 

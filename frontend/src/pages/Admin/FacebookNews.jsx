@@ -58,6 +58,7 @@ const FacebookNews = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSyncing, setIsSyncing] = useState(false);
   const [updatingFeaturedId, setUpdatingFeaturedId] = useState("");
+  const [reorderingFeaturedId, setReorderingFeaturedId] = useState("");
   const [error, setError] = useState("");
 
   const formatDate = (value) => value
@@ -153,6 +154,7 @@ const FacebookNews = () => {
   };
 
   const handleFeaturedToggle = async (item, nextFeatured = !item.isFeatured) => {
+    if (updatingFeaturedId || reorderingFeaturedId) return;
     setUpdatingFeaturedId(item.id);
     try {
       const updatedItem = await newsAPI.setFeatured(item.id, nextFeatured);
@@ -171,6 +173,38 @@ const FacebookNews = () => {
       toast.error(text("featuredUpdateError"));
     } finally {
       setUpdatingFeaturedId("");
+    }
+  };
+
+  const handleFeaturedMove = async (item, offset) => {
+    if (updatingFeaturedId || reorderingFeaturedId) return;
+
+    const currentIndex = featuredItems.findIndex((featuredItem) => featuredItem.id === item.id);
+    const targetIndex = currentIndex + offset;
+    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= featuredItems.length) return;
+
+    const previousItems = featuredItems;
+    const nextItems = [...featuredItems];
+    [nextItems[currentIndex], nextItems[targetIndex]] = [nextItems[targetIndex], nextItems[currentIndex]];
+
+    setFeaturedItems(nextItems);
+    setReorderingFeaturedId(item.id);
+    const toastId = toast.loading(text("featuredReordering"));
+    try {
+      const reorderedItems = await newsAPI.reorderFeatured(nextItems.map((featuredItem) => featuredItem.id));
+      const reorderedById = new Map(reorderedItems.map((featuredItem) => [featuredItem.id, featuredItem]));
+      setFeaturedItems(reorderedItems);
+      setItems((current) => current.map((newsItem) => (
+        reorderedById.has(newsItem.id)
+          ? { ...newsItem, featuredOrder: reorderedById.get(newsItem.id).featuredOrder }
+          : newsItem
+      )));
+      toast.success(text("featuredReorderSuccess"), { id: toastId });
+    } catch {
+      setFeaturedItems(previousItems);
+      toast.error(text("featuredReorderError"), { id: toastId });
+    } finally {
+      setReorderingFeaturedId("");
     }
   };
 
@@ -270,7 +304,9 @@ const FacebookNews = () => {
             formatDate={formatDate}
             isLoading={isLoading}
             onRemove={(item) => handleFeaturedToggle(item, false)}
+            onMove={handleFeaturedMove}
             updatingId={updatingFeaturedId}
+            reorderingId={reorderingFeaturedId}
             labels={{
               carouselLabel: text("featuredCarouselLabel"),
               eyebrow: text("featuredEyebrow"),
@@ -287,6 +323,11 @@ const FacebookNews = () => {
               openPost: (title) => text("openFeaturedPost", { title }),
               removePost: (title) => text("removeFeaturedPost", { title }),
               removeFeatured: text("removeFeatured"),
+              position: (current, total) => text("featuredPosition", { current, total }),
+              moveEarlier: (title) => text("moveFeaturedEarlierPost", { title }),
+              moveLater: (title) => text("moveFeaturedLaterPost", { title }),
+              moveEarlierLabel: text("moveFeaturedEarlier"),
+              moveLaterLabel: text("moveFeaturedLater"),
             }}
           />
 
@@ -336,7 +377,7 @@ const FacebookNews = () => {
                         type="button"
                         className={item.isFeatured ? "is-featured" : ""}
                         onClick={() => handleFeaturedToggle(item)}
-                        disabled={updatingFeaturedId === item.id}
+                        disabled={Boolean(updatingFeaturedId || reorderingFeaturedId)}
                         aria-pressed={item.isFeatured}
                         aria-label={text(item.isFeatured ? "removeFeaturedPost" : "addFeaturedPost", { title: item.title })}
                         title={text(item.isFeatured ? "removeFeatured" : "addFeatured")}

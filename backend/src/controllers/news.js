@@ -35,4 +35,19 @@ const setFeatured = (req, res, next) => Promise.resolve(
   data
 })).catch(next)
 
-module.exports = { getList, getDetail, getFacebookSyncStatus, syncFacebookNews, setFeatured }
+const reorderFeatured = (req, res, next) => Promise.resolve(
+  newsService.reorderFeaturedNews(req.body?.orderedIds)
+).then(data => res.status(200).json({
+  success: true,
+  message: 'Featured news order updated successfully',
+  data
+})).catch(next)
+
+module.exports = {
+  getList,
+  getDetail,
+  getFacebookSyncStatus,
+  syncFacebookNews,
+  setFeatured,
+  reorderFeatured
+}

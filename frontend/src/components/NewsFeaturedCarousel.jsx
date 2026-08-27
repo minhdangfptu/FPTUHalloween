@@ -4,6 +4,7 @@ import {
   ChevronRight,
   Clock3,
   ExternalLink,
+  LoaderCircle,
   Pin,
   PinOff,
 } from "lucide-react";
@@ -42,7 +43,9 @@ const NewsFeaturedCarousel = ({
   formatDate,
   isLoading = false,
   onRemove,
+  onMove,
   updatingId = "",
+  reorderingId = "",
 }) => {
   const viewportRef = useRef(null);
   const [viewIndex, setViewIndex] = useState(0);
@@ -117,7 +120,7 @@ const NewsFeaturedCarousel = ({
       className="news-featured-carousel"
       aria-roledescription="carousel"
       aria-label={labels.carouselLabel}
-      aria-busy={isLoading}
+      aria-busy={isLoading || Boolean(reorderingId)}
     >
       <header className="news-featured-carousel__header">
         <div>
@@ -194,6 +197,36 @@ const NewsFeaturedCarousel = ({
                   </span>
                   <h4>{post.title}</h4>
                   <p>{excerpt(post.content)}</p>
+                  {onMove && (
+                    <div className="news-featured-carousel__order">
+                      <span>
+                        {reorderingId === item.id && (
+                          <LoaderCircle className="is-spinning" aria-hidden="true" />
+                        )}
+                        {labels.position(index + 1, items.length)}
+                      </span>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => onMove(item, -1)}
+                          disabled={Boolean(updatingId || reorderingId) || index === 0}
+                          aria-label={labels.moveEarlier(item.title)}
+                          title={labels.moveEarlierLabel}
+                        >
+                          <ChevronLeft size={16} aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onMove(item, 1)}
+                          disabled={Boolean(updatingId || reorderingId) || index === items.length - 1}
+                          aria-label={labels.moveLater(item.title)}
+                          title={labels.moveLaterLabel}
+                        >
+                          <ChevronRight size={16} aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                   <div className="news-featured-carousel__meta">
                     <span><Clock3 size={14} aria-hidden="true" /> {formatDate(item.publishedAt)}</span>
                     <div>
@@ -211,7 +244,7 @@ const NewsFeaturedCarousel = ({
                         <button
                           type="button"
                           onClick={() => onRemove(item)}
-                          disabled={updatingId === item.id}
+                          disabled={Boolean(updatingId || reorderingId)}
                           aria-label={labels.removePost(item.title)}
                           title={labels.removeFeatured}
                         >

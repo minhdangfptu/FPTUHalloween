@@ -7,7 +7,7 @@
   --messenger-popup-shadow: rgba(17, 24, 39, 0.18);
   position: fixed;
   right: 24px;
-  bottom: 94px;
+  bottom: 24px;
   z-index: 9999;
   font-family: "Inter", "Roboto", sans-serif;
 }
@@ -173,7 +173,7 @@
 @media (max-width: 480px) {
   .messenger-wrapper {
     right: 16px;
-    bottom: 86px;
+    bottom: 16px;
   }
   .messenger-popup {
     right: -4px;

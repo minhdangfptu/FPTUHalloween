@@ -38,6 +38,11 @@ const newsAPI = {
     const response = await axiosClient.patch(`/admin/news/${id}/featured`, { isFeatured });
     return response.data?.data;
   },
+
+  reorderFeatured: async (orderedIds) => {
+    const response = await axiosClient.patch("/admin/news/featured/order", { orderedIds });
+    return response.data?.data || [];
+  },
 };
 
 export default newsAPI;
