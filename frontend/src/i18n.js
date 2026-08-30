@@ -1003,13 +1003,13 @@ Object.assign(resources.en.translation.archive, {
 Object.assign(resources.vi.translation.normal.btc, {
   heroLabel: 'FPTU HALLOWEEN 2026 · ĐỘI NGŨ CỐT LÕI', titleEnd: 'sự kiện.', coreTeam: 'Đội ngũ HLW26',
   location: 'Đại học FPT · Hà Nội', coreTeamLabel: 'ĐỘI NGŨ CỐT LÕI', cardKicker: 'ĐỘI NGŨ', cardSeason: 'HLW26',
-  brand: 'FPTU HALLOWEEN', departmentTeam: 'Đội HLW26',
+  brand: 'FPTU HALLOWEEN', departmentTeam: 'BTC HLW2026',
   hierarchyNotes: { chair: '01 · TRƯỞNG BAN TỔ CHỨC', hr: '02 · NHÂN SỰ', lead: '03 · TRƯỞNG BAN', sublead: '04 · PHÓ BAN' },
 });
 Object.assign(resources.en.translation.normal.btc, {
   heroLabel: 'FPTU HALLOWEEN 2026 · CORE TEAM', titleEnd: 'the event.', coreTeam: 'Core Team HLW26',
   location: 'FPT University · Hanoi', coreTeamLabel: 'CORE TEAM', cardKicker: 'CORE TEAM', cardSeason: 'HLW26',
-  brand: 'FPTU HALLOWEEN', departmentTeam: 'Team HLW26',
+  brand: 'FPTU HALLOWEEN', departmentTeam: 'BTC HLW2026',
   hierarchyNotes: { chair: '01 · HEAD OF ORGANIZATION', hr: '02 · HR', lead: '03 · LEAD', sublead: '04 · SUB-LEAD' },
 });
 

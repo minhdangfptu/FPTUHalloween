@@ -250,9 +250,12 @@ const translateError = (error) => {
  * toast.success(message); // "Tạo thành công."
  */
 const translateSuccess = (message) => {
-  const translations = i18n.language?.startsWith('en')
+  const language = i18n.language?.split('-')[0];
+  const translations = language === 'en'
     ? SUCCESS_TRANSLATIONS_EN
-    : SUCCESS_TRANSLATIONS;
+    : language === 'ja'
+      ? SUCCESS_TRANSLATIONS_JA
+      : SUCCESS_TRANSLATIONS;
   return translations[message] || message;
 };
 
@@ -304,6 +307,42 @@ const SUCCESS_TRANSLATIONS_EN = Object.fromEntries(
   Object.keys(SUCCESS_TRANSLATIONS).map((message) => [message, message]),
 );
 
+const SUCCESS_TRANSLATIONS_JA = {
+  'Register successfully. Please confirm OTP.': '登録が完了しました。OTPを確認してください。',
+  'Reset password OTP sent successfully': 'パスワード再設定用のOTPを送信しました。',
+  'Password reset successfully': 'パスワードをリセットしました。',
+  'Contact sent successfully': 'お問い合わせを送信しました。',
+  'Contact status updated successfully': 'お問い合わせのステータスを更新しました。',
+  'Hot news created successfully': 'お知らせを作成しました。',
+  'Hot news updated successfully': 'お知らせを更新しました。',
+  'Hot news status updated successfully': 'お知らせのステータスを更新しました。',
+  'Hot news deleted successfully': 'お知らせを削除しました。',
+  'Facebook News synchronized successfully': 'Facebookの記事を同期しました。',
+  'Ticket type created successfully': 'チケット種別を作成しました。',
+  'Ticket type updated successfully': 'チケット種別を更新しました。',
+  'Ticket type status updated successfully': 'チケット種別のステータスを更新しました。',
+  'User disabled successfully': 'ユーザーを無効にしました。',
+  'User enabled successfully': 'ユーザーを有効にしました。',
+  'Created successfully': '作成しました。',
+  'Updated successfully': '更新しました。',
+  'Deleted successfully': '削除しました。',
+  'Operation successful': '操作が完了しました。',
+  'Feedback submitted successfully': 'フィードバックを送信しました。',
+  'Feedback form created successfully': 'フィードバックフォームを作成しました。',
+  'Feedback form updated successfully': 'フィードバックフォームを更新しました。',
+  'Feedback form deleted successfully': 'フィードバックフォームを削除しました。',
+  'Vote recorded successfully': '投票を記録しました。',
+  'Registration successful': '登録が完了しました。',
+  'Registration cancelled': '登録をキャンセルしました。',
+  'Login successful': 'ログインしました。',
+  'Logout successful': 'ログアウトしました。',
+  'Password changed successfully': 'パスワードを変更しました。',
+  'Email sent successfully': 'メールを送信しました。',
+  'Item added to cart successfully': 'チケットをカートに追加しました。',
+  'Cart item updated successfully': 'チケットの数量を更新しました。',
+  'Item removed from cart successfully': 'チケットをカートから削除しました。',
+};
+
 /**
  * Lấy danh sách tất cả các trường validation lỗi
  * @param {Error|axios.AxiosError} error
@@ -335,4 +374,5 @@ export {
   ERROR_TRANSLATIONS_EN,
   SUCCESS_TRANSLATIONS,
   SUCCESS_TRANSLATIONS_EN,
+  SUCCESS_TRANSLATIONS_JA,
 };

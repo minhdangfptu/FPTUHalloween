@@ -17,7 +17,7 @@ import thanhThuy from "../../assets/core/thanhthuy.jpg";
 import vietTrung from "../../assets/core/viettrung.JPG";
 import "./BTCFUHLW.scss";
 
-const coreTeam = [
+export const coreTeam = [
   {
     name: "Nguyễn Thảo Vy",
     role: "Trưởng ban Tổ chức · Trưởng ban Đối Ngoại",
@@ -105,23 +105,22 @@ const coreTeam = [
   },
   {
     name: "Khuất Kim Bảo",
-    role: "Phó ban Design",
+    role: "Phó ban Media - Design",
     email: "kimbao20040@gmail.com",
     image: baoKk,
   },
   {
     name: "Nguyễn Thế Dương",
-    role: "Phó ban Design",
+    role: "Phó ban Media - Design",
     email: "nguyentheduong3110@gmail.com",
     image: duongNt,
   },
 ];
 
-const departments = [
+export const departments = [
   "Đối Ngoại",
   "HR",
-  "Media",
-  "Design",
+  "Media - Design",
   "Nội Dung",
   "Hậu Cần",
   "Take Care",
@@ -188,11 +187,14 @@ export default function BTCFUHLW() {
   const { t } = useTranslation();
   const btc = t("normal.btc", { returnObjects: true });
   const roleLabel = (role) => {
+    if (role.includes("Media - Design")) return btc.roles.designDeputy.replace("Design", "Media - Design");
     const roleKey = role.includes("Trưởng ban Tổ chức") ? "chair" : role === "HR" ? "hr" : role.includes("Nhà Ma") ? (role.includes("Trưởng") ? "hauntedLead" : "hauntedDeputy") : role.includes("Truyền Thông") ? (role.includes("Trưởng") ? "mediaLead" : "mediaDeputy") : role.includes("Nội Dung") ? (role.includes("Trưởng") ? "contentLead" : "contentDeputy") : role.includes("Hậu Cần") ? (role.includes("Trưởng") ? "logisticsLead" : "logisticsDeputy") : role.includes("Take Care") ? (role.includes("Trưởng") ? "careLead" : "careDeputy") : role.includes("Media") ? "mediaTeamLead" : role.includes("Design") ? (role.includes("Trưởng") ? "designLead" : "designDeputy") : null;
     return roleKey ? btc.roles[roleKey] : role;
   };
   const displayTeam = coreTeam.map((person) => ({ ...person, displayRole: roleLabel(person.role), displayEmail: person.email.includes("@") ? person.email : btc.pendingEmail, avatarAlt: t("normal.btc.avatarAlt", { name: person.name }) }));
-  const translatedDepartments = btc.departments;
+  const translatedDepartments = btc.departments
+    .filter((_, index) => index !== 3)
+    .map((department, index) => index === 2 ? `${btc.departments[2]} - ${btc.departments[3]}` : department);
   const translatedHierarchy = { chair: btc.hierarchy.chair, hr: btc.hierarchy.hr, lead: btc.hierarchy.lead, sublead: btc.hierarchy.sublead };
   return (
     <main className="btc-page">
@@ -353,11 +355,11 @@ export default function BTCFUHLW() {
 
         <div className="btc-departments" aria-label={btc.departmentsLabel}>
           {departments.map((department, index) => (
-            <div className="btc-department" key={department}>
+            <Link className="btc-department" key={department} to={`/btc-fuhlw/department/${index + 1}`}>
               <span>{String(index + 1).padStart(2, "0")}</span>
               <strong>{translatedDepartments[index]}</strong>
               <small>{btc.departmentTeam}</small>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

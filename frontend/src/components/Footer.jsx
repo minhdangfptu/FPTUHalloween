@@ -10,7 +10,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 
 const linkGroups = [
   { titleKey: "footer.explore", links: [["footer.home", "/"], ["footer.halloween", "/introduce-hlw26"], ["footer.story", "/haunted-ghost"], ["footer.archive", "/old-event"]] },
-  { titleKey: "footer.event", links: [["footer.eventIntro", "/event-page"], ["footer.overview", "/overall"], ["footer.timeline", "/agenda"]] },
+  { titleKey: "footer.event", links: [["nav.introduceGeneral", "/introduce-hlw26"], ["nav.news", "/news"], ["nav.boardGameClub", "/fbgc"], ["nav.pdp", "/pdp"]] },
   { titleKey: "footer.ticketsSupport", links: [["footer.buyTickets", "/tickets"], ["footer.myTickets", "/my-ticket"], ["footer.faq", "/faq"], ["footer.contact", "/contact-us"]] },
   { titleKey: "footer.organizers", links: [["footer.coreTeam", "/btc-fuhlw"], ["footer.pdp", "/pdp"], ["footer.club", "/fbgc"], ["footer.fanpage", "/fanpage"]] },
   { titleKey: "footer.legal", links: [["footer.dataPolicy", "/data-policy"], ["footer.terms", "/terms-of-use"], ["footer.ticketPolicy", "/ticket-policy"]] },

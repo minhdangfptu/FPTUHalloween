@@ -1,0 +1,39 @@
+.department-page { min-height: 100vh; color: var(--btc-ink); background: var(--btc-paper); font-family: var(--btc-font); }
+.btc-department { text-decoration: none; }
+.department-hero { padding: clamp(1.5rem, 4vw, 4rem) max(1.25rem, 6vw) clamp(4rem, 10vw, 9rem); color: var(--btc-card); background: var(--btc-ink); }
+.department-back { display: inline-flex; align-items: center; gap: .45rem; color: #f5a2ae; font-size: .8rem; text-decoration: none; }
+.department-hero__content { max-width: 80rem; margin: clamp(4rem, 10vw, 9rem) auto 0; }
+.department-hero__content p, .department-person__body small { color: #f5a2ae; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.department-hero h1 { margin: .8rem 0 1rem; font-size: clamp(3.5rem, 10vw, 9rem); letter-spacing: -.06em; line-height: .9; }
+.department-hero span { color: #aaa6a2; font-size: .85rem; }
+.department-content { max-width: 80rem; margin: 0 auto; padding: clamp(3rem, 7vw, 7rem) max(1.25rem, 4vw); }
+.department-heading { display: flex; align-items: center; gap: .85rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--btc-line); }
+.department-heading__icon { display: grid; place-items: center; width: 2.8rem; height: 2.8rem; color: var(--btc-card); background: var(--btc-red); }
+.department-heading span { color: var(--btc-red); font-size: .67rem; font-weight: 700; letter-spacing: .15em; }
+.department-heading h2 { margin: .15rem 0 0; font-size: 1.3rem; }
+.department-section-heading { display: flex; align-items: baseline; gap: .75rem; margin-top: 4rem; padding-bottom: .85rem; border-bottom: 1px solid var(--btc-line); }
+.department-section-heading span { color: var(--btc-red); font-size: .7rem; font-weight: 700; }
+.department-section-heading h2 { margin: 0; font-size: 1.1rem; }
+.department-section-heading--deputy, .department-deputies { display: none !important; }
+.department-leaders, .department-members__grid { display: grid; grid-template-columns: repeat(var(--department-columns, 2), minmax(0, 1fr)); gap: 1.15rem; margin-top: 1.5rem; }
+.department-person { min-width: 0; padding: .65rem; overflow: hidden; background: var(--btc-card); border: 1px solid var(--btc-line); border-radius: 1.5rem; box-shadow: 0 1rem 2rem var(--btc-shadow); }
+.department-person__media { position: relative; overflow: hidden; aspect-ratio: 1.25 / 1; border-radius: 1.05rem; background: var(--btc-ink); }
+.department-person__media img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.85); }
+.department-person__media span { position: absolute; right: .75rem; bottom: .65rem; color: var(--btc-card); font-size: .75rem; font-weight: 700; }
+.department-person__body { padding: 1rem .55rem .6rem; }
+.department-person__body small { color: var(--btc-red); letter-spacing: .08em; }
+.department-person h3 { margin: .55rem 0 0; font-size: clamp(1.1rem, 1.8vw, 1.6rem); }
+.department-person p { margin: .45rem 0 0; color: var(--btc-muted); font-size: .8rem; line-height: 1.45; }
+.department-members { margin-top: 4rem; }
+.department-members__heading { display: flex; align-items: baseline; gap: .75rem; border-bottom: 1px solid var(--btc-line); padding-bottom: .85rem; }
+.department-members__heading span { color: var(--btc-red); font-size: .7rem; font-weight: 700; }
+.department-members__heading h2 { margin: 0; font-size: 1.1rem; }
+.department-members__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.department-members .department-person__media { aspect-ratio: 1 / 1; }
+.department-members .department-person h3 { font-size: 1rem; }
+.department-empty { color: var(--btc-muted); grid-column: 1 / -1; }
+.department-closing { display: flex; justify-content: space-between; gap: 2rem; max-width: 80rem; margin: 0 auto; padding: 0 max(1.25rem, 4vw) 7rem; }
+.department-closing p { max-width: 32rem; color: var(--btc-muted); line-height: 1.7; }
+.department-closing a { display: inline-flex; align-items: center; gap: .5rem; height: fit-content; color: var(--btc-red); font-weight: 700; text-decoration: none; }
+@media (max-width: 900px) { .department-members__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .department-leaders, .department-members__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; } .department-person { border-radius: 1rem; } .department-person__media { border-radius: .7rem; } .department-closing { flex-direction: column; } }

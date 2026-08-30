@@ -10,6 +10,7 @@ import ConfirmEmail from "./pages/Authentication/ConfirmEmail";
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import AboutUs from "./pages/Normal/AboutUs";
 import BTCFUHLW from "./pages/Normal/BTCFUHLW";
+import DepartmentDetail from "./pages/Normal/DepartmentDetail";
 import ContactUs from "./pages/Normal/ContactUsPage";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
@@ -554,6 +555,14 @@ export default function App() {
           element={
             <Layout>
               <BTCFUHLW />
+            </Layout>
+          }
+        />
+        <Route
+          path="/btc-fuhlw/department/:departmentId"
+          element={
+            <Layout>
+              <DepartmentDetail />
             </Layout>
           }
         />
