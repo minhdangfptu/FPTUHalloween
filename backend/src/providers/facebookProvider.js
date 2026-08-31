@@ -13,22 +13,36 @@ const POST_FIELDS = [
   'attachments.limit(10){media,subattachments.limit(10){media}}'
 ].join(',')
 
+let activePageAccessToken = ''
+
 const buildError = (statusCode, message, code) => Object.assign(new Error(message), { statusCode, code })
 
 const getConfiguration = () => ({
   pageId: config.FACEBOOK_PAGE_ID,
-  accessToken: config.FACEBOOK_PAGE_ACCESS_TOKEN,
+  accessToken: activePageAccessToken || config.FACEBOOK_PAGE_ACCESS_TOKEN,
   apiVersion: config.FACEBOOK_GRAPH_API_VERSION,
   timeoutMs: config.FACEBOOK_REQUEST_TIMEOUT_MS
 })
 
+const refreshPageAccessToken = async () => {
+  if (!config.FACEBOOK_LONG_LIVED_USER_TOKEN) return false
+  const endpoint = new URL(`https://graph.facebook.com/${config.FACEBOOK_GRAPH_API_VERSION}/me/accounts`)
+  endpoint.searchParams.set('fields', 'id,access_token')
+  endpoint.searchParams.set('limit', '100')
+  const payload = await requestJson(endpoint.toString(), config.FACEBOOK_LONG_LIVED_USER_TOKEN, config.FACEBOOK_REQUEST_TIMEOUT_MS)
+  const page = (payload.data || []).find(item => String(item.id) === config.FACEBOOK_PAGE_ID)
+  if (!page?.access_token) throw buildError(502, 'Facebook Page access token refresh failed', 'FACEBOOK_TOKEN_REFRESH_FAILED')
+  activePageAccessToken = page.access_token
+  return true
+}
+
 const getConfigurationStatus = () => {
   const settings = getConfiguration()
   return {
-    configured: Boolean(settings.pageId && settings.accessToken),
+    configured: Boolean(settings.pageId && (settings.accessToken || config.FACEBOOK_LONG_LIVED_USER_TOKEN)),
     pageId: settings.pageId || '',
     apiVersion: settings.apiVersion,
-    hasAccessToken: Boolean(settings.accessToken)
+    hasAccessToken: Boolean(settings.accessToken || config.FACEBOOK_LONG_LIVED_USER_TOKEN)
   }
 }
 
@@ -104,4 +118,4 @@ const getPagePosts = async ({ limit } = {}) => {
   return posts
 }
 
-module.exports = { getPagePosts, getConfigurationStatus }
+module.exports = { getPagePosts, getConfigurationStatus, refreshPageAccessToken }

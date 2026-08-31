@@ -6,6 +6,7 @@ const SOURCE = 'facebook-news'
 let syncInProgress = false
 let syncTimer = null
 let initialSyncTimer = null
+let tokenRefreshTimer = null
 
 const buildError = (statusCode, message) => Object.assign(new Error(message), { statusCode })
 
@@ -91,6 +92,7 @@ const syncFacebookNews = async ({ limit } = {}) => {
   const provider = facebookProvider.getConfigurationStatus()
 
   try {
+    await facebookProvider.refreshPageAccessToken()
     await updateState({
       status: provider.configured ? 'running' : 'unconfigured',
       pageId: provider.pageId,
@@ -170,6 +172,10 @@ const startFacebookNewsScheduler = () => {
   const runSync = () => syncFacebookNews().catch(() => null)
   initialSyncTimer = setTimeout(runSync, 5000)
   syncTimer = setInterval(runSync, config.FACEBOOK_SYNC_INTERVAL_MS)
+  if (config.FACEBOOK_LONG_LIVED_USER_TOKEN) {
+    tokenRefreshTimer = setInterval(() => facebookProvider.refreshPageAccessToken().catch(() => null), config.FACEBOOK_TOKEN_REFRESH_INTERVAL_MS)
+    if (typeof tokenRefreshTimer.unref === 'function') tokenRefreshTimer.unref()
+  }
   if (typeof initialSyncTimer.unref === 'function') initialSyncTimer.unref()
   if (typeof syncTimer.unref === 'function') syncTimer.unref()
   return syncTimer
@@ -178,8 +184,10 @@ const startFacebookNewsScheduler = () => {
 const stopFacebookNewsScheduler = () => {
   if (initialSyncTimer) clearTimeout(initialSyncTimer)
   if (syncTimer) clearInterval(syncTimer)
+  if (tokenRefreshTimer) clearInterval(tokenRefreshTimer)
   initialSyncTimer = null
   syncTimer = null
+  tokenRefreshTimer = null
 }
 
 module.exports = {

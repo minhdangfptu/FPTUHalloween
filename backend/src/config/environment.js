@@ -15,6 +15,8 @@ const config = {
   MONGODB_URI: process.env.MONGODB_URI || '',
   FACEBOOK_PAGE_ID: String(process.env.FACEBOOK_PAGE_ID || '').trim(),
   FACEBOOK_PAGE_ACCESS_TOKEN: String(process.env.FACEBOOK_PAGE_ACCESS_TOKEN || '').trim(),
+  FACEBOOK_LONG_LIVED_USER_TOKEN: String(process.env.FACEBOOK_LONG_LIVED_USER_TOKEN || '').trim(),
+  FACEBOOK_TOKEN_REFRESH_INTERVAL_MS: Math.max(Number(process.env.FACEBOOK_TOKEN_REFRESH_INTERVAL_MS) || 24 * 60 * 60 * 1000, 60 * 60 * 1000),
   FACEBOOK_GRAPH_API_VERSION: String(process.env.FACEBOOK_GRAPH_API_VERSION || 'v26.0').trim(),
   FACEBOOK_SYNC_INTERVAL_MS: Math.max(Number(process.env.FACEBOOK_SYNC_INTERVAL_MS) || 60 * 60 * 1000, 60 * 1000),
   FACEBOOK_INITIAL_POST_LIMIT: Math.min(Math.max(Number(process.env.FACEBOOK_INITIAL_POST_LIMIT) || 100, 1), 100),
