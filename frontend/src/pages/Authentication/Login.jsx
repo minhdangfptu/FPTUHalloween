@@ -104,9 +104,7 @@ function Login() {
           <div className="login-box">
             {/* <img className="login-logo" src={loginImg} alt="FPTU Halloween" /> */}
             <h1 className="auth-title">{auth("title")}</h1>
-            <p className="auth-subtitle">
-              {auth("welcome")}
-            </p>
+            <p className="auth-subtitle">{auth("welcome")}</p>
             <div className="login-panel">
               <form onSubmit={onSubmit}>
                 <label className="form-label" htmlFor="email">
@@ -194,11 +192,11 @@ function Login() {
               </button>
             </div>
             <div style={{ marginTop: 16 }} className="text-muted">
-              {auth("noAccount")} {" "}
+              {auth("noAccount")}{" "}
               <Link
                 to="/register"
                 style={{
-                  color: "red",
+                  color: "#c60000",
                   textDecoration: "underline",
                   fontWeight: 600,
                 }}
@@ -206,6 +204,9 @@ function Login() {
                 {auth("register")}
               </Link>
             </div>
+            <Link className="login-home-link" to="/">
+              {auth("home")}
+            </Link>
           </div>
         </div>
       </div>

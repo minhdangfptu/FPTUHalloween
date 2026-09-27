@@ -160,6 +160,17 @@
   font-size: 28px;
   font-weight: 700;
 }
+.login-home-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #c60000;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.login-home-link:hover {
+  text-decoration: underline;
+}
 .auth-subtitle {
   margin: 10px 0 12px;
   color: #6b7280;

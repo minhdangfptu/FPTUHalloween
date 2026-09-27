@@ -264,7 +264,7 @@ const ja = {
     "eventInfo": "{{title}}に関する情報",
     "event6Status": "今後の",
     "event6Date": "後日発表",
-    "event6Location": "後日発表",
+    "event6Location": "デルタ棟前の広場、FPT大学ハノイ（デルタ棟のホーンテッドハウス）",
     "event6Scale": "後日発表",
     "event6Description": "FPTUのハロウィン2026のコンセプトは、主催チームによって間もなく発表されます。",
     "event1Status": "終了した",
@@ -272,11 +272,11 @@ const ja = {
     "event1Scale": "後日発表",
     "event1Description": "ウィッシュバウンド：すべての願いが代償を持つ謎めいた町。希望を呪いに変える残酷なジョーカーが支配している。訪問者は、トランプのスートに形作られた四つの土地で自らの魂を賭けなければならない。",
     "event2Status": "終了した",
-    "event2Location": "後日発表",
+    "event2Location": "30m道路、FPT大学ハノイ（デルタ棟のホーンテッドハウス）",
     "event2Scale": "後日発表",
     "event2Description": "U Linh Ky – Âm Dương Tử Khí: 古い本が村人たちをベトナムの精霊の世界に引き込み、そこで彼らは記憶を守り、生者の世界に戻る方法を見つけなければならない。",
     "event3Status": "終了した",
-    "event3Location": "後日発表",
+    "event3Location": "デルタ棟前の広場、FPT大学ハノイ（デルタ棟のホーンテッドハウス）",
     "event3Scale": "後日発表",
     "event3Description": "ハウンテッドフェストは、ルシフェアの台頭と二つの世界に囚われた盗まれた魂の物語を追います。勇敢な訪問者は幽霊の結婚式に参加し、その恐ろしいゲームを生き延びなければなりません。",
     "event4Status": "終了した",
@@ -705,7 +705,8 @@ const ja = {
       "register": "登録",
       "googleLoading": "Googleでログイン中...",
       "email": "メール",
-      "clubLogoAlt": "FPTU ボードゲームクラブのロゴ"
+      "clubLogoAlt": "FPTU ボードゲームクラブのロゴ",
+      "home": "ホームページに戻る"
     },
     "register": {
       "title": "登録",

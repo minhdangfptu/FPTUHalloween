@@ -20,10 +20,10 @@ const sections = [
 const seasons = [
   {
     year: "2026",
-    conceptKey: "updating",
-    image: null,
+    conceptKey: "bunnysNightmare",
+    image: cover,
     scaleKey: "updating",
-    detail: "/introduce-hlw26",
+    detail: "/old-event#halloween-2026",
   },
   {
     year: "2025",

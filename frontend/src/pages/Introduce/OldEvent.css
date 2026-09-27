@@ -332,6 +332,7 @@
   align-items: center;
   gap: 0.45rem;
   margin-top: auto;
+  padding-top: 1.25rem;
   color: var(--old-event-red);
   font-size: 0.8rem;
   font-weight: 800;

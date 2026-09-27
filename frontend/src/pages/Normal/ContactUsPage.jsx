@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ContactUsPage.css";
+import contactCover from "../../assets/cover-01.png";
 import axiosClient from "../../apis/axiosClient";
 import {
   translateError,
@@ -113,7 +114,10 @@ function ContactUsPage() {
   return (
     <div className="fptu-halloween-contact-page">
       {/* Header */}
-      <header className="fptu-halloween-contact-header">
+      <header
+        className="fptu-halloween-contact-header"
+        style={{ backgroundImage: `url(${contactCover})` }}
+      >
         <div className="fptu-halloween-contact-banner">
           <h1 className="fptu-halloween-contact-banner-title">
             {contact("title")}

@@ -232,9 +232,27 @@ const translateVoteError = (message) => {
  *   alert(message); // Hiển thị tiếng Việt cho user
  * }
  */
+const AUTH_REQUIRED_MESSAGES = new Set([
+  'No token provided. Authorization denied.',
+  'Missing Authorization header',
+  'Missing authorization header',
+  'No token provided',
+]);
+
+const AUTH_REQUIRED_TRANSLATIONS = {
+  vi: 'Bạn cần đăng nhập để thực hiện chức năng này.',
+  en: 'You need to log in to use this feature.',
+  ja: 'この機能を利用するにはログインが必要です。',
+};
 const translateError = (error) => {
   const rawMessage = getErrorMessage(error);
-  const translations = i18n.language?.startsWith('en')
+  const language = i18n.language?.split('-')[0] || 'vi';
+
+  if (AUTH_REQUIRED_MESSAGES.has(rawMessage)) {
+    return AUTH_REQUIRED_TRANSLATIONS[language] || AUTH_REQUIRED_TRANSLATIONS.vi;
+  }
+
+  const translations = language === 'en'
     ? ERROR_TRANSLATIONS_EN
     : ERROR_TRANSLATIONS;
   return translations[rawMessage] || translateVoteError(rawMessage) || rawMessage;

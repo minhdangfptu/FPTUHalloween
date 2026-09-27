@@ -12,6 +12,11 @@ import event2024 from "../../assets/hlw/2024.jpg";
 import event2025 from "../../assets/hlw/2025.jpg";
 
 // i18n-audit: localized-properties — localizeEvent resolves every displayed field through archive.* keys.
+const event2026Description = `Nhiều năm trước, vào đúng đêm lễ hội 𝐇𝐚𝐥𝐥𝐨𝐰𝐞𝐞𝐧, một vụ án mạng kinh hoàng đã xảy ra tại khu vui chơi 𝐁𝐮𝐧𝐧𝐲's 𝐏𝐥𝐚𝐲𝐡𝐨𝐮𝐬𝐞. Sau vụ nổ thiêu rụi toàn bộ khu vui chơi, kẻ sát nhân và mọi dấu vết của hắn cũng biến mất. Người ta tưởng rằng tất cả đã kết thúc cho đến khi những vụ mất tích và tai nạn bí ẩn liên tiếp xuất hiện tại khu vui chơi được xây dựng lại trên chính nền đất năm xưa. Đáng sợ hơn, trước mỗi vụ việc, người ta lại nhìn thấy một mascot thỏ với bộ lông cháy xém xuất hiện giữa những đống đổ nát rồi biến mất không dấu vết.
+
+Đêm 𝐇𝐚𝐥𝐥𝐨𝐰𝐞𝐞𝐧 năm nay, một tổ điều tra mật nhận được tài liệu về những hiện tượng kỳ lạ tại 𝐁𝐮𝐧𝐧𝐲's 𝐏𝐥𝐚𝐲𝐡𝐨𝐮𝐬𝐞. Họ tiến vào khu vui chơi bỏ hoang giữa rừng thông để tìm lời giải cho vụ án đã bị chôn vùi suốt nhiều năm. Nhưng ngay khi cánh cửa phía sau khép lại, họ nhận ra rằng mình không phải những người duy nhất đang ở đó. Liệu sự thật nào đang bị che giấu dưới lớp đổ nát của 𝐁𝐮𝐧𝐧𝐲's 𝐏𝐥𝐚𝐲𝐡𝐨𝐮𝐬𝐞? Và gã Thỏ thực sự đã biến mất hay chưa?
+
+Liệu bạn có đủ can đảm bước vào và khám phá sự thật phía sau những vụ mất tích bí ẩn? Hay sẽ trở thành một phần của câu chuyện bị chôn vùi nơi đây? Những bí mật vẫn đang chờ được hé lộ tại 𝐅𝐏𝐓𝐔 𝐇𝐚𝐥𝐥𝐨𝐰𝐞𝐞𝐧 𝟐𝟎𝟐𝟔. Vậy nên, hãy sẵn sàng cho sự kiện kinh dị và ma mị bậc nhất Đại học FPT!`;
 const eventsData = [
   {
     id: 6,
@@ -125,6 +130,7 @@ Nghe nói từ xưa đến nay, mảnh đất xa xôi nội thành này vẫn lu
 ];
 
 const EVENT_IMAGES = {
+  6: cover,
   1: event2025,
   2: event2024,
   3: event2023,
@@ -135,10 +141,10 @@ const EVENT_IMAGES = {
 const EVENT_DETAILS = {
   6: {
     year: "2026",
-    time: "Đang cập nhật",
-    location: "Đang cập nhật",
+    time: "27/10/2026 - 29/10/2026",
+    location: "Sân trước tòa nhà Delta, Đại học FPT Hà Nội",
     scale: "Đang cập nhật",
-    concept: "Đang cập nhật",
+    concept: "BUNNY's NIGHTMARE",
   },
   1: {
     year: "2025",
@@ -215,9 +221,13 @@ export default function OldEvent() {
     status: archiveText(`event${event.id}Status`),
     date: archiveText(`event${event.id}Date`),
     time: archiveText(`event${event.id}Date`),
-    description: archiveText(`event${event.id}Description`),
+    description:
+      event.id === 6
+        ? event2026Description
+        : archiveText(`event${event.id}Description`),
     location: archiveText(`event${event.id}Location`),
     scale: archiveText(`event${event.id}Scale`),
+    concept: event.id === 6 ? "BUNNY's NIGHTMARE" : event.concept,
   });
   const localizedEvents = archivedEvents.map(localizeEvent);
   const openEvent = (event) => setSelectedEvent(localizeEvent(event));
@@ -265,15 +275,14 @@ export default function OldEvent() {
             <br />
             <span>{archiveText("heroTitleAfter")}</span>
           </h1>
-          <p className="old-event-hero-lede">
-            {archiveText("heroLede")}
-          </p>
+          <p className="old-event-hero-lede">{archiveText("heroLede")}</p>
           <a
             className="old-event-scroll-link"
             href="#archive"
             onClick={handleSectionScroll}
           >
-            {archiveText("viewArchive")} <ArrowDown size={16} aria-hidden="true" />
+            {archiveText("viewArchive")}{" "}
+            <ArrowDown size={16} aria-hidden="true" />
           </a>
         </div>
         <div className="old-event-hero-year" aria-hidden="true">
@@ -287,7 +296,8 @@ export default function OldEvent() {
         aria-labelledby="old-event-archive-title"
       >
         <div className="old-event-section-mark">
-          <CalendarDays size={18} aria-hidden="true" /> {archiveText("milestone")}
+          <CalendarDays size={18} aria-hidden="true" />{" "}
+          {archiveText("milestone")}
         </div>
         <div className="old-event-archive-main">
           <h2 id="old-event-archive-title">
@@ -295,9 +305,7 @@ export default function OldEvent() {
             <br />
             <span>{archiveText("archiveTitleAfter")}</span>
           </h2>
-          <p className="old-event-archive-lede">
-            {archiveText("archiveLede")}
-          </p>
+          <p className="old-event-archive-lede">{archiveText("archiveLede")}</p>
 
           <div className="old-event-grid" aria-live="polite">
             {localizedEvents.map((event) => (
@@ -321,7 +329,9 @@ export default function OldEvent() {
                       loading="lazy"
                     />
                   ) : (
-                    <span className="old-event-coming-soon">{archiveText("comingSoon")}</span>
+                    <span className="old-event-coming-soon">
+                      {archiveText("comingSoon")}
+                    </span>
                   )}
                   <span className="old-event-card-year">
                     {event.title.replace("FPTU Halloween ", "")}
@@ -338,7 +348,9 @@ export default function OldEvent() {
                   <h3>{event.title}</h3>
                   <div
                     className="old-event-card-details"
-                    aria-label={archiveText("eventInfo", { title: event.title })}
+                    aria-label={archiveText("eventInfo", {
+                      title: event.title,
+                    })}
                   >
                     <div className="old-event-card-detail">
                       <span>{archiveText("year")}</span>
@@ -364,7 +376,8 @@ export default function OldEvent() {
                   <span className="old-event-card-link">
                     {event.image ? (
                       <>
-                        {archiveText("readConceptShort")} <ArrowDown size={16} aria-hidden="true" />
+                        {archiveText("readConceptShort")}{" "}
+                        <ArrowDown size={16} aria-hidden="true" />
                       </>
                     ) : (
                       archiveText("comingSoon")
@@ -421,7 +434,9 @@ export default function OldEvent() {
               {selectedEvent.image ? (
                 <img src={selectedEvent.image} alt="" />
               ) : (
-                <span className="old-event-coming-soon">{archiveText("comingSoon")}</span>
+                <span className="old-event-coming-soon">
+                  {archiveText("comingSoon")}
+                </span>
               )}
             </div>
             <div className="old-event-dialog-meta">
