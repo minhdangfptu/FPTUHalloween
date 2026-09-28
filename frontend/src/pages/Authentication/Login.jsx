@@ -3,7 +3,7 @@ import "./Login.css";
 import loginImg from "../../assets/login.png";
 import coverImg from "../../assets/cover-01.png";
 import fbgc from "../../assets/fbgc.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { authAPI } from "../../apis/authAPI";
 import toast from "react-hot-toast";
 import {
@@ -22,8 +22,16 @@ function Login() {
   const [googleClient, setGoogleClient] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const auth = (key, options) => t(`auth.login.${key}`, options);
+
+  useEffect(() => {
+    if (!location.state?.authRequired) return;
+
+    toast.error(translateError(new Error("No token provided")));
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, location.state, navigate]);
 
   useEffect(() => {
     const initializeGoogle = () => {

@@ -6,7 +6,9 @@ import heroImage from "../../assets/cover-01.png";
 import pdpLogo from "../../assets/pdp_avatar.jpg";
 import fptuLogo from "../../assets/logo fptu.webp";
 import fbgcLogo from "../../assets/fbgc.png";
-import wtmLogo from "../../assets/wtm.png";
+import wtmDarkLogo from "../../assets/wtm.png";
+import wtmLightLogo from "../../assets/wtm_lightmode.png";
+import ThemeAsset from "../../components/ThemeAsset";
 import "./HomePage.scss";
 
 const EVENT_DATE = new Date("2026-10-31T18:00:00+07:00").getTime();
@@ -70,7 +72,7 @@ const sponsors = [
   { key: "pdp", nameKey: "sponsorNames.pdp", image: pdpLogo },
   { key: "fptu", nameKey: "sponsorNames.fptu", image: fptuLogo },
   { key: "fbgc", nameKey: "sponsorNames.fbgc", image: fbgcLogo },
-  { key: "hlw26", nameKey: "sponsorNames.hlw26", image: wtmLogo },
+  { key: "hlw26", nameKey: "sponsorNames.hlw26", image: wtmDarkLogo },
 ];
 
 const countdownItems = [
@@ -315,7 +317,7 @@ export default function HomePage() {
           {sponsors.map((sponsor) => (
             <div className={`home-sponsor home-sponsor--${sponsor.key}`} key={sponsor.key}>
               {sponsor.image ? (
-                <img src={sponsor.image} alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })} />
+                <>{sponsor.key === "hlw26" ? <ThemeAsset lightSrc={wtmLightLogo} darkSrc={wtmDarkLogo} alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })} /> : <img src={sponsor.image} alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })} />}</>
               ) : (
                 <span>{home(sponsor.nameKey)}</span>
               )}

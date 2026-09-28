@@ -1,6 +1,8 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import wtmLogo from "../../assets/wtm.png";
+import wtmDarkLogo from "../../assets/wtm.png";
+import wtmLightLogo from "../../assets/wtm_lightmode.png";
+import ThemeAsset from "../../components/ThemeAsset";
 import { authAPI } from "../../apis/authAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
 import { useTranslation } from "react-i18next";
@@ -108,7 +110,7 @@ export default function ChangePasswordPage() {
       <div className="cp-card">
         {/* Header */}
         <div className="cp-card__header">
-          <img className="cp-brand-logo" src={wtmLogo} alt={auth("brandAlt")} />
+          <ThemeAsset lightSrc={wtmLightLogo} darkSrc={wtmDarkLogo} className="cp-brand-logo" alt={auth("brandAlt")} />
           <h1 className="cp-card__title">
             {isVerified ? auth("enterNew") : auth("verifyOld")}
           </h1>

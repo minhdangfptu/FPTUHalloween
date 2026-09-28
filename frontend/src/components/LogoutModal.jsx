@@ -1,7 +1,9 @@
 import React from "react";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import wtm from "../assets/wtm.png";
+import wtmDark from "../assets/wtm.png";
+import wtmLight from "../assets/wtm_lightmode.png";
+import ThemeAsset from "./ThemeAsset";
 import "./LogoutModal.css";
 
 function LogoutModal({ isOpen, onClose, onConfirm, title, description, cancelLabel, confirmLabel }) {
@@ -21,7 +23,7 @@ function LogoutModal({ isOpen, onClose, onConfirm, title, description, cancelLab
         <button type="button" className="logout-modal-close" onClick={onClose} aria-label={closeLabel}>
           <X size={22} />
         </button>
-        <img className="logout-modal-logo" src={wtm} alt={componentText("eventBrand")} />
+        <ThemeAsset lightSrc={wtmLight} darkSrc={wtmDark} className="logout-modal-logo" alt={componentText("eventBrand")} />
         <h2 className="logout-modal-title">{resolvedTitle}</h2>
         <p className="logout-modal-desc" dangerouslySetInnerHTML={{ __html: resolvedDescription }} />
         <div className="logout-modal-actions">

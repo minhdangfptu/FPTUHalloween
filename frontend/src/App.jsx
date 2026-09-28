@@ -190,7 +190,7 @@ function FrontendAccessGuard({ children }) {
 
   const isAuthenticated = Boolean(authSnapshot.token && authSnapshot.user);
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location, authRequired: true }} replace />;
   }
 
   if (

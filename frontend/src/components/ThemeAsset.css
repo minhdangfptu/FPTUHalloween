@@ -1,0 +1,11 @@
+.theme-asset--dark {
+  display: none !important;
+}
+
+:root[data-theme='dark'] .theme-asset--light {
+  display: none !important;
+}
+
+:root[data-theme='dark'] .theme-asset--dark {
+  display: block !important;
+}

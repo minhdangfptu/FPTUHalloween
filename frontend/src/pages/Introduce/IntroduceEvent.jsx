@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import "./IntroduceEvent.css";
 
 import cover from "../../assets/cover-01.png";
-import avatar from "../../assets/wtm.png";
 import avatarriel from "../../assets/avatar.jpg";
 
 const page = {

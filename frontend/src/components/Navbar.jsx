@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
-import wtm from "../assets/wtm.png";
+import wtmDark from "../assets/wtm.png";
+import wtmLight from "../assets/wtm_lightmode.png";
+import ThemeAsset from "./ThemeAsset";
 import Tooltip from "@mui/material/Tooltip";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { Link, useNavigate, useLocation } from "react-router-dom"; // Add useLocation import
@@ -227,8 +229,9 @@ function Navbar() {
           <div className="fpt-navbar__content">
             {/* Logo */}
             <div className="fpt-navbar__logo">
-              <img
-                src={wtm}
+              <ThemeAsset
+                lightSrc={wtmLight}
+                darkSrc={wtmDark}
                 onClick={() => navigate("/")}
                 alt={t("components.eventBrand")}
                 className="fpt-navbar__logo-img"

@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { authAPI } from "../../apis/authAPI";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
-import wtmLogo from "../../assets/wtm.png";
+import wtmDarkLogo from "../../assets/wtm.png";
+import wtmLightLogo from "../../assets/wtm_lightmode.png";
+import ThemeAsset from "../../components/ThemeAsset";
 import "./ForgotPassword.scss";
 import { useTranslation } from "react-i18next";
 
@@ -57,7 +59,7 @@ export default function ForgotPassword() {
     <main className="cp-page fp-page">
       <div className="cp-card">
         <div className="cp-card__header">
-          <img className="cp-brand-logo" src={wtmLogo} alt={auth("brandAlt")} />
+          <ThemeAsset lightSrc={wtmLightLogo} darkSrc={wtmDarkLogo} className="cp-brand-logo" alt={auth("brandAlt")} />
           <h1 className="cp-card__title">{step === 0 ? auth("titleEmail") : step === 1 ? auth("titleOtp") : auth("titleReset")}</h1>
           <p className="cp-card__subtitle">{step === 0 ? auth("subtitleEmail") : step === 1 ? auth("subtitleOtp") : auth("subtitleReset")}</p>
         </div>

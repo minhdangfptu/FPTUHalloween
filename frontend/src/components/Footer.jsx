@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./Footer.css";
-import wtm from "../assets/wtm.png";
+import wtmDark from "../assets/wtm.png";
+import wtmLight from "../assets/wtm_lightmode.png";
+import ThemeAsset from "./ThemeAsset";
 import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -27,7 +29,7 @@ function Footer() {
         <div className="fpt-footer__grid">
           <div className="fpt-footer__contact-section">
             <Link to="/" aria-label={t("footer.homeAria")}>
-              <img src={wtm} alt={t("footer.logoAlt")} className="fpt-footer__logo" />
+              <ThemeAsset lightSrc={wtmLight} darkSrc={wtmDark} alt={t("footer.logoAlt")} className="fpt-footer__logo" />
             </Link>
             <h3 className="fpt-footer__contact-title">{t("footer.contactInfo")}</h3>
             <div className="fpt-footer__contact-item">
