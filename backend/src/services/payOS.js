@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const mongoose = require('mongoose')
 const { PayOS } = require('@payos/node')
 const { Cart, Order, TicketType, User, UserTicket } = require('../models')
+const { isSuccessfulPayOSWebhook, getWebhookAmount } = require('../utils/payOSWebhook')
 
 const payos = new PayOS()
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173'
@@ -210,6 +211,27 @@ const handleWebhook = async payload => {
 
   const order = await Order.findOne({ payosOrderId: String(orderCode) })
   if (!order) return { received: true, processed: false }
+  // A valid signature only proves that the notification came from PayOS. It
+  // does not prove that the payment succeeded.
+  const isSuccessful = isSuccessfulPayOSWebhook(webhook)
+
+  if (!isSuccessful) {
+    if (['Pending', 'Processing'].includes(order.orderStatus) && order.stockReserved) {
+      const cancelledOrder = await Order.findOneAndUpdate(
+        { _id: order._id, orderStatus: { $in: ['Pending', 'Processing'] }, stockReserved: true },
+        { $set: { orderStatus: 'Cancelled', stockReserved: false } },
+        { new: true }
+      ).lean()
+      if (cancelledOrder) await restoreTicketStock(cancelledOrder.items)
+    }
+    return { received: true, processed: false, orderCode: Number(orderCode) }
+  }
+
+  const paidAmount = getWebhookAmount(webhook)
+  if (!Number.isFinite(paidAmount) || paidAmount !== Number(order.totalAmount)) {
+    throw new Error('Webhook amount does not match order total')
+  }
+
   if (order.orderStatus !== 'Paid') await markOrderAsPaid(order)
 
   return { received: true, processed: true, orderCode: Number(orderCode) }

@@ -900,7 +900,7 @@ Object.assign(resources.vi.translation.eventPages.hlwIntro, {
     size: { title: 'Quy mô', text: 'Thông tin quy mô chương trình Halloween FPTU 2026 sẽ được Ban tổ chức cập nhật trong thời gian tới.' },
   },
   seasonTitle: 'FPTU Halloween {{year}}', seasonThumbnail: 'Ảnh đại diện FPTU Halloween {{year}}', updating: 'Đang cập nhật',
-  concepts: { updating: 'Đang cập nhật', bunnysNightmare: "𝐁𝐮𝐧𝐧𝐲's Nightmare", wishbound: 'Wishbound', uLinhKy: 'U Linh Ký', hauntedFest: 'Haunted Fest', fearCorner: 'Fear Corner', hauntedForest: 'The Haunted Forest' },
+  concepts: { updating: 'Đang cập nhật', bunnysNightmare: "Bunny's Nightmare", wishbound: 'Wishbound', uLinhKy: 'U Linh Ký', hauntedFest: 'Haunted Fest', fearCorner: 'Fear Corner', hauntedForest: 'The Haunted Forest' },
 });
 Object.assign(resources.en.translation.eventPages.hlwIntro, {
   overviewBody: 'Halloween at FPT University is an explosive annual tradition and an essential part of student culture. Organized by FPTU Board Game Club, it takes on a mysterious new theme every year and showcases outstanding creativity through costumes, a haunted house, lively activities and exciting contests. Each season creates a memorable night that connects the FPT student community.',
@@ -911,7 +911,7 @@ Object.assign(resources.en.translation.eventPages.hlwIntro, {
     size: { title: 'Scale', text: 'Details about the scale of FPTU Halloween 2026 will be announced by the organizers.' },
   },
   seasonTitle: 'FPTU Halloween {{year}}', seasonThumbnail: 'FPTU Halloween {{year}} thumbnail', updating: 'To be announced',
-  concepts: { updating: 'To be announced', bunnysNightmare: "𝐁𝐮𝐧𝐧𝐲's Nightmare", wishbound: 'Wishbound', uLinhKy: 'U Linh Ký', hauntedFest: 'Haunted Fest', fearCorner: 'Fear Corner', hauntedForest: 'The Haunted Forest' },
+  concepts: { updating: 'To be announced', bunnysNightmare: "Bunny's Nightmare", wishbound: 'Wishbound', uLinhKy: 'U Linh Ký', hauntedFest: 'Haunted Fest', fearCorner: 'Fear Corner', hauntedForest: 'The Haunted Forest' },
 });
 
 Object.assign(resources.vi.translation.eventPages.introduceEvent, {
@@ -940,7 +940,7 @@ Object.assign(resources.vi.translation.archive, {
   eventTitle: 'FPTU Halloween {{year}}', thumbnailAlt: 'Ảnh đại diện {{title}}',
   event1Date: '28/10 - 31/10/2026', event2Date: '29/10 - 31/10/2024', event3Date: '30/10 - 31/10/2023',
   event4Date: '31/10/2022', event5Date: '30/10 - 31/10/2020',
-  event6Description: "𝐁𝐮𝐧𝐧𝐲's Nightmare",
+  event6Description: "Bunny's Nightmare",
   event1Description: `[𝐇𝐀𝐋𝐋𝐎𝐖𝐄𝐄𝐍 𝟐𝟎𝟐𝟓]: 𝐖𝐈𝐒𝐇𝐁𝐎𝐔𝐍𝐃
 
 😈 Mỗi đêm, vào ngày 31/10 hằng năm, giữa màn sương dày đặc, thị trấn ma quái 𝐖𝐢𝐬𝐡𝐛𝐨𝐮𝐧𝐝 xuất hiện rồi biến mất như chưa từng tồn tại…. Nhưng năm nay, sau hàng thế kỷ ẩn mình, cái tên bao năm ám ảnh thị trấn hóa ra chỉ là một mặt nạ khác của Joker - thực thể tàn nhẫn chỉ sống để đánh tráo điều ước, nuốt chửng linh hồn và biến hy vọng thành lời nguyền. Lúc ấy, ở nơi trung tâm thị trấn mới rõ hình Quán rượu cổ, nơi mọi điều ước đều có giá, mọi “quy tắc trò chơi” chỉ để dẫn dắt những ván đấu chết chóc do hắn bày ra.
