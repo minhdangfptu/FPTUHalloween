@@ -49,6 +49,10 @@ const highlights = [
   },
   {
     number: "06",
+    tone: "orange",
+  },
+  {
+    number: "07",
     tone: "ink",
   },
 ];
@@ -86,6 +90,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const home = (key, options) => t(`normal.home.${key}`, options);
+
   const [countdown, setCountdown] = useState(getCountdown);
 
   const handleExploreClick = (event) => {

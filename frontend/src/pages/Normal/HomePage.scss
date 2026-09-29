@@ -472,8 +472,7 @@
     transform 240ms var(--home-ease);
 }
 
-.home-highlight:nth-child(1),
-.home-highlight:nth-child(6) {
+.home-highlight:nth-child(1) {
   grid-column: span 2;
 }
 
@@ -817,9 +816,7 @@
   .home-highlights__list {
     grid-template-columns: minmax(0, 1fr);
   }
-
-  .home-highlight:nth-child(1),
-  .home-highlight:nth-child(6) {
+  .home-highlight:nth-child(1) {
     grid-column: auto;
   }
 

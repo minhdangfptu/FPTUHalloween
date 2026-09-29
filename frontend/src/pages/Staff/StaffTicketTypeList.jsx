@@ -134,6 +134,7 @@ const StaffTicketTypeList = () => {
                   <div className="staff-ticket-card__meta">
                     <span><CalendarDays size={16} /> {ticketTypeText("eventDate", { day: ticketType.ticketTypeDate })}</span>
                     <span><Clock3 size={16} /> {ticketType.ticketTypeTime || t("management.common.notUpdated")}</span>
+                    <span><Ticket size={16} /> {ticketTypeText("remainingCount", { count: Number(ticketType.availableQuantity) || 0 })}</span>
                   </div>
                   <div className="staff-ticket-card__bottom">
                     <strong>{formatPrice(ticketType.ticketTypePrice)}</strong>

@@ -15,7 +15,7 @@ const DepartmentDetail = () => {
   const departmentLabel = i18n.language.startsWith("en") ? "Department" : i18n.language.startsWith("ja") ? "部署" : "Ban";
   const departmentIndex = Math.max(0, Number(departmentId) - 1);
   const departmentName = departments[departmentIndex] || departments[0];
-  const translatedDepartmentIndexes = [0, 1, 2, 4, 5, 6, 7, 8];
+  const translatedDepartmentIndexes = [1, 0, 2, 4, 5, 6, 7, 8, 9];
   const translatedName = departmentName === "Media - Design"
     ? `${btc.departments[2]} - ${btc.departments[3]}`
     : btc.departments[translatedDepartmentIndexes[departmentIndex]] || departmentName;
@@ -52,6 +52,7 @@ const DepartmentDetail = () => {
       return isLeader ? btc.roles.mediaTeamLead : btc.roles.designDeputy;
     }
     if (departmentName === "Hậu Cần") return isLeader ? btc.roles.logisticsLead : btc.roles.logisticsDeputy;
+    if (departmentName === "Văn thể") return isLeader ? btc.roles.cultureLead : btc.roles.contentDeputy;
     if (departmentName === "Nội Dung") return isLeader ? btc.roles.contentLead : btc.roles.contentDeputy;
     if (departmentName === "Nhà Ma") return isLeader ? btc.roles.hauntedLead : btc.roles.hauntedDeputy;
     if (departmentName === "Truyền Thông") return isLeader ? btc.roles.mediaLead : btc.roles.mediaDeputy;

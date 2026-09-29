@@ -295,7 +295,7 @@
 }
 .btc-departments {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   gap: 0.5rem;
   margin-top: 1rem;
 }
@@ -307,6 +307,22 @@
 }
 .btc-department:nth-child(3n) {
   background: var(--btc-red);
+}
+.btc-department {
+  position: relative;
+  z-index: 0;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+.btc-department:hover,
+.btc-department:focus-visible {
+  z-index: 1;
+  transform: translateY(-0.35rem) scale(1.02);
+  filter: brightness(1.12) saturate(1.08);
+  box-shadow: 0 0.9rem 1.6rem rgb(0 0 0 / 0.2);
+}
+.btc-department:focus-visible {
+  outline: 2px solid var(--btc-red);
+  outline-offset: 3px;
 }
 .btc-department span {
   color: #aaa6a2;

@@ -9,7 +9,7 @@
 html,
 body,
 body * {
-  cursor: url("/logo-cursor.png") 24 24, auto !important;
+  cursor: url("/logo-cursor.png") 16 16, auto !important;
 }
 
 html {
