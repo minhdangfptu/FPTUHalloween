@@ -1,5 +1,6 @@
 const newsService = require('../services/news')
 const facebookNewsSyncService = require('../services/facebookNewsSync')
+const facebookProvider = require('../providers/facebookProvider')
 
 const getList = (req, res, next) => Promise.resolve(
   newsService.getNews(req.query)
@@ -27,6 +28,14 @@ const syncFacebookNews = (req, res, next) => Promise.resolve(
   data
 })).catch(next)
 
+const updateFacebookAccessToken = (req, res, next) => Promise.resolve(
+  facebookProvider.setPageAccessToken(req.body?.accessToken)
+).then(data => res.status(200).json({
+  success: true,
+  message: 'Facebook Page access token updated successfully',
+  data
+})).catch(next)
+
 const setFeatured = (req, res, next) => Promise.resolve(
   newsService.setNewsFeatured(req.params.id, req.body?.isFeatured)
 ).then(data => res.status(200).json({
@@ -48,6 +57,7 @@ module.exports = {
   getDetail,
   getFacebookSyncStatus,
   syncFacebookNews,
+  updateFacebookAccessToken,
   setFeatured,
   reorderFeatured
 }

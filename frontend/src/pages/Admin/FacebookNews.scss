@@ -154,6 +154,30 @@
   margin-bottom: 1rem;
 }
 
+.facebook-news-admin__token-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(22rem, 1.2fr);
+  gap: 1.5rem;
+  width: min(1120px, 100%);
+  margin: 0 auto 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--fb-news-admin-line);
+  border-radius: 0.75rem;
+  background: var(--fb-news-admin-surface);
+  box-shadow: var(--fb-news-admin-shadow);
+}
+.facebook-news-admin__token-card h2 { margin: 0.35rem 0 0; font-size: 1.25rem; }
+.facebook-news-admin__token-card p { margin: 0.45rem 0 0; color: var(--fb-news-admin-muted); line-height: 1.5; }
+.facebook-news-admin__token-form { align-self: end; }
+.facebook-news-admin__token-form label { display: block; margin-bottom: 0.4rem; color: var(--fb-news-admin-muted); font-size: 0.86rem; font-weight: 700; }
+.facebook-news-admin__token-form > div { display: flex; gap: 0.6rem; padding: 0.25rem; border: 1px solid var(--fb-news-admin-line); border-radius: 0.5rem; transition: border-color 300ms ease, box-shadow 300ms ease; }
+.facebook-news-admin__token-form > div:focus-within { border-color: var(--fb-news-admin-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--fb-news-admin-accent) 12%, transparent); }
+.facebook-news-admin__token-form input { min-width: 0; flex: 1; min-height: 2.3rem; padding: 0 0.55rem; color: var(--fb-news-admin-ink); background: transparent; border: 0; border-radius: 0; font: inherit; outline: 0; }
+.facebook-news-admin__token-form button { border: 1px solid var(--fb-news-admin-accent); border-radius: 0.5rem; padding: 0.7rem 1rem; color: #fff; background: var(--fb-news-admin-accent); cursor: pointer; font: inherit; font-weight: 750; white-space: nowrap; transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, opacity 180ms ease; }
+.facebook-news-admin__token-form button:hover:not(:disabled) { background: var(--fb-news-admin-accent-dark); border-color: var(--fb-news-admin-accent-dark); }
+.facebook-news-admin__token-form button:focus-visible { outline: 2px solid var(--fb-news-admin-accent); outline-offset: 3px; }
+.facebook-news-admin__token-form button:disabled { cursor: not-allowed; opacity: 0.5; }
+
 .facebook-news-admin__status article {
   display: flex;
   min-width: 0;
@@ -356,6 +380,7 @@
 @media (max-width: 850px) {
   .facebook-news-admin__header { align-items: start; flex-direction: column; }
   .facebook-news-admin__status { grid-template-columns: 1fr; }
+  .facebook-news-admin__token-card { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 620px) {

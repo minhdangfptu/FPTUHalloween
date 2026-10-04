@@ -1243,6 +1243,29 @@ Object.assign(resources.en.translation.management.facebookNews, {
   searchLabel: 'Search Facebook posts',
   emptySearch: 'No posts match “{{query}}”.',
 });
+
+Object.assign(resources.vi.translation.management.facebookNews, {
+  tokenEyebrow: 'Cấu hình kết nối',
+  tokenTitle: 'Cập nhật Page Access Token',
+  tokenIntro: 'Mỗi ngày, dán Page Access Token mới vào đây để hệ thống tiếp tục lấy bài viết từ Fanpage.',
+  tokenLabel: 'Page Access Token',
+  tokenPlaceholder: 'Dán token Facebook tại đây',
+  saveToken: 'Lưu token',
+  savingToken: 'Đang lưu token…',
+  savingTokenShort: 'Đang lưu',
+  tokenSaved: 'Page Access Token đã được cập nhật.'
+});
+Object.assign(resources.en.translation.management.facebookNews, {
+  tokenEyebrow: 'Connection settings',
+  tokenTitle: 'Update Page Access Token',
+  tokenIntro: 'Paste a new Page Access Token here each day so the system can continue fetching Page posts.',
+  tokenLabel: 'Page Access Token',
+  tokenPlaceholder: 'Paste the Facebook token here',
+  saveToken: 'Save token',
+  savingToken: 'Saving token…',
+  savingTokenShort: 'Saving',
+  tokenSaved: 'The Page Access Token was updated.'
+});
 Object.assign(resources.vi.translation.eventPages.facebookNews, {
   featuredIntro: 'Những thông tin quan trọng của sự kiện FPTU Halloween.',
 });

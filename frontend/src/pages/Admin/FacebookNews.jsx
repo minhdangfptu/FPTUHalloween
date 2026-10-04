@@ -60,6 +60,8 @@ const FacebookNews = () => {
   const [updatingFeaturedId, setUpdatingFeaturedId] = useState("");
   const [reorderingFeaturedId, setReorderingFeaturedId] = useState("");
   const [error, setError] = useState("");
+  const [accessToken, setAccessToken] = useState("");
+  const [isSavingToken, setIsSavingToken] = useState(false);
 
   const formatDate = (value) => value
     ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN", {
@@ -119,6 +121,23 @@ const FacebookNews = () => {
       await loadData();
     } finally {
       setIsSyncing(false);
+    }
+  };
+
+  const handleSaveToken = async (event) => {
+    event.preventDefault();
+    if (!accessToken.trim()) return;
+    setIsSavingToken(true);
+    const toastId = toast.loading(text("savingToken"));
+    try {
+      await newsAPI.updateFacebookAccessToken(accessToken.trim());
+      setAccessToken("");
+      await loadData();
+      toast.success(text("tokenSaved"), { id: toastId });
+    } catch (tokenError) {
+      toast.error(getFriendlySyncIssue(tokenError, text), { id: toastId });
+    } finally {
+      setIsSavingToken(false);
     }
   };
 
@@ -276,6 +295,34 @@ const FacebookNews = () => {
             <p>{getFriendlySyncIssue(status.lastError, text)}</p>
           </section>
         )}
+
+        <section className="facebook-news-admin__token-card">
+          <div>
+            <span className="facebook-news-admin__eyebrow">{text("tokenEyebrow")}</span>
+            <h2>{text("tokenTitle")}</h2>
+            <p>{text("tokenIntro")}</p>
+          </div>
+          <form onSubmit={handleSaveToken} className="facebook-news-admin__token-form" autoComplete="off">
+            <label htmlFor="facebook-page-access-token">{text("tokenLabel")}</label>
+            <div>
+              <input
+                id="facebook-page-access-token"
+                name="facebook-page-access-token"
+                type="text"
+                value={accessToken}
+                onChange={(event) => setAccessToken(event.target.value)}
+                placeholder={text("tokenPlaceholder")}
+                autoComplete="new-password"
+                data-lpignore="true"
+                data-1p-ignore="true"
+                spellCheck="false"
+              />
+              <button type="submit" className="is-primary" disabled={!accessToken.trim() || isSavingToken}>
+                {isSavingToken ? text("savingTokenShort") : text("saveToken")}
+              </button>
+            </div>
+          </form>
+        </section>
 
         <section className="facebook-news-admin__feed">
           <div className="facebook-news-admin__section-heading">

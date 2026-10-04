@@ -48,7 +48,7 @@ const navigationItems = [
     href: "#",
     children: [
       { labelKey: "nav.story", href: "/haunted-ghost" },
-      { labelKey: "nav.tickets", href: "/tickets" },
+      // { labelKey: "nav.tickets", href: "/tickets" },
     ],
   },
   {

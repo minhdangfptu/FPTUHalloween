@@ -34,6 +34,11 @@ const newsAPI = {
     };
   },
 
+  updateFacebookAccessToken: async (accessToken) => {
+    const response = await axiosClient.patch('/admin/news/facebook/access-token', { accessToken });
+    return response.data?.data;
+  },
+
   setFeatured: async (id, isFeatured) => {
     const response = await axiosClient.patch(`/admin/news/${id}/featured`, { isFeatured });
     return response.data?.data;

@@ -44,6 +44,24 @@ const getCustomerFromResponse = (response) => {
 const formatPrice = (value) =>
   `${new Intl.NumberFormat("vi-VN").format(value || 0)} VND`;
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_PATTERN = /^0\d{9}$/;
+const getEmailValidationMessage = (value) => {
+  if (!value.trim()) return "Vui lòng nhập email.";
+  if (!value.includes("@")) return "Email phải chứa ký tự @.";
+  if (!value.includes(".")) return "Email phải có phần mở rộng như .com hoặc .vn.";
+  return "Email phải có định dạng hợp lệ, ví dụ ten@domain.com.";
+};
+const getPhoneValidationMessage = (value) => {
+  if (!value.trim()) return "Vui lòng nhập số điện thoại.";
+  if (/\s/.test(value)) return "Số điện thoại không được chứa khoảng trắng.";
+  if (/\D/.test(value)) return "Số điện thoại chỉ được chứa chữ số.";
+  if (!value.startsWith("0")) return "Số điện thoại phải bắt đầu bằng số 0.";
+  if (value.length < 10) return "Số điện thoại phải đủ 10 chữ số.";
+  if (value.length > 10) return "Số điện thoại không được vượt quá 10 chữ số.";
+  return "";
+};
+
 const Checkout = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -141,6 +159,17 @@ const Checkout = () => {
     );
   const handleSubmit = (event) => {
     event.preventDefault();
+    const email = customer.email.trim();
+    const phone = customer.phone.trim();
+
+    if (!EMAIL_PATTERN.test(email)) {
+      toast.error(getEmailValidationMessage(customer.email));
+      return;
+    }
+    if (!PHONE_PATTERN.test(phone)) {
+      toast.error(getPhoneValidationMessage(customer.phone));
+      return;
+    }
     if (hasUnavailableItems) {
       toast.error(ticket("noOrders"));
       return;
@@ -220,7 +249,14 @@ const Checkout = () => {
                   <input
                     required
                     type="email"
+                    pattern={EMAIL_PATTERN.source}
                     value={customer.email}
+                    onInvalid={(event) => {
+                      event.currentTarget.setCustomValidity(
+                        getEmailValidationMessage(event.currentTarget.value),
+                      );
+                    }}
+                    onInput={(event) => event.currentTarget.setCustomValidity("")}
                     onChange={(event) =>
                       setCustomer({ ...customer, email: event.target.value })
                     }
@@ -232,7 +268,15 @@ const Checkout = () => {
                   <input
                     required
                     type="tel"
+                    inputMode="numeric"
+                    pattern={PHONE_PATTERN.source}
                     value={customer.phone}
+                    onInvalid={(event) => {
+                      event.currentTarget.setCustomValidity(
+                        getPhoneValidationMessage(event.currentTarget.value),
+                      );
+                    }}
+                    onInput={(event) => event.currentTarget.setCustomValidity("")}
                     onChange={(event) =>
                       setCustomer({ ...customer, phone: event.target.value })
                     }

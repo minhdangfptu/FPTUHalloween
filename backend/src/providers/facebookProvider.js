@@ -1,4 +1,5 @@
 const { config } = require('../config')
+const logger = require('../config/logger')
 
 const GRAPH_HOSTS = new Set(['graph.facebook.com', 'graph.facebook.net'])
 const POST_FIELDS = [
@@ -17,6 +18,12 @@ let activePageAccessToken = ''
 
 const buildError = (statusCode, message, code) => Object.assign(new Error(message), { statusCode, code })
 
+const sanitizeFacebookUrl = (url) => {
+  const parsedUrl = new URL(url)
+  parsedUrl.searchParams.delete('access_token')
+  return parsedUrl.toString()
+}
+
 const getConfiguration = () => ({
   pageId: config.FACEBOOK_PAGE_ID,
   accessToken: activePageAccessToken || config.FACEBOOK_PAGE_ACCESS_TOKEN,
@@ -24,25 +31,21 @@ const getConfiguration = () => ({
   timeoutMs: config.FACEBOOK_REQUEST_TIMEOUT_MS
 })
 
-const refreshPageAccessToken = async () => {
-  if (!config.FACEBOOK_LONG_LIVED_USER_TOKEN) return false
-  const endpoint = new URL(`https://graph.facebook.com/${config.FACEBOOK_GRAPH_API_VERSION}/me/accounts`)
-  endpoint.searchParams.set('fields', 'id,access_token')
-  endpoint.searchParams.set('limit', '100')
-  const payload = await requestJson(endpoint.toString(), config.FACEBOOK_LONG_LIVED_USER_TOKEN, config.FACEBOOK_REQUEST_TIMEOUT_MS)
-  const page = (payload.data || []).find(item => String(item.id) === config.FACEBOOK_PAGE_ID)
-  if (!page?.access_token) throw buildError(502, 'Facebook Page access token refresh failed', 'FACEBOOK_TOKEN_REFRESH_FAILED')
-  activePageAccessToken = page.access_token
-  return true
+const setPageAccessToken = accessToken => {
+  const normalizedToken = String(accessToken || '').trim()
+  if (!normalizedToken) throw buildError(400, 'Facebook Page access token is required', 'FACEBOOK_TOKEN_REQUIRED')
+  if (normalizedToken.length > 4096) throw buildError(400, 'Facebook Page access token is invalid', 'FACEBOOK_TOKEN_INVALID')
+  activePageAccessToken = normalizedToken
+  return getConfigurationStatus()
 }
 
 const getConfigurationStatus = () => {
   const settings = getConfiguration()
   return {
-    configured: Boolean(settings.pageId && (settings.accessToken || config.FACEBOOK_LONG_LIVED_USER_TOKEN)),
+    configured: Boolean(settings.pageId && settings.accessToken),
     pageId: settings.pageId || '',
     apiVersion: settings.apiVersion,
-    hasAccessToken: Boolean(settings.accessToken || config.FACEBOOK_LONG_LIVED_USER_TOKEN)
+    hasAccessToken: Boolean(settings.accessToken)
   }
 }
 
@@ -59,6 +62,7 @@ const requestJson = async (url, accessToken, timeoutMs) => {
   if (!GRAPH_HOSTS.has(parsedUrl.hostname)) {
     throw buildError(502, 'Facebook API returned an invalid pagination URL', 'FACEBOOK_INVALID_PAGING_URL')
   }
+  parsedUrl.searchParams.set('access_token', accessToken)
 
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), timeoutMs)
@@ -67,8 +71,7 @@ const requestJson = async (url, accessToken, timeoutMs) => {
   try {
     const response = await fetch(parsedUrl, {
       headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken}`
+        Accept: 'application/json'
       },
       signal: controller.signal
     })
@@ -83,6 +86,12 @@ const requestJson = async (url, accessToken, timeoutMs) => {
         payload.error?.code || 'FACEBOOK_REQUEST_FAILED'
       )
       error.providerMessage = payload.error?.message || ''
+      logger.error('Facebook API request failed', {
+        statusCode: response.status,
+        providerCode: payload.error?.code || null,
+        providerMessage: payload.error?.message || '',
+        url: sanitizeFacebookUrl(parsedUrl.toString())
+      })
       throw error
     }
 
@@ -100,7 +109,7 @@ const requestJson = async (url, accessToken, timeoutMs) => {
 
 const getPagePosts = async ({ limit } = {}) => {
   const settings = ensureConfigured()
-  const maxPosts = Math.min(Math.max(Number(limit) || config.FACEBOOK_INITIAL_POST_LIMIT, 1), 100)
+  const maxPosts = Math.min(Math.max(Number(limit) || config.FACEBOOK_INITIAL_POST_LIMIT, 1), 350)
   const endpoint = new URL(`https://graph.facebook.com/${settings.apiVersion}/${encodeURIComponent(settings.pageId)}/posts`)
   endpoint.searchParams.set('fields', POST_FIELDS)
   endpoint.searchParams.set('limit', String(Math.min(maxPosts, 100)))
@@ -118,4 +127,4 @@ const getPagePosts = async ({ limit } = {}) => {
   return posts
 }
 
-module.exports = { getPagePosts, getConfigurationStatus, refreshPageAccessToken }
+module.exports = { getPagePosts, getConfigurationStatus, setPageAccessToken }

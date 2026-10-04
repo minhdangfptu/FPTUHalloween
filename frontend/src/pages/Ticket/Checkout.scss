@@ -153,6 +153,14 @@
 .checkout-discount button:hover {
   background: var(--red);
 }
+:root[data-theme='dark'] .ticket-checkout-page .checkout-discount button {
+  color: #fff;
+  background: var(--red);
+}
+:root[data-theme='dark'] .ticket-checkout-page .checkout-discount button:hover {
+  background: var(--red-dark);
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--red) 35%, transparent);
+}
 .checkout-message {
   margin: 0.65rem 0 0;
   font-size: 0.78rem;

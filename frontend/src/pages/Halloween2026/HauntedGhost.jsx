@@ -117,7 +117,9 @@ const HauntedGhost = () => {
         </div>
       </section>
 
-      <section
+      {/*
+        Thông tin vé được tạm ẩn trên giao diện nhưng vẫn giữ nguyên logic để sử dụng lại khi cần.
+              <section
         className="haunted-ghost-tickets"
         aria-labelledby="haunted-ticket-title"
       >
@@ -213,6 +215,7 @@ const HauntedGhost = () => {
           </div>
         )}
       </section>
+      */}
     </main>
   );
 };
