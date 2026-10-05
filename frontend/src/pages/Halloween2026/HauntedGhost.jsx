@@ -39,6 +39,11 @@ const HauntedGhost = () => {
   }, []);
 
   useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      setIsLoading(false);
+      return;
+    }
+
     loadTickets();
   }, [loadTickets]);
 
