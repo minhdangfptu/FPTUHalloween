@@ -48,7 +48,7 @@ const navigationItems = [
     href: "#",
     children: [
       { labelKey: "nav.story", href: "/haunted-ghost" },
-      // { labelKey: "nav.tickets", href: "/tickets" },
+      { labelKey: "nav.tickets", href: "/tickets" },
     ],
   },
   {
@@ -101,7 +101,9 @@ function Navbar() {
     let isMounted = true;
     const loadAvailableFeedback = async () => {
       try {
-        const forms = await feedbackAPI.getAvailableForms({ targetType: "attendee" });
+        const forms = await feedbackAPI.getAvailableForms({
+          targetType: "attendee",
+        });
         if (isMounted) setHasAvailableFeedback(forms.length > 0);
       } catch {
         if (isMounted) setHasAvailableFeedback(false);
@@ -110,10 +112,16 @@ function Navbar() {
 
     loadAvailableFeedback();
     const handleFeedbackVisibilityChanged = () => loadAvailableFeedback();
-    window.addEventListener("feedback:visibility-changed", handleFeedbackVisibilityChanged);
+    window.addEventListener(
+      "feedback:visibility-changed",
+      handleFeedbackVisibilityChanged,
+    );
     return () => {
       isMounted = false;
-      window.removeEventListener("feedback:visibility-changed", handleFeedbackVisibilityChanged);
+      window.removeEventListener(
+        "feedback:visibility-changed",
+        handleFeedbackVisibilityChanged,
+      );
     };
   }, [isRegularUser]);
 
@@ -177,6 +185,14 @@ function Navbar() {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleTicketClick = () => {
+    toast(t("nav.ticketComingSoon"), {
+      icon: <Ticket size={20} aria-hidden="true" />,
+    });
+    setHoveredItem(null);
+    setMobileOpen(false);
   };
 
   const handleMouseEnter = (index) => {
@@ -277,8 +293,18 @@ function Navbar() {
                   )}
                   {item.children && hoveredItem === index && (
                     <div className="fpt-navbar__dropdown">
-                      {item.children.map((child) => (
-                        <Link
+                      {item.children.map((child) =>
+                        child.labelKey === "nav.tickets" ? (
+                          <button
+                            key={child.labelKey}
+                            type="button"
+                            className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
+                            onClick={handleTicketClick}
+                          >
+                            {t(child.labelKey)}
+                          </button>
+                        ) : (
+                          <Link
                           key={child.labelKey}
                           to={child.href}
                           className={`fpt-navbar__dropdown-link ${
@@ -286,8 +312,9 @@ function Navbar() {
                           }`}
                         >
                           {t(child.labelKey)}
-                        </Link>
-                      ))}
+                          </Link>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
@@ -361,7 +388,10 @@ function Navbar() {
                       <div className="fpt-navbar__account-greeting">
                         <CircleUserRound size={18} />
                         <span>
-                          {t("nav.hello", { name: user.fullName || user.name || t("nav.account") })}
+                          {t("nav.hello", {
+                            name:
+                              user.fullName || user.name || t("nav.account"),
+                          })}
                         </span>
                       </div>
                       <Link
@@ -464,16 +494,27 @@ function Navbar() {
                 )}
                 {item.children && (
                   <div className="fpt-navbar__mobile-sub">
-                    {item.children.map((child) => (
-                      <Link
+                    {item.children.map((child) =>
+                      child.labelKey === "nav.tickets" ? (
+                        <button
+                          key={child.labelKey}
+                          type="button"
+                          className="fpt-navbar__mobile-sublink fpt-navbar__mobile-action"
+                          onClick={handleTicketClick}
+                        >
+                          {t(child.labelKey)}
+                        </button>
+                      ) : (
+                        <Link
                         key={child.labelKey}
                         to={child.href}
                         className="fpt-navbar__mobile-sublink"
                         onClick={handleDrawerToggle}
                       >
                         {t(child.labelKey)}
-                      </Link>
-                    ))}
+                        </Link>
+                      )
+                    )}
                   </div>
                 )}
               </div>
@@ -503,9 +544,7 @@ function Navbar() {
             <div className="fpt-navbar__mobile-group">
               {user ? (
                 <>
-                  <div
-                    className="fpt-navbar__mobile-link fpt-navbar__mobile-link--account"
-                  >
+                  <div className="fpt-navbar__mobile-link fpt-navbar__mobile-link--account">
                     <User size={18} aria-hidden="true" />
                     {user.fullName || user.name || t("components.account")}
                   </div>
@@ -542,9 +581,7 @@ function Navbar() {
                 </>
               ) : (
                 <>
-                  <div
-                    className="fpt-navbar__mobile-link fpt-navbar__mobile-link--account"
-                  >
+                  <div className="fpt-navbar__mobile-link fpt-navbar__mobile-link--account">
                     <User size={18} aria-hidden="true" />
                     {t("components.account")}
                   </div>

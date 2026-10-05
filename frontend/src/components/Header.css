@@ -207,6 +207,12 @@
   background: rgba(255, 255, 255, 0.16);
 }
 
+.fpt-header__social-btn--language:hover,
+.fpt-header__social-btn--theme:hover {
+  color: var(--color-button-text);
+  background: rgba(255, 255, 255, 0.16);
+}
+
 .fpt-header__about-overlay {
   position: fixed;
   inset: 0;

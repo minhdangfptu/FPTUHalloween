@@ -1,4 +1,4 @@
-import fallbackNewsImage from "../assets/hlw/2025.jpg";
+import fallbackNewsImage from "../assets/cover-01.png";
 
 const fallbackMediaStyle = { backgroundImage: `url(${fallbackNewsImage})` };
 

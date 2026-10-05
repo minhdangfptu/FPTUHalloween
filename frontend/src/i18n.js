@@ -882,6 +882,9 @@ Object.assign(resources.vi.translation.normal.home, {
   highlightsLabel: '02 · BẢN ĐỒ ĐÊM HỘI', timelineLabel: '03 · LỊCH TRÌNH ĐÊM HỘI', mapLabel: '04 · TÌM ĐƯỜNG',
   stage: 'SÂN KHẤU', sponsorsLabel: '05 · ĐƠN VỊ ĐỒNG HÀNH',
   sponsorNames: { pdp: 'PDP', fptu: 'FPTU', fbgc: 'FBGC', hlw26: 'HLW26' },
+  conceptLines: ['Một sân chơi từng bị bỏ lại.', 'Một chú Bunny chưa bao giờ rời đi.'],
+  conceptLead: 'Bunny’s Playhouse là nơi quá khứ chưa bao giờ thực sự kết thúc. Một công viên giải trí từng chìm trong những vụ mất tích bí ẩn nay được dựng lại, kéo theo sự trở lại của chú Bunny đã biến mất năm nào.',
+  conceptBody: 'Bước qua cánh cửa Playhouse, bạn sẽ không chỉ tìm thấy những trò chơi. Bạn sẽ gặp lại Bunny.',
 });
 Object.assign(resources.en.translation.normal.home, {
   heroAria: 'FPTU Halloween 2026 hero banner', brand: 'FPTU HALLOWEEN', university: 'FPT UNIVERSITY', pdp: 'PDP', fbgc: 'FBGC', hlw26: 'HLW26',
@@ -889,6 +892,72 @@ Object.assign(resources.en.translation.normal.home, {
   highlightsLabel: '02 · THE NIGHT MAP', timelineLabel: '03 · RUN OF SHOW', mapLabel: '04 · FIND YOUR WAY',
   stage: 'STAGE', sponsorsLabel: '05 · WITH SUPPORT FROM',
   sponsorNames: { pdp: 'PDP', fptu: 'FPTU', fbgc: 'FBGC', hlw26: 'HLW26' },
+  conceptLines: ['A playground left behind.', 'A Bunny who never left.'],
+  conceptLead: 'Bunny’s Playhouse is a place where the past never truly ended. An amusement park once swallowed by mysterious disappearances has been rebuilt, bringing back the Bunny who vanished years ago.',
+  conceptBody: 'Step through the Playhouse doors and you will find more than games. You will meet Bunny again.',
+});
+Object.assign(resources.ja.translation.normal.home, {
+  conceptLines: ['置き去りにされた遊び場。', '決して去らなかったBunny。'],
+});
+Object.assign(resources.vi.translation.normal.home, {
+  timeline: 'Lịch Trình Đêm Hội Halloween',
+  timelineBadge: 'HALLOWEEN NIGHT 2026',
+  timelineActivitiesTitle: 'HOẠT ĐỘNG TRẢI NGHIỆM',
+  timelineStageTitle: 'Sân Khấu Đêm Hội (Tối 29/10)',
+  timelineActivities: [
+    { tone: 'night', title: 'Ngày 27 & 28/10', time: '18:00 – 21:00', items: ['Trải nghiệm Nhà Ma: 18:00 – 21:00'] },
+    { tone: 'day', title: 'Ngày 29/10 (Sự Kiện Chính)', time: 'BAN NGÀY & TỐI', items: ['Gian hàng đồ ăn: 08:00 – 20:00', 'Gian hàng BTC: Mở cửa từ 10:00', 'Khu vực Photobooth: 10:00 – 21:00', 'Trải nghiệm Nhà Ma: 18:00 – 20:00'] },
+  ],
+  timelineStageItems: [
+    { time: '18:15', title: 'Khai mạc chương trình', note: 'DJ khai màn sôi động' },
+    { time: '18:30', title: 'Diễn kịch “Bunny’s Playtime”', note: 'Vở kịch đặc sắc' },
+    { time: '18:55', title: 'Trình diễn hóa trang - Alter Ego', note: 'Show Cosplay bùng nổ' },
+    { time: '20:05', title: 'Hoạt động Đấu giá', note: 'Đấu giá vật phẩm bí ẩn' },
+    { time: '20:30', title: 'Kịch kết màn', note: 'Cao trào & khép câu chuyện' },
+    { time: '20:43', title: 'DJ kết màn & Bế mạc', note: 'Âm nhạc bùng nổ khép lại đêm hội', featured: true },
+  ],
+  timelineFootnote: 'Các gian hàng & photobooth mở cửa tự do đón khách',
+  timelineDisclaimer: '* Lịch trình các tiết mục sân khấu có thể di chuyển linh hoạt theo thực tế.',
+});
+Object.assign(resources.en.translation.normal.home, {
+  timeline: 'Halloween Night Schedule',
+  timelineBadge: 'HALLOWEEN NIGHT 2026',
+  timelineActivitiesTitle: 'EXPERIENCE ACTIVITIES',
+  timelineStageTitle: 'Main Stage (October 29 Night)',
+  timelineActivities: [
+    { tone: 'night', title: 'October 27 & 28', time: '18:00 – 21:00', items: ['Haunted House: 18:00 – 21:00'] },
+    { tone: 'day', title: 'October 29 (Main Event)', time: 'DAY & NIGHT', items: ['Food stalls: 08:00 – 20:00', 'Organizer booth: Opens at 10:00', 'Photobooth area: 10:00 – 21:00', 'Haunted House: 18:00 – 20:00'] },
+  ],
+  timelineStageItems: [
+    { time: '18:15', title: 'Opening ceremony', note: 'Energetic DJ opening' },
+    { time: '18:30', title: '“Bunny’s Playtime” stage play', note: 'A special performance' },
+    { time: '18:55', title: 'Alter Ego cosplay show', note: 'A spectacular cosplay show' },
+    { time: '20:05', title: 'Auction activity', note: 'Mysterious items up for auction' },
+    { time: '20:30', title: 'Closing play', note: 'The story reaches its climax' },
+    { time: '20:43', title: 'Closing DJ & finale', note: 'Music to close the night', featured: true },
+  ],
+  timelineFootnote: 'Stalls and the photobooth are open for all visitors.',
+  timelineDisclaimer: '* Stage timings may shift slightly during the event.',
+});
+Object.assign(resources.ja.translation.normal.home, {
+  timeline: 'ハロウィンナイト・スケジュール',
+  timelineBadge: 'HALLOWEEN NIGHT 2026',
+  timelineActivitiesTitle: '体験アクティビティ',
+  timelineStageTitle: 'メインステージ（10月29日夜）',
+  timelineActivities: [
+    { tone: 'night', title: '10月27日・28日', time: '18:00 – 21:00', items: ['お化け屋敷：18:00 – 21:00'] },
+    { tone: 'day', title: '10月29日（メインイベント）', time: '昼・夜', items: ['フードブース：08:00 – 20:00', '運営ブース：10:00から', 'フォトブース：10:00 – 21:00', 'お化け屋敷：18:00 – 20:00'] },
+  ],
+  timelineStageItems: [
+    { time: '18:15', title: 'オープニング', note: 'DJによる華やかな開幕' },
+    { time: '18:30', title: '劇「Bunny’s Playtime」', note: '特別ステージ' },
+    { time: '18:55', title: 'Alter Ego コスプレショー', note: '華やかなコスプレショー' },
+    { time: '20:05', title: 'オークション', note: '謎のアイテムを競売' },
+    { time: '20:30', title: 'クロージング劇', note: '物語のクライマックス' },
+    { time: '20:43', title: 'クロージングDJ・閉幕', note: '音楽とともに夜を締めくくる', featured: true },
+  ],
+  timelineFootnote: 'ブースとフォトブースは自由にご利用いただけます。',
+  timelineDisclaimer: '※ ステージの時間は当日の状況により変更される場合があります。',
 });
 
 Object.assign(resources.vi.translation.eventPages.hlwIntro, {
@@ -1068,6 +1137,34 @@ Object.assign(resources.vi.translation.pages.payment, { brand: 'FPTU Halloween' 
 Object.assign(resources.en.translation.pages.payment, { brand: 'FPTU Halloween' });
 Object.assign(resources.vi.translation.eventPages.haunted, { brandShort: 'HLW', currency: 'VND' });
 Object.assign(resources.en.translation.eventPages.haunted, { brandShort: 'HLW', currency: 'VND' });
+Object.assign(resources.vi.translation.eventPages.haunted, {
+  storyText: 'Câu chuyện Nhà Ma đang được đội ngũ chuẩn bị và hoàn thiện để mang đến cho bạn một hành trình thật trọn vẹn. Nội dung chính thức sẽ sớm được cập nhật, với những căn phòng tối, dấu vết kỳ lạ và các lựa chọn khiến bạn không thể quay đầu. Hãy quay lại trong thời gian tới để cùng khám phá điều đang chờ đợi phía sau cánh cửa.',
+  trailerText: 'Trailer chính thức đang được cập nhật để gửi đến bạn trong thời gian sớm nhất. Trong lúc chờ đợi, hãy lưu lại trang này và quay lại để không bỏ lỡ những hình ảnh đầu tiên về không khí Nhà Ma năm nay.',
+  trailerPlaceholder: 'Trailer đang được cập nhật · sắp gửi đến bạn',
+});
+Object.assign(resources.en.translation.eventPages.haunted, {
+  storyText: 'The Haunted House story is being carefully prepared and refined by our team to give you a complete experience. The official story will be shared soon, taking you through dark rooms, strange traces and choices with no way back. Come back again soon to discover what is waiting for you behind the door.',
+  trailerText: 'The official trailer is being updated and will be brought to you as soon as possible. In the meantime, save this page and return later so you do not miss the first glimpse of this year\'s Haunted House atmosphere.',
+  trailerPlaceholder: 'Trailer being updated · coming to you soon',
+});
+Object.assign(resources.vi.translation.header, {
+  ticketComingSoon: 'Vé sẽ sớm được phát hành, vui lòng quay lại sau nhé.',
+});
+Object.assign(resources.en.translation.header, {
+  ticketComingSoon: 'Tickets will be available soon. Please come back later.',
+});
+Object.assign(resources.vi.translation.nav, {
+  ticketComingSoon: 'Vé sẽ sớm được phát hành, vui lòng quay lại sau nhé.',
+});
+Object.assign(resources.en.translation.nav, {
+  ticketComingSoon: 'Tickets will be available soon. Please come back later.',
+});
+Object.assign(resources.ja.translation.header, {
+  ticketComingSoon: 'チケットはまもなく発売されます。しばらくしてからもう一度お越しください。',
+});
+Object.assign(resources.ja.translation.nav, {
+  ticketComingSoon: 'チケットはまもなく発売されます。しばらくしてからもう一度お越しください。',
+});
 Object.assign(resources.vi.translation.profilePage, { currency: 'VND' });
 Object.assign(resources.en.translation.profilePage, { currency: 'VND' });
 

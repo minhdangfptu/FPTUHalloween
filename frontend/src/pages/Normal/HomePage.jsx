@@ -79,12 +79,7 @@ const sponsors = [
   { key: "hlw26", nameKey: "sponsorNames.hlw26", image: wtmDarkLogo },
 ];
 
-const countdownItems = [
-  "days",
-  "hours",
-  "minutes",
-  "seconds",
-];
+const countdownItems = ["days", "hours", "minutes", "seconds"];
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -111,7 +106,14 @@ export default function HomePage() {
     if (sessionStorage.getItem("showLoginWelcome") !== "1") return;
     sessionStorage.removeItem("showLoginWelcome");
     const user = JSON.parse(localStorage.getItem("user") || "null");
-    toast.success(t("normal.home.welcome", { name: user?.fullName || user?.name || (t("nav.home") === "HOME" ? "there" : "bạn") }));
+    toast.success(
+      t("normal.home.welcome", {
+        name:
+          user?.fullName ||
+          user?.name ||
+          (t("nav.home") === "HOME" ? "there" : "bạn"),
+      }),
+    );
   }, [t]);
 
   useEffect(() => {
@@ -121,10 +123,7 @@ export default function HomePage() {
 
   return (
     <main className="home-page">
-      <section
-        className="home-hero"
-        aria-label={home("heroAria")}
-      >
+      <section className="home-hero" aria-label={home("heroAria")}>
         <img
           className="home-hero__image"
           src={heroImage}
@@ -136,10 +135,7 @@ export default function HomePage() {
         <div className="home-hero-copy__inner">
           <div className="home-hero__masthead">
             <span>{home("brand")}</span>
-            <div
-              className="home-lockup"
-              aria-label={home("lockupAlt")}
-            >
+            <div className="home-lockup" aria-label={home("lockupAlt")}>
               <span className="home-lockup__mark home-lockup__mark--university">
                 {home("university")}
               </span>
@@ -160,9 +156,7 @@ export default function HomePage() {
             {home("slogan")}
             <span>{home("subSlogan")}</span>
           </h1>
-          <p className="home-hero__lede">
-            {home("lede")}
-          </p>
+          <p className="home-hero__lede">{home("lede")}</p>
           <div className="home-hero__actions">
             <button
               className="home-button home-button--primary"
@@ -192,7 +186,9 @@ export default function HomePage() {
               {home("countdownLabel")}
             </p>
             <span>
-              {countdown.complete ? home("countdownDone") : home("countdownLeft")}
+              {countdown.complete
+                ? home("countdownDone")
+                : home("countdownLeft")}
             </span>
           </div>
           <div className="home-countdown__grid" aria-live="polite">
@@ -214,16 +210,14 @@ export default function HomePage() {
         <div className="home-section__head">
           <p className="home-eyebrow">{home("conceptLabel")}</p>
           <h2 id="home-intro-title">
-            {home("concept")}
+            {home("conceptLines", { returnObjects: true }).map((line) => (
+              <span key={line}>{line}</span>
+            ))}
           </h2>
         </div>
         <div className="home-intro__body">
-          <p className="home-intro__lead">
-            {home("conceptLead")}
-          </p>
-          <p>
-            {home("conceptBody")}
-          </p>
+          <p className="home-intro__lead">{home("conceptLead")}</p>
+          <p>{home("conceptBody")}</p>
         </div>
       </section>
 
@@ -244,8 +238,20 @@ export default function HomePage() {
             >
               <span className="home-highlight__number">{item.number}</span>
               <div>
-                <h3>{home("highlightTitles", { returnObjects: true })[Number(item.number) - 1]}</h3>
-                <p>{home("highlightDescriptions", { returnObjects: true })[Number(item.number) - 1]}</p>
+                <h3>
+                  {
+                    home("highlightTitles", { returnObjects: true })[
+                      Number(item.number) - 1
+                    ]
+                  }
+                </h3>
+                <p>
+                  {
+                    home("highlightDescriptions", { returnObjects: true })[
+                      Number(item.number) - 1
+                    ]
+                  }
+                </p>
               </div>
               <span className="home-highlight__arrow" aria-hidden="true">
                 ↗
@@ -259,26 +265,56 @@ export default function HomePage() {
         className="home-section home-timeline"
         aria-labelledby="home-timeline-title"
       >
-        <div className="home-section__head">
+        <div className="home-section__head home-timeline__header">
           <p className="home-eyebrow">{home("timelineLabel")}</p>
           <h2 id="home-timeline-title">{home("timeline")}</h2>
         </div>
         <div className="home-timeline__layout">
-          <p className="home-timeline__note">
-            {home("timelineNote")}
-          </p>
-          <ol className="home-timeline__list">
-            {timeline.map((item) => (
-              <li key={item.time}>
-                <span>{item.time}</span>
-                <div>
-                  <h3>{home("timelineTitles", { returnObjects: true })[Number(item.time) - 1]}</h3>
-                  <p>{home("timelineDescriptions", { returnObjects: true })[Number(item.time) - 1]}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <article className="home-timeline__panel home-timeline__panel--activities">
+            <h3>{home("timelineActivitiesTitle")}</h3>
+            <div className="home-timeline__activity-list">
+              {home("timelineActivities", { returnObjects: true }).map(
+                (activity) => (
+                  <div
+                    className={`home-timeline__activity home-timeline__activity--${activity.tone}`}
+                    key={activity.title}
+                  >
+                    <div>
+                      <strong>{activity.title}</strong>
+                      {activity.items.map((item) => (
+                        <p key={item}>{item}</p>
+                      ))}
+                    </div>
+                    <span>{activity.time}</span>
+                  </div>
+                ),
+              )}
+            </div>
+            <p className="home-timeline__footnote">
+              {home("timelineFootnote")}
+            </p>
+          </article>
+          <article className="home-timeline__panel home-timeline__panel--stage">
+            <h3>{home("timelineStageTitle")}</h3>
+            <ol className="home-timeline__list">
+              {home("timelineStageItems", { returnObjects: true }).map(
+                (item) => (
+                  <li
+                    key={item.time}
+                    className={item.featured ? "is-featured" : ""}
+                  >
+                    <span>{item.time}</span>
+                    <strong>{item.title}</strong>
+                    <em>{item.note}</em>
+                  </li>
+                ),
+              )}
+            </ol>
+          </article>
         </div>
+        <p className="home-timeline__disclaimer">
+          {home("timelineDisclaimer")}
+        </p>
       </section>
 
       <section
@@ -302,11 +338,13 @@ export default function HomePage() {
           <span className="home-map__point home-map__point--main">
             {home("mainGate")}
           </span>
-          <span className="home-map__point home-map__point--house">{home("hauntedHouse")}</span>
-          <span className="home-map__point home-map__point--stage">{home("stage")}</span>
-          <span className="home-map__caption">
-            {home("mapCaption")}
+          <span className="home-map__point home-map__point--house">
+            {home("hauntedHouse")}
           </span>
+          <span className="home-map__point home-map__point--stage">
+            {home("stage")}
+          </span>
+          <span className="home-map__caption">{home("mapCaption")}</span>
         </div>
       </section>
 
@@ -320,18 +358,32 @@ export default function HomePage() {
         </div>
         <div className="home-sponsors__row">
           {sponsors.map((sponsor) => (
-            <div className={`home-sponsor home-sponsor--${sponsor.key}`} key={sponsor.key}>
+            <div
+              className={`home-sponsor home-sponsor--${sponsor.key}`}
+              key={sponsor.key}
+            >
               {sponsor.image ? (
-                <>{sponsor.key === "hlw26" ? <ThemeAsset lightSrc={wtmLightLogo} darkSrc={wtmDarkLogo} alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })} /> : <img src={sponsor.image} alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })} />}</>
+                <>
+                  {sponsor.key === "hlw26" ? (
+                    <ThemeAsset
+                      lightSrc={wtmLightLogo}
+                      darkSrc={wtmDarkLogo}
+                      alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })}
+                    />
+                  ) : (
+                    <img
+                      src={sponsor.image}
+                      alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })}
+                    />
+                  )}
+                </>
               ) : (
                 <span>{home(sponsor.nameKey)}</span>
               )}
             </div>
           ))}
         </div>
-        <p className="home-sponsors__note">
-          {home("sponsorsNote")}
-        </p>
+        <p className="home-sponsors__note">{home("sponsorsNote")}</p>
       </section>
     </main>
   );

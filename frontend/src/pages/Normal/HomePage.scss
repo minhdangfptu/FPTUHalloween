@@ -411,6 +411,10 @@
   scroll-margin-top: 1rem;
 }
 
+.home-intro h2 span {
+  display: block;
+}
+
 .home-intro__body {
   max-width: 58ch;
   padding-top: 2.5rem;
@@ -600,6 +604,153 @@
   opacity: 0.72;
 }
 
+.home-timeline__header {
+  position: relative;
+  max-width: none;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--home-dark-line);
+}
+
+.home-timeline__header h2 {
+  margin-top: 0.35rem;
+  font-family: var(--home-display);
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+}
+
+.home-timeline__badge {
+  position: absolute;
+  right: 0;
+  bottom: 1.1rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--home-red);
+  border-radius: 0.35rem;
+  color: var(--home-white);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.home-timeline__layout {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 2.2rem;
+  margin-top: 1.5rem;
+}
+
+.home-timeline__panel {
+  min-height: 31rem;
+  padding: 1.5rem;
+  border: 1px solid var(--home-dark-line);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.home-timeline__panel--stage {
+  border-color: rgba(230, 0, 0, 0.6);
+}
+
+.home-timeline__panel > h3 {
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--home-dark-line);
+  color: var(--home-white);
+  font-family: var(--home-display);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+}
+
+.home-timeline__activity-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.home-timeline__activity {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border-left: 3px solid var(--home-red);
+  border-radius: 0 0.6rem 0.6rem 0;
+  background: rgba(230, 0, 0, 0.1);
+}
+
+.home-timeline__activity--day {
+  border-left-color: #f08a00;
+  background: rgba(240, 138, 0, 0.1);
+}
+
+.home-timeline__activity strong,
+.home-timeline__activity p {
+  display: block;
+  color: var(--home-white);
+}
+
+.home-timeline__activity p {
+  margin-top: 0.45rem;
+  color: var(--home-muted);
+  font-size: 0.9rem;
+}
+
+.home-timeline__activity > span {
+  align-self: start;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.3rem;
+  color: var(--home-white);
+  background: rgba(230, 0, 0, 0.35);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.home-timeline__footnote,
+.home-timeline__disclaimer {
+  color: var(--home-muted);
+  font-size: 0.82rem;
+}
+
+.home-timeline__footnote {
+  margin-top: 10rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.home-timeline__panel--stage .home-timeline__list {
+  margin-top: 1.25rem;
+}
+
+.home-timeline__panel--stage .home-timeline__list li {
+  grid-template-columns: 4.5rem minmax(0, 1fr) minmax(8rem, 0.75fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 0.75rem;
+  border: 1px solid var(--home-dark-line);
+  border-radius: 0.7rem;
+}
+
+.home-timeline__panel--stage .home-timeline__list li + li {
+  margin-top: 0.55rem;
+}
+
+.home-timeline__panel--stage .home-timeline__list li > span {
+  font-size: 1rem;
+}
+
+.home-timeline__panel--stage .home-timeline__list strong {
+  color: var(--home-white);
+}
+
+.home-timeline__panel--stage .home-timeline__list em {
+  color: var(--home-muted);
+  font-size: 0.85rem;
+  font-style: normal;
+  text-align: right;
+}
+
+.home-timeline__panel--stage .home-timeline__list li.is-featured {
+  border-color: var(--home-red);
+}
+
+.home-timeline__disclaimer {
+  margin-top: 1.2rem;
+}
+
 .home-map-section {
   display: grid;
   grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
@@ -777,6 +928,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .home-timeline__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .home-intro__body {
     padding-top: 0;
   }
@@ -807,6 +962,21 @@
 
   .home-section__head--line {
     display: block;
+  }
+
+  .home-timeline__badge {
+    position: static;
+    display: inline-block;
+    margin-top: 1rem;
+  }
+
+  .home-timeline__panel--stage .home-timeline__list li {
+    grid-template-columns: 4rem minmax(0, 1fr);
+  }
+
+  .home-timeline__panel--stage .home-timeline__list em {
+    grid-column: 2;
+    text-align: left;
   }
 
   .home-section__head--line > p:last-child {

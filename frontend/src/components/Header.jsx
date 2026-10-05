@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Header.css";
-import { Circle, Info, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Circle, Info, Ticket, X } from "lucide-react";
 import hotNewsAPI from "../apis/hotNewsAPI";
 import { ScrollBasedVelocity } from "./ui/scroll-based-velocity";
 import useTheme from "../hooks/use-theme";
@@ -30,7 +29,6 @@ const renderTickerContent = (items) =>
   ));
 
 function Header() {
-  const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { i18n, t } = useTranslation();
   const [activeHotNews, setActiveHotNews] = useState([]);
@@ -182,6 +180,12 @@ function Header() {
     }
   };
 
+  const handleTicketClick = () => {
+    toast(t("header.ticketComingSoon"), {
+      icon: <Ticket size={20} aria-hidden="true" />,
+    });
+  };
+
   return (
     <header className="fpt-header">
       <div className="fpt-header__container">
@@ -318,7 +322,8 @@ function Header() {
               </button>
             </div>
             <button
-              onClick={() => navigate("/tickets")}
+              type="button"
+              onClick={handleTicketClick}
               className="fpt-header__cta-btn"
             >
               {t("header.buyTicket")}
