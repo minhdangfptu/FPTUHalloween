@@ -36,13 +36,15 @@ const Cart = () => {
   const [error, setError] = useState(null);
   const [pendingAction, setPendingAction] = useState(null);
   const [selectedTicketTypeIds, setSelectedTicketTypeIds] = useState([]);
+  const [ticketSummary, setTicketSummary] = useState({ purchasedTicketCount: 0, maxTicketCount: 5 });
 
   const loadCart = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const nextCart = await cartAPI.get();
+      const [nextCart, summary] = await Promise.all([cartAPI.get(), cartAPI.getSummary()]);
       setCart(nextCart);
+      setTicketSummary(summary);
       const storedIds = JSON.parse(localStorage.getItem(SELECTED_ITEMS_KEY) || "null");
       const availableIds = (nextCart.items || []).map((item) => String(item.ticketTypeId));
       setSelectedTicketTypeIds(
@@ -79,6 +81,8 @@ const Cart = () => {
     (item) => getTicketType(item).ticketTypeStatus !== "active" || Number(getTicketType(item).availableQuantity) <= 0,
   );
   const allItemsSelected = cartItems.length > 0 && selectedItems.length === cartItems.length;
+  const selectedTicketCount = selectedItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  const selectedExceedsTicketLimit = ticketSummary.purchasedTicketCount + selectedTicketCount > ticketSummary.maxTicketCount;
 
   const toggleItemSelection = (ticketTypeId) => {
     const normalizedId = String(ticketTypeId);
@@ -190,7 +194,7 @@ const Cart = () => {
             <h1>{ticket("cartTitle")}</h1>
           </div>
           {cartItems.length > 0 && (
-            <span className="ticket-cart-count">{totalQuantity} {ticket("tickets")}</span>
+            <span className="ticket-cart-count">{ticket("cartCountLabel", { count: totalQuantity })}</span>
           )}
         </header>
 
@@ -318,7 +322,7 @@ const Cart = () => {
             <aside className="ticket-cart-summary">
               <p className="ticket-cart-summary__label">{ticket("orderSummary")}</p>
               <div>
-                <span>{ticket("subtotalTickets", { count: selectedItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0) })}</span>
+                <span>{ticket("subtotalTickets", { count: selectedTicketCount })}</span>
                 <strong>{formatPrice(selectedTotal)}</strong>
               </div>
               <div>
@@ -332,7 +336,7 @@ const Cart = () => {
               <button
                 className="ticket-cart-primary"
                 type="button"
-                disabled={hasSelectedUnavailableItems || selectedItems.length === 0}
+                disabled={hasSelectedUnavailableItems || selectedItems.length === 0 || selectedExceedsTicketLimit}
                 onClick={() => {
                   localStorage.setItem(SELECTED_ITEMS_KEY, JSON.stringify(selectedTicketTypeIds));
                   navigate("/checkout");
@@ -341,6 +345,16 @@ const Cart = () => {
                 {ticket("continue")}
               </button>
               {hasSelectedUnavailableItems && <p className="ticket-cart-summary__warning">{ticket("removeUnavailableWarning")}</p>}
+              <section className={`ticket-cart-limit${selectedExceedsTicketLimit ? " ticket-cart-limit--invalid" : ""}`} aria-live="polite">
+                <div className="ticket-cart-limit__header">
+                  <span>{ticket("ticketLimitReached")}</span>
+                </div>
+                <div className="ticket-cart-limit__stats">
+                  <span>{ticket("ticketPurchasedCount", { count: ticketSummary.purchasedTicketCount })}</span>
+                  <span>{ticket("selectedTicketCount", { count: selectedTicketCount })}</span>
+                </div>
+                {selectedExceedsTicketLimit && <p className="ticket-cart-limit__error">{ticket("ticketLimitCheckoutBlocked")}</p>}
+              </section>
               {selectedItems.length === 0 && <p className="ticket-cart-summary__warning">{ticket("selectAtLeastWarning")}</p>}
               <p className="ticket-cart-summary__note">{ticket("checkoutNotice")}</p>
             </aside>

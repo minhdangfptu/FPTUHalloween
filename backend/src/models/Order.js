@@ -3,6 +3,11 @@ const { Schema } = mongoose
 
 const schema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
+  buyerInfo: {
+    fullName: { type: String, trim: true },
+    email: { type: String, trim: true, lowercase: true },
+    phone: { type: String, trim: true }
+  },
   items: { type: [Schema.Types.Mixed], required: true },
   totalAmount: { type: Number, required: true, min: 0 },
   paymentMethod: { type: String },

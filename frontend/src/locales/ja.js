@@ -2114,4 +2114,15 @@ const ja = {
   }
 };
 
+ja.ticket.ticketLimitReached = '1つのアカウントで購入できるチケットは最大5枚です。';
+ja.ticket.ticketLimitRemaining = 'あと{{count}}枚まで購入できます。';
+ja.ticket.ticketPurchasedCount = '購入済みチケット: {{count}}/5枚。';
+ja.ticket.ticketLimitCheckoutBlocked = '選択したチケット数が上限の5枚を超えています。チケット数を減らしてください！';
+ja.ticket.selectedTicketCount = '選択中のチケット: {{count}}/5枚。';
+ja.ticket.cartCountLabel = 'カート内のチケット: {{count}}枚';
+ja.pages.payment.deliveryNotice = 'チケットは1〜2日以内にメールでお送りします。迷惑メールフォルダもご確認ください。';
+ja.pages.payment.myTicketsNotice = 'チケットは';
+ja.pages.payment.contactNotice = '問題がある場合は、';
+ja.pages.payment.contactLink = 'お問い合わせページ';
+
 export default ja;

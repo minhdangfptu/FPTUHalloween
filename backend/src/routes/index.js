@@ -98,6 +98,7 @@ router.patch('/ticket-types/:id/status', requireAuth, requireRole('Admin'), tick
 
 // CART
 router.get('/cart', requireAuth, cartCtrl.get)
+router.get('/cart/summary', requireAuth, cartCtrl.getSummary)
 router.post('/cart/items', requireAuth, cartCtrl.addItem)
 router.patch('/cart/items/:ticketTypeId', requireAuth, cartCtrl.updateItem)
 router.delete('/cart/items/:ticketTypeId', requireAuth, cartCtrl.removeItem)

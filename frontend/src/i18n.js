@@ -1385,4 +1385,25 @@ i18n.use(initReactI18next).init({
 
 i18n.on('languageChanged', (language) => localStorage.setItem('language', language));
 
+resources.vi.translation.ticket.ticketLimitReached = 'Mỗi tài khoản chỉ được mua tối đa 5 vé.';
+resources.en.translation.ticket.ticketLimitReached = 'Each account can purchase up to 5 tickets.';
+resources.vi.translation.ticket.ticketLimitRemaining = 'Bạn có thể mua tối đa {{count}} vé.';
+resources.en.translation.ticket.ticketLimitRemaining = 'You can purchase up to {{count}} more tickets.';
+resources.vi.translation.ticket.ticketPurchasedCount = 'Vé bạn đã mua: {{count}}/5.';
+resources.en.translation.ticket.ticketPurchasedCount = 'Tickets purchased: {{count}}/5.';
+resources.vi.translation.ticket.ticketLimitCheckoutBlocked = 'Số vé bạn chọn đã vượt quá giới hạn 5 vé. Hãy giảm số lượng vé!';
+resources.en.translation.ticket.ticketLimitCheckoutBlocked = 'The number of tickets you selected exceeds the 5-ticket limit. Please reduce the quantity!';
+resources.vi.translation.ticket.selectedTicketCount = 'Vé đang chọn: {{count}}/5.';
+resources.en.translation.ticket.selectedTicketCount = 'Selected tickets: {{count}}/5.';
+resources.vi.translation.ticket.cartCountLabel = 'Số vé đang có trong giỏ hàng: {{count}}';
+resources.en.translation.ticket.cartCountLabel = 'Tickets currently in cart: {{count}}';
+resources.vi.translation.pages.payment.deliveryNotice = 'Vé sẽ được gửi đến email của bạn trong 1–2 ngày tới. Vui lòng kiểm tra cả hòm thư Spam.';
+resources.vi.translation.pages.payment.myTicketsNotice = 'Bạn cũng có thể xem vé tại mục';
+resources.vi.translation.pages.payment.contactNotice = 'Nếu có vấn đề, vui lòng liên hệ BTC qua';
+resources.vi.translation.pages.payment.contactLink = 'trang Liên hệ';
+resources.en.translation.pages.payment.deliveryNotice = 'Your tickets will be sent to your email within 1–2 days. Please also check your Spam folder.';
+resources.en.translation.pages.payment.myTicketsNotice = 'You can also view your tickets in';
+resources.en.translation.pages.payment.contactNotice = 'If you have any issues, please contact the organizers via';
+resources.en.translation.pages.payment.contactLink = 'the Contact page';
+
 export default i18n;

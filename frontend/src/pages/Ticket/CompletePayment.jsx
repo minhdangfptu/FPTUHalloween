@@ -35,15 +35,26 @@ const CompletePayment = () => {
   return (
     <main className="complete-payment-page">
       <section className="complete-payment-card">
-        <div className="complete-payment-icon"><CheckCircle2 size={36} /></div>
-        <p className="complete-payment-kicker"><Ticket size={15} /> {page("brand")}</p>
-        <h1>{isChecking ? page("checking") : status === "paid" ? page("success") : page("waiting")}</h1>
-        <p className="complete-payment-lede">
-          {isChecking ? page("checkingText") : status === "paid" ? page("successText") : page("waitingText")}
-        </p>
-        <div className="complete-payment-actions">
-          <button type="button" onClick={() => navigate("/user-profile")}>{page("myTickets")}</button>
-          <button type="button" className="is-secondary" onClick={() => navigate("/")}>{page("home")}</button>
+        <div className="complete-payment-main">
+          <div className="complete-payment-icon"><CheckCircle2 size={36} /></div>
+          <p className="complete-payment-kicker"><Ticket size={15} /> {page("brand")}</p>
+          <h1>{isChecking ? page("checking") : status === "paid" ? page("success") : page("waiting")}</h1>
+          <p className="complete-payment-lede">
+            {isChecking ? page("checkingText") : status === "paid" ? page("successText") : page("waitingText")}
+          </p>
+        </div>
+        <div className="complete-payment-side">
+          {status === "paid" && !isChecking && (
+            <div className="complete-payment-help">
+              <p>{page("deliveryNotice")}</p>
+              <p>{page("myTicketsNotice")} <a href="/my-ticket">{page("myTickets")}</a>.</p>
+              <p>{page("contactNotice")} <a href="/contact-us">{page("contactLink")}</a>.</p>
+            </div>
+          )}
+          <div className="complete-payment-actions">
+            <button type="button" onClick={() => navigate("/my-ticket")}>{page("myTickets")}</button>
+            <button type="button" className="is-secondary" onClick={() => navigate("/")}>{page("home")}</button>
+          </div>
         </div>
       </section>
     </main>

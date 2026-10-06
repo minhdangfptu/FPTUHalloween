@@ -17,7 +17,7 @@ export const coreTeam = [
   {
     name: "Trần Quang Anh",
     role: "Trưởng ban Nhà Ma",
-    email: "Email đang cập nhật",
+    email: "qanhthanhcong05@gmail.com",
   },
   {
     name: "Nguyễn Hà Phương",
@@ -29,14 +29,18 @@ export const coreTeam = [
     role: "Phó ban Nhà Ma",
     email: "hoangtb020304@gmail.com",
   },
-  { name: "Xuân Quỳnh", role: "Phó ban Nhà Ma", email: "Email đang cập nhật" },
   {
-    name: "Lê Thị Thủy",
+    name: "Võ Xuân Quỳnh",
+    role: "Phó ban Nhà Ma",
+    email: "xquynhhh3010@gmail.com",
+  },
+  {
+    name: "Lê Thị Thuỳ",
     role: "Trưởng ban Truyền Thông",
     email: "lethithuy15072005@gmail.com",
   },
   {
-    name: "Phùng Thị Thanh Thúy",
+    name: "Phùng Thị Thanh Thủy",
     role: "Phó ban Truyền Thông",
     email: "phungthithanhthuy30102007@gmail.com",
   },
@@ -61,7 +65,7 @@ export const coreTeam = [
     email: "huyphuoc204@gmail.com",
   },
   {
-    name: "Nga Nguyễn",
+    name: "Nguyễn Linh Nga",
     role: "Phó ban Hậu Cần",
     email: "nguyenlinhnga2005@gmail.com",
   },
@@ -71,7 +75,7 @@ export const coreTeam = [
     email: "chi141005@gmail.com",
   },
   {
-    name: "Trịnh Hiền",
+    name: "Trịnh Thị Hiền",
     role: "Phó ban Take Care",
     email: "trinhhien0702@gmail.com",
   },

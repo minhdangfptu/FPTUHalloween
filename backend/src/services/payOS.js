@@ -3,12 +3,14 @@ const mongoose = require('mongoose')
 const { PayOS } = require('@payos/node')
 const { Cart, Order, TicketType, User, UserTicket } = require('../models')
 const { isSuccessfulPayOSWebhook, getWebhookAmount } = require('../utils/payOSWebhook')
+const { sendTicketEmail } = require('../providers/zepToMailEmailProvicer')
 
 const payos = new PayOS()
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173'
 const PAYMENT_EXPIRY_SECONDS = 15 * 60
 const ORDER_SAVE_MAX_ATTEMPTS = 3
 const ORDER_SAVE_RETRY_DELAY_MS = 250
+const MAX_TICKETS_PER_ACCOUNT = 5
 
 const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds))
 
@@ -63,9 +65,22 @@ const createOrderCode = () => {
   return Number(`${timestampPart}${randomPart}`)
 }
 
+const getAccountTicketCount = async userId => {
+  const [issuedCount, activeOrders] = await Promise.all([
+    UserTicket.countDocuments({ userId, ticketStatus: { $ne: 'Cancelled' } }),
+    Order.find({ userId, orderStatus: { $in: ['Pending', 'Processing'] }, stockReserved: true }).select('items').lean()
+  ])
+  const reservedCount = activeOrders.reduce(
+    (total, order) => total + (order.items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0),
+    0
+  )
+  return issuedCount + reservedCount
+}
+
 const markOrderAsPaid = async order => {
   if (order.orderStatus === 'Paid') return order
   const session = await mongoose.startSession()
+  let shouldSendTicketEmail = false
   try {
     let processedOrder
     await session.withTransaction(async () => {
@@ -79,6 +94,7 @@ const markOrderAsPaid = async order => {
         return
       }
       processedOrder = lockedOrder
+      shouldSendTicketEmail = true
       for (const item of processedOrder.items) {
         await UserTicket.insertMany(Array.from({ length: item.quantity }, () => ({
           userId: order.userId,
@@ -93,6 +109,32 @@ const markOrderAsPaid = async order => {
       await processedOrder.save({ session })
       await Cart.findOneAndUpdate({ userId: processedOrder.userId }, { $set: { items: [] } }, { session })
     })
+    if (shouldSendTicketEmail) {
+      const tickets = await UserTicket.find({ orderId: processedOrder._id }).populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketTypeTime').lean()
+      if (processedOrder.buyerInfo?.email) {
+        await sendTicketEmail({
+          recipient: { email: processedOrder.buyerInfo.email, name: processedOrder.buyerInfo.fullName },
+          tickets: tickets.map(ticket => ({
+            ticketTypeName: ticket.ticketTypeId?.ticketTypeName,
+            ticketTypePrice: ticket.ticketTypeId?.ticketTypePrice,
+            qrCodeData: ticket.qrCodeData
+          })),
+          event: {
+            name: 'FPTU Halloween 2026',
+            date: tickets[0]?.ticketTypeId?.ticketTypeDate,
+            time: tickets[0]?.ticketTypeId?.ticketTypeTime,
+            location: 'Đại học FPT Hà Nội'
+          }
+        }).catch(error => {
+          const responseData = error?.response?.data
+          console.error('Ticket email delivery failed:', {
+            message: error?.message || responseData?.message || responseData?.error || 'Unknown ZeptoMail error',
+            status: error?.status || error?.response?.status,
+            code: error?.code || responseData?.code
+          })
+        })
+      }
+    }
     return processedOrder
   } finally {
     await session.endSession()
@@ -139,6 +181,22 @@ const createPayment = async (userId, checkoutData = {}) => {
     price: Number(item.ticketTypeId.ticketTypePrice),
     subtotal: Number(item.ticketTypeId.ticketTypePrice) * Number(item.quantity)
   }))
+  const requestedTicketCount = items.reduce((sum, item) => sum + item.quantity, 0)
+  if (requestedTicketCount > MAX_TICKETS_PER_ACCOUNT) {
+    throw new Error(`Each account can purchase up to ${MAX_TICKETS_PER_ACCOUNT} tickets`)
+  }
+  const accountTicketCount = await getAccountTicketCount(userId)
+  if (accountTicketCount + requestedTicketCount > MAX_TICKETS_PER_ACCOUNT) {
+    throw new Error(`Each account can purchase up to ${MAX_TICKETS_PER_ACCOUNT} tickets`)
+  }
+  const buyerInfo = {
+    fullName: String(checkoutData.customer?.fullName || '').trim(),
+    email: String(checkoutData.customer?.email || '').trim().toLowerCase(),
+    phone: String(checkoutData.customer?.phone || '').trim()
+  }
+  if (!buyerInfo.fullName || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(buyerInfo.email) || !/^0\d{9}$/.test(buyerInfo.phone)) {
+    throw new Error('Valid buyer information is required')
+  }
   const amount = items.reduce((sum, item) => sum + item.subtotal, 0)
   const orderCode = createOrderCode()
   const user = await User.findById(userId).select('fullName email phone').lean()
@@ -150,13 +208,13 @@ const createPayment = async (userId, checkoutData = {}) => {
   let order
 
   try {
-    order = await Order.create({ userId, items, totalAmount: amount, paymentMethod: 'PayOS', paymentData: { reservationExpiresAt }, payosOrderId: String(orderCode), stockReserved: true, reservationExpiresAt })
+    order = await Order.create({ userId, buyerInfo, items, totalAmount: amount, paymentMethod: 'PayOS', paymentData: { reservationExpiresAt }, payosOrderId: String(orderCode), stockReserved: true, reservationExpiresAt })
     const paymentLink = await payos.paymentRequests.create({
       orderCode, amount, description: `FPTU Halloween ${orderCode}`.slice(0, 25),
       expiredAt: Math.floor(reservationExpiresAt.getTime() / 1000),
       returnUrl: `${FRONTEND_URL}/complete-payment?orderCode=${orderCode}`,
-      cancelUrl: `${FRONTEND_URL}/qr-payment?cancelled=true`, buyerName: user.fullName,
-      buyerEmail: user.email, buyerPhone: user.phone,
+      cancelUrl: `${FRONTEND_URL}/qr-payment?cancelled=true`, buyerName: buyerInfo.fullName,
+      buyerEmail: buyerInfo.email, buyerPhone: buyerInfo.phone,
       items: items.map(item => ({ name: item.name, quantity: item.quantity, price: item.price }))
     })
     order.paymentData = paymentLink

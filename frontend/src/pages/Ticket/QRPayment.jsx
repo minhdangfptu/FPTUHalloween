@@ -37,6 +37,7 @@ const QRPayment = () => {
 
     const savedPayment = JSON.parse(localStorage.getItem(PAYMENT_KEY) || "null");
     paymentAPI.createPayOSPayment({
+      customer: checkout.customer,
       discount: checkout.discount || 0,
       selectedTicketTypeIds: (checkout.items || []).map((item) => String(item.ticketTypeId)),
       selectedItems: (checkout.items || []).map((item) => ({
@@ -52,7 +53,13 @@ const QRPayment = () => {
         toast.success(ticket("qrCreated"), { id: loadingToast });
       })
       .catch((error) => {
-        if (isMounted) toast.error(translateError(error), { id: loadingToast });
+        if (isMounted) {
+          const message = error?.response?.data?.message || error?.message || "";
+          const text = message.includes("Each account can purchase up to")
+            ? ticket("ticketLimitReached")
+            : translateError(error);
+          toast.error(text, { id: loadingToast });
+        }
       })
       .finally(() => {
         if (isMounted) setIsLoading(false);

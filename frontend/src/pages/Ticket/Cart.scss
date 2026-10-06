@@ -97,12 +97,17 @@
   line-height: 0.95;
 }
 .ticket-cart-count {
-  padding: 0.6rem 0.9rem;
+  max-width: 16rem;
+  padding: .7rem 1rem;
   color: var(--cart-red);
-  background: oklch(93% 0.04 28);
+  background: #fff0ee;
+  border: 1px solid #f6cbc5;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: .82rem;
   font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+  padding: 0.6rem 0.9rem;
   white-space: nowrap;
 }
 .ticket-cart-empty {
@@ -400,6 +405,51 @@
   font-size: .75rem;
   line-height: 1.4;
   text-align: center;
+}
+.ticket-cart-summary__warning--limit {
+  color: #dc2626;
+  font-weight: 800;
+}
+.ticket-cart-limit {
+  margin-top: var(--space-md);
+  padding: .85rem .9rem;
+  color: var(--cart-muted);
+  background: #fff8f7;
+  border: 1px solid #f5c7c2;
+  border-radius: .55rem;
+  font-size: .75rem;
+  line-height: 1.4;
+}
+.ticket-cart-limit--invalid {
+  background: #fff1f0;
+  border-color: #e5484d;
+}
+.ticket-cart-limit__header,
+.ticket-cart-limit__stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+.ticket-cart-limit__header {
+  color: var(--cart-ink);
+  font-weight: 800;
+}
+.ticket-cart-limit__header strong {
+  color: var(--cart-red);
+  white-space: nowrap;
+}
+.ticket-cart-limit__stats {
+  margin-top: .65rem;
+  padding-top: .65rem;
+  border-top: 1px solid #f1d8d5;
+}
+.ticket-cart-limit p {
+  margin: .65rem 0 0;
+}
+.ticket-cart-limit__error {
+  color: #c5221f;
+  font-weight: 800;
 }
 @media (max-width: 760px) {
   .ticket-cart-heading {

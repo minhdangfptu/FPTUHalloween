@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const { Cart, TicketType } = require('../models')
+const { Cart, TicketType, UserTicket, Order } = require('../models')
+const MAX_TICKETS_PER_ACCOUNT = 5
 
 const TICKET_TYPE_FIELDS = 'ticketTypeName ticketTypePrice availableQuantity totalQuantity ticketTypeDate ticketTypeTime ticketTypeStatus ticketType3dModel'
 
@@ -68,6 +69,16 @@ const formatCart = async cart => {
 
 const getCart = async userId => formatCart(await getCartDocument(userId))
 
+const getPurchasedTicketCount = async userId => {
+  const [issuedCount, pendingOrders] = await Promise.all([
+    UserTicket.countDocuments({ userId, ticketStatus: { $ne: 'Cancelled' } }),
+    Order.find({ userId, orderStatus: { $in: ['Pending', 'Processing'] }, stockReserved: true }).select('items').lean()
+  ])
+  return issuedCount + pendingOrders.reduce((total, order) => total + (order.items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0), 0)
+}
+
+const getCartSummary = async userId => ({ purchasedTicketCount: await getPurchasedTicketCount(userId), maxTicketCount: MAX_TICKETS_PER_ACCOUNT })
+
 const addCartItem = async (userId, ticketTypeId, quantity) => {
   const normalizedQuantity = normalizeQuantity(quantity)
   const ticketType = await ensurePurchasableTicket(ticketTypeId)
@@ -119,4 +130,4 @@ const removeCartItem = async (userId, ticketTypeId) => {
   return { message: 'Item removed from cart successfully', cart: await formatCart(cart) }
 }
 
-module.exports = { getCart, addCartItem, updateCartItem, removeCartItem }
+module.exports = { getCart, getCartSummary, addCartItem, updateCartItem, removeCartItem }

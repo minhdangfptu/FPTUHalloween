@@ -5,6 +5,10 @@ const cartAPI = {
     const response = await axiosClient.get("/cart");
     return response.data?.data || { items: [], totalAmount: 0 };
   },
+  getSummary: async () => {
+    const response = await axiosClient.get('/cart/summary');
+    return response.data?.data || { purchasedTicketCount: 0, maxTicketCount: 5 };
+  },
 
   addItem: async (ticketTypeId, quantity) => {
     const response = await axiosClient.post("/cart/items", {
