@@ -50,7 +50,7 @@ const TicketDetail = () => {
     } catch (requestError) {
       const message = translateError(requestError);
       setError(message);
-      toast.error(message);
+      if (!requestError?.isLogoutRelated && !window.__fptuLogoutInProgress) toast.error(message);
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);
@@ -81,7 +81,7 @@ const TicketDetail = () => {
       );
       navigate("/cart");
     } catch (requestError) {
-      toast.error(translateError(requestError));
+      if (!requestError?.isLogoutRelated && !window.__fptuLogoutInProgress) toast.error(translateError(requestError));
     } finally {
       setIsAddingToCart(false);
     }

@@ -82,7 +82,9 @@ const Checkout = () => {
       setCart(await cartAPI.get());
     } catch (requestError) {
       setError(translateError(requestError));
-      toast.error(translateError(requestError), { id: loadingToast });
+      if (!requestError?.isLogoutRelated && !window.__fptuLogoutInProgress) {
+        toast.error(translateError(requestError), { id: loadingToast });
+      }
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);

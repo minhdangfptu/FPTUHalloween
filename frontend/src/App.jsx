@@ -190,6 +190,7 @@ function FrontendAccessGuard({ children }) {
 
   const isAuthenticated = Boolean(authSnapshot.token && authSnapshot.user);
   if (!isAuthenticated) {
+    if (window.__fptuLogoutInProgress) return children;
     return <Navigate to="/login" state={{ from: location, authRequired: true }} replace />;
   }
 

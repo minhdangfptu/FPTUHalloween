@@ -8,11 +8,16 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { Link, useNavigate, useLocation } from "react-router-dom"; // Add useLocation import
 import {
   CircleUserRound,
+  Dices,
+  FilePenLine,
+  Info,
   KeyRound,
   KeyRoundIcon,
   LogOut,
   Package,
   ShoppingBag,
+  Newspaper,
+  Sparkles,
   Ticket,
   User,
   WalletCards,
@@ -60,6 +65,15 @@ const navigationItems = [
     href: "/contact-us",
   },
 ];
+
+const navigationIcons = {
+  "nav.introduceGeneral": Info,
+  "nav.news": Newspaper,
+  "nav.boardGameClub": Dices,
+  "nav.pdp": Sparkles,
+  "nav.story": Sparkles,
+  "nav.tickets": Ticket,
+};
 
 function Navbar() {
   const { i18n, t } = useTranslation();
@@ -169,12 +183,13 @@ function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    await authAPI.logout();
-    setUser(null);
     setShowUserDropdown(false);
     setShowLogoutModal(false);
+    navigate("/", { replace: true });
+    await authAPI.logout();
+    toast.dismiss();
+    setUser(null);
     toast.success(translateSuccess("Logout successful"));
-    navigate("/");
   };
 
   const requestLogout = () => {
@@ -301,7 +316,10 @@ function Navbar() {
                             className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
                             onClick={handleTicketClick}
                           >
-                            {t(child.labelKey)}
+                            {(() => {
+                              const Icon = navigationIcons[child.labelKey];
+                              return <>{Icon && <Icon size={16} aria-hidden="true" />} {t(child.labelKey)}</>;
+                            })()}
                           </button>
                         ) : (
                           <Link
@@ -311,7 +329,10 @@ function Navbar() {
                             isActive(child.href) ? "active" : ""
                           }`}
                         >
-                          {t(child.labelKey)}
+                          {(() => {
+                            const Icon = navigationIcons[child.labelKey];
+                            return <>{Icon && <Icon size={16} aria-hidden="true" />} {t(child.labelKey)}</>;
+                          })()}
                           </Link>
                         )
                       )}
@@ -430,7 +451,7 @@ function Navbar() {
                     className="fpt-navbar__dropdown-link"
                     onClick={() => setShowUserDropdown(false)}
                   >
-                    {t("nav.login")}
+                    <KeyRound size={16} aria-hidden="true" /> {t("nav.login")}
                   </Link>
                   <Link
                     to="/register"
@@ -438,7 +459,7 @@ function Navbar() {
                     className="fpt-navbar__dropdown-link"
                     onClick={() => setShowUserDropdown(false)}
                   >
-                    {t("nav.register")}
+                    <FilePenLine size={16} aria-hidden="true" /> {t("nav.register")}
                   </Link>
                 </div>
               </div>
@@ -591,14 +612,14 @@ function Navbar() {
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
-                      🔐 {t("nav.login")}
+                      <KeyRound size={17} aria-hidden="true" /> {t("nav.login")}
                     </Link>
                     <Link
                       to="/register"
                       className="fpt-navbar__mobile-sublink"
                       onClick={handleDrawerToggle}
                     >
-                      📝 {t("nav.register")}
+                      <FilePenLine size={17} aria-hidden="true" /> {t("nav.register")}
                     </Link>
                   </div>
                 </>

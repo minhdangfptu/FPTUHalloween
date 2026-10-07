@@ -10,6 +10,19 @@ const axiosClient = axios.create({
   timeout: 10000,
 });
 
+let isLoggingOut = false;
+let logoutResetTimer;
+
+export const markLoggingOut = () => {
+  isLoggingOut = true;
+  window.__fptuLogoutInProgress = true;
+  window.clearTimeout(logoutResetTimer);
+  logoutResetTimer = window.setTimeout(() => {
+    isLoggingOut = false;
+    window.__fptuLogoutInProgress = false;
+  }, 5000);
+};
+
 axiosClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
@@ -39,6 +52,11 @@ axiosClient.interceptors.response.use(
     const originalRequest = error.config;
 
     if (!error.response) return Promise.reject(error);
+
+    if (isLoggingOut && error.response.status === 401) {
+      error.isLogoutRelated = true;
+      return Promise.reject(error);
+    }
 
     if (error.response.status === 401 && !originalRequest._retry && !originalRequest.skipAuthRefresh) {
       const refreshToken = localStorage.getItem('refreshToken');

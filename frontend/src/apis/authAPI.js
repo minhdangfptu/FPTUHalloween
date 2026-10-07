@@ -1,4 +1,4 @@
-import axiosClient from './axiosClient';
+import axiosClient, { markLoggingOut } from './axiosClient';
 
 const saveAuthData = (data) => {
   if (data?.accessToken) {
@@ -61,6 +61,7 @@ export const authAPI = {
 
   logout: async () => {
     const refreshToken = localStorage.getItem('refreshToken');
+    markLoggingOut();
     clearAuthData();
 
     if (!refreshToken) {

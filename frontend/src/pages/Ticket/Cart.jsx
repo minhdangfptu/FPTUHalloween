@@ -116,7 +116,7 @@ const Cart = () => {
       }
       toast.success(translateSuccess(result?.message || successMessage));
     } catch (requestError) {
-      toast.error(translateError(requestError));
+      if (!window.__fptuLogoutInProgress) toast.error(translateError(requestError));
     } finally {
       setPendingAction(null);
     }
@@ -150,7 +150,7 @@ const Cart = () => {
       notifyCartUpdated({ items: [], totalAmount: 0 });
       toast.success(ticket("removeAll"));
     } catch (requestError) {
-      toast.error(translateError(requestError));
+      if (!window.__fptuLogoutInProgress) toast.error(translateError(requestError));
       await loadCart();
     } finally {
       setPendingAction(null);

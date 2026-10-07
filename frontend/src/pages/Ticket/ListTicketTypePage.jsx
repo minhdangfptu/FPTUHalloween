@@ -48,7 +48,7 @@ const ListTicketTypePage = () => {
     } catch (requestError) {
       const message = translateError(requestError);
       setError(message);
-      toast.error(message);
+      if (!requestError?.isLogoutRelated && !window.__fptuLogoutInProgress) toast.error(message);
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);

@@ -49,7 +49,7 @@ const highlights = [
   },
   {
     number: "06",
-    tone: "orange",
+    tone: "yellow",
   },
   {
     number: "07",

@@ -151,7 +151,7 @@ resources.ja = { translation: ja };
 Object.assign(resources.vi.translation.components, {
   ddayVote: 'Bình chọn D-Day',
   you: 'bạn',
-  eventBrand: 'Sự kiện FPTU',
+  eventBrand: 'FPTU Halloween',
   changingLanguage: 'Đang chuyển đổi ngôn ngữ...',
   languageChanged: 'Đã chuyển đổi ngôn ngữ sang Tiếng Việt',
   languageChangeError: 'Không thể chuyển đổi ngôn ngữ.',
@@ -165,7 +165,7 @@ Object.assign(resources.vi.translation.components, {
 Object.assign(resources.en.translation.components, {
   ddayVote: 'D-Day voting',
   you: 'you',
-  eventBrand: 'FPTU Event',
+  eventBrand: 'FPTU Halloween',
   changingLanguage: 'Changing language...',
   languageChanged: 'Language changed to English',
   languageChangeError: 'Unable to change language.',
@@ -1391,8 +1391,8 @@ resources.vi.translation.ticket.ticketLimitRemaining = 'Bạn có thể mua tố
 resources.en.translation.ticket.ticketLimitRemaining = 'You can purchase up to {{count}} more tickets.';
 resources.vi.translation.ticket.ticketPurchasedCount = 'Vé bạn đã mua: {{count}}/5.';
 resources.en.translation.ticket.ticketPurchasedCount = 'Tickets purchased: {{count}}/5.';
-resources.vi.translation.ticket.ticketLimitCheckoutBlocked = 'Số vé bạn chọn đã vượt quá giới hạn 5 vé. Hãy giảm số lượng vé!';
-resources.en.translation.ticket.ticketLimitCheckoutBlocked = 'The number of tickets you selected exceeds the 5-ticket limit. Please reduce the quantity!';
+resources.vi.translation.ticket.ticketLimitCheckoutBlocked = 'Tổng số vé đã mua và đang chọn vượt quá giới hạn 5 vé. Hãy giảm số lượng vé đang chọn!';
+resources.en.translation.ticket.ticketLimitCheckoutBlocked = 'Your purchased and selected tickets exceed the 5-ticket limit. Please reduce the selected quantity!';
 resources.vi.translation.ticket.selectedTicketCount = 'Vé đang chọn: {{count}}/5.';
 resources.en.translation.ticket.selectedTicketCount = 'Selected tickets: {{count}}/5.';
 resources.vi.translation.ticket.cartCountLabel = 'Số vé đang có trong giỏ hàng: {{count}}';

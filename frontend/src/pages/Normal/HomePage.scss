@@ -500,6 +500,11 @@
   background: var(--home-orange);
 }
 
+.home-highlight--yellow {
+  color: var(--home-ink);
+  background: var(--home-yellow);
+}
+
 .home-highlight__number {
   color: var(--home-red);
   font-size: 0.68rem;
