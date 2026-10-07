@@ -113,7 +113,7 @@ const markOrderAsPaid = async order => {
       const tickets = await UserTicket.find({ orderId: processedOrder._id }).populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketTypeTime').lean()
       if (processedOrder.buyerInfo?.email) {
         await sendTicketEmail({
-          recipient: { email: processedOrder.buyerInfo.email, name: processedOrder.buyerInfo.fullName },
+          recipient: { email: processedOrder.buyerInfo.email, name: processedOrder.buyerInfo.fullName, phone: processedOrder.buyerInfo.phone },
           tickets: tickets.map(ticket => ({
             ticketTypeName: ticket.ticketTypeId?.ticketTypeName,
             ticketTypePrice: ticket.ticketTypeId?.ticketTypePrice,

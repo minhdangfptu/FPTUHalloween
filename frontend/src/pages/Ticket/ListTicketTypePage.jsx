@@ -24,7 +24,6 @@ const getDayFromDateInput = (dateValue) =>
 const ListTicketTypePage = () => {
   const { t } = useTranslation();
   const ticket = (key, options) => t(`ticket.${key}`, options);
-  const [activeFilter, setActiveFilter] = useState("all");
   const [ticketTypes, setTicketTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -64,9 +63,6 @@ const ListTicketTypePage = () => {
       const searchDate = getDayFromDateInput(appliedSearch.date);
 
       return ticketTypes.filter((ticketType) => {
-        const matchesDay =
-          activeFilter === "all" ||
-          String(ticketType.ticketTypeDate) === activeFilter;
         const matchesSearchDate =
           !searchDate || String(ticketType.ticketTypeDate) === searchDate;
         const matchesSearchTime =
@@ -75,13 +71,12 @@ const ListTicketTypePage = () => {
         return (
           ticketType.ticketTypeStatus === "active" &&
           Number(ticketType.availableQuantity) > 0 &&
-          matchesDay &&
           matchesSearchDate &&
           matchesSearchTime
         );
       });
     },
-    [activeFilter, appliedSearch, ticketTypes],
+    [appliedSearch, ticketTypes],
   );
 
   const timeOptions = useMemo(
@@ -115,7 +110,6 @@ const ListTicketTypePage = () => {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    setActiveFilter("all");
     setAppliedSearch(searchForm);
 
     const resultsSection = document.getElementById("ticket-list-results");
@@ -238,31 +232,6 @@ const ListTicketTypePage = () => {
           <div>
             <p className="ticket-list-section-label">{t("ticketHero.sectionKicker")}</p>
             <h2 id="ticket-list-heading">{t("ticketHero.sectionTitle")}</h2>
-          </div>
-          <div
-            className="ticket-list-filter"
-            role="tablist"
-            aria-label={t("ticketHero.filterLabel")}
-          >
-            <button
-              className={activeFilter === "all" ? "is-active" : ""}
-              onClick={() => setActiveFilter("all")}
-              role="tab"
-              aria-selected={activeFilter === "all"}
-            >
-              {ticket("all")}
-            </button>
-            {[27, 28, 29].map((day) => (
-              <button
-                key={day}
-                className={activeFilter === String(day) ? "is-active" : ""}
-                onClick={() => setActiveFilter(String(day))}
-                role="tab"
-                aria-selected={activeFilter === String(day)}
-              >
-                {day}/10
-              </button>
-            ))}
           </div>
         </div>
         {isLoading ? (

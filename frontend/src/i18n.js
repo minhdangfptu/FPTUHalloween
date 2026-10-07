@@ -1406,4 +1406,11 @@ resources.en.translation.pages.payment.myTicketsNotice = 'You can also view your
 resources.en.translation.pages.payment.contactNotice = 'If you have any issues, please contact the organizers via';
 resources.en.translation.pages.payment.contactLink = 'the Contact page';
 
+resources.vi.translation.ticket.buyerInfo = 'Thông tin người nhận vé';
+resources.en.translation.ticket.buyerInfo = 'Ticket recipient information';
+resources.ja.translation.ticket.buyerInfo = 'チケット受取人情報';
+resources.vi.translation.management.checkIn.attendee = 'Người mua vé';
+resources.en.translation.management.checkIn.attendee = 'Ticket buyer';
+resources.ja.translation.management.checkIn.attendee = 'チケット購入者';
+
 export default i18n;
