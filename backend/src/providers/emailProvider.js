@@ -1,13 +1,19 @@
 const React = require('react')
-const { Resend } = require('resend')
+const { SendMailClient } = require('zeptomail')
 const {
   Body, Container, Head, Heading, Hr, Html, Preview, Section, Text
 } = require('@react-email/components')
 const { render } = require('@react-email/render')
 
-const getResend = () => {
-  if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY is not configured')
-  return new Resend(process.env.RESEND_API_KEY)
+const getZeptoMail = () => {
+  const token = process.env.ZEPTOMAIL_API_KEY
+  if (!token) throw new Error('ZEPTOMAIL_API_KEY is not configured')
+  if (!process.env.ZEPTOMAIL_FROM_EMAIL) throw new Error('ZEPTOMAIL_FROM_EMAIL is not configured')
+
+  return new SendMailClient({
+    url: process.env.ZEPTOMAIL_API_URL || 'https://cpaas.zoho.com/v1.1/email',
+    token
+  })
 }
 
 const getCopy = purpose => purpose === 'register'
@@ -16,11 +22,23 @@ const getCopy = purpose => purpose === 'register'
     heading: 'Xác nhận tài khoản',
     description: 'Sử dụng mã OTP dưới đây để xác minh tài khoản FPTU Halloween của bạn.'
   }
+
   : {
     subject: 'Đặt lại mật khẩu FPTU Halloween',
     heading: 'Đặt lại mật khẩu',
     description: 'Sử dụng mã OTP dưới đây để tiếp tục đặt lại mật khẩu của bạn.'
   }
+
+const normalizeZeptoMailError = error => {
+  const details = error?.response?.data || error?.response || error
+  const code = details?.code || details?.errorCode
+  const message = details?.message || details?.error || (typeof details === 'string' ? details : null)
+  const normalized = new Error([code && `code: ${code}`, message || 'Unknown ZeptoMail error'].filter(Boolean).join('; '))
+  normalized.statusCode = error?.response?.status || error?.statusCode || 400
+  normalized.providerCode = code
+  normalized.providerResponse = details
+  return normalized
+}
 
 const OtpEmail = ({ otp, purpose }) => {
   const copy = getCopy(purpose)
@@ -48,12 +66,35 @@ const OtpEmail = ({ otp, purpose }) => {
 const sendOtpEmail = async (email, otp, purpose) => {
   const copy = getCopy(purpose)
   const html = await render(React.createElement(OtpEmail, { otp, purpose }))
-  return getResend().emails.send({
-    from: process.env.RESEND_FROM_EMAIL,
-    to: [email],
-    subject: copy.subject,
-    html
-  })
+  if (purpose === 'reset-password') {
+    try {
+      return await getZeptoMail().sendMail({
+        from: {
+          address: process.env.ZEPTOMAIL_FROM_EMAIL,
+          name: process.env.ZEPTOMAIL_FROM_NAME || 'FPTU Halloween'
+        },
+        to: [{ email_address: { address: email } }],
+        subject: copy.subject,
+        htmlbody: html
+      })
+    } catch (error) {
+      throw normalizeZeptoMailError(error)
+    }
+  }
+
+  try {
+    return await getZeptoMail().sendMail({
+      from: {
+        address: process.env.ZEPTOMAIL_FROM_EMAIL,
+        name: process.env.ZEPTOMAIL_FROM_NAME || 'FPTU Halloween'
+      },
+      to: [{ email_address: { address: email } }],
+      subject: copy.subject,
+      htmlbody: html
+    })
+  } catch (error) {
+    throw normalizeZeptoMailError(error)
+  }
 }
 
 const styles = {

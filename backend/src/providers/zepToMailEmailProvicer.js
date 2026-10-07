@@ -1,7 +1,16 @@
 const fs = require('fs')
 const path = require('path')
-const { Resend } = require('resend')
+const { SendMailClient } = require('zeptomail')
 const QRCode = require('qrcode')
+
+const getZeptoMail = () => {
+    if (!process.env.ZEPTOMAIL_API_KEY) throw new Error('ZEPTOMAIL_API_KEY is not configured')
+    if (!process.env.ZEPTOMAIL_FROM_EMAIL) throw new Error('ZEPTOMAIL_FROM_EMAIL is not configured')
+    return new SendMailClient({
+        url: process.env.ZEPTOMAIL_API_URL || 'https://cpaas.zoho.com/v1.1/email',
+        token: process.env.ZEPTOMAIL_API_KEY
+    })
+}
 
 const DEFAULT_EVENT = { name: 'FPTU Halloween 2026', date: 'Thứ bảy, 31 tháng 10, 2026', time: '18:00 - 22:00', location: 'Đại học FPT Hà Nội' }
 
@@ -57,26 +66,28 @@ const addTicketLinks = html => html.replace(
 
 const sendTicketEmail = async ({ recipient, tickets, ticket, event }) => {
     if (!recipient?.email) throw new Error('Recipient email is required')
-    if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY is not configured')
     const ticketList = Array.isArray(tickets) && tickets.length ? tickets : [ticket]
-    const attachments = [{ content: getAvatarBase64(), filename: 'avatar.jpg', contentId: 'avatar-image', contentType: 'image/jpeg' }]
+    const inlineImages = [{ content: getAvatarBase64(), name: 'avatar.jpg', cid: 'avatar-image', mime_type: 'image/jpeg' }]
     for (const [index, item] of ticketList.entries()) {
         const qrCodeData = String(item?.qrCodeData || item?.code || item?.ticketCode || '').trim()
         if (!qrCodeData) continue
         const qrDataUri = await QRCode.toDataURL(qrCodeData, { width: 260, margin: 2, errorCorrectionLevel: 'M' })
-        attachments.push({
+        inlineImages.push({
             content: qrDataUri.replace(/^data:image\/png;base64,/, ''),
-            filename: `ticket-qr-${index + 1}.png`,
-            contentId: `qr-image-${index}`,
-            contentType: 'image/png'
+            name: `ticket-qr-${index + 1}.png`,
+            cid: `qr-image-${index}`,
+            mime_type: 'image/png'
         })
     }
-    return new Resend(process.env.RESEND_API_KEY).emails.send({
-        from: process.env.RESEND_FROM_EMAIL,
-        to: [recipient.email],
+    return getZeptoMail().sendMail({
+        from: {
+            address: process.env.ZEPTOMAIL_FROM_EMAIL,
+            name: process.env.ZEPTOMAIL_FROM_NAME || 'FPTU Halloween'
+        },
+        to: [{ email_address: { address: recipient.email, name: recipient.name || recipient.fullName || 'Buyer' } }],
     subject: `[FPTUHalloween2026] Đăng ký vé thành công - "${recipient.name || recipient.fullName || 'Người mua'}" - "${ticketList.length} vé"`,
-        html: addTicketLinks(addTicketLinksAndRemoveEventDetails(await createTicketEmailHtml({ recipient, tickets: ticketList, event }))),
-        attachments,
+        htmlbody: addTicketLinks(addTicketLinksAndRemoveEventDetails(await createTicketEmailHtml({ recipient, tickets: ticketList, event }))),
+        inline_images: inlineImages
     })
 }
 
