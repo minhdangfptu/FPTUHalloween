@@ -379,6 +379,23 @@ const AdminOrderList = () => {
                     {statusLabel(selectedOrder.orderStatus)}
                   </span>
                 </div>
+                <section className="admin-order-dialog__recipient">
+                  <h3>{orderText("recipientInfo")}</h3>
+                  <div className="admin-order-dialog__recipient-grid">
+                    <div>
+                      <small>{orderText("recipientName")}</small>
+                      <strong>{selectedOrder.buyerInfo?.fullName || orderText("notUpdated")}</strong>
+                    </div>
+                    <div>
+                      <small>{orderText("recipientEmail")}</small>
+                      <strong>{selectedOrder.buyerInfo?.email || orderText("notUpdated")}</strong>
+                    </div>
+                    <div>
+                      <small>{orderText("recipientPhone")}</small>
+                      <strong>{selectedOrder.buyerInfo?.phone || orderText("notUpdated")}</strong>
+                    </div>
+                  </div>
+                </section>
                 <div className="admin-order-dialog__summary">
                   <div>
                     <small>{orderText("paymentTotal")}</small>

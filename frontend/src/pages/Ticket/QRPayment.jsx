@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import paymentAPI from "../../apis/paymentAPI";
+import cartAPI from "../../apis/cartAPI";
 import { translateError } from "../../utils/translateResponse";
 import { notifyCartUpdated } from "../../utils/flyingToCart";
 import LogoutModal from "../../components/LogoutModal";
@@ -29,6 +30,14 @@ const QRPayment = () => {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [isLoading, setIsLoading] = useState(Boolean(checkout));
   const total = payment?.amount || checkout?.total || 0;
+
+  const refreshCartNotification = async () => {
+    try {
+      notifyCartUpdated(await cartAPI.get());
+    } catch {
+      // The cart page will fetch the latest cart when opened.
+    }
+  };
 
   useEffect(() => {
     if (!checkout) return undefined;
@@ -104,7 +113,7 @@ const QRPayment = () => {
     try {
       await paymentAPI.cancelPayOSPayment(payment.orderCode);
       localStorage.removeItem(PAYMENT_KEY);
-      notifyCartUpdated({ items: [], totalAmount: 0 });
+      await refreshCartNotification();
           toast.success(ticket("cancelled"));
       navigate("/cart", { replace: true });
     } catch (error) {
@@ -122,7 +131,7 @@ const QRPayment = () => {
         if (result.status === "PAID") {
           window.clearInterval(intervalId);
           localStorage.removeItem(PAYMENT_KEY);
-          notifyCartUpdated({ items: [], totalAmount: 0 });
+          await refreshCartNotification();
           toast.success(ticket("paymentSuccess"));
           navigate(`/complete-payment?orderCode=${payment.orderCode}`);
         }

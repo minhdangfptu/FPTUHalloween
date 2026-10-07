@@ -36,6 +36,7 @@ const AdminListUser = () => {
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [positionFilter, setPositionFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [searchInput, setSearchInput] = useState("");
   const [nameSearch, setNameSearch] = useState("");
 
   const getRoleName = (user) => user.roleId?.roleName || t("management.common.unknown");
@@ -136,6 +137,11 @@ const AdminListUser = () => {
     }
   };
 
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    setNameSearch(searchInput);
+  };
+
   const handleToggleUserStatus = async (user) => {
     const isDisabling = !user.isDisabled;
     const loadingToast = toast.loading(
@@ -198,15 +204,18 @@ const AdminListUser = () => {
             <strong>{pagination.total ?? users.length}</strong>
             <span>{userText("users")}</span>
             <div className="admin-user-list__filters">
-              <label className="admin-user-filter admin-user-filter--search">
+              <form className="admin-user-filter admin-user-filter--search" onSubmit={handleSearchSubmit}>
                 <Search size={15} />
                 <input
-                  value={nameSearch}
-                  onChange={(event) => setNameSearch(event.target.value)}
+                  value={searchInput}
+                  onChange={(event) => setSearchInput(event.target.value)}
                   placeholder={userText("searchPlaceholder")}
                   aria-label={userText("search")}
                 />
-              </label>
+                <button type="submit" aria-label={userText("search")}>
+                  <Search size={15} />
+                </button>
+              </form>
               <label className="admin-user-filter">
                 <span>{userText("role")}</span>
                 <select

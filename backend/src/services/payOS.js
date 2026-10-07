@@ -107,7 +107,25 @@ const markOrderAsPaid = async order => {
       processedOrder.orderStatus = 'Paid'
       processedOrder.stockReserved = false
       await processedOrder.save({ session })
-      await Cart.findOneAndUpdate({ userId: processedOrder.userId }, { $set: { items: [] } }, { session })
+      const cart = await Cart.findOne({ userId: processedOrder.userId }).session(session)
+      if (cart) {
+        const purchasedQuantities = new Map(
+          processedOrder.items.map(item => [String(item.ticketTypeId), Number(item.quantity || 0)])
+        )
+        cart.items = cart.items.reduce((remainingItems, cartItem) => {
+          const purchasedQuantity = purchasedQuantities.get(String(cartItem.ticketTypeId)) || 0
+          const remainingQuantity = Number(cartItem.quantity) - purchasedQuantity
+
+          if (remainingQuantity > 0) {
+            remainingItems.push({
+              ticketTypeId: cartItem.ticketTypeId,
+              quantity: remainingQuantity
+            })
+          }
+          return remainingItems
+        }, [])
+        await cart.save({ session })
+      }
     })
     if (shouldSendTicketEmail) {
       const tickets = await UserTicket.find({ orderId: processedOrder._id }).populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketTypeTime').lean()
