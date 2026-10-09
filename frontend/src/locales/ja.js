@@ -1569,7 +1569,21 @@ const ja = {
       "viewQr": "QRコードを表示",
       "order": "注文",
       "issuedAt": "発行日",
-      "checkedAt": "チェックインしました"
+      "checkedAt": "チェックインしました",
+      "manualCreate": "手動チケットを作成",
+      "manualTitle": "手動チケットを作成",
+      "buyerName": "購入者名",
+      "buyerNamePlaceholder": "購入者名を入力",
+      "buyerEmail": "メールアドレス",
+      "buyerEmailPlaceholder": "メールアドレスを入力",
+      "buyerPhone": "電話番号",
+      "buyerPhonePlaceholder": "電話番号を入力",
+      "selectTicketType": "チケット種別を選択",
+      "availableRemaining": "残り",
+      "createAndQr": "チケットを作成してQRを表示",
+      "creating": "作成中…",
+      "manualSuccess": "手動チケットを作成しました。QRコードを表示できます。",
+      "manualBuyer": "手動作成チケット"
     },
     "checkIn": {
       "invalidQr": "有効なQRコードを提供してください。",

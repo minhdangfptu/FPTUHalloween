@@ -110,6 +110,7 @@ router.delete('/payments/payos/:orderCode', requireAuth, payOSCtrl.cancelPayment
 
 // TEST ONLY: create tickets without payment
 router.get('/tickets', requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getList)
+router.post('/tickets/manual', requireAuth, requireRole('Admin'), userTicketCtrl.createManual)
 router.get('/tickets/me', requireAuth, userTicketCtrl.getMyTickets)
 router.get('/tickets/qr', ticketRateLimiter, requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.getByQrCode)
 router.post('/tickets/check-in', ticketRateLimiter, requireAuth, requireRole('Admin', 'Staff'), userTicketCtrl.checkIn)

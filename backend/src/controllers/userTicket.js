@@ -15,5 +15,8 @@ const getList = wrap(req => userTicketService.getTickets(req.query))
 const getDetail = wrap(req => userTicketService.getTicketById(req.params.id))
 const getByQrCode = wrap(req => userTicketService.getTicketByQrCode(req.query.code))
 const checkIn = wrap(req => userTicketService.checkInByQrCode(req.body?.code, req.user.id))
+const createManual = (req, res, next) => userTicketService.createManualTicket({ ...req.body, adminUserId: req.user.id })
+  .then(data => res.status(201).json({ success: true, data }))
+  .catch(next)
 
-module.exports = { getMyTickets, getList, getDetail, getByQrCode, checkIn }
+module.exports = { getMyTickets, getList, getDetail, getByQrCode, checkIn, createManual }

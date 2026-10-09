@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { SkeletonRows } from "../../components/LoadingSkeletons";
 import ticketAPI from "../../apis/ticketAPI";
+import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import ManageSidebar from "../../components/ManageSidebar";
 import QRModal from "../../components/QRModal";
 import { translateError } from "../../utils/translateResponse";
@@ -43,7 +44,7 @@ const StaffUserTicket = () => {
   const { t, i18n } = useTranslation();
   const userTicketText = (key, options) => t(`management.userTickets.${key}`, options);
   const formatDate = (value) => value ? new Date(value).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN") : "—";
-  const getName = (ticket) => ticket?.userId?.fullName || ticket?.userId?.email || t("management.common.notUpdated");
+  const getName = (ticket) => ticket?.buyerName || ticket?.orderId?.buyerInfo?.fullName || ticket?.userId?.fullName || ticket?.userId?.email || t("management.common.notUpdated");
   const [tickets, setTickets] = useState([]);
   const [pagination, setPagination] = useState(EMPTY_PAGINATION);
   const [page, setPage] = useState(1);
@@ -54,6 +55,10 @@ const StaffUserTicket = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [selectedQrCode, setSelectedQrCode] = useState(null);
+  const [isManualOpen, setIsManualOpen] = useState(false);
+  const [ticketTypes, setTicketTypes] = useState([]);
+  const [manualForm, setManualForm] = useState({ buyerName: "", buyerEmail: "", buyerPhone: "", ticketTypeId: "" });
+  const [manualLoading, setManualLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
@@ -109,6 +114,36 @@ const StaffUserTicket = () => {
     }
   };
 
+  const openManualForm = async () => {
+    try {
+      const data = await ticketTypeAPI.getList({ pageSize: 100 });
+      const availableTypes = (data.ticketTypes || []).filter((type) => type.ticketTypeStatus === "active" && Number(type.availableQuantity) > 0);
+      setTicketTypes(availableTypes);
+      setManualForm((current) => ({ ...current, ticketTypeId: current.ticketTypeId || availableTypes[0]?._id || "" }));
+      setIsManualOpen(true);
+    } catch (error) {
+      toast.error(translateError(error));
+    }
+  };
+
+  const submitManualTicket = async (event) => {
+    event.preventDefault();
+    setManualLoading(true);
+    try {
+      const response = await ticketAPI.createManual(manualForm);
+      const createdTicket = payloadOf(response);
+      setIsManualOpen(false);
+      setManualForm({ buyerName: "", buyerEmail: "", buyerPhone: "", ticketTypeId: "" });
+      setSelectedQrCode(createdTicket.qrCodeData);
+      await loadTickets();
+      toast.success(userTicketText("manualSuccess"));
+    } catch (error) {
+      toast.error(translateError(error));
+    } finally {
+      setManualLoading(false);
+    }
+  };
+
   return (
     <div className="staff-manage-layout staff-user-ticket-page">
       <ManageSidebar role={role} activeItem="purchased-tickets" />
@@ -145,17 +180,24 @@ const StaffUserTicket = () => {
                 placeholder={userTicketText("searchPlaceholder")}
               />
             </label>
-            <button
-              className="user-ticket-checkin-button"
-              type="button"
-              onClick={() =>
-                navigate(
-                  role === "admin" ? "/admin/check-in" : "/staff/check-in",
-                )
-              }
-            >
-              <Ticket size={16} /> {userTicketText("checkIn") } <ArrowRight size={16} />
-            </button>
+            <div className="user-ticket-action-buttons">
+              <button
+                className="user-ticket-checkin-button"
+                type="button"
+                onClick={() =>
+                  navigate(
+                    role === "admin" ? "/admin/check-in" : "/staff/check-in",
+                  )
+                }
+              >
+                <Ticket size={16} /> {userTicketText("checkIn") } <ArrowRight size={16} />
+              </button>
+              {role === "admin" && (
+                <button className="user-ticket-manual-button" type="button" onClick={openManualForm}>
+                  <Ticket size={16} /> {userTicketText("manualCreate")}
+                </button>
+              )}
+            </div>
           </div>
         </header>
 
@@ -219,7 +261,7 @@ const StaffUserTicket = () => {
                     <tr key={ticket._id}>
                       <td>
                         <strong>{getName(ticket)}</strong>
-                        <small>{ticket.userId?.email || userTicketText("noEmail")}</small>
+                        <small>{ticket.orderId?.buyerInfo ? (ticket.orderId.buyerInfo.email || userTicketText("manualBuyer")) : (ticket.userId?.email || userTicketText("noEmail"))}</small>
                       </td>
                       <td>
                         {ticket.ticketTypeId?.ticketTypeName ||
@@ -300,7 +342,7 @@ const StaffUserTicket = () => {
             <StatusBadge status={selectedTicket.ticketStatus} />
             <dl>
               <dt>{userTicketText("ticketCode")}</dt>
-              <dd>
+                <dd>
                 {selectedTicket.qrCodeData || selectedTicket._id}
                 {selectedTicket.qrCodeData && (
                   <button
@@ -315,7 +357,7 @@ const StaffUserTicket = () => {
               <dt>{userTicketText("owner")}</dt>
               <dd>
                 {getName(selectedTicket)}
-                <small>{selectedTicket.userId?.email}</small>
+                <small>{selectedTicket.orderId?.buyerInfo ? (selectedTicket.orderId.buyerInfo.email || userTicketText("manualBuyer")) : selectedTicket.userId?.email}</small>
               </dd>
               <dt>{userTicketText("order")}</dt>
               <dd>
@@ -335,6 +377,33 @@ const StaffUserTicket = () => {
         onClose={() => setSelectedQrCode(null)}
         isManagement
       />
+      {isManualOpen && (
+        <div className="user-ticket-overlay" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setIsManualOpen(false)}>
+          <aside className="user-ticket-drawer user-ticket-manual-drawer">
+            <button className="user-ticket-drawer__close" type="button" onClick={() => setIsManualOpen(false)} aria-label={userTicketText("closeDetail")}><X size={20} /></button>
+            <p className="user-ticket-eyebrow"><Ticket size={16} /> {userTicketText("manualCreate")}</p>
+            <h2>{userTicketText("manualTitle")}</h2>
+            <form onSubmit={submitManualTicket} className="user-ticket-manual-form">
+              <label>{userTicketText("buyerName")}
+                <input required value={manualForm.buyerName} onChange={(event) => setManualForm({ ...manualForm, buyerName: event.target.value })} placeholder={userTicketText("buyerNamePlaceholder")} />
+              </label>
+              <label>{userTicketText("buyerEmail")}
+                <input required type="email" value={manualForm.buyerEmail} onChange={(event) => setManualForm({ ...manualForm, buyerEmail: event.target.value })} placeholder={userTicketText("buyerEmailPlaceholder")} />
+              </label>
+              <label>{userTicketText("buyerPhone")}
+                <input required type="tel" value={manualForm.buyerPhone} onChange={(event) => setManualForm({ ...manualForm, buyerPhone: event.target.value })} placeholder={userTicketText("buyerPhonePlaceholder")} />
+              </label>
+              <label>{userTicketText("ticketType")}
+                <select required value={manualForm.ticketTypeId} onChange={(event) => setManualForm({ ...manualForm, ticketTypeId: event.target.value })}>
+                  <option value="">{userTicketText("selectTicketType")}</option>
+                  {ticketTypes.map((type) => <option key={type._id} value={type._id}>{type.ticketTypeName} · {type.availableQuantity} {userTicketText("availableRemaining")}</option>)}
+                </select>
+              </label>
+              <button type="submit" disabled={manualLoading || !manualForm.ticketTypeId}>{manualLoading ? userTicketText("creating") : userTicketText("createAndQr")}</button>
+            </form>
+          </aside>
+        </div>
+      )}
     </div>
   );
 };

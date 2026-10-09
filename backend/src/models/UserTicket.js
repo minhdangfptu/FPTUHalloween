@@ -3,6 +3,7 @@ const { Schema } = mongoose
 
 const schema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'Users' },
+  buyerName: { type: String, trim: true },
   orderId: { type: Schema.Types.ObjectId, ref: 'Orders', required: true },
   ticketTypeId: { type: Schema.Types.ObjectId, ref: 'TicketTypes' },
   qrCodeData: { type: String, required: true, unique: true, index: true },

@@ -71,9 +71,9 @@ const StaffCheckinTicket = () => {
       setPendingTicket({
         ...ticket,
         code: ticket.qrCodeData,
-        customerName: ticket.userId?.fullName || checkInText("attendee"),
-        customerEmail: ticket.userId?.email || "—",
-        customerPhone: ticket.userId?.phone || "—",
+        customerName: ticket.buyerName || ticket.orderId?.buyerInfo?.fullName || ticket.userId?.fullName || checkInText("attendee"),
+        customerEmail: ticket.buyerEmail || ticket.orderId?.buyerInfo?.email || "—",
+        customerPhone: ticket.buyerPhone || ticket.orderId?.buyerInfo?.phone || "—",
         ticketName: ticket.ticketTypeId?.ticketTypeName || checkInText("ticketFallback"),
         canCheckIn: !checkInBlockReason,
         checkInBlockReason,
@@ -226,7 +226,7 @@ const StaffCheckinTicket = () => {
                   <div className="staff-checkin-ticket-copy">
                     <strong>{ticket.qrCodeData}</strong>
                     <span>
-                      <UserRound size={14} /> {ticket.userId?.fullName || checkInText("attendee")}
+                      <UserRound size={14} /> {ticket.buyerName || ticket.orderId?.buyerInfo?.fullName || ticket.userId?.fullName || checkInText("attendee")}
                     </span>
                   </div>
                   <time>

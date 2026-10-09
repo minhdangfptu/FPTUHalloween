@@ -417,7 +417,7 @@ resources.vi.translation.management.userTickets = {
   noEmail: 'Chưa có email', unknownType: 'Loại vé không xác định', pageOf: 'Trang {{page}} / {{total}}',
   previousPage: 'Trang trước', nextPage: 'Trang sau', closeDetail: 'Đóng chi tiết', detailTitle: 'Chi tiết vé',
   eventTicket: 'Vé sự kiện', ticketCode: 'Mã vé', viewQr: 'Xem mã QR', order: 'Đơn hàng',
-  issuedAt: 'Phát hành lúc', checkedAt: 'Check-in lúc',
+  issuedAt: 'Phát hành lúc', checkedAt: 'Check-in lúc', manualCreate: 'Tạo vé thủ công', manualTitle: 'Tạo vé thủ công', buyerName: 'Tên người mua', buyerNamePlaceholder: 'Nhập tên người mua', buyerEmail: 'Email', buyerEmailPlaceholder: 'Nhập email', buyerPhone: 'Số điện thoại', buyerPhonePlaceholder: 'Nhập số điện thoại', selectTicketType: 'Chọn loại vé', availableRemaining: 'vé còn lại', createAndQr: 'Tạo vé & hiển thị QR', creating: 'Đang tạo...', manualSuccess: 'Đã tạo vé thủ công. Mã QR đã sẵn sàng.', manualBuyer: 'Vé tạo thủ công',
 };
 resources.en.translation.management.userTickets = {
   statusPending: 'Pending use', statusChecked: 'Used', statusCancelled: 'Cancelled', statusUnknown: 'Unknown',
@@ -431,7 +431,7 @@ resources.en.translation.management.userTickets = {
   noEmail: 'No email', unknownType: 'Unknown ticket type', pageOf: 'Page {{page}} / {{total}}',
   previousPage: 'Previous page', nextPage: 'Next page', closeDetail: 'Close details', detailTitle: 'Ticket details',
   eventTicket: 'Event ticket', ticketCode: 'Ticket code', viewQr: 'View QR code', order: 'Order',
-  issuedAt: 'Issued at', checkedAt: 'Checked in at',
+  issuedAt: 'Issued at', checkedAt: 'Checked in at', manualCreate: 'Create manual ticket', manualTitle: 'Create manual ticket', buyerName: 'Buyer name', buyerNamePlaceholder: 'Enter buyer name', buyerEmail: 'Email', buyerEmailPlaceholder: 'Enter email', buyerPhone: 'Phone number', buyerPhonePlaceholder: 'Enter phone number', selectTicketType: 'Select ticket type', availableRemaining: 'remaining', createAndQr: 'Create ticket & show QR', creating: 'Creating...', manualSuccess: 'Manual ticket created. QR code is ready.', manualBuyer: 'Manual ticket',
 };
 
 resources.vi.translation.management.checkIn = {
