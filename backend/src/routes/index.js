@@ -88,8 +88,8 @@ router.patch('/users/:id/disable', requireAuth, requireRole('Admin'), userCtrl.d
 router.patch('/users/:id/enable', requireAuth, requireRole('Admin'), userCtrl.enable)
 
 // TICKET TYPES
-router.get('/ticket-types', requireAuth, ticketTypeCtrl.getList)
-router.get('/ticket-types/:id', requireAuth, ticketTypeCtrl.getDetail)
+router.get('/ticket-types', ticketRateLimiter, ticketTypeCtrl.getList)
+router.get('/ticket-types/:id', ticketRateLimiter, ticketTypeCtrl.getDetail)
 router.post('/ticket-types', requireAuth, requireRole('Admin'), ticketTypeCtrl.create)
 router.put('/ticket-types/:id', requireAuth, requireRole('Admin'), ticketTypeCtrl.update)
 router.patch('/ticket-types/:id', requireAuth, requireRole('Admin'), ticketTypeCtrl.update)

@@ -125,13 +125,14 @@
 
 .ticket-search-panel {
   display: grid;
-  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  align-items: stretch;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-lg);
   max-width: 1280px;
   margin: 0 auto;
   margin-top: 2rem;
   border-radius: 1rem;
-  padding: 3rem;
+  padding: var(--space-2xl) clamp(1.25rem, 5vw, 4rem);
 }
 .ticket-search-panel__form,
 .ticket-search-panel__visual {
@@ -139,11 +140,15 @@
   border-radius: 1rem;
 }
 .ticket-search-panel__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: clamp(1.5rem, 3vw, 2.5rem);
   background: white;
 }
 .ticket-search-panel__form .ticket-list-section-label {
   margin-bottom: var(--space-xs);
+  transform: translateY(-0.5rem);
 }
 .ticket-search-panel__form h2 {
   margin: 0;
@@ -238,13 +243,14 @@
   }
 }
 .ticket-time-chips {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: center;
   gap: 0.5rem;
   min-height: 46px;
 }
 .ticket-time-chip {
+  width: 100%;
   min-height: 40px;
   padding: 0.55rem 0.85rem;
   color: var(--ticket-muted);
@@ -317,11 +323,9 @@
 }
 .ticket-search-panel__visual {
   display: grid;
-  min-height: 390px;
+  min-height: 0;
   place-items: center;
-  align-content: center;
-  gap: var(--space-sm);
-  padding: var(--space-xl);
+  padding: clamp(1rem, 2vw, 1.5rem);
   overflow: hidden;
   color: var(--ticket-muted);
   background:
@@ -332,6 +336,13 @@
     ),
     var(--ticket-dark);
   text-align: center;
+}
+.ticket-search-panel__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+  object-fit: cover;
 }
 .ticket-search-placeholder {
   position: relative;
@@ -545,6 +556,13 @@
   color: var(--ticket-dark);
   background: var(--ticket-yellow);
 }
+.ticket-card__visual-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .ticket-card__visual-orbit {
   position: absolute;
   right: 12%;
@@ -703,6 +721,9 @@
   }
   .ticket-search-panel__visual {
     min-height: 300px;
+  }
+  .ticket-time-chips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .ticket-list-hero h1 {
     max-width: 100%;

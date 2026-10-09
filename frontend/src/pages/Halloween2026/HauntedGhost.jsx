@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ArrowRight, CalendarDays, Clock3, MapPin, Play } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock3, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
@@ -39,11 +39,6 @@ const HauntedGhost = () => {
   }, []);
 
   useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
-      setIsLoading(false);
-      return;
-    }
-
     loadTickets();
   }, [loadTickets]);
 
@@ -79,7 +74,14 @@ const HauntedGhost = () => {
         <div className="haunted-ghost-section-label">{page("storyLabel")}</div>
         <div>
           <h2 id="haunted-story-title">{page("storyTitle")}</h2>
-          <p>{page("storyText")}</p>
+          <div className="haunted-ghost-story__text">
+            {page("storyText")
+              .split(/\n+/)
+              .filter(Boolean)
+              .map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+          </div>
         </div>
       </section>
 
@@ -87,13 +89,13 @@ const HauntedGhost = () => {
         className="haunted-ghost-trailer"
         aria-labelledby="haunted-trailer-title"
       >
-        <div
-          className="haunted-ghost-trailer__visual"
-          role="img"
-          aria-label={page("trailerPlaceholder")}
-        >
-          <Play size={34} fill="currentColor" />
-          <span>{page("trailerPlaceholder")}</span>
+        <div className="haunted-ghost-trailer__visual">
+          <iframe
+            src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F983259111474154&show_text=false&autoplay=true&mute=true"
+            title={page("trailer")}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            allowFullScreen
+          />
         </div>
         <div className="haunted-ghost-trailer__copy">
           <div className="haunted-ghost-section-label">{page("trailerLabel")}</div>
@@ -122,9 +124,7 @@ const HauntedGhost = () => {
         </div>
       </section>
 
-      {/*
-        Thông tin vé được tạm ẩn trên giao diện nhưng vẫn giữ nguyên logic để sử dụng lại khi cần.
-              <section
+      <section
         className="haunted-ghost-tickets"
         aria-labelledby="haunted-ticket-title"
       >
@@ -220,7 +220,6 @@ const HauntedGhost = () => {
           </div>
         )}
       </section>
-      */}
     </main>
   );
 };

@@ -133,38 +133,42 @@
 .ticket-detail-model__ticket {
   position: relative;
   display: flex;
-  width: min(68%, 340px);
-  min-height: 200px;
+  width: min(90%, 600px);
+  aspect-ratio: 5600 / 3000;
   flex-direction: column;
   justify-content: space-between;
-  padding: var(--space-lg);
+  overflow: hidden;
   color: var(--detail-paper);
-  background: var(--detail-red);
   border-radius: 0.8rem;
-  box-shadow: 1.25rem 1.25rem 0
-    color-mix(in oklab, var(--detail-red), var(--detail-dark) 25%);
-  transform: rotate(-4deg);
+}
+.ticket-detail-model__ticket img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .ticket-detail-model__number {
+  position: absolute;
+  z-index: 1;
+  left: 8%;
+  bottom: 10%;
+  transform: translateX(-30px);
   font-size: 5rem;
   font-weight: 900;
   letter-spacing: -0.12em;
   line-height: 0.8;
 }
 .ticket-detail-model__word {
-  align-self: end;
+  position: absolute;
+  z-index: 1;
+  top: 8%;
+  right: 7%;
+  transform: translateX(-30px);
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.18em;
 }
 .ticket-detail-model__tear {
-  position: absolute;
-  top: 0;
-  right: 22%;
-  width: 1px;
-  height: 100%;
-  border-left: 1px dashed
-    color-mix(in oklab, var(--detail-paper), transparent 35%);
+  display: none;
 }
 .ticket-detail-model__caption {
   position: absolute;

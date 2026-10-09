@@ -272,6 +272,8 @@
 /* Dropdown */
 .fpt-navbar__dropdown {
   position: absolute;
+  display: grid;
+  gap: 4px;
   top: 100%;
   left: 0;
   min-width: 220px;

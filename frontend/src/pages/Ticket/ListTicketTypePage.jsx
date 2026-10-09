@@ -14,6 +14,8 @@ import toast from "react-hot-toast";
 import { SkeletonCards } from "../../components/LoadingSkeletons";
 import ticketTypeAPI from "../../apis/ticketTypeAPI";
 import { translateError } from "../../utils/translateResponse";
+import ticketWebsiteImage from "../../assets/ticket_website.png";
+import hauntedGhostBanner from "../../assets/haunted_ghost_banner.jpg";
 import "./ListTicketTypePage.scss";
 
 const FEATURE_KEYS = ["featureExperience", "featurePersonal", "featureEventDay"];
@@ -214,13 +216,11 @@ const ListTicketTypePage = () => {
           role="img"
           aria-label={ticket("imagePlaceholder")}
         >
-          <div className="ticket-search-placeholder">
-            <Ticket size={42} strokeWidth={1.4} aria-hidden="true" />
-            <strong>{ticket("entryPass")}</strong>
-            <span>2026</span>
-          </div>
-          <p>{ticket("imagePlaceholder")}</p>
-          <span>{ticket("imageNote")}</span>
+          <img
+            className="ticket-search-panel__image"
+            src={hauntedGhostBanner}
+            alt={ticket("imagePlaceholder")}
+          />
         </div>
       </section>
       <section
@@ -264,9 +264,13 @@ const ListTicketTypePage = () => {
                   </span>
                 </div>
                 <div className="ticket-card__visual" aria-hidden="true">
-                  <div className="ticket-card__visual-orbit" />
+                  <img
+                    className="ticket-card__visual-image"
+                    src={ticketWebsiteImage}
+                    alt=""
+                  />
                   <span className="ticket-card__visual-number">
-                    {String(index + 1).padStart(2, "0")}
+                    {String(ticketType.ticketTypeDate).padStart(2, "0")}
                   </span>
                   <span className="ticket-card__visual-word">{ticket("entry")}</span>
                 </div>

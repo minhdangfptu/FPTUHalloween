@@ -202,14 +202,6 @@ function Navbar() {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleTicketClick = () => {
-    toast(t("nav.ticketComingSoon"), {
-      icon: <Ticket size={20} aria-hidden="true" />,
-    });
-    setHoveredItem(null);
-    setMobileOpen(false);
-  };
-
   const handleMouseEnter = (index) => {
     setHoveredItem(index);
   };
@@ -308,20 +300,7 @@ function Navbar() {
                   )}
                   {item.children && hoveredItem === index && (
                     <div className="fpt-navbar__dropdown">
-                      {item.children.map((child) =>
-                        child.labelKey === "nav.tickets" ? (
-                          <button
-                            key={child.labelKey}
-                            type="button"
-                            className="fpt-navbar__dropdown-link fpt-navbar__logout-button"
-                            onClick={handleTicketClick}
-                          >
-                            {(() => {
-                              const Icon = navigationIcons[child.labelKey];
-                              return <>{Icon && <Icon size={16} aria-hidden="true" />} {t(child.labelKey)}</>;
-                            })()}
-                          </button>
-                        ) : (
+                      {item.children.map((child) => (
                           <Link
                           key={child.labelKey}
                           to={child.href}
@@ -334,8 +313,7 @@ function Navbar() {
                             return <>{Icon && <Icon size={16} aria-hidden="true" />} {t(child.labelKey)}</>;
                           })()}
                           </Link>
-                        )
-                      )}
+                      ))}
                     </div>
                   )}
                 </div>
@@ -515,17 +493,7 @@ function Navbar() {
                 )}
                 {item.children && (
                   <div className="fpt-navbar__mobile-sub">
-                    {item.children.map((child) =>
-                      child.labelKey === "nav.tickets" ? (
-                        <button
-                          key={child.labelKey}
-                          type="button"
-                          className="fpt-navbar__mobile-sublink fpt-navbar__mobile-action"
-                          onClick={handleTicketClick}
-                        >
-                          {t(child.labelKey)}
-                        </button>
-                      ) : (
+                    {item.children.map((child) => (
                         <Link
                         key={child.labelKey}
                         to={child.href}
@@ -534,8 +502,7 @@ function Navbar() {
                       >
                         {t(child.labelKey)}
                         </Link>
-                      )
-                    )}
+                    ))}
                   </div>
                 )}
               </div>

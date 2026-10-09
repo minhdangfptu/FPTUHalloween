@@ -23,6 +23,7 @@ import {
   translateSuccess,
 } from "../../utils/translateResponse";
 import { flyToCart, notifyCartUpdated } from "../../utils/flyingToCart";
+import ticketWebsiteImage from "../../assets/ticket_website.png";
 import "./TicketDetail.scss";
 
 const formatPrice = (price) =>
@@ -132,8 +133,8 @@ const TicketDetail = () => {
               className="ticket-detail-model"
               aria-label={ticketType.ticketType3dModel}
             >
-              <div className="ticket-detail-model__orbit" />
               <div className="ticket-detail-model__ticket">
+                <img src={ticketWebsiteImage} alt="" />
                 <span className="ticket-detail-model__number">
                   {String(ticketType.ticketTypeDate).padStart(2, "0")}
                 </span>

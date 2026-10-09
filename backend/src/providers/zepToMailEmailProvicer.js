@@ -19,12 +19,18 @@ const getAvatarBase64 = () => {
     return fs.readFileSync(avatarPath).toString('base64')
 }
 
+const getTicketImageBase64 = () => {
+    const ticketImagePath = path.resolve(__dirname, '../../assets/ticket_website.png')
+    return fs.readFileSync(ticketImagePath).toString('base64')
+}
+
 const escapeHtml = value => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
 const formatCurrency = value => Number.isFinite(Number(value)) ? `${Number(value).toLocaleString('vi-VN')} đ` : '—'
 
 const createSingleTicketEmailHtml = async ({ recipient, ticket, event = {}, qrCid = 'qr-image' }) => {
     const eventInfo = { ...DEFAULT_EVENT, ...event }
     const avatar = 'cid:avatar-image'
+    const ticketImage = 'cid:ticket-website-image'
     const recipientName = escapeHtml(recipient?.name || recipient?.fullName || 'bạn')
     const recipientPhone = escapeHtml(recipient?.phone || '—')
     const ticketName = escapeHtml(ticket?.name || ticket?.ticketTypeName || 'Vé tham dự sự kiện')
@@ -47,6 +53,9 @@ const createTicketEmailHtml = async ({ recipient, tickets, ticket, event }) => {
 }
 
 const addTicketLinksAndRemoveEventDetails = html => html
+    .replace('src="cid:avatar-image" alt="FPTU Halloween" width="260"', 'src="cid:ticket-website-image" alt="Vé điện tử FPTU Halloween" width="560"')
+    .replace('style="display:inline-block;width:260px;max-width:100%;height:auto;border-radius:18px"', 'style="display:inline-block;width:390px;max-width:100%;height:auto;border-radius:18px"')
+    .replace(/<h2 style="margin:0 0 22px;font-size:23px;line-height:1.3;color:#fff">[\s\S]*?<\/h2>/, '')
     .replace(/#121214/g, '#f3f4f6')
     .replace(/#202124/g, '#ffffff')
     .replace(/#171719/g, '#ffffff')
@@ -68,7 +77,10 @@ const addTicketLinks = html => html.replace(
 const sendTicketEmail = async ({ recipient, tickets, ticket, event }) => {
     if (!recipient?.email) throw new Error('Recipient email is required')
     const ticketList = Array.isArray(tickets) && tickets.length ? tickets : [ticket]
-    const inlineImages = [{ content: getAvatarBase64(), name: 'avatar.jpg', cid: 'avatar-image', mime_type: 'image/jpeg' }]
+    const inlineImages = [
+        { content: getAvatarBase64(), name: 'avatar.jpg', cid: 'avatar-image', mime_type: 'image/jpeg' },
+        { content: getTicketImageBase64(), name: 'ticket_website.png', cid: 'ticket-website-image', mime_type: 'image/png' }
+    ]
     for (const [index, item] of ticketList.entries()) {
         const qrCodeData = String(item?.qrCodeData || item?.code || item?.ticketCode || '').trim()
         if (!qrCodeData) continue

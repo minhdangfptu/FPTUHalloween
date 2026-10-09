@@ -1431,4 +1431,36 @@ resources.ja.translation.management.orders.recipientEmail = 'メールアドレ�
 resources.ja.translation.management.orders.recipientPhone = '電話番号';
 resources.ja.translation.management.orders.notUpdated = '未更新';
 
+Object.assign(resources.vi.translation.eventPages.haunted, {
+  storyTitle: 'GIỚI THIỆU NHÀ MA: NAMELESS',
+  storyText: '🎃 Ẩn sâu trong khu rừng biệt lập Blackwood là bi kịch về Noah - một đứa trẻ sinh ra với một dị tật nghiêm trọng trên khuôn mặt, lớn lên trong những ánh nhìn sợ hãi, sự ruồng bỏ và những lời giễu cợt. Chiếc mặt nạ trắng nhặt được từng là nơi trú ẩn duy nhất của cậu, cho đến đêm định mệnh khi nó bị người cha đập vỡ. Phút giây ấy đã đánh thức con quỷ bên trong: Noah sát hại cả gia đình rồi biến mất vào màn đêm sâu thẳm.\n\n🎭 Mang theo chiếc mặt nạ chắp vá, Noah ẩn mình trong căn nhà hoang giữa rừng và gieo rắc nỗi kinh hoàng với cái tên "Vô Diện". Hắn tin rằng vẻ đẹp có thể bị tước đoạt, dẫn đến hàng loạt vụ mất tích dị biệt khi các nạn nhân được tìm thấy đều bị lột bỏ khuôn mặt. Căn nhà hoang dần trở thành một bộ sưu tập bệnh hoạn lưu giữ những "mảnh ghép hoàn hảo" mà hắn khao khát.\n\n🕵️ Nhiều năm sau, một nhóm thanh tra tư nhân quyết tâm thâm nhập căn nhà để truy tìm dấu vết Vô Diện. Nhưng khi tiến sâu vào bên trong, họ bàng hoàng phát hiện những bức ảnh chính mình vừa được ghim lên tường. Họ chưa bao giờ là người đi săn, mà họ chính là những "gương mặt" tiếp theo đã được ấn định.'
+});
+
+Object.assign(resources.en.translation.eventPages.haunted, {
+  storyTitle: 'INTRODUCING THE NAMELESS HAUNTED HOUSE',
+  storyText: '🎃 Deep in the isolated Blackwood forest lies Noah\'s tragedy - a child born with a severe facial deformity, raised beneath fearful stares, rejection and cruel mockery. A white mask he found became his only refuge, until the fateful night when his father smashed it. In that instant, the demon within awoke: Noah slaughtered his entire family and vanished into the deepest darkness.\n\n🎭 Carrying his patched-together mask, Noah hid in an abandoned house in the forest and spread terror under the name "Faceless". He believed beauty could be stripped away, leading to a series of strange disappearances in which every victim was found without a face. The abandoned house gradually became a sick collection preserving the "perfect pieces" he craved.\n\n🕵️ Years later, a team of private investigators determined to enter the house and trace Faceless\'s whereabouts. But as they ventured deeper inside, they were horrified to find photographs of themselves newly pinned to the walls. They had never been the hunters; they were the next "faces" already chosen.'
+});
+
+Object.assign(resources.ja.translation.eventPages.haunted, {
+  storyTitle: '名もなき者：お化け屋敷紹介',
+  storyText: '🎃 人里離れたブラックウッドの森の奥には、ノアの悲劇が眠っています。深刻な顔の奇形を持って生まれた彼は、恐怖のまなざしと拒絶、嘲笑に囲まれて育ちました。拾った白い仮面は唯一の隠れ家でしたが、運命の夜、父親によって叩き割られてしまいます。その瞬間、内なる悪魔が目を覚ましました。ノアは家族全員を殺害し、深い闇の中へ消えたのです。\n\n🎭 つぎはぎの仮面を携え、ノアは森の中の廃屋に身を隠し、「顔なし」という名で恐怖をまき散らしました。美しさは奪えるものだと信じた彼の周囲では、被害者が顔を剥ぎ取られた状態で発見される奇妙な失踪事件が相次ぎます。廃屋はやがて、彼が渇望する「完璧なパーツ」を保管する病的なコレクションとなりました。\n\n🕵️ 何年も後、私立探偵の一団が「顔なし」の痕跡を追って屋敷への潜入を決意します。しかし奥へ進んだ彼らは、壁に自分たちの写真が貼られたばかりであることに気づき、戦慄しました。彼らは決して狩る側ではなかったのです。次に選ばれた「顔」は、彼ら自身でした。'
+});
+
+Object.assign(resources.vi.translation.eventPages.haunted, {
+  trailerText: 'Bước qua ngưỡng cửa nhà ma 𝐍𝐚𝐦𝐞𝐥𝐞𝐬𝐬, bạn sẽ trực tiếp bước vào sào huyệt méo mó của Vô Diện và đối mặt với ranh giới mong manh giữa sống và chết. Liệu bạn có đủ bản lĩnh để thoát khỏi căn nhà hoang, hay sẽ trở thành "mảnh ghép" tiếp theo trong bộ sưu tập của hắn? Hãy theo dõi Fanpage ngay hôm nay để không bỏ lỡ cơ hội săn vé bước vào 𝐍𝐚𝐦𝐞𝐥𝐞𝐬𝐬 nhé!'
+});
+Object.assign(resources.en.translation.eventPages.haunted, {
+  trailerText: 'Step through the doors of 𝐍𝐚𝐦𝐞𝐥𝐞𝐬𝐬 and enter the twisted lair of Faceless, where the boundary between life and death grows dangerously thin. Do you have what it takes to escape the abandoned house, or will you become the next "perfect piece" in his collection? Follow our Fanpage today so you do not miss your chance to hunt for a ticket into 𝐍𝐚𝐦𝐞𝐥𝐞𝐬𝐬!'
+});
+Object.assign(resources.ja.translation.eventPages.haunted, {
+  trailerText: '𝐍𝐚𝐦𝐞𝐥𝐞𝐬𝐬の扉をくぐり、あなたは顔なしの歪んだ巣窟へ足を踏み入れます。そこでは、生と死の境界が危うく揺らいでいます。廃屋から脱出する勇気はありますか。それとも、彼のコレクションに加わる次の「完璧なパーツ」になってしまうのでしょうか。𝐍𝐚𝐦𝐞𝐥𝐞𝐬𝐬へのチケットを逃さないよう、今すぐ公式ファンページをフォローしてください！'
+});
+
+resources.vi.translation.ticket.hauntedHouse = 'Nhà Ma The Nameless';
+resources.vi.translation.ticket.heroIntro = 'Nhà Ma The Nameless. Chọn ngày tham gia';
+resources.en.translation.ticket.hauntedHouse = 'Nhà Ma The Nameless';
+resources.en.translation.ticket.heroIntro = 'Nhà Ma The Nameless. Choose your event date.';
+resources.ja.translation.ticket.hauntedHouse = '名もなき者のお化け屋敷';
+resources.ja.translation.ticket.heroIntro = '名もなき者のお化け屋敷。イベントの日付を選んでください。';
+
 export default i18n;

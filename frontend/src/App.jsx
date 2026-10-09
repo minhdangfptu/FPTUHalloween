@@ -135,10 +135,6 @@ const ACCESS_RULES = [
       /^\/(?:user-profile|change-password|cart|checkout|qr-payment|complete-payment|my-ticket)(?:\/|$)/,
     roles: null,
   },
-  {
-    pattern: /^\/tickets(?:\/|$)/,
-    roles: null,
-  },
 ];
 
 const getRoleName = (user) =>
