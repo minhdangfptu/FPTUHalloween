@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Header.css";
-import { Circle, Info, X } from "lucide-react";
+import { Circle, Info, Languages, X } from "lucide-react";
 import hotNewsAPI from "../apis/hotNewsAPI";
 import { ScrollBasedVelocity } from "./ui/scroll-based-velocity";
 import useTheme from "../hooks/use-theme";
@@ -219,21 +219,7 @@ function Header() {
                     defaultValue: "Select language",
                   })}
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    stroke="#ffffff"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M3 12h18" />
-                    <path d="M12 3c2.5 2.5 3.8 5.5 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z" />
-                  </svg>
+                  <Languages size={24} strokeWidth={1.6} aria-hidden="true" />
                 </button>
                 {isLanguageMenuOpen && (
                   <div
