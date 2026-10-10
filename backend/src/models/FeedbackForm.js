@@ -20,7 +20,6 @@ const schema = new Schema({
     type: String,
     enum: ['attendee', 'staff'],
     required: true,
-    index: true
   },
   openAt: { type: Date, required: true, index: true },
   closeAt: { type: Date, required: true, index: true },

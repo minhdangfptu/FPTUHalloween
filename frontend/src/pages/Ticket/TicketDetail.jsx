@@ -135,9 +135,14 @@ const TicketDetail = () => {
             >
               <div className="ticket-detail-model__ticket">
                 <img src={ticketWebsiteImage} alt="" />
-                <span className="ticket-detail-model__number">
-                  {String(ticketType.ticketTypeDate).padStart(2, "0")}
-                </span>
+                <div className="ticket-detail-model__date">
+                  <span className="ticket-detail-model__number">
+                    {String(ticketType.ticketTypeDate).padStart(2, "0")}
+                  </span>
+                  <span className="ticket-detail-model__time">
+                    {ticketType.ticketTypeTime || ticket("updating")}
+                  </span>
+                </div>
                 <span className="ticket-detail-model__word">{ticket("entryPass")}</span>
                 <span className="ticket-detail-model__tear" />
               </div>

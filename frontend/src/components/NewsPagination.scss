@@ -57,6 +57,7 @@
   svg {
     width: 29px;
     height: 29px;
+    flex: 0 0 auto;
     stroke-width: 2.8;
   }
 
@@ -73,15 +74,15 @@
 
     button,
     .news-pagination__ellipsis {
-      width: 44px;
-      min-width: 44px;
-      height: 44px;
+      width: 56px;
+      min-width: 56px;
+      height: 56px;
       border-radius: 12px;
     }
 
     svg {
-      width: 26px;
-      height: 26px;
+      width: 32px;
+      height: 32px;
     }
   }
 }

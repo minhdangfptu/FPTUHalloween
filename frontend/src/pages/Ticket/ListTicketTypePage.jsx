@@ -269,26 +269,29 @@ const ListTicketTypePage = () => {
                     src={ticketWebsiteImage}
                     alt=""
                   />
-                  <span className="ticket-card__visual-number">
-                    {String(ticketType.ticketTypeDate).padStart(2, "0")}
-                  </span>
-                  <span className="ticket-card__visual-word">{ticket("entry")}</span>
+                  <div className="ticket-card__visual-date">
+                    <span className="ticket-card__visual-number">
+                      {String(ticketType.ticketTypeDate).padStart(2, "0")}
+                    </span>
+                    <span className="ticket-card__visual-time">
+                      {ticketType.ticketTypeTime || ticket("timeUpdating")}
+                    </span>
+                  </div>
                 </div>
                 <div className="ticket-card__body">
                   <div className="ticket-card__title-row">
-                    <h3>{ticketType.ticketTypeName}</h3>
+                    <div className="ticket-card__title-copy">
+                      <span className="ticket-card__entry-label">{ticket("entry")}</span>
+                      <h3>{ticketType.ticketTypeName}</h3>
+                    </div>
                     <strong className="ticket-card__price">
                       {formatPrice(ticketType.ticketTypePrice)}
                     </strong>
                   </div>
                   <div className="ticket-card__meta">
                     <span>
-                      <Clock3 size={16} />
-                      {ticketType.ticketTypeTime}
-                    </span>
-                    <span>
                       <CalendarDays size={16} />
-                      {ticket("dateTime", { date: ticketType.ticketTypeDate })}
+                      {ticket("dateTime", { date: ticketType.ticketTypeDate })} · {ticketType.ticketTypeTime}
                     </span>
                     <span>
                       <MapPin size={16} />

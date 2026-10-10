@@ -576,22 +576,36 @@
     0 0 0 3rem color-mix(in oklab, currentColor, transparent 94%);
 }
 .ticket-card__visual-number {
-  position: relative;
+  display: block;
   z-index: 1;
-  align-self: end;
   font-size: 3.8rem;
   font-weight: 900;
   letter-spacing: -0.1em;
   line-height: 0.8;
 }
-.ticket-card__visual-word {
-  position: relative;
+.ticket-card__visual-date {
+  position: absolute;
+  top: 68%;
+  left: 31%;
   z-index: 1;
-  align-self: start;
-  font-size: 0.7rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.65rem;
+  transform: translate(-50%, -50%);
+}
+.ticket-card__visual-time {
+  display: block;
+  margin-top: 0;
+  padding: 0.35rem 0.65rem;
+  color: var(--ticket-paper);
+  background: color-mix(in oklab, var(--ticket-dark), transparent 12%);
+  border-radius: 0.25rem;
+  font-size: 1.25rem;
   font-weight: 900;
-  letter-spacing: 0.18em;
-  writing-mode: vertical-rl;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  white-space: nowrap;
 }
 .ticket-card__body {
   display: flex;
@@ -605,6 +619,19 @@
   justify-content: space-between;
   gap: var(--space-sm);
 }
+.ticket-card__title-copy {
+  min-width: 0;
+}
+.ticket-card__entry-label {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--ticket-red);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
 .ticket-card__title-row h3 {
   min-width: 0;
 }
@@ -617,7 +644,7 @@
   text-align: right;
 }
 .ticket-card__body h3 {
-  margin: var(--space-lg) 0 var(--space-xs);
+  margin: 0.35rem 0 var(--space-xs);
   overflow: hidden;
   font-size: clamp(1.25rem, 1.8vw, 1.65rem);
   letter-spacing: -0.04em;
@@ -635,7 +662,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-xs);
-  margin: var(--space-lg) 0;
+  margin: 0.7rem 0 var(--space-md);
   color: var(--ticket-muted);
   font-size: 0.82rem;
 }
