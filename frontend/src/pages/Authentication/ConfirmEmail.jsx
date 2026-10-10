@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./ConfirmEmail.css";
-import loginImg from "../../assets/login.png";
+import wtmDarkLogo from "../../assets/wtm.png";
+import wtmLightLogo from "../../assets/wtm_lightmode.png";
 import coverImg from "../../assets/cover-01.png";
+import ThemeAsset from "../../components/ThemeAsset";
 import { authAPI } from "../../apis/authAPI";
 import toast from "react-hot-toast";
 import { translateError, translateSuccess } from "../../utils/translateResponse";
@@ -114,7 +116,12 @@ function ConfirmEmail() {
       <div className="fptu-halloween-confirm-email-left-pane">
         <div className="fptu-halloween-confirm-email-top">
           <div className="fptu-halloween-confirm-email-box">
-            <img className="fptu-halloween-confirm-email-logo" src={loginImg} alt={auth("brandAlt")} />
+            <ThemeAsset
+              lightSrc={wtmLightLogo}
+              darkSrc={wtmDarkLogo}
+              className="fptu-halloween-confirm-email-logo"
+              alt={auth("brandAlt")}
+            />
             <div className="fptu-halloween-confirm-email-panel">
               <div className="fptu-halloween-confirm-email-header">
                 <h2>{auth("title")}</h2>

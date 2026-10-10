@@ -12,6 +12,7 @@ import {
 } from "../../utils/translateResponse";
 import { Eye, EyeOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import AuthControls from "../../components/AuthControls";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -108,6 +109,7 @@ function Login() {
   return (
     <div className="login-page">
       <div className="left-pane">
+        <AuthControls />
         <div className="login-top">
           <div className="login-box">
             {/* <img className="login-logo" src={loginImg} alt="FPTU Halloween" /> */}

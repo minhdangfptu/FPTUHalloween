@@ -12,6 +12,7 @@
   margin: 0; /* tránh layout bị co do margin mặc định */
 }
 .fptu-halloween-register-left-pane {
+  position: relative;
   width: min(480px, 42vw);
   background: #f7f7f8;
   display: flex;

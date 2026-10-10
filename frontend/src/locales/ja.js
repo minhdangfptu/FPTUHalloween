@@ -2139,4 +2139,6 @@ ja.pages.payment.myTicketsNotice = 'チケットは';
 ja.pages.payment.contactNotice = '問題がある場合は、';
 ja.pages.payment.contactLink = 'お問い合わせページ';
 
+ja.auth.toast = { loginSuccess: 'ログインに成功しました。', loginError: 'ログインに失敗しました。', registerSuccess: '登録が完了しました。', registerError: '登録に失敗しました。', verifySuccess: '認証に成功しました。', verifyError: '認証に失敗しました。', googleLoginError: 'Googleでログインできませんでした。', noToken: '続行するにはログインしてください。', passwordResetSuccess: 'パスワードをリセットしました。', passwordChangeSuccess: 'パスワードを変更しました。' };
+
 export default ja;

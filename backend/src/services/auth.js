@@ -37,12 +37,17 @@ const issueOtp = async (identifier, purpose) => {
   await sendOtpEmail(identifier, otp, purpose)
 }
 const register = async payload => {
-  const email = normalize(payload.email); const phone = String(payload.phone || '').trim(); const userName = normalize(payload.userName)
+  const email = normalize(payload.email); const phone = String(payload.phone || '').trim()
   if (!email || !phone || !payload.password || !payload.fullName) throw new Error('email, phone, password and fullName are required')
-  if (await User.exists({ $or: [{ userName }, { email }, { phone }] })) throw new Error('Username, email or phone already exists')
+  const [hasEmail, hasPhone] = await Promise.all([
+    User.exists({ email }),
+    User.exists({ phone }),
+  ])
+  if (hasEmail) throw new Error('Email already exists')
+  if (hasPhone) throw new Error('Phone number already exists')
   const role = await Role.findOne({ roleName: 'User', roleActive: true })
   if (!role) throw new Error('Default role not found')
-  const user = await User.create({ userName: userName || undefined, email, phone, fullName: String(payload.fullName).trim(), password: await bcrypt.hash(payload.password, 10), authProvider: 'local', roleId: role._id })
+  const user = await User.create({ email, phone, fullName: String(payload.fullName).trim(), password: await bcrypt.hash(payload.password, 10), authProvider: 'local', roleId: role._id })
   await issueOtp(email, 'register')
   return { message: 'Register successfully. Please confirm OTP.', otpIdentifier: email, user: user.toJSON() }
 }

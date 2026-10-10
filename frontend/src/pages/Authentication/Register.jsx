@@ -13,6 +13,7 @@ import {
 } from "../../utils/translateResponse";
 import { Eye, EyeOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import AuthControls from "../../components/AuthControls";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -170,12 +171,9 @@ function Register() {
         { id: loadingToast },
       );
       setServerMessage(auth("success"));
-      setTimeout(() => navigate("/login"), 1200);
+      navigate("/confirm-email", { replace: true });
     } catch (error) {
-      const message =
-        error?.response?.data?.message ||
-        error?.message ||
-        auth("error");
+      const message = translateError(error);
       setServerMessage(message);
       toast.error(message, { id: loadingToast });
     } finally {
@@ -187,6 +185,7 @@ function Register() {
     <div className="fptu-halloween-register-page">
       {/* Cột trái: form */}
       <div className="fptu-halloween-register-left-pane">
+        <AuthControls />
         <div className="fptu-halloween-register-top">
           <div className="fptu-halloween-register-box">
             {/* <img className="fptu-halloween-register-logo" src={loginImg} alt="FPTU Halloween" /> */}

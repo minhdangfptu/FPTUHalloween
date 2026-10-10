@@ -11,6 +11,9 @@
   display: flex; /* 2 cột */
   margin: 0; /* tránh layout bị co do margin mặc định */
 }
+.login-page .left-pane {
+  position: relative;
+}
 .left-pane {
   width: min(480px, 42vw);
   background: #f7f7f8;

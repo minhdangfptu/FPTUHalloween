@@ -30,7 +30,9 @@ const ERROR_TRANSLATIONS = {
   'Invalid email address': 'Email không hợp lệ.',
   'Email already exists': 'Email đã được sử dụng. Vui lòng sử dụng email khác.',
   'Username, email or phone already exists': 'Tên đăng nhập, email hoặc số điện thoại đã tồn tại.',
+  'Phone number already exists': 'Số điện thoại đã được sử dụng. Vui lòng sử dụng số khác.',
   'Password must be at least 8 characters': 'Mật khẩu phải có ít nhất 8 ký tự.',
+  'New password must be at least 8 characters': 'Mật khẩu mới phải có ít nhất 8 ký tự.',
   'Password must contain at least 1 uppercase letter': 'Mật khẩu phải chứa ít nhất 1 chữ hoa.',
   'Password must contain at least 1 number': 'Mật khẩu phải chứa ít nhất 1 số.',
   'Full name must be between 2 and 100 characters': 'Họ tên phải từ 2 đến 100 ký tự.',
@@ -51,6 +53,13 @@ const ERROR_TRANSLATIONS = {
 
   'Invalid credentials': 'Email hoặc mật khẩu không đúng.',
   'Identifier and password are required': 'Vui lòng nhập tên đăng nhập và mật khẩu.',
+  'email, phone, password and fullName are required': 'Vui lòng nhập đầy đủ email, số điện thoại, mật khẩu và họ tên.',
+  'Please confirm email before login': 'Vui lòng xác thực email trước khi đăng nhập.',
+  'User account is disabled': 'Tài khoản của bạn đã bị vô hiệu hóa.',
+  'This account uses Google login': 'Tài khoản này sử dụng đăng nhập Google.',
+  'Default role not found': 'Không tìm thấy vai trò mặc định của tài khoản.',
+  'Invalid or expired reset token': 'Mã đặt lại mật khẩu không hợp lệ hoặc đã hết hạn.',
+  'Invalid or expired refresh token': 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
   'Google Login is not ready. Please try again in a few seconds.': 'Google chưa sẵn sàng. Vui lòng thử lại sau ít giây.',
   'Unable to login with Google.': 'Không thể đăng nhập với Google.',
   'An email account already exists with this email': 'Email này đã được đăng ký bằng tài khoản email. Vui lòng đăng nhập bằng email và mật khẩu. Nếu bạn là FBGCer, hãy đăng nhập với FBGC',
@@ -169,6 +178,28 @@ const ERROR_TRANSLATIONS_EN = Object.fromEntries(
   Object.keys(ERROR_TRANSLATIONS).map((message) => [message, message]),
 );
 
+const ERROR_TRANSLATIONS_JA = {
+  'Username, email or phone already exists': 'ユーザー名、メールアドレス、または電話番号はすでに登録されています。',
+  'Email already exists': 'メールアドレスはすでに登録されています。別のメールアドレスを使用してください。',
+  'Phone number already exists': '電話番号はすでに登録されています。別の番号を使用してください。',
+  'email, phone, password and fullName are required': 'メールアドレス、電話番号、パスワード、氏名をすべて入力してください。',
+  'A valid email is required': '有効なメールアドレスを入力してください。',
+  'Identifier and password are required': 'ログインIDとパスワードを入力してください。',
+  'Invalid credentials': 'ログイン情報が正しくありません。',
+  'New password must be at least 8 characters': '新しいパスワードは8文字以上で入力してください。',
+  'Please confirm email before login': 'ログインする前にメールアドレスを確認してください。',
+  'User account is disabled': 'アカウントは無効になっています。',
+  'Invalid or expired OTP': 'OTPが無効か、期限切れです。',
+  'Invalid or expired reset token': 'パスワード再設定トークンが無効か、期限切れです。',
+  'User not found': 'ユーザーが見つかりません。',
+  'Current password is incorrect': '現在のパスワードが正しくありません。',
+  'Google accounts cannot change password here': 'Googleアカウントはここでパスワードを変更できません。',
+  'This account uses Google login': 'このアカウントはGoogleログインを使用しています。',
+  'Default role not found': 'アカウントの既定のロールが見つかりません。',
+  'Invalid or expired refresh token': 'ログインセッションの期限が切れています。もう一度ログインしてください。',
+  'Network error. Please check your connection.': 'ネットワークエラーです。接続を確認してください。',
+};
+
 /**
  * Lấy message từ axios error object
  * @param {Error|axios.AxiosError} error
@@ -254,7 +285,9 @@ const translateError = (error) => {
 
   const translations = language === 'en'
     ? ERROR_TRANSLATIONS_EN
-    : ERROR_TRANSLATIONS;
+    : language === 'ja'
+      ? ERROR_TRANSLATIONS_JA
+      : ERROR_TRANSLATIONS;
   return translations[rawMessage] || translateVoteError(rawMessage) || rawMessage;
 };
 
@@ -390,6 +423,7 @@ export {
   getErrorMessage,
   ERROR_TRANSLATIONS,
   ERROR_TRANSLATIONS_EN,
+  ERROR_TRANSLATIONS_JA,
   SUCCESS_TRANSLATIONS,
   SUCCESS_TRANSLATIONS_EN,
   SUCCESS_TRANSLATIONS_JA,

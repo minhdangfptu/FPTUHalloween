@@ -1,0 +1,87 @@
+.auth-controls {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.auth-controls__language {
+  position: relative;
+}
+
+.auth-controls__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: #4b5563;
+  background: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.auth-controls__button:hover,
+.auth-controls__button:focus-visible {
+  color: #c60000;
+  background: rgba(198, 0, 0, 0.08);
+  border-color: #c60000;
+  outline: none;
+}
+
+.auth-controls__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: grid;
+  min-width: 72px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+}
+
+.auth-controls__menu button {
+  padding: 7px 10px;
+  color: #374151;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.auth-controls__menu button:hover,
+.auth-controls__menu button.is-active {
+  color: #c60000;
+  background: #fef2f2;
+}
+
+:root[data-theme="dark"] .auth-controls__button {
+  color: var(--public-dark-muted);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme="dark"] .auth-controls__menu {
+  background: var(--public-dark-surface);
+  border-color: var(--public-dark-line);
+}
+
+:root[data-theme="dark"] .auth-controls__menu button {
+  color: var(--public-dark-ink);
+}
+
+@media (max-width: 640px) {
+  .auth-controls {
+    top: 12px;
+    right: 14px;
+  }
+}
