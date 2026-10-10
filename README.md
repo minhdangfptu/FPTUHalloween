@@ -1,4 +1,4 @@
-# 🎃 FPTU Halloween
+# FPTU Halloween
 
 **FPTU Halloween** là hệ thống website được xây dựng nhằm hỗ trợ **tổ chức, vận hành và tham gia sự kiện FPTU Halloween**.
 
