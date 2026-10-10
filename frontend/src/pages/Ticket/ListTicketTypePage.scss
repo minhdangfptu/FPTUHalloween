@@ -577,6 +577,7 @@
 }
 .ticket-card__visual-number {
   display: block;
+  color: #fff;
   z-index: 1;
   font-size: 3.8rem;
   font-weight: 900;
@@ -598,8 +599,8 @@
   display: block;
   margin-top: 0;
   padding: 0.35rem 0.65rem;
-  color: var(--ticket-paper);
-  background: color-mix(in oklab, var(--ticket-dark), transparent 12%);
+  color: #fff;
+  background: rgb(7 13 27 / 88%);
   border-radius: 0.25rem;
   font-size: 1.25rem;
   font-weight: 900;

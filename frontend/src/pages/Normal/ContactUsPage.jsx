@@ -14,8 +14,15 @@ import { Dices, Ghost, Mail, MapPin, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 function ContactUsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const contact = (key, options) => t(`normal.contact.${key}`, options);
+  const phoneCopiedMessage = {
+    vi: "Đã sao chép số điện thoại",
+    en: "Phone number copied",
+    ja: "電話番号をコピーしました",
+  }[i18n.resolvedLanguage] || "Phone number copied";
+  const contactEmail = contact("emailValue");
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(contactEmail)}`;
   const [formData, setFormData] = useState({
     receiverName: "",
     phone: "",
@@ -24,6 +31,22 @@ function ContactUsPage() {
     message: "",
   });
   const [errors, setErrors] = useState({});
+
+  const copyPhoneNumber = async (phoneNumber) => {
+    try {
+      await navigator.clipboard.writeText(phoneNumber);
+      toast.success(phoneCopiedMessage);
+    } catch {
+      toast.error(contact("invalid", { field: contact("phone") }));
+    }
+  };
+
+  const handlePhoneCardKeyDown = (event, phoneNumber) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      copyPhoneNumber(phoneNumber);
+    }
+  };
 
   useEffect(() => {
     try {
@@ -314,7 +337,12 @@ function ContactUsPage() {
             </div>
 
             <div className="fptu-halloween-contact-info-cards">
-              <div className="fptu-halloween-contact-info-card">
+              <a
+                className="fptu-halloween-contact-info-card"
+                href="https://www.facebook.com/fptuhalloween"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <div
                   className="fptu-halloween-contact-info-icon"
                   aria-hidden="true"
@@ -327,8 +355,13 @@ function ContactUsPage() {
                     {contact("halloweenPage")}
                   </p>
                 </div>
-              </div>
-              <div className="fptu-halloween-contact-info-card">
+              </a>
+              <a
+                className="fptu-halloween-contact-info-card"
+                href="https://www.facebook.com/fuboardgameclub"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <div
                   className="fptu-halloween-contact-info-icon"
                   aria-hidden="true"
@@ -341,8 +374,13 @@ function ContactUsPage() {
                     {contact("clubPage")}
                   </p>
                 </div>
-              </div>
-              <div className="fptu-halloween-contact-info-card">
+              </a>
+              <a
+                className="fptu-halloween-contact-info-card"
+                href="https://maps.app.goo.gl/LzyaNJFQpxyvtAYq5"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <div
                   className="fptu-halloween-contact-info-icon"
                   aria-hidden="true"
@@ -355,8 +393,13 @@ function ContactUsPage() {
                     {contact("university")}
                   </p>
                 </div>
-              </div>
-              <div className="fptu-halloween-contact-info-card">
+              </a>
+              <a
+                className="fptu-halloween-contact-info-card"
+                href={gmailUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <div
                   className="fptu-halloween-contact-info-icon"
                   aria-hidden="true"
@@ -369,8 +412,14 @@ function ContactUsPage() {
                     {contact("emailValue")}
                   </p>
                 </div>
-              </div>
-              <div className="fptu-halloween-contact-info-card">
+              </a>
+              <div
+                className="fptu-halloween-contact-info-card fptu-halloween-contact-info-card--copyable"
+                role="button"
+                tabIndex={0}
+                onClick={() => copyPhoneNumber("0338263886")}
+                onKeyDown={(event) => handlePhoneCardKeyDown(event, "0338263886")}
+              >
                 <div
                   className="fptu-halloween-contact-info-icon"
                   aria-hidden="true"
@@ -387,7 +436,13 @@ function ContactUsPage() {
                 </div>
               </div>
 
-              <div className="fptu-halloween-contact-info-card">
+              <div
+                className="fptu-halloween-contact-info-card fptu-halloween-contact-info-card--copyable"
+                role="button"
+                tabIndex={0}
+                onClick={() => copyPhoneNumber("0947319889")}
+                onKeyDown={(event) => handlePhoneCardKeyDown(event, "0947319889")}
+              >
                 <div
                   className="fptu-halloween-contact-info-icon"
                   aria-hidden="true"

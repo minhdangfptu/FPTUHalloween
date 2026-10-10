@@ -158,6 +158,7 @@
 }
 .ticket-detail-model__number {
   display: block;
+  color: #fff;
   font-size: 6rem;
   font-weight: 900;
   letter-spacing: -0.12em;
@@ -166,8 +167,8 @@
 .ticket-detail-model__time {
   display: block;
   padding: 0.55rem 0.8rem;
-  color: var(--detail-paper);
-  background: color-mix(in oklab, var(--detail-dark), transparent 12%);
+  color: #fff;
+  background: rgb(7 13 27 / 88%);
   border-radius: 0.3rem;
   font-size: 1.5rem;
   font-weight: 900;

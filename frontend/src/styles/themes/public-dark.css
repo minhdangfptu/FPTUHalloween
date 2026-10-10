@@ -206,6 +206,11 @@
   --cart-paper: var(--public-dark-bg);
   --cart-line: var(--public-dark-line);
   --cart-dark: var(--public-dark-hero);
+  --cart-warning-bg: #24191b;
+  --cart-warning-bg-invalid: #35191d;
+  --cart-warning-line: #6f3438;
+  --cart-warning-line-invalid: #d15b60;
+  --cart-warning-text: #ffb4b4;
 
   --ink: var(--public-dark-ink);
   --muted: var(--public-dark-muted);
@@ -340,6 +345,14 @@
 
 :root[data-theme='dark'] .fptu-halloween-contact-info-card {
   border: 0;
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-info-icon {
+  background: #3a2025;
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-info-icon svg {
+  color: #ff6b76;
 }
 
 :root[data-theme='dark'] .fptu-halloween-contact-form-input::placeholder,

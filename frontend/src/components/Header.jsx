@@ -363,7 +363,14 @@ function Header() {
             </div>
             <p className="fpt-header__about-meta">
               {aboutCopy.version} Hlw_2026_3.1.0
-              <br />© 2026 · FPTU Halloween · {aboutCopy.developed}
+              <br />© 2026 · FPTU Halloween ·{" "}
+              <a
+                href="https://www.facebook.com/minhdangfptu/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {aboutCopy.developed}
+              </a>
             </p>
           </section>
         </div>

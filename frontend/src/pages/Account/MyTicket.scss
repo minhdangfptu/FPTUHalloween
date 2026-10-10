@@ -63,7 +63,12 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  padding: 28px 0 16px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #e1e3e6;
+  border-radius: 12px;
+  background: #fff;
 }
 .my-ticket-toolbar div {
   display: grid;

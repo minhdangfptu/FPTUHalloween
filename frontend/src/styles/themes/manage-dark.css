@@ -810,6 +810,7 @@
     .user-ticket-date-filter select,
     .user-ticket-search,
     .user-ticket-toolbar select,
+    .user-ticket-manual-button,
     .user-ticket-action button,
     .user-ticket-pagination button
   ) {
@@ -822,6 +823,16 @@
 :root[data-theme='dark'] .user-ticket-action button {
   color: var(--manage-dark-accent);
   border-color: #633640;
+}
+
+:root[data-theme='dark'] .user-ticket-manual-button {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-surface-raised);
+  border-color: #633640;
+}
+
+:root[data-theme='dark'] .user-ticket-manual-button:hover {
+  background: var(--manage-dark-accent-soft);
 }
 
 :root[data-theme='dark'] .user-ticket-table th {
