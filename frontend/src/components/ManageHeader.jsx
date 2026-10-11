@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Bell, Menu } from "lucide-react";
+import { Bell, Languages, Menu } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
@@ -112,11 +112,7 @@ const ManageHeader = () => {
               disabled={isLanguageChanging}
               onClick={() => setIsLanguageMenuOpen((isOpen) => !isOpen)}
             >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M3 12h18" />
-                <path d="M12 3c2.5 2.5 3.8 5.5 3.8 9S14.5 18.5 12 21c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z" />
-              </svg>
+              <Languages size={24} strokeWidth={1.6} aria-hidden="true" />
             </button>
             {isLanguageMenuOpen && (
               <div

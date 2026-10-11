@@ -52,7 +52,7 @@ const createTicketEmailHtml = async ({ recipient, tickets, ticket, event }) => {
     return documents[0].replace(contentPattern, `<div style="padding:36px 32px">${sections.join('<hr style="border:0;border-top:1px solid #444;margin:32px 0">')}</div><div style="padding:24px 32px`)
 }
 
-const addTicketLinksAndRemoveEventDetails = html => html
+const addTicketLinksAndRemoveEventDetailsLegacy = html => html
     .replace('src="cid:avatar-image" alt="FPTU Halloween" width="260"', 'src="cid:ticket-website-image" alt="Vé điện tử FPTU Halloween" width="560"')
     .replace('style="display:inline-block;width:260px;max-width:100%;height:auto;border-radius:18px"', 'style="display:inline-block;width:390px;max-width:100%;height:auto;border-radius:18px"')
     .replace(/<h2 style="margin:0 0 22px;font-size:23px;line-height:1.3;color:#fff">[\s\S]*?<\/h2>/, '')
@@ -68,6 +68,13 @@ const addTicketLinksAndRemoveEventDetails = html => html
         /<div style="border-bottom:1px solid #444;[\s\S]*?<\/div><h3 style="margin:0 0 18px;font-size:20px;color:#111827">/g,
         '<div style="border-bottom:1px solid #e5e7eb;padding-bottom:24px;margin-bottom:26px;color:#374151;font-size:15px;line-height:1.8"></div><h3 style="margin:0 0 18px;font-size:20px;color:#111827">'
     )
+
+const addTicketLinksAndRemoveEventDetails = html => addTicketLinksAndRemoveEventDetailsLegacy(html)
+    .replace(/Đội ngũ FPTU Halloween/g, 'Ban tổ chức FPTU Halloween 2026')
+    .replace(/src="cid:avatar-image" alt="FPTU Halloween" width="260"/g, 'src="cid:ticket-website-image" alt="Electronic FPTU Halloween ticket" width="560"')
+    .replace(/style="display:inline-block;width:260px;max-width:100%;height:auto;border-radius:18px"/g, 'style="display:inline-block;width:390px;max-width:100%;height:auto;border-radius:18px"')
+    .replace(/<h2 style="margin:0 0 22px;font-size:23px;line-height:1.3;color:#fff">[\s\S]*?<\/h2>/g, '')
+    .replace(/(<img src="cid:ticket-website-image"[\s\S]*?<\/div>)<h2[\s\S]*?<\/h2>/g, '$1')
 
 const addTicketLinks = html => html.replace(
     /(<p style="margin:0 0 28px;text-align:center;color:#111827;font-size:22px;font-weight:bold;letter-spacing:3px;word-break:break-all">[\s\S]*?<\/p>)(<div style="border-top:1px solid #444)/g,
