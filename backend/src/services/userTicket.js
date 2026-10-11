@@ -114,8 +114,7 @@ const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeI
 
 const ensureTicketDateForStaff = (ticket, staffDate) => {
   if (!staffDate) return
-  const eventDate = ticket.ticketTypeId?.ticketEventDate ? new Date(ticket.ticketTypeId.ticketEventDate) : null
-  const matches = eventDate ? eventDate.getDate() === Number(staffDate) : Number(ticket.ticketTypeId?.ticketTypeDate) === Number(staffDate)
+  const matches = Number(ticket.ticketTypeId?.ticketTypeDate) === Number(staffDate)
   if (!matches) throw Object.assign(new Error('Ticket is not available for the current staff date'), { statusCode: 403 })
 }
 
@@ -152,11 +151,11 @@ const getTicketByQrCode = async (qrCodeData, staffDate = null) => {
 
 const checkInByQrCode = async (qrCodeData, staffId) => {
   const ticket = await getTicketByQrCode(qrCodeData)
-  const now = new Date()
-  const eventDate = ticket.ticketTypeId?.ticketEventDate ? new Date(ticket.ticketTypeId.ticketEventDate) : null
-  const sameEventDate = eventDate
-    ? eventDate.getFullYear() === now.getFullYear() && eventDate.getMonth() === now.getMonth() && eventDate.getDate() === now.getDate()
-    : Number(ticket.ticketTypeId?.ticketTypeDate) === now.getDate()
+  const vietnamDay = Number(new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    day: 'numeric'
+  }).format(new Date()))
+  const sameEventDate = Number(ticket.ticketTypeId?.ticketTypeDate) === vietnamDay
 
   if (ticket.ticketStatus !== 'Pending') {
     throw Object.assign(new Error('Ticket has already been checked in'), { statusCode: 409 })
