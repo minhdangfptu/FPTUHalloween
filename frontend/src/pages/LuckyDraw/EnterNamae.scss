@@ -25,12 +25,35 @@
 .lucky-draw-entry__note { color: var(--lucky-muted); font-size: .72rem; }
 @media (max-width: 760px) { .lucky-draw-entry { padding: 16px 12px 36px; } .lucky-draw-entry__panel { display: block; padding: 26px 20px 20px; } .lucky-draw-entry__form-column { margin-top: 28px; } }
 @media (prefers-reduced-motion: reduce) { .lucky-draw-entry button { transition: none; } }
-.lucky-draw-qr-page { display: grid; min-height: 100vh; place-items: center; padding: 24px; color: var(--lucky-ink); background: var(--lucky-paper); }
+.lucky-draw-qr-page { display: grid; min-height: calc(100vh - 80px); box-sizing: border-box; place-items: center; padding: 16px; color: var(--lucky-ink); background: var(--lucky-paper); }
 .lucky-draw-qr-card { width: min(100%, 460px); box-sizing: border-box; padding: 40px; color: var(--lucky-ink); background: var(--lucky-surface); border: 1px solid var(--lucky-line); text-align: center; box-shadow: 0 24px 64px oklch(0% 0 0 / .12); }
 .lucky-draw-qr-card .lucky-draw-entry__mark { margin: 0 auto 20px; }
 .lucky-draw-qr-card .lucky-draw-entry__eyebrow { justify-content: center; margin-bottom: 12px; }
 .lucky-draw-qr-card h1 { margin: 0; font-size: clamp(2rem, 6vw, 3.4rem); letter-spacing: -.05em; }
 .lucky-draw-qr-card p { color: var(--lucky-muted); line-height: 1.6; }
-.lucky-draw-qr-code { display: grid; width: fit-content; margin: 28px auto 16px; padding: 14px; background: #fff; }
+.lucky-draw-qr-code { display: grid; width: fit-content; margin: 20px auto 12px; padding: 10px; background: #fff; }
+.lucky-draw-qr-code canvas { display: block; width: min(325px, 72vw) !important; height: auto !important; }
 .lucky-draw-qr-card small { color: var(--lucky-muted); overflow-wrap: anywhere; }
+.lucky-draw-qr-actions { display: grid; gap: 10px; margin-top: 24px; }
+.lucky-draw-qr-actions button { width: 100%; min-height: 44px; margin: 0; padding: .7rem 1rem; border-radius: 8px; box-shadow: none; font-weight: 800; }
+.lucky-draw-qr-actions button:first-child { color: #fff; background: var(--lucky-accent); border-color: var(--lucky-accent); }
+.lucky-draw-qr-actions button:first-child:hover { filter: brightness(.9); }
+.lucky-draw-qr-actions button:disabled { opacity: 1; color: var(--lucky-surface); background: var(--lucky-accent); border-color: var(--lucky-accent); cursor: default; }
+.lucky-draw-qr-actions button.is-secondary { color: var(--lucky-accent); background: var(--lucky-accent-soft); border-color: var(--lucky-accent); }
+.lucky-draw-qr-actions button.is-secondary:hover { color: var(--lucky-surface); background: var(--lucky-accent); border-color: var(--lucky-accent); }
+.lucky-draw-countdown { margin-top: 18px; color: var(--lucky-accent); font-size: clamp(2.5rem, 10vw, 4rem); font-weight: 800; letter-spacing: .06em; line-height: 1; }
+@media (min-width: 800px) {
+  .lucky-draw-qr-card { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr); grid-template-areas: "qr mark" "qr eyebrow" "qr title" "qr description" "qr actions" "url timer"; column-gap: clamp(28px, 5vw, 64px); align-items: center; width: min(900px, 100%); padding: clamp(24px, 3vw, 40px); text-align: left; }
+  .lucky-draw-qr-card .lucky-draw-entry__mark { grid-area: mark; margin: 0 0 8px; }
+  .lucky-draw-qr-card .lucky-draw-entry__eyebrow { grid-area: eyebrow; }
+  .lucky-draw-qr-card h1 { grid-area: title; }
+  .lucky-draw-qr-card > p { grid-area: description; }
+  .lucky-draw-qr-card .lucky-draw-entry__eyebrow { justify-content: flex-start; margin-bottom: 12px; }
+  .lucky-draw-qr-card h1 { font-size: clamp(2.2rem, 5vw, 4rem); }
+  .lucky-draw-qr-card > p { margin-top: 12px; }
+  .lucky-draw-qr-code { grid-area: qr; margin: 0 auto 12px; }
+  .lucky-draw-qr-card > small { grid-area: url; width: 100%; text-align: center; }
+  .lucky-draw-qr-actions { grid-area: actions; margin-top: 20px; }
+  .lucky-draw-countdown { grid-area: timer; margin-top: 28px; text-align: center; }
+}
 @media (prefers-reduced-motion: reduce) { .lucky-draw-entry button { transition: none; } }

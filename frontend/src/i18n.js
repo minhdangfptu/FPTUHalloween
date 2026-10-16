@@ -1507,6 +1507,22 @@ Object.entries(luckyDrawTranslations).forEach(([language, translations]) => {
   resources[language].translation.luckyDraw = translations;
 });
 
+resources.vi.translation.luckyDraw.openWheel = 'Mở vòng quay';
+resources.vi.translation.luckyDraw.openingWheel = 'Đang mở vòng quay...';
+resources.vi.translation.luckyDraw.wheelOpened = 'Đã mở vòng quay';
+resources.en.translation.luckyDraw.openWheel = 'Open wheel';
+resources.en.translation.luckyDraw.openingWheel = 'Opening wheel...';
+resources.en.translation.luckyDraw.wheelOpened = 'Wheel opened';
+resources.ja.translation.luckyDraw.openWheel = 'ホイールを開く';
+resources.ja.translation.luckyDraw.openingWheel = 'ホイールを開いています...';
+resources.ja.translation.luckyDraw.wheelOpened = 'ホイールを開きました';
+resources.vi.translation.luckyDraw.startTimer = 'Bắt đầu tính giờ';
+resources.vi.translation.luckyDraw.timerRunning = 'Đang đếm ngược';
+resources.en.translation.luckyDraw.startTimer = 'Start timer';
+resources.en.translation.luckyDraw.timerRunning = 'Timer running';
+resources.ja.translation.luckyDraw.startTimer = 'タイマーを開始';
+resources.ja.translation.luckyDraw.timerRunning = 'カウントダウン中';
+
 resources.vi.translation.luckyDraw.showQr = 'Hiển thị mã QR';
 resources.en.translation.luckyDraw.showQr = 'Show QR code';
 resources.ja.translation.luckyDraw.showQr = 'QRコードを表示';

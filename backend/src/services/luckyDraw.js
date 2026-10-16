@@ -6,6 +6,14 @@ const PAGE_SIZE = 10
 
 const buildError = (statusCode, message) => Object.assign(new Error(message), { statusCode })
 
+const getWheelPath = result => result?.data?.path || result?.data?.wheel?.path || result?.data?.wheels?.[0]?.path || null
+
+const getWheelEntryText = entry => {
+  const phoneDigits = String(entry.phoneNumber || '').replace(/\D/g, '')
+  const phoneSuffix = phoneDigits.slice(-4)
+  return `${entry.name} - ${phoneSuffix}`
+}
+
 const normalizeEntry = (payload = {}) => {
   const data = {
     name: String(payload.name || '').trim(),
@@ -23,7 +31,19 @@ const normalizeEntry = (payload = {}) => {
   return data
 }
 
-const createLuckyDraw = async payload => LuckyDraw.create(normalizeEntry(payload))
+const createLuckyDraw = async payload => {
+  const data = normalizeEntry(payload)
+  const existingEntry = await LuckyDraw.exists({ phoneNumber: data.phoneNumber })
+  if (existingEntry) throw buildError(409, 'Phone number already exists')
+  try {
+    return await LuckyDraw.create(data)
+  } catch (error) {
+    if (error?.code === 11000 && error?.keyPattern?.phoneNumber) {
+      throw buildError(409, 'Phone number already exists')
+    }
+    throw error
+  }
+}
 
 const syncLuckyDrawWheel = async () => {
   if (!config.WHEEL_OF_NAME_APIKEY) {
@@ -31,7 +51,7 @@ const syncLuckyDrawWheel = async () => {
   }
 
   const entries = await LuckyDraw.find({})
-    .select('name')
+    .select('name phoneNumber')
     .sort({ createAt: 1 })
     .lean()
 
@@ -49,7 +69,7 @@ const syncLuckyDrawWheel = async () => {
         title: config.WHEEL_OF_NAME_TITLE,
         description: 'FPTU Halloween lucky draw participants',
         wheelConfigs: [{
-          entries: entries.map(entry => ({ text: entry.name, enabled: true }))
+          entries: entries.map(entry => ({ text: getWheelEntryText(entry) }))
         }]
       }),
       signal: controller.signal
@@ -61,7 +81,7 @@ const syncLuckyDrawWheel = async () => {
     }
 
     const result = await response.json()
-    return { synced: true, path: result.data?.path || null }
+    return { synced: true, path: getWheelPath(result) }
   } finally {
     clearTimeout(timeout)
   }
@@ -72,6 +92,9 @@ const getLuckyDrawWheel = async () => {
     throw buildError(503, 'Wheel of Names API key is not configured')
   }
 
+  const syncedWheel = await syncLuckyDrawWheel()
+  if (syncedWheel.path) return { path: syncedWheel.path, url: `https://wheelofnames.com/${syncedWheel.path}` }
+
   const response = await fetch(`${config.WHEEL_OF_NAME_API_URL.replace('/private', '/private')}?fields=title,path`, {
     headers: { 'x-api-key': config.WHEEL_OF_NAME_APIKEY }
   })
@@ -79,20 +102,12 @@ const getLuckyDrawWheel = async () => {
 
   const result = await response.json()
   const wheel = (result.data?.wheels || []).find(item => item.title === config.WHEEL_OF_NAME_TITLE)
-  if (!wheel?.path) throw buildError(404, 'Lucky draw wheel not found')
-  return { path: wheel.path, url: `https://wheelofnames.com/${wheel.path}` }
+  if (wheel?.path) return { path: wheel.path, url: `https://wheelofnames.com/${wheel.path}` }
+
+  throw buildError(404, 'Lucky draw wheel not found')
 }
 
-const createLuckyDrawAndSync = async payload => {
-  const entry = await createLuckyDraw(payload)
-  let wheelSync
-  try {
-    wheelSync = await syncLuckyDrawWheel()
-  } catch (error) {
-    wheelSync = { synced: false, reason: error.message }
-  }
-  return { entry, wheelSync }
-}
+const createLuckyDrawAndSync = async payload => ({ entry: await createLuckyDraw(payload) })
 
 const getLuckyDraws = async query => {
   const page = Math.max(Number.parseInt(query.page, 10) || 1, 1)
