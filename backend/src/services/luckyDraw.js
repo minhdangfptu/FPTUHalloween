@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { LuckyDraw } = require('../models')
+const { config } = require('../config/environment')
 
 const PAGE_SIZE = 10
 
@@ -23,6 +24,75 @@ const normalizeEntry = (payload = {}) => {
 }
 
 const createLuckyDraw = async payload => LuckyDraw.create(normalizeEntry(payload))
+
+const syncLuckyDrawWheel = async () => {
+  if (!config.WHEEL_OF_NAME_APIKEY) {
+    return { synced: false, reason: 'Wheel of Names API key is not configured' }
+  }
+
+  const entries = await LuckyDraw.find({})
+    .select('name')
+    .sort({ createAt: 1 })
+    .lean()
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), config.WHEEL_OF_NAME_TIMEOUT_MS)
+
+  try {
+    const response = await fetch(config.WHEEL_OF_NAME_API_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': config.WHEEL_OF_NAME_APIKEY
+      },
+      body: JSON.stringify({
+        title: config.WHEEL_OF_NAME_TITLE,
+        description: 'FPTU Halloween lucky draw participants',
+        wheelConfigs: [{
+          entries: entries.map(entry => ({ text: entry.name, enabled: true }))
+        }]
+      }),
+      signal: controller.signal
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.text()
+      throw buildError(502, `Wheel of Names sync failed (${response.status}): ${errorBody.slice(0, 200)}`)
+    }
+
+    const result = await response.json()
+    return { synced: true, path: result.data?.path || null }
+  } finally {
+    clearTimeout(timeout)
+  }
+}
+
+const getLuckyDrawWheel = async () => {
+  if (!config.WHEEL_OF_NAME_APIKEY) {
+    throw buildError(503, 'Wheel of Names API key is not configured')
+  }
+
+  const response = await fetch(`${config.WHEEL_OF_NAME_API_URL.replace('/private', '/private')}?fields=title,path`, {
+    headers: { 'x-api-key': config.WHEEL_OF_NAME_APIKEY }
+  })
+  if (!response.ok) throw buildError(502, `Unable to load Wheel of Names (${response.status})`)
+
+  const result = await response.json()
+  const wheel = (result.data?.wheels || []).find(item => item.title === config.WHEEL_OF_NAME_TITLE)
+  if (!wheel?.path) throw buildError(404, 'Lucky draw wheel not found')
+  return { path: wheel.path, url: `https://wheelofnames.com/${wheel.path}` }
+}
+
+const createLuckyDrawAndSync = async payload => {
+  const entry = await createLuckyDraw(payload)
+  let wheelSync
+  try {
+    wheelSync = await syncLuckyDrawWheel()
+  } catch (error) {
+    wheelSync = { synced: false, reason: error.message }
+  }
+  return { entry, wheelSync }
+}
 
 const getLuckyDraws = async query => {
   const page = Math.max(Number.parseInt(query.page, 10) || 1, 1)
@@ -66,4 +136,4 @@ const updatePrize = async (id, prize) => {
   return entry
 }
 
-module.exports = { createLuckyDraw, getLuckyDraws, updatePrize }
+module.exports = { createLuckyDraw, createLuckyDrawAndSync, syncLuckyDrawWheel, getLuckyDrawWheel, getLuckyDraws, updatePrize }

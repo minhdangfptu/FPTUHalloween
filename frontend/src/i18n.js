@@ -1481,6 +1481,15 @@ resources.en.translation.luckyDraw.scanTitle = 'Scan to join';
 resources.en.translation.luckyDraw.scanDescription = 'Scan this QR code with your phone camera to open the lucky draw page.';
 resources.ja.translation.luckyDraw.scanTitle = 'スキャンして参加';
 resources.ja.translation.luckyDraw.scanDescription = 'スマートフォンのカメラでQRコードを読み取り、ラッキードローに参加してください。';
+resources.vi.translation.luckyDraw.openWheel = 'Mở Wheel';
+resources.vi.translation.luckyDraw.openingWheel = 'Đang mở Wheel of Names...';
+resources.vi.translation.luckyDraw.wheelOpened = 'Đã mở Wheel of Names';
+resources.en.translation.luckyDraw.openWheel = 'Open wheel';
+resources.en.translation.luckyDraw.openingWheel = 'Opening Wheel of Names...';
+resources.en.translation.luckyDraw.wheelOpened = 'Wheel of Names opened';
+resources.ja.translation.luckyDraw.openWheel = 'ホイールを開く';
+resources.ja.translation.luckyDraw.openingWheel = 'Wheel of Namesを開いています...';
+resources.ja.translation.luckyDraw.wheelOpened = 'Wheel of Namesを開きました';
 
 const luckyDrawTranslations = {
   vi: {

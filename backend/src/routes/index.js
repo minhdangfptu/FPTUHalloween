@@ -28,6 +28,7 @@ router.get('/_health', (req, res) => res.json({ ok: true }))
 // LUCKY DRAW
 router.post('/lucky-draw', luckyDrawCtrl.create)
 router.get('/lucky-draw', requireAuth, requireRole('Admin'), luckyDrawCtrl.getList)
+router.get('/lucky-draw/wheel', requireAuth, requireRole('Admin'), luckyDrawCtrl.getWheel)
 router.patch('/lucky-draw/:id/prize', requireAuth, requireRole('Admin'), luckyDrawCtrl.updatePrize)
 
 // Public endpoint: PayOS calls this URL directly, so it must not use JWT auth.

@@ -9,8 +9,9 @@ const send = (res, result, statusCode = 200) => res.status(statusCode).json({
   errors: null
 })
 
-const create = (req, res, next) => Promise.resolve(luckyDrawSvc.createLuckyDraw(req.body)).then(result => send(res, result, 201)).catch(next)
+const create = (req, res, next) => Promise.resolve(luckyDrawSvc.createLuckyDrawAndSync(req.body)).then(result => send(res, result, 201)).catch(next)
 const getList = (req, res, next) => Promise.resolve(luckyDrawSvc.getLuckyDraws(req.query)).then(result => send(res, result)).catch(next)
 const updatePrize = (req, res, next) => Promise.resolve(luckyDrawSvc.updatePrize(req.params.id, req.body.prize)).then(result => send(res, result)).catch(next)
+const getWheel = (req, res, next) => Promise.resolve(luckyDrawSvc.getLuckyDrawWheel()).then(result => send(res, result)).catch(next)
 
-module.exports = { create, getList, updatePrize }
+module.exports = { create, getList, updatePrize, getWheel }

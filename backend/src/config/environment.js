@@ -19,6 +19,10 @@ const config = {
   FACEBOOK_SYNC_INTERVAL_MS: Math.max(Number(process.env.FACEBOOK_SYNC_INTERVAL_MS) || 60 * 60 * 1000, 60 * 1000),
   FACEBOOK_INITIAL_POST_LIMIT: Math.min(Math.max(Number(process.env.FACEBOOK_INITIAL_POST_LIMIT) || 350, 1), 350),
   FACEBOOK_REQUEST_TIMEOUT_MS: Math.max(Number(process.env.FACEBOOK_REQUEST_TIMEOUT_MS) || 15 * 1000, 1000),
+  WHEEL_OF_NAME_APIKEY: String(process.env.WHEEL_OF_NAME_APIKEY || '').trim(),
+  WHEEL_OF_NAME_TITLE: String(process.env.WHEEL_OF_NAME_TITLE || 'FPTU Halloween Lucky Draw').trim(),
+  WHEEL_OF_NAME_API_URL: String(process.env.WHEEL_OF_NAME_API_URL || 'https://wheelofnames.com/api/v3/wheels/private').trim(),
+  WHEEL_OF_NAME_TIMEOUT_MS: Math.max(Number(process.env.WHEEL_OF_NAME_TIMEOUT_MS) || 15 * 1000, 1000),
   get IS_PROD() { return this.NODE_ENV === 'production' },
   get IS_DEV() { return this.NODE_ENV === 'development' }
 }
