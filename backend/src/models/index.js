@@ -16,5 +16,6 @@ module.exports = {
   FeedbackForm: require('./FeedbackForm'),
   FeedbackResponse: require('./FeedbackResponse'),
   DdayVoteConfig: require('./DdayVoteConfig'),
-  DdayVote: require('./DdayVote')
+  DdayVote: require('./DdayVote'),
+  LuckyDraw: require('./LuckyDraw')
 }

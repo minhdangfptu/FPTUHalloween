@@ -1,0 +1,36 @@
+/* Hallmark · macrostructure: editorial invitation · tone: event operations · anchor hue: FPT red */
+:root { --lucky-paper: oklch(97% .008 80); --lucky-surface: oklch(100% 0 0); --lucky-ink: oklch(22% .025 260); --lucky-muted: oklch(51% .025 260); --lucky-line: oklch(88% .018 80); --lucky-accent: oklch(53% .22 28); --lucky-accent-soft: oklch(96% .035 25); }
+[data-theme="dark"] { --lucky-paper: oklch(18% .018 260); --lucky-surface: oklch(23% .025 260); --lucky-ink: oklch(94% .015 90); --lucky-muted: oklch(73% .02 260); --lucky-line: oklch(100% 0 0 / .15); --lucky-accent: oklch(67% .19 32); --lucky-accent-soft: oklch(32% .07 28); }
+.lucky-draw-entry { min-height: 0; padding: clamp(20px, 3vw, 42px) clamp(12px, 3vw, 40px) clamp(28px, 4vw, 56px); color: var(--lucky-ink); background: var(--lucky-paper); font-family: Roboto, Arial, sans-serif; }
+.lucky-draw-entry__panel { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); gap: clamp(28px, 6vw, 84px); align-items: center; width: min(1060px, 100%); box-sizing: border-box; margin: 0 auto; padding: clamp(28px, 4vw, 56px); background: var(--lucky-surface); border: 1px solid var(--lucky-line); box-shadow: 0 24px 64px oklch(0% 0 0 / .08); }
+.lucky-draw-entry__copy, .lucky-draw-entry__form-column { min-width: 0; }
+.lucky-draw-entry__eyebrow, .lucky-draw-entry__kicker { color: var(--lucky-accent); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.lucky-draw-entry__eyebrow { display: flex; gap: 8px; align-items: center; margin-bottom: 30px; }
+.lucky-draw-entry__mark { display: grid; width: 52px; height: 52px; margin-bottom: 20px; place-items: center; color: var(--lucky-surface); background: var(--lucky-accent); border-radius: 50%; }
+.lucky-draw-entry__kicker { margin: 0 0 12px; }
+.lucky-draw-entry h1 { margin: 0; font-size: clamp(2.6rem, 6vw, 5.6rem); font-weight: 700; line-height: .96; letter-spacing: -.055em; }
+.lucky-draw-entry h1 em { color: var(--lucky-accent); font-style: normal; }
+.lucky-draw-entry__intro { max-width: 570px; margin: 20px 0 28px; color: var(--lucky-muted); font-size: 1.05rem; line-height: 1.65; }
+.lucky-draw-entry__form { display: grid; gap: 16px; max-width: 520px; }
+.lucky-draw-entry__form label { display: grid; gap: 7px; color: var(--lucky-muted); font-size: .76rem; font-weight: 800; }
+.lucky-draw-entry__input { display: flex; gap: 10px; align-items: center; padding: 0 16px; border: 1px solid var(--lucky-line); border-radius: 6px; background: var(--lucky-surface); transition: border-color 300ms ease, box-shadow 300ms ease, background-color 300ms ease; }
+.lucky-draw-entry__input:focus-within { border-color: var(--lucky-accent); box-shadow: 0 0 0 2px var(--lucky-accent-soft); }
+.lucky-draw-entry__input svg { color: var(--lucky-accent); flex: 0 0 auto; }
+.lucky-draw-entry input { width: 100%; min-height: 48px; color: var(--lucky-ink); background: transparent; border: 0; outline: 0; font: inherit; font-size: 14px; }
+.lucky-draw-entry input::placeholder { color: var(--lucky-muted); opacity: 1; }
+.lucky-draw-entry button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; width: fit-content; margin-top: 8px; padding: 13px 17px; color: var(--lucky-surface); background: var(--lucky-accent); border: 1px solid var(--lucky-accent); cursor: pointer; font: inherit; font-weight: 800; transition: transform 2000ms var(--ease-out, cubic-bezier(.16, 1, .3, 1)), background-color 2000ms var(--ease-out, cubic-bezier(.16, 1, .3, 1)), border-color 2000ms var(--ease-out, cubic-bezier(.16, 1, .3, 1)), box-shadow 2000ms var(--ease-out, cubic-bezier(.16, 1, .3, 1)); }
+.lucky-draw-entry button:hover { background: oklch(44% .19 28); border-color: oklch(44% .19 28); box-shadow: 0 10px 24px oklch(53% .22 28 / .22); transform: translateY(-1px); }
+.lucky-draw-entry button:disabled { cursor: wait; opacity: .6; }
+.lucky-draw-entry button:focus-visible { outline: 3px solid var(--lucky-accent); outline-offset: 3px; }
+.lucky-draw-entry__note { color: var(--lucky-muted); font-size: .72rem; }
+@media (max-width: 760px) { .lucky-draw-entry { padding: 16px 12px 36px; } .lucky-draw-entry__panel { display: block; padding: 26px 20px 20px; } .lucky-draw-entry__form-column { margin-top: 28px; } }
+@media (prefers-reduced-motion: reduce) { .lucky-draw-entry button { transition: none; } }
+.lucky-draw-qr-page { display: grid; min-height: 100vh; place-items: center; padding: 24px; color: var(--lucky-ink); background: var(--lucky-paper); }
+.lucky-draw-qr-card { width: min(100%, 460px); box-sizing: border-box; padding: 40px; color: var(--lucky-ink); background: var(--lucky-surface); border: 1px solid var(--lucky-line); text-align: center; box-shadow: 0 24px 64px oklch(0% 0 0 / .12); }
+.lucky-draw-qr-card .lucky-draw-entry__mark { margin: 0 auto 20px; }
+.lucky-draw-qr-card .lucky-draw-entry__eyebrow { justify-content: center; margin-bottom: 12px; }
+.lucky-draw-qr-card h1 { margin: 0; font-size: clamp(2rem, 6vw, 3.4rem); letter-spacing: -.05em; }
+.lucky-draw-qr-card p { color: var(--lucky-muted); line-height: 1.6; }
+.lucky-draw-qr-code { display: grid; width: fit-content; margin: 28px auto 16px; padding: 14px; background: #fff; }
+.lucky-draw-qr-card small { color: var(--lucky-muted); overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) { .lucky-draw-entry button { transition: none; } }

@@ -6,6 +6,7 @@ import {
   ContactRound,
   Home,
   KeyRound,
+  Gift,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -47,6 +48,7 @@ const MENU_BY_ROLE = {
     { id: "facebook-news", labelKey: "facebookNews", icon: Newspaper },
     { id: "feedback", labelKey: "feedbackManagement", icon: ClipboardPenLine },
     { id: "vote", labelKey: "ddayVote", icon: Vote },
+    { id: "lucky-draw", labelKey: "luckyDraw", icon: Gift },
     { id: "home", labelKey: "eventHome", icon: Home },
   ],
   staff: [
@@ -145,6 +147,7 @@ const ManageSidebar = ({ role, activeItem = "dashboard", onNavigate }) => {
       resolvedRole === "admin" ? "/admin/tickets" : "/staff/ticket-types",
     feedback: resolvedRole === "admin" ? "/admin/feedback" : "/staff/feedback",
     vote: "/admin/votes",
+    "lucky-draw": "/admin/lucky-draw",
     "purchased-tickets":
       resolvedRole === "admin"
         ? "/admin/purchased-tickets"

@@ -1466,4 +1466,46 @@ resources.ja.translation.ticket.heroIntro = '名もなき者のお化け屋敷�
 Object.assign(resources.vi.translation.auth, { toast: { loginSuccess: 'Đăng nhập thành công.', loginError: 'Đăng nhập thất bại.', registerSuccess: 'Đăng ký thành công.', registerError: 'Đăng ký thất bại.', verifySuccess: 'Xác thực thành công.', verifyError: 'Xác thực thất bại.', googleLoginError: 'Không thể đăng nhập với Google.', noToken: 'Vui lòng đăng nhập để tiếp tục.', passwordResetSuccess: 'Đặt lại mật khẩu thành công.', passwordChangeSuccess: 'Đổi mật khẩu thành công.' } });
 Object.assign(resources.en.translation.auth, { toast: { loginSuccess: 'Login successful.', loginError: 'Login failed.', registerSuccess: 'Registration successful.', registerError: 'Registration failed.', verifySuccess: 'Verification successful.', verifyError: 'Verification failed.', googleLoginError: 'Unable to log in with Google.', noToken: 'Please log in to continue.', passwordResetSuccess: 'Password reset successfully.', passwordChangeSuccess: 'Password changed successfully.' } });
 
+resources.vi.translation.components.luckyDraw = 'Vòng quay may mắn';
+resources.en.translation.components.luckyDraw = 'Lucky draw';
+resources.vi.translation.luckyDraw = {};
+resources.en.translation.luckyDraw = {};
+resources.ja.translation.luckyDraw = {};
+resources.ja.translation.components.luckyDraw = 'ラッキードロー';
+resources.vi.translation.luckyDraw.showQr = 'Hiển thị mã QR';
+resources.en.translation.luckyDraw.showQr = 'Show QR code';
+resources.ja.translation.luckyDraw.showQr = 'QRコードを表示';
+resources.vi.translation.luckyDraw.scanTitle = 'Quét để tham gia';
+resources.vi.translation.luckyDraw.scanDescription = 'Dùng camera điện thoại để quét mã QR và mở trang vòng quay may mắn.';
+resources.en.translation.luckyDraw.scanTitle = 'Scan to join';
+resources.en.translation.luckyDraw.scanDescription = 'Scan this QR code with your phone camera to open the lucky draw page.';
+resources.ja.translation.luckyDraw.scanTitle = 'スキャンして参加';
+resources.ja.translation.luckyDraw.scanDescription = 'スマートフォンのカメラでQRコードを読み取り、ラッキードローに参加してください。';
+
+const luckyDrawTranslations = {
+  vi: {
+    entryEyebrow: 'FPTU HALLOWEEN 2026', entryKicker: 'VÒNG QUAY WISHBOUND', entryTitle: 'Để vận may|gọi tên bạn.', entryIntro: 'Điền thông tin để tham gia vòng quay may mắn. Một cái tên, một cơ hội, một món quà đang chờ.', name: 'Họ và tên', namePlaceholder: 'Nhập tên của bạn', phone: 'Số điện thoại', phonePlaceholder: '09xx xxx xxx', submit: 'Tham gia vòng quay', submitting: 'Đang ghi nhận...', privacy: 'Thông tin chỉ được sử dụng cho hoạt động trao quà của chương trình.', saving: 'Đang lưu thông tin tham gia...', success: 'Đã ghi nhận thông tin. Chúc bạn may mắn!', saveError: 'Không thể lưu thông tin.', title: 'Vòng quay may mắn', intro: 'Danh sách người tham gia và kết quả trao quà.', searchPlaceholder: 'Tìm tên hoặc số điện thoại', prize: 'Giải thưởng', allPrizes: 'Tất cả', from: 'Từ ngày', to: 'Đến ngày', participants: 'người tham gia', loading: 'Đang tải danh sách vòng quay...', loadingData: 'Đang tải dữ liệu...', empty: 'Chưa có người tham gia.', time: 'Thời gian', actions: 'Thao tác', noPrize: 'Chưa có giải', edit: 'Sửa', save: 'Lưu', updating: 'Đang cập nhật giải thưởng...', successUpdate: 'Cập nhật thành công', previous: 'Trước', next: 'Sau', page: 'Trang', refresh: 'Làm mới', luckyDraw: 'Vòng quay may mắn'
+  },
+  en: {
+    entryEyebrow: 'FPTU HALLOWEEN 2026', entryKicker: 'THE WISHBOUND DRAW', entryTitle: 'Let fortune|call your name.', entryIntro: 'Enter your details to join the lucky draw. One name, one chance, one gift waiting.', name: 'Full name', namePlaceholder: 'Enter your name', phone: 'Phone number', phonePlaceholder: '09xx xxx xxx', submit: 'Join the lucky draw', submitting: 'Saving...', privacy: 'Your information is used only for this programme’s prize delivery.', saving: 'Saving your entry...', success: 'Entry recorded. Good luck!', saveError: 'Unable to save your entry.', title: 'Lucky draw', intro: 'Participants and prize results.', searchPlaceholder: 'Search name or phone number', prize: 'Prize', allPrizes: 'All prizes', from: 'From', to: 'To', participants: 'participants', loading: 'Loading lucky draw entries...', loadingData: 'Loading data...', empty: 'No participants yet.', time: 'Created at', actions: 'Actions', noPrize: 'No prize', edit: 'Edit', save: 'Save', updating: 'Updating prize...', successUpdate: 'Updated successfully', previous: 'Previous', next: 'Next', page: 'Page', refresh: 'Refresh', luckyDraw: 'Lucky draw'
+  },
+  ja: {
+    entryEyebrow: 'FPTU HALLOWEEN 2026', entryKicker: 'WISHBOUND ドロー', entryTitle: '幸運が|あなたを呼ぶ。', entryIntro: 'ラッキードローに参加するため、情報を入力してください。', name: '氏名', namePlaceholder: '氏名を入力', phone: '電話番号', phonePlaceholder: '電話番号を入力', submit: 'ラッキードローに参加', submitting: '保存中...', privacy: '情報は賞品の受け渡しのみに使用します。', saving: '参加情報を保存中...', success: '参加情報を受け付けました。幸運を祈ります！', saveError: '情報を保存できませんでした。', title: 'ラッキードロー', intro: '参加者と賞品の管理。', searchPlaceholder: '氏名または電話番号を検索', prize: '賞品', allPrizes: 'すべて', from: '開始日', to: '終了日', participants: '参加者', loading: '参加者を読み込み中...', loadingData: 'データを読み込み中...', empty: '参加者はまだいません。', time: '作成日時', actions: '操作', noPrize: '賞品なし', edit: '編集', save: '保存', updating: '賞品を更新中...', successUpdate: '更新しました', previous: '前へ', next: '次へ', page: 'ページ', refresh: '更新', luckyDraw: 'ラッキードロー'
+  }
+};
+
+Object.entries(luckyDrawTranslations).forEach(([language, translations]) => {
+  resources[language].translation.luckyDraw = translations;
+});
+
+resources.vi.translation.luckyDraw.showQr = 'Hiển thị mã QR';
+resources.en.translation.luckyDraw.showQr = 'Show QR code';
+resources.ja.translation.luckyDraw.showQr = 'QRコードを表示';
+resources.vi.translation.luckyDraw.scanTitle = 'Quét để tham gia';
+resources.vi.translation.luckyDraw.scanDescription = 'Dùng camera điện thoại để quét mã QR và mở trang vòng quay may mắn.';
+resources.en.translation.luckyDraw.scanTitle = 'Scan to join';
+resources.en.translation.luckyDraw.scanDescription = 'Scan this QR code with your phone camera to open the lucky draw page.';
+resources.ja.translation.luckyDraw.scanTitle = 'スキャンして参加';
+resources.ja.translation.luckyDraw.scanDescription = 'スマートフォンのカメラでQRコードを読み取り、ラッキードローに参加してください。';
+
 export default i18n;

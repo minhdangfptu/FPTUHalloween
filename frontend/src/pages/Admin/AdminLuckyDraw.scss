@@ -1,0 +1,38 @@
+/* Hallmark · admin directory · genre: editorial administration · theme: FPT red */
+.admin-lucky-draw-page { min-height: 100vh; background: #f5f2ed; }
+.admin-lucky-draw { flex: 1; min-width: 0; padding: 44px clamp(24px, 5vw, 72px); color: #202124; }
+.admin-lucky-draw__header { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
+.admin-lucky-draw__header-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; }
+.admin-lucky-draw__kicker { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; color: #ce0000; font-size: 13px; font-weight: 700; }
+.admin-lucky-draw h1 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: .95; letter-spacing: -.07em; }
+.admin-lucky-draw__header > div > p:last-child { margin: 12px 0 0; color: #73777d; }
+.admin-lucky-draw__refresh, .admin-lucky-draw__qr, .admin-lucky-draw__edit, .admin-lucky-draw__save { display: inline-flex; align-items: center; gap: 7px; padding: 10px 14px; color: #ce0000; background: #fff; border: 1px solid #ffd8dd; border-radius: 8px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; white-space: nowrap; }
+.admin-lucky-draw__qr:hover, .admin-lucky-draw__refresh:hover:not(:disabled) { background: #fff4f4; }
+.admin-lucky-draw__refresh:disabled { opacity: .55; cursor: wait; }
+.admin-lucky-draw__card { overflow: hidden; background: #fff; border: 1px solid #e8e9eb; border-radius: 14px; box-shadow: 0 6px 18px #2021240a; }
+.admin-lucky-draw__summary { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 16px 24px; border-bottom: 1px solid #eeeeef; color: #73777d; font-size: 13px; }
+.admin-lucky-draw__summary strong { color: #ce0000; font-size: 26px; }
+.admin-lucky-draw__filters { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; width: auto; margin-left: auto; }
+.admin-lucky-draw__filters label, .admin-lucky-draw__search { display: flex; align-items: center; gap: 6px; color: #73777d; font-size: 11px; font-weight: 700; }
+.admin-lucky-draw__filters input, .admin-lucky-draw__search { min-height: 34px; box-sizing: border-box; border: 1px solid #e4e6e9; border-radius: 7px; font: inherit; }
+.admin-lucky-draw__filters label input { width: 135px; padding: 0 8px; }
+.admin-lucky-draw__search { padding: 0 9px; background: #fafafa; }
+.admin-lucky-draw__search input { width: 170px; padding: 0; background: transparent; border: 0; outline: 0; }
+.admin-lucky-draw__search button { display: grid; place-items: center; color: #ce0000; background: none; border: 0; cursor: pointer; }
+.admin-lucky-draw__empty { padding: 64px 24px; color: #73777d; text-align: center; }
+.admin-lucky-draw__table-wrap { overflow-x: auto; }
+.admin-lucky-draw table { width: 100%; min-width: 850px; border-collapse: collapse; font-size: 13px; }
+.admin-lucky-draw th { padding: 14px 18px; color: #73777d; background: #fafafa; font-size: 11px; letter-spacing: .06em; text-align: left; text-transform: uppercase; }
+.admin-lucky-draw td { padding: 18px; vertical-align: middle; border-top: 1px solid #eeeeef; }
+.admin-lucky-draw__person, .admin-lucky-draw__contact, .admin-lucky-draw__date { display: flex; align-items: center; gap: 7px; }
+.admin-lucky-draw__person svg, .admin-lucky-draw__contact svg, .admin-lucky-draw__date svg { color: #ce0000; }
+.admin-lucky-draw__contact, .admin-lucky-draw__date { color: #73777d; }
+.admin-lucky-draw__prize { display: inline-flex; padding: 6px 9px; color: #73777d; background: #f3f3f3; border-radius: 999px; font-size: 11px; font-weight: 700; }
+.admin-lucky-draw__prize.is-won { color: #26734d; background: #eaf7ef; }
+.admin-lucky-draw__prize-input { width: 150px; padding: 8px; border: 1px solid #ce0000; border-radius: 6px; }
+.admin-lucky-draw__save { padding: 8px 10px; color: #26734d; border-color: #b9e4c9; }
+.admin-lucky-draw__edit { padding: 8px 10px; }
+.admin-lucky-draw__pagination { display: flex; justify-content: flex-end; align-items: center; gap: 12px; padding: 14px 18px; border-top: 1px solid #eeeeef; color: #73777d; font-size: 12px; }
+.admin-lucky-draw__pagination button { padding: 7px 11px; color: #ce0000; background: #fff; border: 1px solid #ffd8dd; border-radius: 7px; cursor: pointer; font: inherit; font-weight: 700; }
+.admin-lucky-draw__pagination button:disabled { cursor: not-allowed; opacity: .45; }
+@media (max-width: 760px) { .admin-lucky-draw { padding: 28px 18px; } .admin-lucky-draw__header { display: block; } .admin-lucky-draw__header-actions { margin-top: 18px; } .admin-lucky-draw__filters { align-items: stretch; width: 100%; margin-top: 10px; } .admin-lucky-draw__filters label, .admin-lucky-draw__search { width: 100%; } .admin-lucky-draw__filters label input, .admin-lucky-draw__search input { flex: 1; width: auto; } }

@@ -46,6 +46,8 @@ import ManageHeader from "./components/ManageHeader";
 import AdminContactList from "./pages/Admin/AdminContactList";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminListUser from "./pages/Admin/AdminListUser";
+import AdminLuckyDraw from "./pages/Admin/AdminLuckyDraw";
+import EnterNamae from "./pages/LuckyDraw/EnterNamae";
 import AdminOrderList from "./pages/Admin/AdminOrderList";
 import HotNews from "./pages/Admin/HotNews";
 import FacebookNews from "./pages/Admin/FacebookNews";
@@ -472,6 +474,15 @@ export default function App() {
           element={
             <ManageLayout role="admin">
               <AdminListUser />
+            </ManageLayout>
+          }
+        />
+        <Route path="/lucky-draw" element={<Layout><EnterNamae /></Layout>} />
+        <Route
+          path="/admin/lucky-draw"
+          element={
+            <ManageLayout role="admin">
+              <AdminLuckyDraw />
             </ManageLayout>
           }
         />

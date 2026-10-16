@@ -14,6 +14,7 @@ const payOSWebhookCtrl = require('../controllers/payOSWebhook')
 const userTicketCtrl = require('../controllers/userTicket')
 const feedbackCtrl = require('../controllers/feedback')
 const ddayVoteCtrl = require('../controllers/ddayVote')
+const luckyDrawCtrl = require('../controllers/luckyDraw')
 const staffChatRoute = require('./staffChat')
 // const adminCtrl = require('../controllers/admin')
 
@@ -23,6 +24,11 @@ const { requireVoteSession } = require('../middlewares/vote')
 
 // Health (optional)
 router.get('/_health', (req, res) => res.json({ ok: true }))
+
+// LUCKY DRAW
+router.post('/lucky-draw', luckyDrawCtrl.create)
+router.get('/lucky-draw', requireAuth, requireRole('Admin'), luckyDrawCtrl.getList)
+router.patch('/lucky-draw/:id/prize', requireAuth, requireRole('Admin'), luckyDrawCtrl.updatePrize)
 
 // Public endpoint: PayOS calls this URL directly, so it must not use JWT auth.
 router.post('/payos-webhook', payOSWebhookCtrl.handleWebhook)

@@ -174,6 +174,14 @@ const ERROR_TRANSLATIONS = {
   'Too many news requests. Please try again later.': 'Bạn đang tải tin quá nhanh. Vui lòng thử lại sau.',
 };
 
+ERROR_TRANSLATIONS['Name is required'] = 'Vui lòng nhập họ và tên.';
+ERROR_TRANSLATIONS['Name must be at most 120 characters'] = 'Họ tên không được quá 120 ký tự.';
+ERROR_TRANSLATIONS['Phone number is required'] = 'Vui lòng nhập số điện thoại.';
+ERROR_TRANSLATIONS['Phone number is invalid'] = 'Số điện thoại không hợp lệ.';
+ERROR_TRANSLATIONS['Prize must be at most 160 characters'] = 'Giải thưởng không được quá 160 ký tự.';
+ERROR_TRANSLATIONS['Lucky draw entry not found'] = 'Không tìm thấy lượt tham gia.';
+ERROR_TRANSLATIONS['Invalid lucky draw ID'] = 'Mã lượt tham gia không hợp lệ.';
+
 const ERROR_TRANSLATIONS_EN = Object.fromEntries(
   Object.keys(ERROR_TRANSLATIONS).map((message) => [message, message]),
 );
@@ -230,6 +238,16 @@ const getErrorMessage = (error) => {
   }
   return 'An unexpected error occurred.';
 };
+
+Object.assign(ERROR_TRANSLATIONS_JA, {
+  'Name is required': '氏名を入力してください。',
+  'Name must be at most 120 characters': '氏名は120文字以内で入力してください。',
+  'Phone number is required': '電話番号を入力してください。',
+  'Phone number is invalid': '電話番号が正しくありません。',
+  'Prize must be at most 160 characters': '賞品は160文字以内で入力してください。',
+  'Lucky draw entry not found': '参加情報が見つかりません。',
+  'Invalid lucky draw ID': '参加IDが正しくありません。',
+});
 
 const translateVoteError = (message) => {
   if (/^Vote category \d+ must have at least two options$/.test(message)) {
