@@ -380,6 +380,10 @@
   color: var(--public-dark-muted);
 }
 
+:root[data-theme='dark'] .btc-department strong {
+  color: var(--public-dark-white);
+}
+
 :root[data-theme='dark'] .btc-hero,
 :root[data-theme='dark'] .btc-group-photo figure,
 :root[data-theme='dark'] .btc-department:not(:nth-child(3n)),
