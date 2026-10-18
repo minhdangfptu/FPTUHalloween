@@ -47,7 +47,7 @@ const resources = {
           lede: 'Một mùa Halloween mới đang được mở khóa tại FPTU Hà Nội.', buy: 'Mua vé', explore: 'Xem sự kiện',
           countdownDone: 'Đã đến ngày diễn ra', countdownLeft: 'Thời gian còn lại', days: 'Ngày', hours: 'Giờ', minutes: 'Phút', seconds: 'Giây',
           concept: 'Một concept đủ gần để chạm vào, đủ lạ để nhớ.', conceptLead: 'FPTU Halloween 2026 là nơi câu chuyện, âm nhạc và những cuộc gặp bất ngờ cùng tồn tại trong một đêm.', conceptBody: 'Chọn một lối đi, nhập vai theo cách của bạn và để những chi tiết nhỏ dẫn đường. Nội dung năm nay sẽ được cập nhật dần trong thời gian tới.',
-          highlights: 'Điểm nổi bật', highlightsIntro: 'Những điểm dừng tạo nên toàn bộ nhịp điệu của đêm hội.', timeline: 'Timeline chương trình', timelineNote: 'Lịch trình chi tiết sẽ được công bố khi chương trình hoàn tất các mốc chuẩn bị.', map: 'Map preview', mapCaption: 'Sơ đồ minh họa · cập nhật sau', sponsors: 'Nhà tài trợ', sponsorsNote: 'Danh sách đối tác đồng hành sẽ được cập nhật.',
+          highlights: 'Điểm nổi bật', highlightsIntro: 'Những điểm dừng tạo nên toàn bộ nhịp điệu của đêm hội.', timeline: 'Timeline chương trình', timelineNote: 'Lịch trình chi tiết sẽ được công bố khi chương trình hoàn tất các mốc chuẩn bị.', map: 'Sơ đồ sự kiện', mapCaption: 'Sơ đồ minh họa · cập nhật sau', mapLegendTitle: 'Chú thích bản đồ', mapLegendItems: [{ marker: '1–12', title: 'Lều trải nghiệm', detail: 'Các lều trải nghiệm được đánh số trên bản đồ.' }, { marker: '✦', title: 'Khu hoạt động', detail: 'Nhà Ma · Stage · Photobooth · Home check-in' }, { marker: '＋', title: 'Khu trải nghiệm', detail: 'Board Game Club · Tarot' }, { marker: '⌂', title: 'Tiện ích & thông tin', detail: 'Bảng thông tin · Smoking zone · Private zone · P.O.H' }, { marker: '●', title: 'Khu vực', detail: 'Tòa Epsilon · Tòa Delta · Tòa Beta' }, { marker: '♥', title: 'Bạn đang ở đây', detail: 'Vị trí được đánh dấu bằng biểu tượng Bunny.' }], sponsors: 'Nhà tài trợ', sponsorsNote: 'Danh sách đối tác đồng hành sẽ được cập nhật.',
           highlightTitles: ['Nhà ma', 'Những Zone check-in', 'Cosplay', 'Photobooth', 'Tarot', 'Main stage', 'Lucky draw'],
           highlightDescriptions: ['Một tuyến trải nghiệm nhập vai, nơi mỗi cánh cửa mở ra một lớp chuyện mới.', 'Những góc check-in mang đậm dấu ấn Halloween, nơi bạn lưu giữ khoảnh khắc riêng.', 'Hóa thân theo chủ đề năm và bước vào một đêm Halloween có dấu ấn riêng.', 'Một góc lưu lại outfit, hội bạn và những khoảnh khắc không lặp lại.', 'Một trải nghiệm bói Tarot bí ẩn, hé lộ những điều đang chờ bạn phía trước.', 'Kịch sân khấu, những màn trình diễn cuốn hút và DJ sôi động khuấy động không khí đêm hội.', 'Quà tặng và những bất ngờ nhỏ khép lại hành trình của bạn tại lễ hội.'],
           timelineTitles: ['Mở cổng', 'Khám phá', 'Lên sân khấu', 'Khép đêm'],
@@ -1532,5 +1532,30 @@ resources.en.translation.luckyDraw.scanTitle = 'Scan to join';
 resources.en.translation.luckyDraw.scanDescription = 'Scan this QR code with your phone camera to open the lucky draw page.';
 resources.ja.translation.luckyDraw.scanTitle = 'スキャンして参加';
 resources.ja.translation.luckyDraw.scanDescription = 'スマートフォンのカメラでQRコードを読み取り、ラッキードローに参加してください。';
+
+Object.assign(resources.en.translation.normal.home, {
+  mapLegendTitle: 'Map legend',
+  mapLegendItems: [
+    { marker: '1–12', title: 'Experience tents', detail: 'Numbered experience tents shown on the map.' },
+    { marker: '✦', title: 'Activity areas', detail: 'Haunted House · Stage · Photobooth · Home check-in' },
+    { marker: '＋', title: 'Experience areas', detail: 'Board Game Club · Tarot' },
+    { marker: '⌂', title: 'Information & facilities', detail: 'Information board · Smoking zone · Private zone · P.O.H' },
+    { marker: '●', title: 'Buildings', detail: 'Epsilon Building · Delta Building · Beta Building' },
+    { marker: '♥', title: 'You are here', detail: 'Your location is marked by the Bunny icon.' },
+  ],
+});
+
+Object.assign(resources.ja.translation.normal.home, {
+  map: 'イベントマップ',
+  mapLegendTitle: '地図の凡例',
+  mapLegendItems: [
+    { marker: '1–12', title: '体験テント', detail: '地図上の番号付き体験テント。' },
+    { marker: '✦', title: 'アクティビティエリア', detail: 'お化け屋敷 · ステージ · フォトブース · ホームチェックイン' },
+    { marker: '＋', title: '体験エリア', detail: 'ボードゲームクラブ · タロット' },
+    { marker: '⌂', title: '案内・設備', detail: '案内板 · 喫煙所 · プライベートゾーン · P.O.H' },
+    { marker: '●', title: '建物', detail: 'イプシロン棟 · デルタ棟 · ベータ棟' },
+    { marker: '♥', title: '現在地', detail: 'Bunnyのアイコンで現在地を示しています。' },
+  ],
+});
 
 export default i18n;

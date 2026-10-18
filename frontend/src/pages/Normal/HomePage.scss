@@ -769,81 +769,79 @@
 
 .home-map {
   position: relative;
-  min-height: 23rem;
-  overflow: hidden;
-  border: 1px solid var(--home-line);
-  background: var(--home-paper);
-  box-shadow: var(--home-shadow);
+  min-height: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.home-map__grid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.7;
-  background-image:
-    linear-gradient(var(--home-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--home-line) 1px, transparent 1px);
-  background-size: 2.5rem 2.5rem;
-}
-
-.home-map__route {
-  position: absolute;
+.home-map__image {
   display: block;
-  height: 0.75rem;
-  background: var(--home-red);
-  transform: rotate(-18deg);
+  width: 100%;
+  height: auto;
 }
 
-.home-map__route--one {
-  top: 42%;
-  left: 9%;
-  width: 74%;
-}
-
-.home-map__route--two {
-  top: 62%;
-  left: 28%;
-  width: 55%;
-  background: var(--home-violet);
-  transform: rotate(24deg);
-}
-
-.home-map__point {
-  position: absolute;
-  display: inline-flex;
-  min-height: 2rem;
-  align-items: center;
-  padding: 0.45rem 0.6rem;
-  color: var(--home-white);
-  background: var(--home-dark);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-
-.home-map__point--main {
-  top: 19%;
-  left: 10%;
-}
-
-.home-map__point--house {
-  top: 31%;
-  right: 11%;
-  background: var(--home-red);
-}
-
-.home-map__point--stage {
-  right: 20%;
-  bottom: 18%;
-  background: var(--home-violet);
-}
-
-.home-map__caption {
-  position: absolute;
-  right: 0.8rem;
-  bottom: 0.8rem;
+.home-map__note {
+  max-width: 24rem;
+  margin-top: 0.75rem;
   color: var(--home-muted);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.home-map__legend {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--home-line);
+}
+
+.home-map__legend h3 {
+  margin: 0 0 0.9rem;
+  color: var(--home-dark);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-map__legend-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.home-map__legend-item {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.home-map__legend-marker {
+  display: inline-flex;
+  min-height: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.25rem;
+  color: var(--home-red);
+  border: 1px solid var(--home-red);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+.home-map__legend-item p {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  color: var(--home-muted);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.home-map__legend-item strong {
+  color: var(--home-dark);
+  font-size: 0.75rem;
 }
 
 .home-sponsors {
@@ -1081,6 +1079,7 @@
   .home-map {
     min-height: 17rem;
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

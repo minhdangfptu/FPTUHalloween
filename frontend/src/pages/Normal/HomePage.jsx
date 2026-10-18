@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import heroImage from "../../assets/cover-01.png";
+import mapImage from "../../assets/map.png";
 import pdpLogo from "../../assets/pdp_avatar.jpg";
 import fptuLogo from "../../assets/logo fptu.webp";
 import fbgcLogo from "../../assets/fbgc.png";
@@ -85,6 +86,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const home = (key, options) => t(`normal.home.${key}`, options);
+  const mapLegendItems = home("mapLegendItems", { returnObjects: true });
 
   const [countdown, setCountdown] = useState(getCountdown);
 
@@ -324,27 +326,25 @@ export default function HomePage() {
         <div className="home-section__head">
           <p className="home-eyebrow">{home("mapLabel")}</p>
           <h2 id="home-map-title">{home("map")}</h2>
+          <aside className="home-map__legend" aria-labelledby="home-map-legend-title">
+            <h3 id="home-map-legend-title">{home("mapLegendTitle")}</h3>
+            <div className="home-map__legend-grid">
+              {mapLegendItems.map((item) => (
+                <div className="home-map__legend-item" key={item.title}>
+                  <span className="home-map__legend-marker" aria-hidden="true">
+                    {item.marker}
+                  </span>
+                  <p>
+                    <strong>{item.title}</strong>
+                    <span>{item.detail}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </aside>
         </div>
         <div className="home-map">
-          <div className="home-map__grid" aria-hidden="true" />
-          <span
-            className="home-map__route home-map__route--one"
-            aria-hidden="true"
-          />
-          <span
-            className="home-map__route home-map__route--two"
-            aria-hidden="true"
-          />
-          <span className="home-map__point home-map__point--main">
-            {home("mainGate")}
-          </span>
-          <span className="home-map__point home-map__point--house">
-            {home("hauntedHouse")}
-          </span>
-          <span className="home-map__point home-map__point--stage">
-            {home("stage")}
-          </span>
-          <span className="home-map__caption">{home("mapCaption")}</span>
+          <img className="home-map__image" src={mapImage} alt={home("map")} />
         </div>
       </section>
 
