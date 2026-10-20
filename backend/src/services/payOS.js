@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const { PayOS } = require('@payos/node')
 const { Cart, Order, TicketType, User, UserTicket } = require('../models')
 const { isSuccessfulPayOSWebhook, getWebhookAmount } = require('../utils/payOSWebhook')
-const { PROMO_CODE, isPromotionActive, getDiscountedPrice } = require('../utils/ticketPromotion')
+const { isSupportedPromotion, isPromotionActive, getDiscountedPrice } = require('../utils/ticketPromotion')
 const { sendTicketEmail } = require('../providers/zepToMailEmailProvicer')
 
 const payos = new PayOS()
@@ -163,7 +163,7 @@ const markOrderAsPaid = async order => {
 
 const createPayment = async (userId, checkoutData = {}) => {
   const promoCode = String(checkoutData.promoCode || '').trim().toUpperCase()
-  if (promoCode && promoCode !== PROMO_CODE) throw new Error('Invalid promo code')
+  if (promoCode && !isSupportedPromotion(promoCode)) throw new Error('Invalid promo code')
 
   if (checkoutData.existingOrderCode) {
     const existingOrder = await Order.findOne({ userId, payosOrderId: String(checkoutData.existingOrderCode) })
@@ -191,7 +191,7 @@ const createPayment = async (userId, checkoutData = {}) => {
     }
   }
 
-  if (promoCode && !isPromotionActive()) throw new Error('Promo code is not active')
+  if (promoCode && !isPromotionActive(Date.now(), promoCode)) throw new Error('Promo code is not active')
 
   const cart = await Cart.findOne({ userId }).populate('items.ticketTypeId').lean()
   const selectedIds = Array.isArray(checkoutData.selectedTicketTypeIds)
@@ -202,7 +202,7 @@ const createPayment = async (userId, checkoutData = {}) => {
 
   const items = cartItems.map(item => {
     const originalPrice = Number(item.ticketTypeId.ticketTypePrice)
-    const price = promoCode ? getDiscountedPrice(originalPrice) : originalPrice
+    const price = promoCode ? getDiscountedPrice(originalPrice, promoCode) : originalPrice
     return {
       ticketTypeId: item.ticketTypeId._id,
       quantity: Number(item.quantity),
