@@ -390,6 +390,8 @@ resources.vi.translation.management.orders = {
   qrPending: 'Chưa phát hành mã QR', noIssuedTickets: 'Chưa có vé được phát hành cho đơn này.',
   statusPending: 'Chờ thanh toán', statusProcessing: 'Đang xử lý', statusPaid: 'Đã thanh toán', statusCancelled: 'Đã hủy', statusUnknown: 'Không rõ',
   ticketStatusPending: 'Đang chờ sử dụng', ticketStatusChecked: 'Đã sử dụng', ticketStatusCancelled: 'Đã hủy',
+  promotion: 'Ưu đãi', promotionApplied: 'Đã giảm giá', subtotal: 'Tạm tính', discount: 'Giảm giá',
+  ticketDiscounts: 'Giảm giá theo vé', unitPriceChange: '{{before}} → {{after}} / vé',
 };
 resources.en.translation.management.orders = {
   loadingList: 'Loading orders...', loadingDetail: 'Loading order details...', detailLoaded: 'Order details loaded.',
@@ -403,6 +405,8 @@ resources.en.translation.management.orders = {
   qrPending: 'QR code not issued', noIssuedTickets: 'No tickets have been issued for this order.',
   statusPending: 'Awaiting payment', statusProcessing: 'Processing', statusPaid: 'Paid', statusCancelled: 'Cancelled', statusUnknown: 'Unknown',
   ticketStatusPending: 'Pending use', ticketStatusChecked: 'Used', ticketStatusCancelled: 'Cancelled',
+  promotion: 'Promotion', promotionApplied: 'Discount applied', subtotal: 'Subtotal', discount: 'Discount',
+  ticketDiscounts: 'Discount by ticket', unitPriceChange: '{{before}} → {{after}} / ticket',
 };
 
 resources.vi.translation.management.userTickets = {
@@ -1374,6 +1378,34 @@ Object.assign(resources.vi.translation.management.facebookNews, {
 });
 Object.assign(resources.en.translation.management.facebookNews, {
   featuredIntro: 'Important updates FPTU Halloween.',
+});
+
+const checkoutPromotionTranslations = {
+  vi: {
+    promoUnavailable: 'Mã TTOFF21 chưa đến giờ áp dụng hoặc đã hết hạn.',
+    promoPerTicket: 'Giảm mỗi vé',
+    promoTicketPriceLabel: 'Giá mỗi vé',
+    promoTotalSavings: 'Tổng giảm ({{count}} vé)',
+    promoAppliedToast: 'Đã áp dụng TTOFF21! Bạn tiết kiệm {{amount}}.',
+  },
+  en: {
+    promoUnavailable: 'TTOFF21 is not active at this time.',
+    promoPerTicket: 'Saved per ticket',
+    promoTicketPriceLabel: 'Price per ticket',
+    promoTotalSavings: 'Total saved ({{count}} tickets)',
+    promoAppliedToast: 'TTOFF21 applied! You saved {{amount}}.',
+  },
+  ja: {
+    promoUnavailable: 'TTOFF21は現在利用できません。',
+    promoPerTicket: 'チケット1枚あたりの割引',
+    promoTicketPriceLabel: 'チケット1枚の価格',
+    promoTotalSavings: '割引合計（{{count}}枚）',
+    promoAppliedToast: 'TTOFF21を適用しました。{{amount}}お得になります。',
+  },
+};
+
+Object.entries(checkoutPromotionTranslations).forEach(([language, translations]) => {
+  Object.assign(resources[language].translation.ticket, translations);
 });
 
 i18n.use(initReactI18next).init({

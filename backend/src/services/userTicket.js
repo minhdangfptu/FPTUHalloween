@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
-const { TicketType, UserTicket, Order } = require('../models')
+const { TicketType, UserTicket, Order, User } = require('../models')
+const { normalizeSearch, searchPattern, idContains } = require('../utils/adminSearch')
 const QR_PREFIX = 'FPTUHalloween-2026-'
 
 const attachBuyerInfo = async ticket => {
@@ -61,7 +62,7 @@ const getMyTickets = async userId => UserTicket.find({ userId })
   .sort({ createdAt: -1 })
   .lean()
 
-const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeId, date } = {}) => {
+const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeId, date, search } = {}) => {
   const currentPage = Math.max(Number.parseInt(page, 10) || 1, 1)
   const limit = Math.min(Math.max(Number.parseInt(pageSize, 10) || 20, 1), 100)
   const filter = {}
@@ -80,6 +81,29 @@ const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeI
     if (!Number.isInteger(ticketDate) || ticketDate < 1 || ticketDate > 31) throw new Error('Invalid ticket date')
     const ticketTypes = await TicketType.find({ $or: [{ ticketTypeDate: ticketDate }, { $expr: { $eq: [{ $dayOfMonth: '$ticketEventDate' }, ticketDate] } }] }).select('_id').lean()
     filter.ticketTypeId = { $in: ticketTypes.map(ticketType => ticketType._id) }
+  }
+
+  const query = normalizeSearch(search)
+  if (query) {
+    const pattern = searchPattern(query)
+    const [users, ticketTypes, orders] = await Promise.all([
+      User.find({ $or: [{ fullName: pattern }, { email: pattern }, { phone: pattern }] }).select('_id').lean(),
+      TicketType.find({ ticketTypeName: pattern }).select('_id').lean(),
+      Order.find({ $or: [
+        { 'buyerInfo.fullName': pattern },
+        { 'buyerInfo.email': pattern },
+        { 'buyerInfo.phone': pattern },
+        { payosOrderId: pattern }
+      ] }).select('_id').lean()
+    ])
+    filter.$or = [
+      { qrCodeData: pattern },
+      { buyerName: pattern },
+      { userId: { $in: users.map(user => user._id) } },
+      { ticketTypeId: { $in: ticketTypes.map(type => type._id) } },
+      { orderId: { $in: orders.map(order => order._id) } },
+      idContains(query)
+    ]
   }
 
   const [tickets, total, checkedIn] = await Promise.all([

@@ -115,6 +115,25 @@
   outline: 0;
   font: inherit;
 }
+.user-ticket-search button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--ticket-red);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.user-ticket-search button:hover,
+.user-ticket-search button:focus-visible {
+  color: var(--ticket-red-dark);
+  background: #fff1f3;
+  outline: 0;
+}
 .user-ticket-checkin-button {
   display: inline-flex;
   align-items: center;

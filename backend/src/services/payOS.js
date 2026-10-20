@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const { PayOS } = require('@payos/node')
 const { Cart, Order, TicketType, User, UserTicket } = require('../models')
 const { isSuccessfulPayOSWebhook, getWebhookAmount } = require('../utils/payOSWebhook')
+const { PROMO_CODE, isPromotionActive, getDiscountedPrice } = require('../utils/ticketPromotion')
 const { sendTicketEmail } = require('../providers/zepToMailEmailProvicer')
 
 const payos = new PayOS()
@@ -129,12 +130,13 @@ const markOrderAsPaid = async order => {
     })
     if (shouldSendTicketEmail) {
       const tickets = await UserTicket.find({ orderId: processedOrder._id }).populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketTypeTime').lean()
+      const orderPrices = new Map(processedOrder.items.map(item => [String(item.ticketTypeId), item.price]))
       if (processedOrder.buyerInfo?.email) {
         await sendTicketEmail({
           recipient: { email: processedOrder.buyerInfo.email, name: processedOrder.buyerInfo.fullName, phone: processedOrder.buyerInfo.phone },
           tickets: tickets.map(ticket => ({
             ticketTypeName: ticket.ticketTypeId?.ticketTypeName,
-            ticketTypePrice: ticket.ticketTypeId?.ticketTypePrice,
+            ticketTypePrice: orderPrices.get(String(ticket.ticketTypeId?._id)) ?? ticket.ticketTypeId?.ticketTypePrice,
             qrCodeData: ticket.qrCodeData
           })),
           event: {
@@ -160,6 +162,9 @@ const markOrderAsPaid = async order => {
 }
 
 const createPayment = async (userId, checkoutData = {}) => {
+  const promoCode = String(checkoutData.promoCode || '').trim().toUpperCase()
+  if (promoCode && promoCode !== PROMO_CODE) throw new Error('Invalid promo code')
+
   if (checkoutData.existingOrderCode) {
     const existingOrder = await Order.findOne({ userId, payosOrderId: String(checkoutData.existingOrderCode) })
     if (existingOrder) {
@@ -172,7 +177,8 @@ const createPayment = async (userId, checkoutData = {}) => {
       const requestedQuantities = Array.isArray(checkoutData.selectedItems)
         ? checkoutData.selectedItems.map(item => `${String(item.ticketTypeId)}:${Number(item.quantity)}`).sort()
         : requestedItems
-      const sameItems = !requestedQuantities || JSON.stringify(requestedQuantities) === JSON.stringify(existingItems)
+      const sameItems = (!requestedQuantities || JSON.stringify(requestedQuantities) === JSON.stringify(existingItems)) &&
+        (existingOrder.promoCode || '') === promoCode
       const existingPayment = await payos.paymentRequests.get(Number(existingOrder.payosOrderId))
       if (sameItems && existingPayment.status === 'PAID') await markOrderAsPaid(existingOrder)
       if (sameItems && existingOrder.paymentData && ['PENDING', 'PROCESSING', 'PAID'].includes(existingPayment.status)) {
@@ -185,6 +191,8 @@ const createPayment = async (userId, checkoutData = {}) => {
     }
   }
 
+  if (promoCode && !isPromotionActive()) throw new Error('Promo code is not active')
+
   const cart = await Cart.findOne({ userId }).populate('items.ticketTypeId').lean()
   const selectedIds = Array.isArray(checkoutData.selectedTicketTypeIds)
     ? checkoutData.selectedTicketTypeIds.map(String)
@@ -192,13 +200,18 @@ const createPayment = async (userId, checkoutData = {}) => {
   const cartItems = cart?.items?.filter(item => !selectedIds || selectedIds.includes(String(item.ticketTypeId._id))) || []
   if (!cartItems.length) throw new Error('Cart is empty')
 
-  const items = cartItems.map(item => ({
-    ticketTypeId: item.ticketTypeId._id,
-    quantity: Number(item.quantity),
-    name: item.ticketTypeId.ticketTypeName,
-    price: Number(item.ticketTypeId.ticketTypePrice),
-    subtotal: Number(item.ticketTypeId.ticketTypePrice) * Number(item.quantity)
-  }))
+  const items = cartItems.map(item => {
+    const originalPrice = Number(item.ticketTypeId.ticketTypePrice)
+    const price = promoCode ? getDiscountedPrice(originalPrice) : originalPrice
+    return {
+      ticketTypeId: item.ticketTypeId._id,
+      quantity: Number(item.quantity),
+      name: item.ticketTypeId.ticketTypeName,
+      originalPrice,
+      price,
+      subtotal: price * Number(item.quantity)
+    }
+  })
   const requestedTicketCount = items.reduce((sum, item) => sum + item.quantity, 0)
   if (requestedTicketCount > MAX_TICKETS_PER_ACCOUNT) {
     throw new Error(`Each account can purchase up to ${MAX_TICKETS_PER_ACCOUNT} tickets`)
@@ -226,7 +239,7 @@ const createPayment = async (userId, checkoutData = {}) => {
   let order
 
   try {
-    order = await Order.create({ userId, buyerInfo, items, totalAmount: amount, paymentMethod: 'PayOS', paymentData: { reservationExpiresAt }, payosOrderId: String(orderCode), stockReserved: true, reservationExpiresAt })
+    order = await Order.create({ userId, buyerInfo, items, promoCode: promoCode || null, totalAmount: amount, paymentMethod: 'PayOS', paymentData: { reservationExpiresAt }, payosOrderId: String(orderCode), stockReserved: true, reservationExpiresAt })
     const paymentLink = await payos.paymentRequests.create({
       orderCode, amount, description: `FPTU Halloween ${orderCode}`.slice(0, 25),
       expiredAt: Math.floor(reservationExpiresAt.getTime() / 1000),

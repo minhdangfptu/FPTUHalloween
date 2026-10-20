@@ -47,7 +47,7 @@ const QRPayment = () => {
     const savedPayment = JSON.parse(localStorage.getItem(PAYMENT_KEY) || "null");
     paymentAPI.createPayOSPayment({
       customer: checkout.customer,
-      discount: checkout.discount || 0,
+      promoCode: checkout.promoCode || null,
       selectedTicketTypeIds: (checkout.items || []).map((item) => String(item.ticketTypeId)),
       selectedItems: (checkout.items || []).map((item) => ({
         ticketTypeId: String(item.ticketTypeId),
@@ -66,6 +66,10 @@ const QRPayment = () => {
           const message = error?.response?.data?.message || error?.message || "";
           const text = message.includes("Each account can purchase up to")
             ? ticket("ticketLimitReached")
+            : message === "Promo code is not active"
+              ? ticket("promoUnavailable")
+            : message === "Invalid promo code"
+              ? ticket("couponInvalid")
             : translateError(error);
           toast.error(text, { id: loadingToast });
         }

@@ -345,6 +345,128 @@
   background: var(--manage-dark-danger-soft);
 }
 
+/* Lucky draw directory. */
+:root[data-theme='dark'] .admin-lucky-draw-page,
+:root[data-theme='dark'] .admin-lucky-draw {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-bg);
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__kicker,
+:root[data-theme='dark'] .admin-lucky-draw__summary strong,
+:root[data-theme='dark'] :is(.admin-lucky-draw__person, .admin-lucky-draw__contact, .admin-lucky-draw__date) svg {
+  color: var(--manage-dark-accent);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-lucky-draw__header > div > p:last-child,
+    .admin-lucky-draw__summary,
+    .admin-lucky-draw__filters label,
+    .admin-lucky-draw__search,
+    .admin-lucky-draw__empty,
+    .admin-lucky-draw__contact,
+    .admin-lucky-draw__date,
+    .admin-lucky-draw__pagination
+  ) {
+  color: var(--manage-dark-muted);
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__card {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface);
+  border-color: var(--manage-dark-line);
+  box-shadow: 0 10px 28px var(--manage-dark-shadow);
+}
+
+:root[data-theme='dark'] :is(.admin-lucky-draw__summary, .admin-lucky-draw td, .admin-lucky-draw__pagination) {
+  border-color: var(--manage-dark-line-soft);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-lucky-draw__search,
+    .admin-lucky-draw__filters label input,
+    .admin-lucky-draw__prize-input
+  ) {
+  color: var(--manage-dark-ink);
+  background: var(--manage-dark-surface-raised);
+  border-color: var(--manage-dark-line);
+  color-scheme: dark;
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__search input {
+  color: var(--manage-dark-ink);
+  background: transparent;
+  border: 0;
+}
+
+:root[data-theme='dark'] .admin-lucky-draw input::placeholder {
+  color: var(--manage-dark-faint);
+  opacity: 1;
+}
+
+:root[data-theme='dark'] .admin-lucky-draw :is(input, button):focus-visible {
+  outline: 2px solid var(--manage-dark-accent);
+  outline-offset: 2px;
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__search:focus-within {
+  border-color: var(--manage-dark-accent);
+}
+
+:root[data-theme='dark'] .admin-lucky-draw th {
+  color: var(--manage-dark-muted);
+  background: var(--manage-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .admin-lucky-draw td {
+  color: var(--manage-dark-ink);
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__prize {
+  color: var(--manage-dark-muted);
+  background: var(--manage-dark-surface-raised);
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__prize.is-won {
+  color: var(--manage-dark-success);
+  background: var(--manage-dark-success-soft);
+}
+
+:root[data-theme='dark'] :is(
+    .admin-lucky-draw__refresh,
+    .admin-lucky-draw__qr,
+    .admin-lucky-draw__edit,
+    .admin-lucky-draw__pagination button
+  ) {
+  color: var(--manage-dark-accent);
+  background: var(--manage-dark-surface-raised);
+  border-color: #633640;
+}
+
+:root[data-theme='dark'] :is(
+    .admin-lucky-draw__refresh,
+    .admin-lucky-draw__qr,
+    .admin-lucky-draw__edit,
+    .admin-lucky-draw__pagination button
+  ):hover:not(:disabled) {
+  color: var(--manage-dark-accent-strong);
+  background: var(--manage-dark-accent-soft);
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__save {
+  color: var(--manage-dark-success);
+  background: var(--manage-dark-success-soft);
+  border-color: #315f46;
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__save:hover {
+  background: #205039;
+}
+
+:root[data-theme='dark'] .admin-lucky-draw__search button {
+  color: var(--manage-dark-accent);
+}
+
 /* User and order detail modals. */
 :root[data-theme='dark'] :is(.admin-user-detail__overlay, .admin-order-modal) {
   background: rgb(3 7 12 / 76%);

@@ -15,6 +15,7 @@ import authAPI from "../../apis/authAPI";
 import cartAPI from "../../apis/cartAPI";
 import { translateError } from "../../utils/translateResponse";
 import LogoutModal from "../../components/LogoutModal";
+import { PROMO_CODE, getDiscountedPrice, isPromotionActive } from "../../utils/ticketPromotion";
 import "./Checkout.scss";
 
 const CHECKOUT_KEY = "fptu-halloween-checkout";
@@ -70,7 +71,9 @@ const Checkout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [discountCode, setDiscountCode] = useState("");
-  const [discountMessage, setDiscountMessage] = useState("");
+  const [appliedCode, setAppliedCode] = useState("");
+  const [discountMessageKey, setDiscountMessageKey] = useState("");
+  const [now, setNow] = useState(Date.now());
   const [customer, setCustomer] = useState(getStoredCustomer);
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false);
 
@@ -94,6 +97,11 @@ const Checkout = () => {
   useEffect(() => {
     loadCart();
   }, [loadCart]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const syncCustomer = () => setCustomer(getStoredCustomer());
@@ -142,10 +150,18 @@ const Checkout = () => {
     () => cartItems.some((item) => item.ticketType?.ticketTypeStatus !== "active" || Number(item.ticketType?.availableQuantity) <= 0),
     [cartItems],
   );
-  const discount =
-    discountCode.trim().toUpperCase() === "HALLOWEEN"
-      ? Math.round(subtotal * 0.1)
-      : 0;
+  const promotionActive = isPromotionActive(now);
+  const promotionApplied = appliedCode === PROMO_CODE && promotionActive;
+  const discountDetails = cartItems.map((item) => {
+    const originalPrice = Number(item.ticketType?.ticketTypePrice || 0);
+    const discountedPrice = getDiscountedPrice(originalPrice);
+    return { item, originalPrice, discountedPrice, perTicket: originalPrice - discountedPrice };
+  });
+  const availableDiscount = discountDetails.reduce(
+    (sum, { item, perTicket }) => sum + perTicket * Number(item.quantity || 0),
+    0,
+  );
+  const discount = promotionApplied ? availableDiscount : 0;
   const total = subtotal - discount;
 
   useEffect(() => {
@@ -153,12 +169,23 @@ const Checkout = () => {
       navigate("/cart", { replace: true });
   }, [cartItems.length, error, isLoading, navigate]);
 
-  const applyDiscount = () =>
-    setDiscountMessage(
-      discount
-        ? ticket("couponApplied")
-        : ticket("couponInvalid"),
-    );
+  const applyDiscount = () => {
+    const code = discountCode.trim().toUpperCase();
+    if (code !== PROMO_CODE) {
+      setAppliedCode("");
+      setDiscountMessageKey("couponInvalid");
+      toast.error(ticket("couponInvalid"), { id: "checkout-promo" });
+      return;
+    }
+    const activeNow = isPromotionActive();
+    setAppliedCode(activeNow ? PROMO_CODE : "");
+    setDiscountMessageKey(activeNow ? "couponApplied" : "promoUnavailable");
+    if (activeNow) {
+      toast.success(ticket("promoAppliedToast", { amount: formatPrice(availableDiscount) }), { id: "checkout-promo" });
+    } else {
+      toast.error(ticket("promoUnavailable"), { id: "checkout-promo" });
+    }
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const email = customer.email.trim();
@@ -180,9 +207,15 @@ const Checkout = () => {
   };
 
   const continueToPayment = () => {
+    if (appliedCode && !isPromotionActive()) {
+      setShowPaymentConfirmation(false);
+      setDiscountMessageKey("promoUnavailable");
+      toast.error(ticket("promoUnavailable"));
+      return;
+    }
     localStorage.setItem(
       CHECKOUT_KEY,
-      JSON.stringify({ customer, items: cartItems, subtotal, discount, total }),
+      JSON.stringify({ customer, items: cartItems, subtotal, discount, total, promoCode: promotionApplied ? PROMO_CODE : null }),
     );
     setShowPaymentConfirmation(false);
     navigate("/qr-payment");
@@ -296,26 +329,29 @@ const Checkout = () => {
               </div>
               <div className="checkout-discount">
                 <input
+                  aria-label={ticket("coupon")}
                   value={discountCode}
                   onChange={(event) => {
                     setDiscountCode(event.target.value);
-                    setDiscountMessage("");
+                    setAppliedCode("");
+                    setDiscountMessageKey("");
                   }}
-                placeholder={ticket("couponPlaceholder")}
+                  placeholder={ticket("couponPlaceholder")}
                 />
                 <button type="button" onClick={applyDiscount}>
-                {ticket("apply")}
+                  {ticket("apply")}
                 </button>
               </div>
-              {discountMessage && (
+              {(discountMessageKey || (appliedCode && !promotionActive)) && (
                 <p
+                  role="status"
                   className={
-                    discount
+                    promotionApplied
                       ? "checkout-message is-success"
                       : "checkout-message is-error"
                   }
                 >
-                  {discountMessage}
+                  {ticket(appliedCode && !promotionActive ? "promoUnavailable" : discountMessageKey)}
                 </p>
               )}
             </section>
@@ -360,11 +396,42 @@ const Checkout = () => {
                 <span>{ticket("subtotal")}</span>
                 <strong>{formatPrice(subtotal)}</strong>
               </div>
-              <div>
-                <span>{ticket("discount")}</span>
-                <strong>- {formatPrice(discount)}</strong>
+              <div className={promotionApplied ? "checkout-total__discount is-applied" : "checkout-total__discount"}>
+                {promotionApplied ? (
+                  <>
+                    <div className="checkout-total__discount-heading">
+                      <span>{ticket("discount")} · {PROMO_CODE}</span>
+                      <Check size={17} aria-hidden="true" />
+                    </div>
+                    <div className="checkout-total__discount-breakdown">
+                      {discountDetails.map(({ item, originalPrice, discountedPrice, perTicket }) => (
+                        <div className="checkout-total__discount-item" key={item.ticketTypeId}>
+                          <div className="checkout-total__discount-line">
+                            <span>{ticket("promoPerTicket")}{discountDetails.length > 1 ? ` · ${item.ticketType?.ticketTypeName || ""}` : ""}</span>
+                            <strong>− {formatPrice(perTicket)}</strong>
+                          </div>
+                          <p className="checkout-total__price-change">
+                            <span>{ticket("promoTicketPriceLabel")}:</span>
+                            <del>{formatPrice(originalPrice)}</del>
+                            <span aria-hidden="true">→</span>
+                            <strong>{formatPrice(discountedPrice)}</strong>
+                          </p>
+                        </div>
+                      ))}
+                      <div className="checkout-total__discount-sum">
+                        <span>{ticket("promoTotalSavings", { count: totalQuantity })}</span>
+                        <strong>− {formatPrice(discount)}</strong>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <span>{ticket("discount")}</span>
+                    <strong>- {formatPrice(discount)}</strong>
+                  </>
+                )}
               </div>
-              <div className="checkout-total__final">
+              <div className={`checkout-total__final${promotionApplied ? " is-discounted" : ""}`}>
                 <span>{ticket("total")}</span>
                 <strong>{formatPrice(total)}</strong>
               </div>

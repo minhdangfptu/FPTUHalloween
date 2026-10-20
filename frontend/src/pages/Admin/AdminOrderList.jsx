@@ -1,5 +1,5 @@
 /* Hallmark · macrostructure: Operations Desk · tone: editorial administration · anchor hue: FPT red */
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   CalendarDays,
   ChevronLeft,
@@ -41,6 +41,13 @@ const getItemCount = (order) => {
     0,
   );
 };
+const getItemPrices = (item) => {
+  const paidPrice = Number(item.price ?? item.unitPrice ?? item.ticketTypePrice ?? 0);
+  return {
+    originalPrice: Number(item.originalPrice ?? paidPrice),
+    paidPrice,
+  };
+};
 
 const AdminOrderList = () => {
   const { t, i18n } = useTranslation();
@@ -56,6 +63,7 @@ const AdminOrderList = () => {
   const [pagination, setPagination] = useState(EMPTY_PAGINATION);
   const [status, setStatus] = useState("");
   const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
@@ -71,6 +79,7 @@ const AdminOrderList = () => {
           page,
           pageSize: PAGE_SIZE,
           status,
+          search,
         });
         const payload = getOrderPayload(response);
         setOrders(payload.orders || []);
@@ -82,28 +91,12 @@ const AdminOrderList = () => {
         setIsLoading(false);
       }
     },
-    [status, t],
+    [search, status, t],
   );
 
   useEffect(() => {
     loadOrders(1);
   }, [loadOrders]);
-
-  const visibleOrders = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return orders;
-    return orders.filter((order) => {
-      const haystack = [
-        order._id,
-        order.payosOrderId,
-        getCustomerName(order),
-        order.userId?.phone,
-      ]
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(query);
-    });
-  }, [orders, search]);
 
   const openDetail = async (order) => {
     setSelectedOrder({ ...order, tickets: [] });
@@ -206,15 +199,18 @@ const AdminOrderList = () => {
               <span>{orderText("orders")}</span>
             </div>
             <div className="admin-order-filters">
-              <label className="admin-order-search">
+              <form className="admin-order-search" role="search" onSubmit={(event) => { event.preventDefault(); setSearch(searchInput.trim()); }}>
                 <Search size={15} />
                 <input
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
+                  value={searchInput}
+                  onChange={(event) => setSearchInput(event.target.value)}
                   placeholder={orderText("searchPlaceholder")}
                   aria-label={orderText("search")}
                 />
-              </label>
+                <button type="submit" aria-label={orderText("search")}>
+                  <Search size={15} />
+                </button>
+              </form>
               <label className="admin-order-select">
                 <span>{t("management.common.status")}</span>
                 <select
@@ -232,8 +228,8 @@ const AdminOrderList = () => {
           </div>
 
           {isLoading ? (
-            <SkeletonRows rows={7} columns={7} />
-          ) : visibleOrders.length === 0 ? (
+            <SkeletonRows rows={7} columns={8} />
+          ) : orders.length === 0 ? (
             <div className="admin-order-empty">
               {orderText("empty")}
             </div>
@@ -247,12 +243,13 @@ const AdminOrderList = () => {
                     <th>{orderText("createdAt")}</th>
                     <th>{orderText("ticketQuantity")}</th>
                     <th>{orderText("value")}</th>
+                    <th>{orderText("promotion")}</th>
                     <th>{t("management.common.status")}</th>
                     <th />
                   </tr>
                 </thead>
                 <tbody>
-                  {visibleOrders.map((order) => (
+                  {orders.map((order) => (
                     <tr key={order._id}>
                       <td>
                         <strong className="admin-order-code">
@@ -280,6 +277,17 @@ const AdminOrderList = () => {
                       <td>{getItemCount(order)}</td>
                       <td>
                         <strong>{formatMoney(order.totalAmount)}</strong>
+                        {Number(order.discountAmount) > 0 && (
+                          <small className="admin-order-original-price"><del>{formatMoney(order.subtotal)}</del></small>
+                        )}
+                      </td>
+                      <td>
+                        {order.promoCode || Number(order.discountAmount) > 0 ? (
+                          <div className="admin-order-promotion">
+                            <strong>{order.promoCode || orderText("promotionApplied")}</strong>
+                            <span>− {formatMoney(order.discountAmount)}</span>
+                          </div>
+                        ) : <span className="admin-order-no-promotion">—</span>}
                       </td>
                       <td>
                         <span
@@ -398,6 +406,14 @@ const AdminOrderList = () => {
                 </section>
                 <div className="admin-order-dialog__summary">
                   <div>
+                    <small>{orderText("subtotal")}</small>
+                    <strong>{formatMoney(selectedOrder.subtotal ?? selectedOrder.totalAmount)}</strong>
+                  </div>
+                  <div className="admin-order-dialog__discount">
+                    <small>{orderText("discount")}{selectedOrder.promoCode ? ` · ${selectedOrder.promoCode}` : ""}</small>
+                    <strong>{Number(selectedOrder.discountAmount) > 0 ? `− ${formatMoney(selectedOrder.discountAmount)}` : formatMoney(0)}</strong>
+                  </div>
+                  <div>
                     <small>{orderText("paymentTotal")}</small>
                     <strong>{formatMoney(selectedOrder.totalAmount)}</strong>
                   </div>
@@ -408,6 +424,25 @@ const AdminOrderList = () => {
                     </strong>
                   </div>
                 </div>
+                {Number(selectedOrder.discountAmount) > 0 && (selectedOrder.items || []).some((item) => {
+                  const { originalPrice, paidPrice } = getItemPrices(item);
+                  return originalPrice > paidPrice;
+                }) && (
+                  <section className="admin-order-dialog__discount-items">
+                    <h3>{orderText("ticketDiscounts")}</h3>
+                    {(selectedOrder.items || []).map((item, index) => {
+                      const { originalPrice, paidPrice } = getItemPrices(item);
+                      if (originalPrice <= paidPrice) return null;
+                      return (
+                        <div key={`${item.ticketTypeId || index}`}>
+                          <span>{item.name || item.ticketTypeName || orderText("ticketType")} × {item.quantity}</span>
+                          <small>{orderText("unitPriceChange", { before: formatMoney(originalPrice), after: formatMoney(paidPrice) })}</small>
+                          <strong>− {formatMoney((originalPrice - paidPrice) * Number(item.quantity || 0))}</strong>
+                        </div>
+                      );
+                    })}
+                  </section>
+                )}
                 <h3>{orderText("orderTickets")}</h3>
                 <div className="admin-order-dialog__tickets">
                   {(selectedOrder.tickets || []).length ? (

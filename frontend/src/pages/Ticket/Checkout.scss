@@ -250,6 +250,49 @@
   color: var(--muted);
   font-size: 0.8rem;
 }
+.checkout-total > .checkout-total__discount.is-applied {
+  display: block;
+  padding: .35rem 0 .5rem;
+  color: #175b36;
+  font-weight: 800;
+}
+.checkout-total__discount-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  font-size: .9rem;
+}
+.checkout-total__discount-heading svg { flex: 0 0 auto; }
+.checkout-total__discount-line,
+.checkout-total__discount-sum {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: .75rem;
+  line-height: 1.4;
+}
+.checkout-total__discount-item { margin-top: .75rem; }
+.checkout-total__discount-line { color: #326a49; font-size: .78rem; font-weight: 500; }
+.checkout-total__discount-line strong { white-space: nowrap; font-weight: 700; }
+.checkout-total__price-change {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .3rem;
+  margin: .3rem 0 0;
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.checkout-total__price-change del { text-decoration-thickness: 1px; }
+.checkout-total__price-change strong { color: #175b36; font-weight: 800; }
+.checkout-total__discount-sum {
+  margin-top: 1rem;
+  font-size: .85rem;
+}
+.checkout-total__discount-sum strong { white-space: nowrap; font-size: 1.15rem; }
 .checkout-total__final {
   padding-top: 0.8rem;
   border-top: 1px solid var(--line);
@@ -260,6 +303,12 @@
   color: var(--red);
   font-size: 1.1rem;
 }
+.checkout-total__final.is-discounted strong { font-size: 1.3rem; }
+:root[data-theme='dark'] .ticket-checkout-page .checkout-total > .checkout-total__discount.is-applied {
+  color: #b6ebc6;
+}
+:root[data-theme='dark'] .ticket-checkout-page .checkout-total__discount-line { color: #a4d3b3; }
+:root[data-theme='dark'] .ticket-checkout-page .checkout-total__price-change strong { color: #b6ebc6; }
 .checkout-safe {
   display: flex;
   gap: 0.4rem;

@@ -1530,7 +1530,13 @@ const ja = {
       "statusUnknown": "不明",
       "ticketStatusPending": "使用待ち",
       "ticketStatusChecked": "使用済み",
-      "ticketStatusCancelled": "キャンセル済み"
+      "ticketStatusCancelled": "キャンセル済み",
+      "promotion": "割引",
+      "promotionApplied": "割引適用済み",
+      "subtotal": "小計",
+      "discount": "割引額",
+      "ticketDiscounts": "チケットごとの割引",
+      "unitPriceChange": "{{before}} → {{after}} / 枚"
     },
     "userTickets": {
       "statusPending": "使用待ち",

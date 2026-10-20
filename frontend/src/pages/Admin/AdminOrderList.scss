@@ -155,6 +155,25 @@
 .admin-order-search input {
   width: 190px;
 }
+.admin-order-search button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: #ce0000;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.admin-order-search button:hover,
+.admin-order-search button:focus-visible {
+  color: #9f0000;
+  background: #fbecec;
+  outline: 0;
+}
 .admin-order-select {
   padding: 0 8px;
 }
@@ -166,7 +185,7 @@
 }
 .admin-order-table {
   width: 100%;
-  min-width: 920px;
+  min-width: 1040px;
   border-collapse: collapse;
   font-size: 13px;
 }
@@ -183,6 +202,18 @@
   padding: 16px 18px;
   vertical-align: middle;
   border-top: 1px solid #eeeeef;
+}
+.admin-order-table th:nth-child(4),
+.admin-order-table td:nth-child(4) {
+  padding-right: 12px;
+  padding-left: 12px;
+  white-space: nowrap;
+}
+.admin-order-table th:nth-child(6),
+.admin-order-table td:nth-child(6) {
+  width: 100px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 .admin-order-table td small,
 .admin-order-code + small {
@@ -223,6 +254,15 @@
   color: #51555a;
   white-space: nowrap;
 }
+.admin-order-promotion {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  color: #26734d;
+  font-size: 12px;
+}
+.admin-order-promotion span { font-weight: 700; white-space: nowrap; }
+.admin-order-no-promotion { color: #92969c; }
 .admin-order-status {
   display: inline-flex;
   padding: 6px 9px;
@@ -415,6 +455,31 @@
   color: #ce0000;
   font-size: 18px;
 }
+.admin-order-dialog__summary .admin-order-dialog__discount strong { color: #26734d; }
+.admin-order-dialog__discount-items > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  padding: 11px 0;
+  border-top: 1px solid #eeeeef;
+}
+.admin-order-dialog__discount-items span { color: #202124; font-size: 13px; font-weight: 700; }
+.admin-order-dialog__discount-items small { color: #73777d; font-size: 12px; }
+.admin-order-dialog__discount-items strong {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: #26734d;
+  font-size: 13px;
+  white-space: nowrap;
+}
+:root[data-theme='dark'] .admin-order-promotion,
+:root[data-theme='dark'] .admin-order-dialog__summary .admin-order-dialog__discount strong,
+:root[data-theme='dark'] .admin-order-dialog__discount-items strong { color: var(--manage-dark-success); }
+:root[data-theme='dark'] .admin-order-dialog__discount-items > div { border-color: var(--manage-dark-line-soft); }
+:root[data-theme='dark'] .admin-order-dialog__discount-items span { color: var(--manage-dark-ink); }
+:root[data-theme='dark'] .admin-order-dialog__discount-items small,
+:root[data-theme='dark'] .admin-order-no-promotion { color: var(--manage-dark-muted); }
 .admin-order-dialog h3 {
   margin: 24px 0 10px;
   font-size: 15px;

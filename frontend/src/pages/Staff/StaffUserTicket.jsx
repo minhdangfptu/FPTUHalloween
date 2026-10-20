@@ -1,5 +1,5 @@
 /* Hallmark · macrostructure: Operations Desk · tone: editorial administration · anchor hue: FPT red */
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ArrowRight,
   CalendarDays,
@@ -52,6 +52,7 @@ const StaffUserTicket = () => {
   const [date, setDate] = useState("");
   const [summary, setSummary] = useState(EMPTY_SUMMARY);
   const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [selectedQrCode, setSelectedQrCode] = useState(null);
@@ -71,6 +72,7 @@ const StaffUserTicket = () => {
         pageSize: PAGE_SIZE,
         status,
         date,
+        search,
       });
       const data = payloadOf(response);
       setTickets(data.tickets || []);
@@ -81,28 +83,11 @@ const StaffUserTicket = () => {
     } finally {
       setLoading(false);
     }
-  }, [date, page, status]);
+  }, [date, page, search, status]);
 
   useEffect(() => {
     loadTickets();
   }, [loadTickets]);
-
-  const visibleTickets = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    if (!query) return tickets;
-    return tickets.filter((ticket) =>
-      [
-        ticket._id,
-        ticket.qrCodeData,
-        getName(ticket),
-        ticket.userId?.email,
-        ticket.ticketTypeId?.ticketTypeName,
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(query),
-    );
-  }, [tickets, search, t]);
 
   const openDetail = async (ticket) => {
     setSelectedTicket(ticket);
@@ -172,14 +157,18 @@ const StaffUserTicket = () => {
                 {[27, 28, 29].map((day) => <option value={day} key={day}>{userTicketText("dayInOctober", { day })}</option>)}
               </select>
             </label>
-            <label className="user-ticket-search">
+            <form className="user-ticket-search" role="search" onSubmit={(event) => { event.preventDefault(); setPage(1); setSearch(searchInput.trim()); }}>
               <Search size={17} />
               <input
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
+                value={searchInput}
+                onChange={(event) => setSearchInput(event.target.value)}
                 placeholder={userTicketText("searchPlaceholder")}
+                aria-label={t("management.common.search")}
               />
-            </label>
+              <button type="submit" aria-label={t("management.common.search")}>
+                <Search size={17} />
+              </button>
+            </form>
             <div className="user-ticket-action-buttons">
               <button
                 className="user-ticket-checkin-button"
@@ -250,14 +239,14 @@ const StaffUserTicket = () => {
               <tbody>
                 {loading ? (
                   <tr><td colSpan="5"><SkeletonRows rows={5} columns={5} /></td></tr>
-                ) : visibleTickets.length === 0 ? (
+                ) : tickets.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="user-ticket-empty">
                       {userTicketText("empty")}
                     </td>
                   </tr>
                 ) : (
-                  visibleTickets.map((ticket) => (
+                  tickets.map((ticket) => (
                     <tr key={ticket._id}>
                       <td>
                         <strong>{getName(ticket)}</strong>

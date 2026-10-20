@@ -9,6 +9,7 @@ const schema = new Schema({
     phone: { type: String, trim: true }
   },
   items: { type: [Schema.Types.Mixed], required: true },
+  promoCode: { type: String, default: null },
   totalAmount: { type: Number, required: true, min: 0 },
   paymentMethod: { type: String },
   paymentData: { type: Schema.Types.Mixed },

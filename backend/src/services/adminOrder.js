@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
-const { Order, UserTicket, TicketType } = require('../models')
+const { Order, User, UserTicket, TicketType } = require('../models')
+const { getOrderPricing } = require('../utils/order-pricing')
+const { normalizeSearch, searchPattern, idContains } = require('../utils/adminSearch')
 
 const expirePendingOrders = async () => {
   const expiredAt = Math.floor(Date.now() / 1000)
@@ -33,18 +35,33 @@ const ensureId = id => {
 const countOrderItems = items => (Array.isArray(items) ? items : [])
   .reduce((total, item) => total + Number(item.quantity || 0), 0)
 
-const getOrders = async ({ page = 1, pageSize = 20, status } = {}) => {
+const getOrders = async ({ page = 1, pageSize = 20, status, search } = {}) => {
   await expirePendingOrders()
   const currentPage = Math.max(Number.parseInt(page, 10) || 1, 1)
   const limit = Math.min(Math.max(Number.parseInt(pageSize, 10) || 20, 1), 100)
   const filter = status ? { orderStatus: status } : {}
+  const query = normalizeSearch(search)
+  if (query) {
+    const pattern = searchPattern(query)
+    const users = await User.find({ $or: [{ fullName: pattern }, { email: pattern }, { phone: pattern }] }).select('_id').lean()
+    filter.$or = [
+      { payosOrderId: pattern },
+      { promoCode: pattern },
+      { 'buyerInfo.fullName': pattern },
+      { 'buyerInfo.email': pattern },
+      { 'buyerInfo.phone': pattern },
+      { userId: { $in: users.map(user => user._id) } },
+      idContains(query)
+    ]
+  }
   const [orders, total] = await Promise.all([
     Order.find(filter).populate('userId', 'fullName email phone').sort({ createdAt: -1 }).skip((currentPage - 1) * limit).limit(limit).lean(),
     Order.countDocuments(filter)
   ])
   const ordersWithItemCount = orders.map(({ items, ...order }) => ({
     ...order,
-    itemCount: countOrderItems(items)
+    itemCount: countOrderItems(items),
+    ...getOrderPricing({ items, totalAmount: order.totalAmount })
   }))
   return { orders: ordersWithItemCount, pagination: { page: currentPage, pageSize: limit, total, totalPages: Math.ceil(total / limit) } }
 }
@@ -62,7 +79,7 @@ const getOrderById = async id => {
     .sort({ createdAt: 1 })
     .lean()
 
-  return { ...order, tickets }
+  return { ...order, ...getOrderPricing(order), tickets }
 }
 
 const getMyOrders = async userId => {
