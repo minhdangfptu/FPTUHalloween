@@ -1,31 +1,39 @@
 const mongoose = require('mongoose')
-const { Order, User, UserTicket, TicketType } = require('../models')
+const { Order, User, UserTicket } = require('../models')
+const { reconcileExpiredOrder } = require('./payOS')
 const { getOrderPricing } = require('../utils/order-pricing')
 const { normalizeSearch, searchPattern, idContains } = require('../utils/adminSearch')
+const AUTOMATIC_RECONCILIATION_WINDOW_MS = 24 * 60 * 60 * 1000
 
-const expirePendingOrders = async () => {
+const expirePendingOrders = async userId => {
+  const reconciliationSince = new Date(Date.now() - AUTOMATIC_RECONCILIATION_WINDOW_MS)
   const expiredAt = Math.floor(Date.now() / 1000)
-  const legacyResult = await Order.updateMany(
-    { orderStatus: 'Pending', stockReserved: { $ne: true } },
-    { $set: { orderStatus: 'Cancelled' } }
-  )
+  const scope = userId ? { userId } : {}
   const expiredOrderFilter = {
+    ...scope,
     orderStatus: 'Pending',
-    stockReserved: true,
+    createdAt: { $gte: reconciliationSince },
     $or: [{ 'paymentData.expiredAt': { $lte: expiredAt } }, { reservationExpiresAt: { $lte: new Date() } }]
   }
-  const expiredOrderCandidates = await Order.find(expiredOrderFilter).select('_id').lean()
-  const cancelledOrders = (await Promise.all(expiredOrderCandidates.map(order =>
-    Order.findOneAndUpdate(
-      { _id: order._id, ...expiredOrderFilter },
-      { $set: { orderStatus: 'Cancelled', stockReserved: false } },
-      { new: true }
-    ).select('items').lean()
-  ))).filter(Boolean)
-  await Promise.all(cancelledOrders.flatMap(order => (order.items || []).map(item =>
-    TicketType.findByIdAndUpdate(item.ticketTypeId, { $inc: { availableQuantity: Number(item.quantity) } })
-  )))
-  return (legacyResult.modifiedCount || 0) + cancelledOrders.length
+  const cancelledOrderFilter = {
+    ...scope,
+    orderStatus: 'Cancelled',
+    createdAt: { $gte: reconciliationSince }
+  }
+  const [expiredOrderCandidates, cancelledOrderCandidates] = await Promise.all([
+    Order.find(expiredOrderFilter).select('_id').sort({ reservationExpiresAt: 1 }).limit(10).lean(),
+    Order.find(cancelledOrderFilter).select('_id').sort({ updatedAt: -1 }).limit(10).lean()
+  ])
+  const candidateOrders = [...expiredOrderCandidates, ...cancelledOrderCandidates]
+  const candidateIds = [...new Set(candidateOrders.map(order => String(order._id)))]
+  const issuedTickets = await UserTicket.find({ orderId: { $in: candidateIds } }).select('orderId').lean()
+  const ordersWithTickets = new Set(issuedTickets.map(ticket => String(ticket.orderId)))
+  const candidatesWithoutTickets = candidateOrders.filter(order => !ordersWithTickets.has(String(order._id)))
+  const results = await Promise.allSettled(candidatesWithoutTickets.map(reconcileExpiredOrder))
+  for (const result of results) {
+    if (result.status === 'rejected') console.error('Could not reconcile expired PayOS order:', result.reason)
+  }
+  return results.filter(result => result.status === 'fulfilled' && result.value?.orderStatus === 'Cancelled').length
 }
 
 const ensureId = id => {
@@ -83,7 +91,7 @@ const getOrderById = async id => {
 }
 
 const getMyOrders = async userId => {
-  await expirePendingOrders()
+  await expirePendingOrders(userId)
   const orders = await Order.find({ userId }).sort({ createdAt: -1 }).lean()
   return orders.map(order => {
     const { paymentData, ...safeOrder } = order

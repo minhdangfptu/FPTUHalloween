@@ -45,18 +45,29 @@ const QRPayment = () => {
     const loadingToast = toast.loading(ticket("qrCreate"));
 
     const savedPayment = JSON.parse(localStorage.getItem(PAYMENT_KEY) || "null");
-    paymentAPI.createPayOSPayment({
-      customer: checkout.customer,
-      promoCode: checkout.promoCode || null,
-      selectedTicketTypeIds: (checkout.items || []).map((item) => String(item.ticketTypeId)),
-      selectedItems: (checkout.items || []).map((item) => ({
-        ticketTypeId: String(item.ticketTypeId),
-        quantity: Number(item.quantity),
-      })),
-      existingOrderCode: savedPayment?.orderCode,
-    })
+    const request = checkout.resumeOrderCode
+      ? paymentAPI.resumePayOSPayment(checkout.resumeOrderCode)
+      : paymentAPI.createPayOSPayment({
+          customer: checkout.customer,
+          promoCode: checkout.promoCode || null,
+          selectedTicketTypeIds: (checkout.items || []).map((item) => String(item.ticketTypeId)),
+          selectedItems: (checkout.items || []).map((item) => ({
+            ticketTypeId: String(item.ticketTypeId),
+            quantity: Number(item.quantity),
+            originalPrice: Number(item.ticketType?.ticketTypePrice),
+          })),
+          expectedAmount: checkout.total,
+          existingOrderCode: savedPayment?.orderCode,
+        });
+    request
       .then((result) => {
         if (!isMounted) return;
+        if (result.status === "PAID") {
+          localStorage.removeItem(PAYMENT_KEY);
+          navigate(`/complete-payment?orderCode=${result.orderCode}`, { replace: true });
+          toast.success(ticket("paymentSuccess"), { id: loadingToast });
+          return;
+        }
         setPayment(result);
         localStorage.setItem(PAYMENT_KEY, JSON.stringify(result));
         toast.success(ticket("qrCreated"), { id: loadingToast });
@@ -98,16 +109,26 @@ const QRPayment = () => {
 
   useEffect(() => {
     if (!isExpired) return undefined;
-    toast.error(ticket("qrExpired"));
+    let active = true;
     const cancelExpiredPayment = async () => {
-      if (payment?.orderCode) {
-        try { await paymentAPI.cancelPayOSPayment(payment.orderCode); } catch { /* Already expired is safe. */ }
+      if (!payment?.orderCode) return;
+      try {
+        const result = await paymentAPI.cancelPayOSPayment(payment.orderCode);
+        if (!active) return;
+        if (result.status === "PAID") {
+          localStorage.removeItem(PAYMENT_KEY);
+          navigate(`/complete-payment?orderCode=${payment.orderCode}`, { replace: true });
+          return;
+        }
+        localStorage.removeItem(PAYMENT_KEY);
+        toast.error(ticket("qrExpired"));
+        navigate("/cart", { replace: true });
+      } catch (error) {
+        if (active) toast.error(translateError(error));
       }
-      localStorage.removeItem(PAYMENT_KEY);
     };
     cancelExpiredPayment();
-    const redirectTimeout = window.setTimeout(() => navigate("/cart", { replace: true }), 3000);
-    return () => window.clearTimeout(redirectTimeout);
+    return () => { active = false; };
   }, [isExpired, navigate, payment]);
 
   const handleCancelPayment = async () => {
@@ -115,10 +136,15 @@ const QRPayment = () => {
     setIsCancelling(true);
     setShowCancelModal(false);
     try {
-      await paymentAPI.cancelPayOSPayment(payment.orderCode);
+      const result = await paymentAPI.cancelPayOSPayment(payment.orderCode);
+      if (result.status === "PAID") {
+        localStorage.removeItem(PAYMENT_KEY);
+        navigate(`/complete-payment?orderCode=${payment.orderCode}`, { replace: true });
+        return;
+      }
       localStorage.removeItem(PAYMENT_KEY);
       await refreshCartNotification();
-          toast.success(ticket("cancelled"));
+      toast.success(ticket("cancelled"));
       navigate("/cart", { replace: true });
     } catch (error) {
       toast.error(translateError(error));

@@ -96,7 +96,7 @@ const startServer = async () => {
     startFacebookNewsScheduler()
     setInterval(() => {
       expirePendingOrders().catch(error => console.error('Failed to expire pending orders:', error.message))
-    }, 30 * 1000)
+    }, 60 * 1000)
     setInterval(() => {
       closeExpired().catch(error => console.error('Failed to close expired D-Day vote:', error.message))
     }, 15 * 1000)

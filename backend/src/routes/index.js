@@ -112,6 +112,7 @@ router.delete('/cart/items/:ticketTypeId', requireAuth, cartCtrl.removeItem)
 
 // PAYOS
 router.post('/payments/payos', paymentRateLimiter, requireAuth, payOSCtrl.createPayment)
+router.get('/payments/payos/:orderCode/link', requireAuth, payOSCtrl.resumePayment)
 router.get('/payments/payos/:orderCode', requireAuth, payOSCtrl.getPaymentStatus)
 router.delete('/payments/payos/:orderCode', requireAuth, payOSCtrl.cancelPayment)
 

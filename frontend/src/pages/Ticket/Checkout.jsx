@@ -211,15 +211,20 @@ const Checkout = () => {
   };
 
   const continueToPayment = () => {
-    if (appliedCode && !isPromotionActive(Date.now(), appliedCode)) {
+    const activeCode = appliedCode && isPromotionActive(Date.now(), appliedCode) ? appliedCode : null;
+    if (appliedCode && !activeCode) {
       setShowPaymentConfirmation(false);
       setDiscountMessageKey("promoUnavailable");
       toast.error(ticket("promoUnavailable"));
       return;
     }
+    const confirmedDiscount = activeCode ? cartItems.reduce((sum, item) => {
+      const price = Number(item.ticketType?.ticketTypePrice || 0);
+      return sum + (price - getDiscountedPrice(price, activeCode)) * Number(item.quantity || 0);
+    }, 0) : 0;
     localStorage.setItem(
       CHECKOUT_KEY,
-      JSON.stringify({ customer, items: cartItems, subtotal, discount, total, promoCode: promotionApplied ? appliedCode : null }),
+      JSON.stringify({ customer, items: cartItems, subtotal, discount: confirmedDiscount, total: subtotal - confirmedDiscount, promoCode: activeCode }),
     );
     setShowPaymentConfirmation(false);
     navigate("/qr-payment");

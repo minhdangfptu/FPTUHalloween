@@ -88,8 +88,7 @@ export default function UserProfile() {
   const handleOrderAction = (order) => {
     if (order.orderStatus === "Cancelled") return;
     if (order.orderStatus === "Pending") {
-      localStorage.setItem("fptu-halloween-checkout", JSON.stringify({ customer: { fullName: profile.fullName, email: profile.email, phone: profile.phone }, items: order.items || [], subtotal: order.totalAmount, discount: 0, total: order.totalAmount }));
-      localStorage.setItem("fptu-halloween-payos-payment", JSON.stringify({ orderCode: Number(order.payosOrderId) }));
+      localStorage.setItem("fptu-halloween-checkout", JSON.stringify({ resumeOrderCode: order.payosOrderId, total: order.totalAmount, promoCode: order.promoCode || null }));
       navigate("/qr-payment");
       return;
     }

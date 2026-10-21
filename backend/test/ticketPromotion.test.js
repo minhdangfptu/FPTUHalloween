@@ -2,16 +2,12 @@ const test = require('node:test')
 const assert = require('node:assert/strict')
 const { FUN_PROMO_CODE, isSupportedPromotion, isPromotionActive, getDiscountedPrice } = require('../src/utils/ticketPromotion')
 
-test('TTOFF21 respects every Vietnam-time boundary', () => {
+test('TTOFF21 stays active until the end of 23/10/2026 in Vietnam time', () => {
   const cases = [
-    ['2026-10-20T13:29:59+07:00', false],
-    ['2026-10-20T13:30:00+07:00', true],
-    ['2026-10-20T14:14:59+07:00', true],
-    ['2026-10-20T14:15:00+07:00', false],
-    ['2026-10-21T11:00:00+07:00', true],
-    ['2026-10-21T13:30:00+07:00', false],
-    ['2026-10-21T14:00:00+07:00', true],
-    ['2026-10-21T16:30:00+07:00', false]
+    ['2026-10-21T00:00:00+07:00', true],
+    ['2026-10-22T18:00:00+07:00', true],
+    ['2026-10-23T23:59:59.999+07:00', true],
+    ['2026-10-24T00:00:00+07:00', false]
   ]
   for (const [time, expected] of cases) {
     assert.equal(isPromotionActive(Date.parse(time)), expected, time)
