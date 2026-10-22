@@ -86,7 +86,7 @@ npm run dev
 
 # Frontend
 cd frontend
-npm start
+npm run dev
 ```
 
 ## 📚 Tài liệu
