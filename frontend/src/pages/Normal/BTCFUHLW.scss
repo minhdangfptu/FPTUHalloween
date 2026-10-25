@@ -299,6 +299,43 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
+.btc-departments-photo {
+  margin-top: clamp(3rem, 6vw, 6rem);
+  margin-bottom: 2rem;
+}
+.btc-departments-photo__heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.btc-departments-photo__heading h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+}
+.btc-departments-photo figure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 1rem;
+  background: var(--btc-ink);
+}
+.btc-departments-photo img {
+  display: block;
+  width: 100%;
+  max-height: 28rem;
+  object-fit: cover;
+  object-position: center 62%;
+}
+.btc-departments-photo figcaption {
+  position: absolute;
+  right: 1rem;
+  bottom: .8rem;
+  left: 1rem;
+  color: var(--btc-card);
+  font-size: .78rem;
+}
 .btc-department {
   min-height: 8.5rem;
   padding: 0.8rem;
@@ -476,6 +513,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 25%;
   filter: saturate(0.85);
   transition:
     transform 0.3s ease,

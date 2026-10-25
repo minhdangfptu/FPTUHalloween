@@ -1,6 +1,6 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
-const { FUN_PROMO_CODE, isSupportedPromotion, isPromotionActive, getDiscountedPrice } = require('../src/utils/ticketPromotion')
+const { FUN_PROMO_CODE, FBGC_PROMO_CODE, isSupportedPromotion, isPromotionActive, getDiscountedPrice } = require('../src/utils/ticketPromotion')
 
 test('TTOFF21 stays active until the end of 23/10/2026 in Vietnam time', () => {
   const cases = [
@@ -29,6 +29,15 @@ test('GIANGDAMLOUISANTONIE is valid without an expiry and rounds to whole VND', 
   assert.equal(getDiscountedPrice(500000, FUN_PROMO_CODE), 499999)
 })
 
+test('FBGC26 stays active without an expiry and makes 49,000 VND tickets cost 40,000 VND', () => {
+  assert.equal(isSupportedPromotion(FBGC_PROMO_CODE), true)
+  for (const time of ['2020-01-01T00:00:00Z', '2026-10-25T00:00:00Z', '2035-01-01T00:00:00Z']) {
+    assert.equal(isPromotionActive(Date.parse(time), FBGC_PROMO_CODE), true)
+  }
+  assert.equal(getDiscountedPrice(49000, FBGC_PROMO_CODE), 40000)
+  assert.equal(getDiscountedPrice(49000, FBGC_PROMO_CODE) * 2, 80000)
+})
+
 test('checkout preview and payment service use the same time windows and prices', async () => {
   const frontend = await import('../../frontend/src/utils/ticketPromotion.js')
   for (const date of ['2026-10-20T13:30:00+07:00', '2026-10-20T14:15:00+07:00', '2026-10-21T14:00:00+07:00']) {
@@ -42,4 +51,7 @@ test('checkout preview and payment service use the same time windows and prices'
     assert.equal(frontend.getDiscountedPrice(price, FUN_PROMO_CODE), getDiscountedPrice(price, FUN_PROMO_CODE))
   }
   assert.equal(frontend.isPromotionActive(Date.parse('2035-01-01T00:00:00Z'), FUN_PROMO_CODE), true)
+  assert.equal(frontend.FBGC_PROMO_CODE, FBGC_PROMO_CODE)
+  assert.equal(frontend.getDiscountedPrice(49000, FBGC_PROMO_CODE), getDiscountedPrice(49000, FBGC_PROMO_CODE))
+  assert.equal(frontend.isPromotionActive(Date.parse('2035-01-01T00:00:00Z'), FBGC_PROMO_CODE), true)
 })

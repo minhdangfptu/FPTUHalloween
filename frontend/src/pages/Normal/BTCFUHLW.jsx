@@ -5,6 +5,12 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import coverArt from "../../assets/cover-01.png";
 import groupPhoto from "../../assets/cover.jpg";
+import {
+  coreTeamImagePositions,
+  coreTeamImageScales,
+  coreTeamImages,
+  teamPhotos,
+} from "./btc-member-images";
 import "./BTCFUHLW.scss";
 
 export const coreTeam = [
@@ -12,92 +18,110 @@ export const coreTeam = [
     name: "Nguyễn Thảo Vy",
     role: "Trưởng ban Tổ chức · Trưởng ban Đối Ngoại",
     email: "ntvy04@gmail.com",
+    image: coreTeamImages["Nguyễn Thảo Vy"],
   },
-  { name: "Nguyễn Thị Phương Thảo", role: "HR", email: "npt2056@gmail.com" },
+  { name: "Nguyễn Thị Phương Thảo", role: "HR", email: "npt2056@gmail.com", image: coreTeamImages["Nguyễn Thị Phương Thảo"] },
   {
     name: "Trần Quang Anh",
     role: "Trưởng ban Nhà Ma",
     email: "qanhthanhcong05@gmail.com",
+    image: coreTeamImages["Trần Quang Anh"],
   },
   {
     name: "Nguyễn Hà Phương",
     role: "Phó ban Nhà Ma",
     email: "nguyenhaphuong3009@gmail.com",
+    image: coreTeamImages["Nguyễn Hà Phương"],
   },
   {
     name: "Trương Bá Hoàng",
     role: "Phó ban Nhà Ma",
     email: "hoangtb020304@gmail.com",
+    image: coreTeamImages["Trương Bá Hoàng"],
   },
   {
     name: "Võ Xuân Quỳnh",
     role: "Phó ban Nhà Ma",
     email: "xquynhhh3010@gmail.com",
+    image: coreTeamImages["Võ Xuân Quỳnh"],
   },
   {
     name: "Lê Thị Thuỳ",
     role: "Trưởng ban Truyền Thông",
     email: "lethithuy15072005@gmail.com",
+    image: coreTeamImages["Lê Thị Thuỳ"],
   },
   {
     name: "Phùng Thị Thanh Thủy",
     role: "Phó ban Truyền Thông",
     email: "phungthithanhthuy30102007@gmail.com",
+    image: coreTeamImages["Phùng Thị Thanh Thủy"],
   },
   {
     name: "Nguyễn Hương Ly",
     role: "Trưởng ban Nội Dung · Trưởng ban Văn thể",
     email: "huongly30102006@gmail.com",
+    image: coreTeamImages["Nguyễn Hương Ly"],
   },
   {
     name: "Nguyễn Tạ Đăng Duy",
     role: "Phó ban Nội Dung",
     email: "nguyentadangduy24122006@gmail.com",
+    image: coreTeamImages["Nguyễn Tạ Đăng Duy"],
   },
   {
     name: "Nguyễn Việt Trung",
     role: "Trưởng ban Hậu Cần",
     email: "ngviettrung0803@gmail.com",
+    image: coreTeamImages["Nguyễn Việt Trung"],
   },
   {
     name: "Nguyễn Huy Phước",
     role: "Phó ban Hậu Cần",
     email: "huyphuoc204@gmail.com",
+    image: coreTeamImages["Nguyễn Huy Phước"],
   },
   {
     name: "Nguyễn Linh Nga",
     role: "Phó ban Hậu Cần",
     email: "nguyenlinhnga2005@gmail.com",
+    image: coreTeamImages["Nguyễn Linh Nga"],
   },
   {
     name: "Bùi Mai Chi",
     role: "Trưởng ban Take Care",
     email: "chi141005@gmail.com",
+    image: coreTeamImages["Bùi Mai Chi"],
   },
   {
     name: "Trịnh Thị Hiền",
     role: "Phó ban Take Care",
     email: "trinhhien0702@gmail.com",
+    image: coreTeamImages["Trịnh Thị Hiền"],
   },
   {
     name: "Đặng Đình Minh",
     role: "Trưởng ban Media",
     email: "minhdangdinh261004@gmail.com",
+    image: coreTeamImages["Đặng Đình Minh"],
   },
   {
     name: "Hoàng Khánh Chi",
     role: "Trưởng ban Design",
     email: "khankhichibd2005@gmail.com",
+    image: coreTeamImages["Hoàng Khánh Chi"],
   },
   {
     name: "Khuất Kim Bảo",
     role: "Phó ban Media - Design",
     email: "kimbao20040@gmail.com",
+    image: coreTeamImages["Khuất Kim Bảo"],
   },
   {
     name: "Nguyễn Thế Dương",
     role: "Phó ban Media - Design",
     email: "nguyentheduong3110@gmail.com",
+    image: coreTeamImages["Nguyễn Thế Dương"],
   },
 ];
 
@@ -137,7 +161,11 @@ const PersonCard = ({ person, index, level, labels }) => (
   <article className={`btc-person-card btc-person-card--${level}`}>
     <div className="btc-person-card__media">
       <img
-        src={coverArt}
+        src={person.image || coverArt}
+        style={{
+          transform: `scale(${coreTeamImageScales[person.name] || 1})`,
+          objectPosition: coreTeamImagePositions[person.name] || "center 10%",
+        }}
         alt={person.avatarAlt}
         onError={(event) => {
           event.currentTarget.onerror = null;
@@ -148,7 +176,7 @@ const PersonCard = ({ person, index, level, labels }) => (
     </div>
     <div className="btc-person-card__body">
       <div className="btc-person-card__eyebrow">
-        <span>{labels.cardKicker}</span>
+        <span>{labels.coreTeamLabel}</span>
         <span>{labels.cardSeason}</span>
       </div>
       <h3>{person.name}</h3>
@@ -326,7 +354,6 @@ export default function BTCFUHLW() {
                   >
                     <div className="btc-level__heading">
                       <span>{btc.hierarchyNotes[level.key]}</span>
-                      <h3>{translatedHierarchy[level.key]}</h3>
                     </div>
                     <div
                       className={`btc-person-grid btc-person-grid--${level.key}`}
@@ -355,7 +382,6 @@ export default function BTCFUHLW() {
                 >
                   <div className="btc-level__heading">
                     <span>{btc.hierarchyNotes[level.key]}</span>
-                    <h3>{translatedHierarchy[level.key]}</h3>
                   </div>
                   <div
                     className={`btc-person-grid btc-person-grid--${level.key}`}
@@ -375,6 +401,17 @@ export default function BTCFUHLW() {
             })}
           </div>
         </div>
+
+        <section className="btc-departments-photo" aria-labelledby="btc-departments-photo-title">
+          <div className="btc-departments-photo__heading">
+            <div className="btc-section-label"><span>{btc.groupPhoto}</span></div>
+            <h2 id="btc-departments-photo-title">{btc.coreTeam}</h2>
+          </div>
+          <figure>
+            <img src={teamPhotos.coreTeam} alt={btc.groupAlt} />
+            <figcaption>{btc.groupCaption}</figcaption>
+          </figure>
+        </section>
 
         <div className="btc-departments" aria-label={btc.departmentsLabel}>
           {departments.map((department, index) => (

@@ -884,8 +884,10 @@ Object.assign(resources.vi.translation.normal.home, {
   heroAria: 'Ảnh bìa FPTU Halloween 2026', brand: 'FPTU HALLOWEEN', university: 'FPT UNIVERSITY', pdp: 'PDP', fbgc: 'FBGC', hlw26: 'HLW26',
   eventMeta: '2026 / FPTU HÀ NỘI', countdownLabel: 'ĐẾM NGƯỢC D-DAY', conceptLabel: '01 · GHI CHÚ CONCEPT',
   highlightsLabel: '02 · BẢN ĐỒ ĐÊM HỘI', timelineLabel: '03 · LỊCH TRÌNH ĐÊM HỘI', mapLabel: '04 · TÌM ĐƯỜNG',
-  stage: 'SÂN KHẤU', sponsorsLabel: '05 · ĐƠN VỊ ĐỒNG HÀNH',
-  sponsorNames: { pdp: 'PDP', fptu: 'FPTU', fbgc: 'FBGC', hlw26: 'HLW26' },
+  stage: 'SÂN KHẤU', sponsorsLabel: '05 · ĐƠN VỊ ĐỒNG HÀNH', organizers: 'Đơn vị tổ chức',
+  organizerNames: { fptu: 'Trường Đại học FPT Hà Nội', pdp: 'Phòng Phát triển Cá nhân PDP', fbgc: 'FPTU Board Game Club' },
+  sponsorNames: { alFrescos: "Al Fresco's", khangPhuDat: 'KHANG PHÚ ĐẠT EVENT', villaParamount: 'Villa Paramount', nhaBenRung: 'Nhà Bên Rừng', gauUniform: 'Gấu Uniform', tranLong: 'Trần Long Hòa Lạc' },
+  sponsorTiers: { gold: 'Nhà tài trợ Vàng', silver: 'Nhà tài trợ Bạc', bronze: 'Nhà tài trợ Đồng', costume: 'Nhà tài trợ Đồng phục' },
   conceptLines: ['Một sân chơi từng bị bỏ lại.', 'Một chú Bunny chưa bao giờ rời đi.'],
   conceptLead: 'Bunny’s Playhouse là nơi quá khứ chưa bao giờ thực sự kết thúc. Một công viên giải trí từng chìm trong những vụ mất tích bí ẩn nay được dựng lại, kéo theo sự trở lại của chú Bunny đã biến mất năm nào.',
   conceptBody: 'Bước qua cánh cửa Playhouse, bạn sẽ không chỉ tìm thấy những trò chơi. Bạn sẽ gặp lại Bunny.',
@@ -894,14 +896,20 @@ Object.assign(resources.en.translation.normal.home, {
   heroAria: 'FPTU Halloween 2026 hero banner', brand: 'FPTU HALLOWEEN', university: 'FPT UNIVERSITY', pdp: 'PDP', fbgc: 'FBGC', hlw26: 'HLW26',
   eventMeta: '2026 / FPTU HANOI', countdownLabel: 'COUNTDOWN D-DAY', conceptLabel: '01 · CONCEPT NOTE',
   highlightsLabel: '02 · THE NIGHT MAP', timelineLabel: '03 · RUN OF SHOW', mapLabel: '04 · FIND YOUR WAY',
-  stage: 'STAGE', sponsorsLabel: '05 · WITH SUPPORT FROM',
-  sponsorNames: { pdp: 'PDP', fptu: 'FPTU', fbgc: 'FBGC', hlw26: 'HLW26' },
+  stage: 'STAGE', sponsorsLabel: '05 · EVENT PARTNERS', organizers: 'Organizers',
+  organizerNames: { fptu: 'FPT University Hanoi', pdp: 'Personal Development Program', fbgc: 'FPTU Board Game Club' },
+  sponsorNames: { alFrescos: "Al Fresco's", khangPhuDat: 'KHANG PHÚ ĐẠT EVENT', villaParamount: 'Villa Paramount', nhaBenRung: 'Nhà Bên Rừng', gauUniform: 'Gấu Uniform', tranLong: 'Trần Long Hòa Lạc' },
+  sponsorTiers: { gold: 'Gold Sponsor', silver: 'Silver Sponsor', bronze: 'Bronze Sponsor', costume: 'Costume Sponsor' },
   conceptLines: ['A playground left behind.', 'A Bunny who never left.'],
   conceptLead: 'Bunny’s Playhouse is a place where the past never truly ended. An amusement park once swallowed by mysterious disappearances has been rebuilt, bringing back the Bunny who vanished years ago.',
   conceptBody: 'Step through the Playhouse doors and you will find more than games. You will meet Bunny again.',
 });
 Object.assign(resources.ja.translation.normal.home, {
   conceptLines: ['置き去りにされた遊び場。', '決して去らなかったBunny。'],
+  sponsorsLabel: '05 · イベントパートナー', organizers: '主催団体',
+  organizerNames: { fptu: 'FPT大学ハノイ', pdp: '個人開発プログラム PDP', fbgc: 'FPTUボードゲームクラブ' },
+  sponsorNames: { alFrescos: "Al Fresco's", khangPhuDat: 'KHANG PHÚ ĐẠT EVENT', villaParamount: 'Villa Paramount', nhaBenRung: 'Nhà Bên Rừng', gauUniform: 'Gấu Uniform', tranLong: 'Trần Long Hòa Lạc' },
+  sponsorTiers: { gold: 'ゴールドスポンサー', silver: 'シルバースポンサー', bronze: 'ブロンズスポンサー', costume: '衣装スポンサー' },
 });
 Object.assign(resources.vi.translation.normal.home, {
   timeline: 'Lịch Trình Đêm Hội Halloween',
@@ -1074,8 +1082,8 @@ Object.assign(resources.en.translation.archive, {
 });
 
 Object.assign(resources.vi.translation.normal.btc, {
-  heroLabel: 'FPTU HALLOWEEN 2026 · ĐỘI NGŨ CỐT LÕI', titleEnd: 'sự kiện.', coreTeam: 'Đội ngũ HLW26',
-  location: 'Đại học FPT · Hà Nội', coreTeamLabel: 'ĐỘI NGŨ CỐT LÕI', cardKicker: 'ĐỘI NGŨ', cardSeason: 'HLW26',
+  heroLabel: 'FPTU HALLOWEEN 2026 · CORE TEAM', titleEnd: 'sự kiện.', coreTeam: 'Core Team HLW26',
+  location: 'Đại học FPT · Hà Nội', coreTeamLabel: 'CORE TEAM', cardKicker: 'CORE TEAM', cardSeason: 'HLW26',
   brand: 'FPTU HALLOWEEN', departmentTeam: 'BTC HLW2026',
   hierarchyNotes: { chair: '01 · TRƯỞNG BAN TỔ CHỨC', hr: '02 · NHÂN SỰ', lead: '03 · TRƯỞNG BAN', sublead: '04 · PHÓ BAN' },
 });

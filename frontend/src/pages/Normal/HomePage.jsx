@@ -4,12 +4,15 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import heroImage from "../../assets/cover-01.png";
 import mapImage from "../../assets/map.png";
-import pdpLogo from "../../assets/pdp_avatar.jpg";
+import pdpLogo from "../../assets/pdpava.png";
 import fptuLogo from "../../assets/logo fptu.webp";
-import fbgcLogo from "../../assets/fbgc.png";
-import wtmDarkLogo from "../../assets/wtm.png";
-import wtmLightLogo from "../../assets/wtm_lightmode.png";
-import ThemeAsset from "../../components/ThemeAsset";
+import fbgcLogo from "../../assets/ava_fbgc.png";
+import alFrescosLogo from "../../assets/ntt/df08160e-da91-4f6c-824a-a29a654173e0.png";
+import khangPhuDatLogo from "../../assets/ntt/2821f40a-eec6-4d44-b511-7c7a87692452.png";
+import villaParamountLogo from "../../assets/ntt/1 (1).png";
+import nhaBenRungLogo from "../../assets/ntt/Asset 1.png";
+import gauUniformLogo from "../../assets/ntt/Logo Gấu xanh.png";
+import tranLongLogo from "../../assets/ntt/05a96034-44bb-448c-b5e8-ecb50402b022.png";
 import "./HomePage.scss";
 
 const EVENT_DATE = new Date("2026-10-31T18:00:00+07:00").getTime();
@@ -58,26 +61,85 @@ const highlights = [
   },
 ];
 
-const timeline = [
+const organizers = [
   {
-    time: "01",
+    key: "fptu",
+    nameKey: "organizerNames.fptu",
+    image: fptuLogo,
+    width: 240,
+    height: 96,
   },
   {
-    time: "02",
+    key: "pdp",
+    nameKey: "organizerNames.pdp",
+    image: pdpLogo,
+    width: 1265,
+    height: 361,
   },
   {
-    time: "03",
-  },
-  {
-    time: "04",
+    key: "fbgc",
+    nameKey: "organizerNames.fbgc",
+    image: fbgcLogo,
+    width: 552,
+    height: 552,
   },
 ];
 
 const sponsors = [
-  { key: "pdp", nameKey: "sponsorNames.pdp", image: pdpLogo },
-  { key: "fptu", nameKey: "sponsorNames.fptu", image: fptuLogo },
-  { key: "fbgc", nameKey: "sponsorNames.fbgc", image: fbgcLogo },
-  { key: "hlw26", nameKey: "sponsorNames.hlw26", image: wtmDarkLogo },
+  {
+    key: "khang-phu-dat",
+    nameKey: "sponsorNames.khangPhuDat",
+    tierKey: "sponsorTiers.gold",
+    tier: "gold",
+    image: khangPhuDatLogo,
+    width: 2047,
+    height: 2048,
+  },
+  {
+    key: "tran-long",
+    nameKey: "sponsorNames.tranLong",
+    tierKey: "sponsorTiers.gold",
+    tier: "gold",
+    image: tranLongLogo,
+    width: 2528,
+    height: 1696,
+  },
+  {
+    key: "villa-paramount",
+    nameKey: "sponsorNames.villaParamount",
+    tierKey: "sponsorTiers.silver",
+    tier: "silver",
+    image: villaParamountLogo,
+    width: 1323,
+    height: 862,
+  },
+  {
+    key: "nha-ben-rung",
+    nameKey: "sponsorNames.nhaBenRung",
+    tierKey: "sponsorTiers.silver",
+    tier: "silver",
+    image: nhaBenRungLogo,
+    width: 1323,
+    height: 862,
+  },
+  {
+    key: "al-frescos",
+    nameKey: "sponsorNames.alFrescos",
+    tierKey: "sponsorTiers.bronze",
+    tier: "bronze",
+    image: alFrescosLogo,
+    width: 810,
+    height: 477,
+  },
+  {
+    key: "gau-uniform",
+    nameKey: "sponsorNames.gauUniform",
+    tierKey: "sponsorTiers.costume",
+    tier: "costume",
+    image: gauUniformLogo,
+    width: 11815,
+    height: 10214,
+  },
 ];
 
 const countdownItems = ["days", "hours", "minutes", "seconds"];
@@ -326,7 +388,10 @@ export default function HomePage() {
         <div className="home-section__head">
           <p className="home-eyebrow">{home("mapLabel")}</p>
           <h2 id="home-map-title">{home("map")}</h2>
-          <aside className="home-map__legend" aria-labelledby="home-map-legend-title">
+          <aside
+            className="home-map__legend"
+            aria-labelledby="home-map-legend-title"
+          >
             <h3 id="home-map-legend-title">{home("mapLegendTitle")}</h3>
             <div className="home-map__legend-grid">
               {mapLegendItems.map((item) => (
@@ -352,38 +417,64 @@ export default function HomePage() {
         className="home-section home-sponsors"
         aria-labelledby="home-sponsors-title"
       >
-        <div className="home-section__head home-section__head--compact">
+        <div className="home-sponsors__heading">
           <p className="home-eyebrow">{home("sponsorsLabel")}</p>
-          <h2 id="home-sponsors-title">{home("sponsors")}</h2>
+          <h2 id="home-sponsors-title">{home("organizers")}</h2>
         </div>
-        <div className="home-sponsors__row">
+        <ul className="home-organizers" aria-label={home("organizers")}>
+          {organizers.map((organizer) => (
+            <li
+              className={`home-sponsor home-organizer home-organizer--${organizer.key}`}
+              key={organizer.key}
+            >
+              <figure>
+                <div className="home-sponsor__logo">
+                  <img
+                    src={organizer.image}
+                    alt=""
+                    width={organizer.width}
+                    height={organizer.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption>
+                  <strong>{home(organizer.nameKey)}</strong>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+
+        <div className="home-sponsors__subheading">
+          <h3>{home("sponsors")}</h3>
+          <span aria-hidden="true" />
+        </div>
+        <ul className="home-sponsors__grid" aria-label={home("sponsors")}>
           {sponsors.map((sponsor) => (
-            <div
-              className={`home-sponsor home-sponsor--${sponsor.key}`}
+            <li
+              className={`home-sponsor home-sponsor--${sponsor.tier} home-sponsor--${sponsor.key}`}
               key={sponsor.key}
             >
-              {sponsor.image ? (
-                <>
-                  {sponsor.key === "hlw26" ? (
-                    <ThemeAsset
-                      lightSrc={wtmLightLogo}
-                      darkSrc={wtmDarkLogo}
-                      alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })}
-                    />
-                  ) : (
-                    <img
-                      src={sponsor.image}
-                      alt={home("sponsorsAlt", { name: home(sponsor.nameKey) })}
-                    />
-                  )}
-                </>
-              ) : (
-                <span>{home(sponsor.nameKey)}</span>
-              )}
-            </div>
+              <figure>
+                <div className="home-sponsor__logo">
+                  <img
+                    src={sponsor.image}
+                    alt=""
+                    width={sponsor.width}
+                    height={sponsor.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption>
+                  <strong>{home(sponsor.nameKey)}</strong>
+                  <span>{home(sponsor.tierKey)}</span>
+                </figcaption>
+              </figure>
+            </li>
           ))}
-        </div>
-        <p className="home-sponsors__note">{home("sponsorsNote")}</p>
+        </ul>
       </section>
     </main>
   );

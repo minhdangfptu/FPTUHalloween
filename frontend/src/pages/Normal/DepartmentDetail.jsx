@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import coverArt from "../../assets/cover-01.png";
 import { coreTeam, departments } from "./BTCFUHLW";
+import { coreTeamImagePositions, departmentPhotoMembers, teamPhotos } from "./btc-member-images";
 import "./DepartmentDetail.scss";
 
 const DepartmentDetail = () => {
@@ -19,6 +20,8 @@ const DepartmentDetail = () => {
   const translatedName = departmentName === "Media - Design"
     ? `${btc.departments[2]} - ${btc.departments[3]}`
     : btc.departments[translatedDepartmentIndexes[departmentIndex]] || departmentName;
+  const departmentPrefix = i18n.language.startsWith("en") ? "Department" : i18n.language.startsWith("ja") ? "部署" : "Ban";
+  const displayDepartmentName = `${departmentPrefix} ${translatedName}`;
   const members = coreTeam.filter((person) =>
     departmentName === "Media - Design"
       ? person.role.includes("Media") || person.role.includes("Design")
@@ -40,6 +43,12 @@ const DepartmentDetail = () => {
   const leaderMembers = departmentName === "Media - Design" ? members.slice(0, 2) : members.slice(0, 1);
   const deputyMembers = departmentName === "Media - Design" ? members.slice(2) : members.slice(1);
   const managementMembers = [...leaderMembers, ...deputyMembers];
+  const managementNames = new Set(managementMembers.map((person) => person.name));
+  const departmentPhotos = (departmentPhotoMembers[departmentId] || []).filter(
+    (person) => !managementNames.has(person.name),
+  );
+  const hasMemberSection = !["1", "2"].includes(String(departmentId));
+  const getImageScale = (person) => (person.imageScale || 1) * (String(departmentId) === "7" ? 1.15 : 1);
 
   const getRole = (person) =>
     person.role.includes("Trưởng ban") ? btc.hierarchy.lead : btc.roles.designDeputy.replace("Design", "Media - Design");
@@ -63,13 +72,20 @@ const DepartmentDetail = () => {
   return (
     <main className="department-page">
       <section className="department-hero">
+        {teamPhotos.departments[departmentId] && (
+          <div
+            className="department-hero__image"
+            style={{ backgroundImage: `url(${teamPhotos.departments[departmentId]})` }}
+            aria-hidden="true"
+          />
+        )}
         <Link className="department-back" to="/btc-fuhlw">
           <ArrowLeft size={16} /> {btc.boardTitle}
         </Link>
         <div className="department-hero__content">
           <p>{btc.organization}</p>
-          <h1>{translatedName}</h1>
-          <span>{btc.departmentTeam}</span>
+          <h1>{displayDepartmentName}</h1>
+          <span>{displayDepartmentName}</span>
         </div>
       </section>
 
@@ -80,7 +96,7 @@ const DepartmentDetail = () => {
           </div>
           <div>
             <span>{departmentLabel}</span>
-            <h2>{translatedName}</h2>
+            <h2>{displayDepartmentName}</h2>
           </div>
         </div>
 
@@ -88,7 +104,7 @@ const DepartmentDetail = () => {
           <span>01</span>
           <h2>{btc.hierarchy.lead} &amp; {btc.hierarchy.sublead.split(" /")[0]}</h2>
         </div>
-        <div className="department-leaders" style={{ "--department-columns": Math.min(managementMembers.length, 4) || 1 }}>
+        <div className={`department-leaders ${managementMembers.length === 1 ? "department-leaders--single" : ""}`} style={{ "--department-columns": Math.min(managementMembers.length, 4) || 1 }}>
           {managementMembers.map((person, index) => (
             <article
               className="department-person department-person--leader"
@@ -98,11 +114,12 @@ const DepartmentDetail = () => {
                 <img
                   src={getImage(person)}
                   alt={t("normal.btc.avatarAlt", { name: person.name })}
+                  style={{ transform: `scale(${getImageScale(person)})`, objectPosition: person.imagePosition || coreTeamImagePositions[person.name] || "center 10%" }}
                 />
                 <span>0{index + 1}</span>
               </div>
               <div className="department-person__body">
-                <small>{btc.departmentTeam}</small>
+                <small>{displayDepartmentName}</small>
                 <h3>{person.name}</h3>
                 <p>{getDisplayRole(person)}</p>
               </div>
@@ -114,39 +131,42 @@ const DepartmentDetail = () => {
           <span>02</span>
           <h2>{btc.roles.designDeputy.replace("Design", "Media - Design")}</h2>
         </div>
-        <div className="department-leaders department-deputies" style={{ "--department-columns": Math.min(deputyMembers.length, 4) || 1 }}>
+        <div className={`department-leaders department-deputies ${deputyMembers.length === 1 ? "department-leaders--single" : ""}`} style={{ "--department-columns": Math.min(deputyMembers.length, 4) || 1 }}>
           {deputyMembers.map((person, index) => (
             <article className="department-person department-person--leader" key={person.name}>
-              <div className="department-person__media"><img src={getImage(person)} alt={t("normal.btc.avatarAlt", { name: person.name })} /><span>{String(index + 1).padStart(2, "0")}</span></div>
-              <div className="department-person__body"><small>{btc.roles.designDeputy.replace("Design", "Media - Design")}</small><h3>{person.name}</h3><p>{getDisplayRole(person)}</p></div>
+              <div className="department-person__media"><img src={getImage(person)} alt={t("normal.btc.avatarAlt", { name: person.name })} style={{ transform: `scale(${getImageScale(person)})`, objectPosition: person.imagePosition || coreTeamImagePositions[person.name] || "center 10%" }} /><span>{String(index + 1).padStart(2, "0")}</span></div>
+              <div className="department-person__body"><small>{displayDepartmentName}</small><h3>{person.name}</h3><p>{getDisplayRole(person)}</p></div>
             </article>
           ))}
         </div>
 
-        <div className="department-members">
-          <div className="department-members__heading">
-            <span>02</span>
-            <h2>{memberLabel}</h2>
+        {hasMemberSection && (
+          <div className="department-members">
+            <div className="department-members__heading">
+              <span>02</span>
+              <h2>{memberLabel}</h2>
+            </div>
+            <div className="department-members__grid" style={{ "--department-columns": 5 }}>
+              {(departmentPhotos.length ? departmentPhotos : placeholders).map((person, index) => (
+                <article className="department-person" key={person.name}>
+                  <div className="department-person__media">
+                    <img
+                      src={getImage(person)}
+                      alt={t("normal.btc.avatarAlt", { name: person.name })}
+                      style={{ transform: `scale(${getImageScale(person)})`, objectPosition: person.imagePosition || coreTeamImagePositions[person.name] || "center 10%" }}
+                    />
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <div className="department-person__body">
+                    <small>{displayDepartmentName}</small>
+                    <h3>{person.name}</h3>
+                    <p>{person.role}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-          <div className="department-members__grid" style={{ "--department-columns": 5 }}>
-            {placeholders.map((person, index) => (
-              <article className="department-person" key={person.name}>
-                <div className="department-person__media">
-                  <img
-                    src={getImage(person)}
-                    alt={t("normal.btc.avatarAlt", { name: person.name })}
-                  />
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                </div>
-                <div className="department-person__body">
-                  <small>{btc.departmentTeam}</small>
-                  <h3>{person.name}</h3>
-                  <p>{person.role}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+        )}
       </section>
       <section className="department-closing">
         <p>{btc.closingText}</p>

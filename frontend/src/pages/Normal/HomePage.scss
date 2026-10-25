@@ -28,6 +28,12 @@
   --home-display: "HomeDisplay", Georgia, serif;
   --home-body: "Roboto", Arial, sans-serif;
   --home-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --home-space-xs: 0.5rem;
+  --home-space-sm: 1rem;
+  --home-space-md: 1.5rem;
+  --home-space-lg: 2rem;
+  --home-space-xl: 2.5rem;
+  --home-space-2xl: 5rem;
   min-width: 0;
   overflow-x: clip;
   color: var(--home-ink);
@@ -845,79 +851,173 @@
 }
 
 .home-sponsors {
-  display: grid;
-  grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr);
-  gap: 2rem;
-  align-items: center;
+  display: block;
   border-bottom: 1px solid var(--home-line);
 }
 
-.home-section__head--compact h2 {
-  font-size: clamp(2.2rem, 4vw, 3.8rem);
+.home-sponsors__heading {
+  display: grid;
+  gap: var(--home-space-sm);
 }
 
-.home-sponsors__row {
+.home-sponsors__heading h2,
+.home-sponsors__subheading h3 {
+  font-family: var(--home-body);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.home-sponsors__heading h2 {
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+}
+
+.home-organizers,
+.home-sponsors__grid {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.home-organizers {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--home-space-sm);
+  margin-top: var(--home-space-xl);
+}
+
+.home-organizer {
+  min-width: 0;
+}
+
+.home-organizer figure {
+  grid-template-rows: minmax(9rem, 1fr) auto;
+}
+
+.home-organizer .home-sponsor__logo img {
+  height: 5rem;
+  max-width: 16rem;
+}
+
+.home-organizer:first-child .home-sponsor__logo img {
+  height: 4.75rem;
+}
+
+.home-organizer:last-child .home-sponsor__logo img {
+  height: 5.5rem;
+}
+
+.home-sponsors__subheading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--home-space-md);
+  align-items: center;
+  margin-top: var(--home-space-2xl);
+}
+
+.home-sponsors__subheading h3 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.home-sponsors__subheading span {
+  display: block;
+  height: 1px;
+  background: var(--home-line);
+}
+
+.home-sponsors__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--home-space-sm);
+  margin-top: var(--home-space-lg);
 }
 
 .home-sponsor {
+  min-width: 0;
+  border: 1px solid var(--home-line);
+  background: var(--home-paper-deep);
+}
+
+.home-sponsor figure {
+  display: grid;
+  height: 100%;
+  min-width: 0;
+  grid-template-rows: minmax(10rem, 1fr) auto;
+  margin: 0;
+}
+
+.home-sponsor__logo {
   display: flex;
-  min-height: 5rem;
+  min-width: 0;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem;
-  color: var(--home-ink);
-  border: 1px solid var(--home-line);
+  padding: var(--home-space-md);
   background: var(--home-white);
-  font-family: var(--home-body);
-  font-size: clamp(1.2rem, 2.2vw, 2rem);
-  font-weight: 700;
-  text-align: center;
 }
 
-.home-sponsor img {
+.home-sponsor__logo img {
   display: block;
-  width: auto;
-  height: 3.5rem;
-  max-width: 100%;
+  width: 100%;
+  height: 7rem;
+  max-width: 24rem;
   object-fit: contain;
-  border-radius: 0;
 }
 
-.home-sponsor--pdp img {
-  width: 9rem;
-  height: 5rem;
+.home-sponsor--gold .home-sponsor__logo img {
+  height: 8rem;
 }
 
-.home-sponsor--fptu img {
-  width: 8rem;
-  height: 4rem;
+.home-sponsor--nha-ben-rung .home-sponsor__logo,
+.home-sponsor--gau-uniform .home-sponsor__logo {
+  background: var(--home-white);
 }
 
-.home-sponsor--fbgc img {
-  width: 4.5rem;
-  height: 4.5rem;
+.home-sponsor--nha-ben-rung .home-sponsor__logo img {
+  height: 5.5rem;
 }
 
-.home-sponsor--hlw26 img {
-  width: 8rem;
-  height: 4rem;
+.home-sponsor--gau-uniform .home-sponsor__logo img {
+  height: 8.5rem;
 }
 
-.home-sponsor:nth-child(2) {
-  color: var(--home-violet);
+.home-sponsor figcaption {
+  display: grid;
+  gap: var(--home-space-sm);
+  padding: var(--home-space-md);
+  border-top: 1px solid var(--home-line);
+  color: var(--home-ink);
+  background: var(--home-paper-deep);
 }
 
-.home-sponsor:nth-child(3) {
-  color: var(--home-red);
+.home-sponsor figcaption strong {
+  min-width: 0;
+  color: var(--home-ink);
+  font-size: clamp(1.25rem, 1.7vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
 }
 
-.home-sponsors__note {
-  grid-column: 2;
-  color: var(--home-muted);
-  font-size: 0.78rem;
+.home-sponsor figcaption span {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: var(--home-space-xs);
+  color: var(--home-ink);
+  font-size: 0.875rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.home-sponsor figcaption span::before {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: 0 0 auto;
+  background: var(--home-red);
+  content: "";
 }
 
 @media (max-width: 60rem) {
@@ -926,8 +1026,7 @@
   }
 
   .home-intro,
-  .home-map-section,
-  .home-sponsors {
+  .home-map-section {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -941,10 +1040,6 @@
 
   .home-map-section .home-map {
     min-height: 20rem;
-  }
-
-  .home-sponsors__note {
-    grid-column: 1;
   }
 }
 
@@ -1072,14 +1167,63 @@
     display: none;
   }
 
-  .home-sponsors__row {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .home-map {
     min-height: 17rem;
   }
+}
 
+@media (min-width: 40rem) {
+  .home-organizers {
+    grid-template-columns: repeat(24, minmax(0, 1fr));
+  }
+
+  .home-organizer--fptu {
+    grid-column: span 8;
+  }
+
+  .home-organizer--pdp {
+    grid-column: span 9;
+  }
+
+  .home-organizer--fbgc {
+    grid-column: span 7;
+  }
+
+  .home-sponsors__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 60rem) {
+  .home-sponsors__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .home-sponsor figcaption {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .home-sponsor figcaption span {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .home-sponsor--gold {
+    grid-column: span 6;
+  }
+
+  .home-sponsor--silver {
+    grid-column: span 6;
+  }
+
+  .home-sponsor--bronze {
+    grid-column: span 5;
+  }
+
+  .home-sponsor--costume {
+    grid-column: span 7;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
