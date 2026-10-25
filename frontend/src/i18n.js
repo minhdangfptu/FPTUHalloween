@@ -1394,21 +1394,21 @@ const checkoutPromotionTranslations = {
     promoPerTicket: 'Giảm mỗi vé',
     promoTicketPriceLabel: 'Giá mỗi vé',
     promoTotalSavings: 'Tổng giảm ({{count}} vé)',
-    promoAppliedToast: 'Đã áp dụng TTOFF21! Bạn tiết kiệm {{amount}}.',
+    promoAppliedToast: 'Đã áp dụng {{code}}! Bạn tiết kiệm {{amount}}.',
   },
   en: {
     promoUnavailable: 'TTOFF21 is not active at this time.',
     promoPerTicket: 'Saved per ticket',
     promoTicketPriceLabel: 'Price per ticket',
     promoTotalSavings: 'Total saved ({{count}} tickets)',
-    promoAppliedToast: 'TTOFF21 applied! You saved {{amount}}.',
+    promoAppliedToast: '{{code}} applied! You saved {{amount}}.',
   },
   ja: {
     promoUnavailable: 'TTOFF21は現在利用できません。',
     promoPerTicket: 'チケット1枚あたりの割引',
     promoTicketPriceLabel: 'チケット1枚の価格',
     promoTotalSavings: '割引合計（{{count}}枚）',
-    promoAppliedToast: 'TTOFF21を適用しました。{{amount}}お得になります。',
+    promoAppliedToast: '{{code}}を適用しました。{{amount}}お得になります。',
   },
 };
 

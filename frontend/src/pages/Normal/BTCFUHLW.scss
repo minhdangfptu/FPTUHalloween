@@ -709,13 +709,24 @@
 }
 @media (max-width: 640px) {
   .btc-executive-row {
+    grid-template-columns: 1fr !important;
+  }
+  .btc-executive-row .btc-person-card--chair,
+  .btc-executive-row .btc-person-card--hr {
+    width: 100%;
+  }
+  .btc-executive-row {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
   .btc-person-grid--lead,
   .btc-person-grid--sublead {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 1rem;
+  }
+  .btc-person-grid--lead .btc-person-card,
+  .btc-person-grid--sublead .btc-person-card {
+    width: 100%;
   }
   .btc-person-card__media,
   .btc-person-card--chair .btc-person-card__media,

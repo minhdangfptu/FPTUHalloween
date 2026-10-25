@@ -84,7 +84,7 @@ export const coreTeamImages = {
   "Trương Bá Hoàng": coreImage("truong-ba-hoang"),
   "Võ Xuân Quỳnh": coreImage("vo-xuan-quynh"),
   "Lê Thị Thuỳ": coreImage("le-thi-thuy"),
-  "Phùng Thị Thanh Thủy": coreImage("thanh-thuy"),
+  "Phùng Thị Thanh Thủy": "https://res.cloudinary.com/cejsclv4/image/upload/f_auto,q_auto,w_800/Halloween/core-team/thanh-thuy.jpg?v=1792920951",
   "Nguyễn Hương Ly": coreImage("huong-ly"),
   "Nguyễn Tạ Đăng Duy": coreImage("nguyen-ta-dang-duy"),
   "Nguyễn Việt Trung": coreImage("nguyen-viet-trung"),
@@ -103,7 +103,8 @@ export const coreTeamImageScales = {
   "Lê Thị Thuỳ": 1.28,
   "Nguyễn Thị Phương Thảo": 1.22,
   "Nguyễn Hà Phương": 1.3,
-  "Trương Bá Hoàng": 1.3,
+  "Trương Bá Hoàng": 1.5,
+  "Phùng Thị Thanh Thủy": 1.1,
 };
 
 export const coreTeamImagePositions = {
@@ -119,9 +120,10 @@ export const coreTeamImagePositions = {
   "Khuất Kim Bảo": "center 30%",
   "Nguyễn Thế Dương": "center 30%",
   "Nguyễn Hà Phương": "center 30%",
-  "Trương Bá Hoàng": "center 30%",
+  "Trương Bá Hoàng": "center 42%",
   "Võ Xuân Quỳnh": "center 30%",
   "Nguyễn Hương Ly": "center 30%",
+  "Phùng Thị Thanh Thủy": "center 35%",
 };
 
 const photoImagePositions = {

@@ -530,6 +530,17 @@ function Navbar() {
               </div>
             )}
             <div className="fpt-navbar__mobile-group">
+              <Link
+                to="/cart"
+                className={`fpt-navbar__mobile-link ${isActive("/cart") ? "active" : ""}`}
+                onClick={handleDrawerToggle}
+              >
+                <ShoppingBag size={18} aria-hidden="true" />
+                {t("nav.cart")}
+                {cartQuantity > 0 && <span className="fpt-navbar__mobile-cart-badge">{cartQuantity > 99 ? "99+" : cartQuantity}</span>}
+              </Link>
+            </div>
+            <div className="fpt-navbar__mobile-group">
               {user ? (
                 <>
                   <div className="fpt-navbar__mobile-link fpt-navbar__mobile-link--account">

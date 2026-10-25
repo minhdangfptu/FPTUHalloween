@@ -365,6 +365,19 @@
   color: var(--mobile-nav-accent);
   font-weight: 700;
 }
+.fpt-navbar__mobile-cart-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  padding: 0 .25rem;
+  color: #fff;
+  background: var(--btc-red, #e4002b);
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 700;
+}
 
 .fpt-navbar__search-btn[data-cart-target] {
   position: relative;
@@ -636,6 +649,7 @@
     display: flex;
     min-height: 48px;
     align-items: center;
+    gap: 0.5rem;
     padding: 12px 4px;
     border-bottom: 1px solid var(--color-dropdown-border);
     color: var(--color-text);

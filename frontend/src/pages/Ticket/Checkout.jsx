@@ -185,7 +185,7 @@ const Checkout = () => {
         const price = Number(item.ticketType?.ticketTypePrice || 0);
         return sum + (price - getDiscountedPrice(price, code)) * Number(item.quantity || 0);
       }, 0);
-      toast.success(code === FUN_PROMO_CODE ? ticket("couponApplied") : ticket("promoAppliedToast", { amount: formatPrice(savings) }), { id: "checkout-promo" });
+      toast.success(code === FUN_PROMO_CODE ? ticket("couponApplied") : ticket("promoAppliedToast", { code, amount: formatPrice(savings) }), { id: "checkout-promo" });
     } else {
       toast.error(ticket("promoUnavailable"), { id: "checkout-promo" });
     }
