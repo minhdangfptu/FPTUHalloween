@@ -102,8 +102,12 @@
   color: #bc29b7;
 }
 
-.fpt-footer__social-btn--youtube {
-  color: #c60000;
+.fpt-footer__social-btn--tiktok {
+  color: #111;
+}
+
+:root[data-theme='dark'] .fpt-footer__social-btn--tiktok {
+  color: #f8fafc;
 }
 
 .fpt-footer__contact-links {

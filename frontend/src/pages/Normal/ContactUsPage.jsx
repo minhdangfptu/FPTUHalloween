@@ -9,7 +9,7 @@ import {
 import toast from "react-hot-toast";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
+import { FaTiktok } from "react-icons/fa6";
 import { Dices, Ghost, Mail, MapPin, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -180,7 +180,7 @@ function ContactUsPage() {
                       "_blank",
                     )
                   }
-                  className="fpt-header__social-btn fpt-header__social-btn--tiktok"
+                  className="fpt-header__social-btn fpt-header__social-btn--instagram"
                 >
                   <InstagramIcon />
                 </button>
@@ -191,9 +191,9 @@ function ContactUsPage() {
                       "_blank",
                     )
                   }
-                  className="fpt-header__social-btn fpt-header__social-btn--youtube"
+                  className="fpt-header__social-btn fpt-header__social-btn--tiktok"
                 >
-                  <YouTubeIcon />
+                  <FaTiktok size={18} style={{ width: "18px", height: "18px", flex: "0 0 18px" }} />
                 </button>
                 {/* <p className="fptu-halloween-contact-google-form-text">
                   Hoặc gửi ý kiến, phản hồi qua Google Form

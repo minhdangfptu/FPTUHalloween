@@ -649,14 +649,29 @@
   height: 44px;
   border-radius: .75rem;
 }
+.fptu-halloween-contact-social .fpt-header__social-btn svg {
+  width: 24px !important;
+  height: 24px !important;
+  display: block !important;
+}
 .fptu-halloween-contact-social .fpt-header__social-btn--facebook {
   color: #1877f2;
 }
-.fptu-halloween-contact-social .fpt-header__social-btn--tiktok {
+.fptu-halloween-contact-social .fpt-header__social-btn--instagram {
   color: #bc29b7;
 }
-.fptu-halloween-contact-social .fpt-header__social-btn--youtube {
-  color: #c60000;
+.fptu-halloween-contact-social .fpt-header__social-btn--tiktok {
+  color: #111;
+}
+.fptu-halloween-contact-social .fpt-header__social-btn--tiktok svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px;
+  min-height: 18px;
+}
+
+:root[data-theme='dark'] .fptu-halloween-contact-social .fpt-header__social-btn--tiktok {
+  color: #f8fafc;
 }
 
 .fptu-halloween-contact-form-fields { gap: 1rem; }

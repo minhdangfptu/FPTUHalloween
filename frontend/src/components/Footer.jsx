@@ -8,7 +8,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import YouTubeIcon from "@mui/icons-material/YouTube";
+import { FaTiktok } from "react-icons/fa6";
 
 const linkGroups = [
   { titleKey: "footer.explore", links: [["footer.home", "/"], ["footer.halloween", "/introduce-hlw26"], ["footer.story", "/haunted-ghost"], ["footer.archive", "/old-event"]] },
@@ -47,7 +47,7 @@ function Footer() {
             <div className="fpt-footer__social-buttons">
               <a href="https://www.facebook.com/fptuhalloween" target="_blank" rel="noreferrer" aria-label={t("footer.halloweenFacebook")} className="fpt-footer__social-btn fpt-footer__social-btn--facebook"><FacebookIcon /></a>
               <a href="https://www.facebook.com/fuboardgameclub" target="_blank" rel="noreferrer" aria-label={t("footer.clubFacebook")} className="fpt-footer__social-btn fpt-footer__social-btn--instagram"><InstagramIcon /></a>
-              <a href="https://www.tiktok.com/@fptu.halloween2025" target="_blank" rel="noreferrer" aria-label={t("footer.halloweenTiktok")} className="fpt-footer__social-btn fpt-footer__social-btn--youtube"><YouTubeIcon /></a>
+              <a href="https://www.tiktok.com/@fptu.halloween2025" target="_blank" rel="noreferrer" aria-label={t("footer.halloweenTiktok")} className="fpt-footer__social-btn fpt-footer__social-btn--tiktok"><FaTiktok size={24} /></a>
             </div>
           </div>
 
