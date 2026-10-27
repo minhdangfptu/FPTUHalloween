@@ -27,6 +27,7 @@ const StaffCheckinTicket = () => {
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
   const cameraScanInFlightRef = useRef(false);
   const [scannedTickets, setScannedTickets] = useState([]);
+  const [scannedTotal, setScannedTotal] = useState(0);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [manualCode, setManualCode] = useState("");
   const [pendingTicket, setPendingTicket] = useState(null);
@@ -41,6 +42,7 @@ const StaffCheckinTicket = () => {
     return ticketAPI.getCheckedInTickets(params).then(({ data }) => {
       const result = data.data || data;
       setScannedTickets(result.tickets || []);
+      setScannedTotal(result.summary?.checkedIn ?? result.pagination?.total ?? result.tickets?.length ?? 0);
       if (role === "admin") setAdminPagination(result.pagination || { page: 1, totalPages: 1 });
     });
   };
@@ -111,6 +113,7 @@ const StaffCheckinTicket = () => {
       const { data } = await ticketAPI.checkIn(pendingTicket.code);
       const checkedTicket = data.data || data;
       setScannedTickets((tickets) => [checkedTicket, ...tickets]);
+      setScannedTotal((total) => total + 1);
       setManualCode("");
       setPendingTicket(null);
       toast.success(checkInText("success"));
@@ -193,7 +196,7 @@ const StaffCheckinTicket = () => {
         <section className="staff-checkin-stats">
           <div>
             <span>{checkInText("scannedToday")}</span>
-            <strong>{scannedTickets.length}</strong>
+            <strong>{scannedTotal}</strong>
           </div>
           <div>
             <span>{checkInText("latestScan")}</span>
