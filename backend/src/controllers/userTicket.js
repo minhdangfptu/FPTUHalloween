@@ -11,7 +11,11 @@ const getMyTickets = async (req, res, next) => {
 
 const wrap = fn => (req, res, next) => Promise.resolve(fn(req)).then(data => res.json({ success: true, data })).catch(next)
 
-const getList = wrap(req => userTicketService.getTickets(req.query))
+const getList = wrap(req => userTicketService.getTickets({
+  ...req.query,
+  requesterId: req.user.id,
+  requesterRole: req.user.roleName
+}))
 const getDetail = wrap(req => userTicketService.getTicketById(req.params.id))
 const getByQrCode = wrap(req => userTicketService.getTicketByQrCode(req.query.code))
 const checkIn = wrap(req => userTicketService.checkInByQrCode(req.body?.code, req.user.id))

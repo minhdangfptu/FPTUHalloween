@@ -62,10 +62,13 @@ const getMyTickets = async userId => UserTicket.find({ userId })
   .sort({ createdAt: -1 })
   .lean()
 
-const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeId, date, search } = {}) => {
+const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeId, date, search, sortBy = 'checkedInAt', sortOrder = 'desc', requesterId, requesterRole } = {}) => {
   const currentPage = Math.max(Number.parseInt(page, 10) || 1, 1)
   const limit = Math.min(Math.max(Number.parseInt(pageSize, 10) || 20, 1), 100)
   const filter = {}
+
+  // Staff chỉ được xem các lượt check-in do chính tài khoản đó thực hiện.
+  if (requesterRole === 'Staff') filter.staffCheckInId = requesterId
 
   if (status) filter.ticketStatus = status
   if (userId) {
@@ -106,13 +109,17 @@ const getTickets = async ({ page = 1, pageSize = 20, status, userId, ticketTypeI
     ]
   }
 
+  const sortableFields = { checkedInAt: 'checkedInAt', createdAt: 'createdAt', qrCodeData: 'qrCodeData' }
+  const sortField = sortableFields[sortBy] || sortableFields.checkedInAt
+  const sortDirection = String(sortOrder).toLowerCase() === 'asc' ? 1 : -1
+
   const [tickets, total, checkedIn] = await Promise.all([
     UserTicket.find(filter)
       .populate('userId', 'fullName email phone')
       .populate('ticketTypeId', 'ticketTypeName ticketTypePrice ticketTypeDate ticketEventDate ticketTypeTime')
     .populate('orderId', 'orderStatus paymentMethod totalAmount payosOrderId buyerInfo')
       .populate('staffCheckInId', 'fullName email')
-      .sort({ createdAt: -1 })
+      .sort({ [sortField]: sortDirection })
       .skip((currentPage - 1) * limit)
       .limit(limit)
       .lean(),

@@ -4,6 +4,7 @@ import {
   Camera,
   CheckCircle2,
   Clock3,
+  Search,
   ScanLine,
   Ticket,
   UserRound,
@@ -30,17 +31,34 @@ const StaffCheckinTicket = () => {
   const [manualCode, setManualCode] = useState("");
   const [pendingTicket, setPendingTicket] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [adminFilters, setAdminFilters] = useState({ search: "", date: "all", sortOrder: "desc" });
+  const [searchInput, setSearchInput] = useState("");
+  const [adminPage, setAdminPage] = useState(1);
+  const [adminPagination, setAdminPagination] = useState({ page: 1, totalPages: 1 });
+
+  const loadScannedTickets = () => {
+    const params = { status: "Checked", pageSize: role === "admin" ? 15 : 100, ...(role === "admin" ? { page: adminPage, ...adminFilters, ...(adminFilters.date === "all" ? { date: undefined } : {}) } : { date: new Date().getDate() }) };
+    return ticketAPI.getCheckedInTickets(params).then(({ data }) => {
+      const result = data.data || data;
+      setScannedTickets(result.tickets || []);
+      if (role === "admin") setAdminPagination(result.pagination || { page: 1, totalPages: 1 });
+    });
+  };
+
+  const submitSearch = (event) => {
+    event?.preventDefault();
+    setAdminPage(1);
+    setAdminFilters((filters) => ({ ...filters, search: searchInput.trim() }));
+  };
 
   useEffect(() => {
-    const today = new Date().getDate();
-    // The list endpoint is restricted to staff/admin and already returns populated ticket data.
-    ticketAPI
-      .getCheckedInTickets({ status: "Checked", date: today, pageSize: 100 })
-      .then(({ data }) =>
-        setScannedTickets(data.data?.tickets || data.tickets || []),
-      )
-      .catch(() => {});
-  }, []);
+    loadScannedTickets().catch(() => {});
+  }, [role, adminFilters, adminPage]);
+
+  const updateAdminFilter = (update) => {
+    setAdminPage(1);
+    setAdminFilters((filters) => ({ ...filters, ...update }));
+  };
 
   const playScanBeep = () => {
     const audio = new Audio(successSound);
@@ -191,10 +209,25 @@ const StaffCheckinTicket = () => {
 
         <section className="staff-checkin-card">
           <div className="staff-checkin-card__header">
-            <div>
+            <div className="staff-checkin-card-title">
               <h2>{checkInText("scannedTickets")}</h2>
-              <span>{checkInText("scannedList")}</span>
+              <span>{checkInText(role === "admin" ? "adminScannedList" : "scannedList")}</span>
             </div>
+            {role === "admin" && (
+              <form className="staff-checkin-filters" onSubmit={submitSearch}>
+                <label>
+                  <input value={searchInput} placeholder={checkInText("filterSearch")} onChange={(event) => setSearchInput(event.target.value)} />
+                  <button type="submit" aria-label={checkInText("search") || "Search"}><Search size={16} /></button>
+                </label>
+                <select value={adminFilters.date} onChange={(event) => updateAdminFilter({ date: event.target.value })}>
+                  <option value="all">{checkInText("allDates")}</option>
+                  <option value="27">27/10</option>
+                  <option value="28">28/10</option>
+                  <option value="29">29/10</option>
+                </select>
+                <select value={adminFilters.sortOrder} onChange={(event) => updateAdminFilter({ sortOrder: event.target.value })}><option value="desc">{checkInText("newest")}</option><option value="asc">{checkInText("oldest")}</option></select>
+              </form>
+            )}
             <CheckCircle2 size={22} />
           </div>
           <div className="staff-checkin-manual">
@@ -232,10 +265,22 @@ const StaffCheckinTicket = () => {
                   <time>
                     <Clock3 size={14} />{" "}
                     {new Date(ticket.checkedInAt).toLocaleString(i18n.language === "en" ? "en-US" : "vi-VN")}
+                    {role === "admin" && ticket.staffCheckInId?.fullName && (
+                      <span className="staff-checkin-checker">
+                        <UserRound size={14} /> {checkInText("checkedInBy", { name: ticket.staffCheckInId.fullName })}
+                      </span>
+                    )}
                   </time>
                   <CheckCircle2 className="staff-checkin-ticket-ok" size={19} />
                 </article>
               ))}
+            </div>
+          )}
+          {role === "admin" && adminPagination.totalPages > 1 && (
+            <div className="staff-checkin-pagination">
+              <button type="button" disabled={adminPage <= 1} onClick={() => setAdminPage((page) => page - 1)}>{checkInText("previous")}</button>
+              <span>{adminPagination.page} / {adminPagination.totalPages}</span>
+              <button type="button" disabled={adminPage >= adminPagination.totalPages} onClick={() => setAdminPage((page) => page + 1)}>{checkInText("next")}</button>
             </div>
           )}
         </section>

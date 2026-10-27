@@ -143,6 +143,7 @@
 }
 .staff-checkin-page {
   --checkin-paper: oklch(98% 0.006 90);
+  --checkin-surface: #fff;
   --checkin-ink: oklch(21% 0.025 260);
   --checkin-muted: oklch(52% 0.025 260);
   --checkin-line: oklch(86% 0.018 260);
@@ -151,6 +152,13 @@
   color: var(--checkin-ink);
   background: var(--checkin-paper);
   font-family: "Roboto", sans-serif;
+}
+:root[data-theme='dark'] .staff-checkin-page {
+  --checkin-paper: var(--manage-dark-bg);
+  --checkin-surface: var(--manage-dark-surface);
+  --checkin-ink: var(--manage-dark-ink);
+  --checkin-muted: var(--manage-dark-muted);
+  --checkin-line: var(--manage-dark-line);
 }
 .staff-checkin-main {
   width: 100%;
@@ -298,6 +306,18 @@
   padding: 1rem 1.25rem;
   border-bottom: 1px solid #edf0f2;
 }
+.staff-checkin-filters { display: flex; gap: 0.65rem; padding: 0 1.25rem 1rem; }
+.staff-checkin-card__header { display: flex; align-items: center; gap: 1rem; }
+.staff-checkin-card-title { flex: 1; min-width: 0; }
+.staff-checkin-card__header > .staff-checkin-filters { padding: 0; }
+.staff-checkin-filters label, .staff-checkin-filters input, .staff-checkin-filters select { min-height: 38px; border: 1px solid var(--checkin-line); border-radius: 8px; background: transparent; color: inherit; }
+.staff-checkin-filters label { display: flex; align-items: center; gap: 0.4rem; flex: 1; padding: 0 0.65rem; }
+.staff-checkin-filters label input { border: 0; outline: 0; width: 100%; }
+.staff-checkin-filters label button { display: grid; place-items: center; padding: 0.25rem; border: 0; color: inherit; background: transparent; cursor: pointer; }
+.staff-checkin-filters > input { width: 120px; padding: 0 0.65rem; }
+.staff-checkin-filters select { padding: 0 0.65rem; }
+.staff-checkin-filters select { color: var(--checkin-ink); background: var(--checkin-surface); color-scheme: dark; }
+.staff-checkin-filters option { color: var(--manage-dark-ink); background: var(--manage-dark-surface); }
 .staff-checkin-ticket-icon {
   display: grid;
   width: 38px;
@@ -307,6 +327,9 @@
   background: #fff3f1;
   border-radius: 9px;
 }
+.staff-checkin-pagination { display: flex; align-items: center; justify-content: center; gap: 0.8rem; padding: 1rem; }
+.staff-checkin-pagination button { padding: 0.45rem 0.8rem; border: 1px solid var(--checkin-line); border-radius: 7px; color: var(--checkin-ink); background: var(--checkin-surface); cursor: pointer; }
+.staff-checkin-pagination button:disabled { opacity: 0.45; cursor: not-allowed; }
 .staff-checkin-ticket-copy {
   flex: 1;
   min-width: 0;
@@ -332,6 +355,12 @@
   align-items: center;
   gap: 0.35rem;
   white-space: nowrap;
+}
+.staff-checkin-checker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.65rem;
 }
 .staff-checkin-ticket-ok {
   color: #198b62;
@@ -454,6 +483,10 @@
   font-family: "Roboto", sans-serif;
 }
 @media (max-width: 760px) {
+  .staff-checkin-card__header { align-items: flex-start; flex-wrap: wrap; }
+  .staff-checkin-card__header > .staff-checkin-filters { order: 3; width: 100%; overflow-x: auto; }
+  .staff-checkin-filters label { min-width: 190px; }
+  .staff-checkin-filters select { min-width: 105px; }
   .staff-checkin-header {
     align-items: stretch;
     flex-direction: column;
