@@ -34,7 +34,9 @@ const AdminDashboard = () => {
   }).format(value || 0);
   const [orders, setOrders] = useState([]);
   const [tickets, setTickets] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [ticketTotal, setTicketTotal] = useState(0);
+  const [checkedTicketTotal, setCheckedTicketTotal] = useState(0);
+  const [userTotal, setUserTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [distributionDate, setDistributionDate] = useState("all");
   const [checkInDate, setCheckInDate] = useState("all");
@@ -54,8 +56,10 @@ const AdminDashboard = () => {
       const ticketData = payload(ticketsResponse);
       const userData = payload(usersResponse);
       setOrders(orderData.orders || []);
-      setTickets(ticketData.tickets || []);
-      setUsers(userData.users || userData.data || []);
+      setTickets(ticketData.tickets);
+      setTicketTotal(ticketData.pagination.total);
+      setCheckedTicketTotal(ticketData.summary.checkedIn);
+      setUserTotal(userData.pagination.total);
       toast.success(dashboardText("adminUpdated"), { id: toastId });
     } catch (error) {
       toast.error(translateError(error), { id: toastId });
@@ -67,13 +71,11 @@ const AdminDashboard = () => {
   useEffect(() => {
     load();
   }, []);
-
   const paidOrders = orders.filter((order) => order.orderStatus === "Paid");
   const revenue = paidOrders.reduce(
     (sum, order) => sum + Number(order.totalAmount || 0),
     0,
   );
-  const checked = tickets.filter((ticket) => ticket.ticketStatus === "Checked");
   const dates = useMemo(() => getDashboardDates(tickets), [tickets]);
   const timeSlots = useMemo(() => getTimeSlots(tickets), [tickets]);
   const distributionTickets = useMemo(
@@ -134,21 +136,21 @@ const AdminDashboard = () => {
           <Metric
             icon={<Ticket />}
             label={dashboardText("issuedTickets")}
-            value={tickets.length || "—"}
-            note={dashboardText("checkedTickets", { count: checked.length })}
+            value={ticketTotal || "—"}
+            note={dashboardText("checkedTickets", { count: checkedTicketTotal })}
           />
           <Metric
             icon={<Users />}
             label={dashboardText("userAccounts")}
-            value={users.length || "—"}
+            value={userTotal || "—"}
             note={dashboardText("currentAccountData")}
           />
           <Metric
             icon={<PackageCheck />}
             label={dashboardText("usageRate")}
             value={
-              tickets.length
-                ? `${Math.round((checked.length / tickets.length) * 100)}%`
+              ticketTotal
+                ? `${Math.round((checkedTicketTotal / ticketTotal) * 100)}%`
                 : "—"
             }
             note={dashboardText("byCheckInStatus")}
