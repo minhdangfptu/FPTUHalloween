@@ -661,16 +661,6 @@
   color: var(--manage-dark-ink);
 }
 
-:root[data-theme='dark'] .dday-admin-contestant-placeholder {
-  color: var(--manage-dark-muted);
-  background: linear-gradient(145deg, #151b24, var(--manage-dark-surface-raised));
-  border-color: #536171;
-}
-
-:root[data-theme='dark'] .dday-admin-contestant-placeholder strong {
-  color: var(--manage-dark-ink);
-}
-
 :root[data-theme='dark'] .dday-admin-audit__choice {
   background: var(--manage-dark-surface-raised);
 }

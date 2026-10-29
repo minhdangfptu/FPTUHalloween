@@ -71,12 +71,52 @@
   overflow-wrap: anywhere;
 }
 
-.dday-vote-hero p {
+.dday-vote-hero p,
+.dday-vote-description {
   max-width: 680px;
   margin: 16px 0 0;
   color: #687180;
   font-size: 17px;
   line-height: 1.55;
+}
+
+.dday-vote-description__section {
+  margin: 0;
+}
+
+.dday-vote-description__section--icon {
+  margin-top: 18px;
+}
+
+.dday-vote-description__heading {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.dday-vote-description strong {
+  color: #20242c;
+  font-weight: 700;
+}
+
+.dday-vote-description__list {
+  margin: 8px 0 0;
+  padding: 0 0 0 30px;
+  list-style: none;
+}
+
+.dday-vote-description__item {
+  position: relative;
+  padding-left: 12px;
+}
+
+.dday-vote-description__item::before {
+  position: absolute;
+  left: 0;
+  content: "-";
+}
+
+.dday-vote-description__item + .dday-vote-description__item {
+  margin-top: 6px;
 }
 
 .dday-vote-meta {

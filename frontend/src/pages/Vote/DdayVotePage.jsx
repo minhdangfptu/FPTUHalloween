@@ -9,6 +9,50 @@ import "./DdayVotePage.scss";
 import "./dday-vote-redesign.scss";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const DDAY_DESCRIPTION_ICON_PATTERN = /(?=📌|⚠️|✨)/u;
+const DDAY_IMPORTANT_TEXT_SPLIT_PATTERN = /(THE HORROR ICON|Cách thức bình chọn:|Lưu ý quan trọng|Mỗi lá phiếu đều có giá trị!|01 lần duy nhất|nhiều lượt bình chọn hợp lệ nhất|không chấp nhận các hành vi|bị loại bỏ|bị hủy kết quả bình chọn)/giu;
+const DDAY_IMPORTANT_TEXT_MATCH_PATTERN = /^(?:THE HORROR ICON|Cách thức bình chọn:|Lưu ý quan trọng|Mỗi lá phiếu đều có giá trị!|01 lần duy nhất|nhiều lượt bình chọn hợp lệ nhất|không chấp nhận các hành vi|bị loại bỏ|bị hủy kết quả bình chọn)$/iu;
+
+const renderDdayText = (text) => String(text).split(DDAY_IMPORTANT_TEXT_SPLIT_PATTERN).map((part, index) => (
+  DDAY_IMPORTANT_TEXT_MATCH_PATTERN.test(part)
+    ? <strong key={`${part}-${index}`}>{part}</strong>
+    : part
+));
+
+const getDdayDescriptionBlocks = (description = "") => String(description)
+  .split(DDAY_DESCRIPTION_ICON_PATTERN)
+  .map((section) => section.trim())
+  .filter(Boolean)
+  .map((section) => {
+    const parts = section.split(/\s+-\s+/u).map((part) => part.trim()).filter(Boolean);
+    return {
+      heading: parts[0] || "",
+      bullets: parts.slice(1),
+      hasIcon: /^(?:📌|⚠️|✨)/u.test(section),
+    };
+  });
+
+const DdayDescription = ({ description }) => (
+  <div className="dday-vote-description">
+    {getDdayDescriptionBlocks(description).map((block, index) => (
+      <section
+        className={`dday-vote-description__section${block.hasIcon ? " dday-vote-description__section--icon" : ""}`}
+        key={`${block.heading}-${index}`}
+      >
+        <p className="dday-vote-description__heading">{renderDdayText(block.heading)}</p>
+        {block.bullets.length > 0 && (
+          <ul className="dday-vote-description__list">
+            {block.bullets.map((bullet, bulletIndex) => (
+              <li className="dday-vote-description__item" key={`${bullet}-${bulletIndex}`}>
+                {renderDdayText(bullet)}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))}
+  </div>
+);
 
 const createSubmissionId = () => {
   const stored = sessionStorage.getItem("ddayVoteSubmissionId");
@@ -173,7 +217,7 @@ const DdayVotePage = () => {
       <section className="dday-vote-hero">
         <div className="dday-vote-kicker"><Vote size={16} /> {voteText("kicker")}</div>
         <h1>{config?.title || voteText("title")}</h1>
-        <p>{config?.description || voteText("description")}</p>
+        <DdayDescription description={config?.description || voteText("description")} />
         <div className="dday-vote-meta">
           <span className={`dday-status dday-status--${config?.status || "draft"}`}>{statusLabels[config?.status] || voteText("statusDraft")}</span>
           {config?.closeAt && <span>{voteText("closingTime", { time: formatDate(config.closeAt) })}</span>}

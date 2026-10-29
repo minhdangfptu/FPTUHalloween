@@ -503,9 +503,9 @@
 }
 
 .dday-admin-countdown-layout {
-  display: grid;
+  display: flex;
   align-items: center;
-  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
+  justify-content: center;
   flex: 1 1 auto;
   gap: clamp(1.5rem, 4vw, 4rem);
   min-height: 0;
@@ -517,9 +517,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: min(100%, 620px);
   min-width: 0;
-  padding-right: clamp(1.5rem, 4vw, 4rem);
-  border-right: 1px solid #eeeae5;
+  padding-right: 0;
+  border-right: 0;
   text-align: center;
 }
 
@@ -557,44 +558,6 @@
 
 .dday-admin-countdown-qr span {
   color: #707782;
-  font-size: 0.85rem;
-}
-
-.dday-admin-contestant-panel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  min-width: 0;
-  min-height: 0;
-}
-
-.dday-admin-contestant-placeholder {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 0.8rem;
-  width: min(100%, 760px);
-  height: min(70vh, 620px);
-  min-height: 320px;
-  padding: 2rem;
-  box-sizing: border-box;
-  border: 2px dashed #d9dce1;
-  border-radius: 18px;
-  background: linear-gradient(145deg, #f7f5f2, #eef0f2);
-  color: #89919d;
-  text-align: center;
-}
-
-.dday-admin-contestant-placeholder svg {
-  color: #c90016;
-}
-.dday-admin-contestant-placeholder strong {
-  color: #596574;
-  font-size: clamp(1.1rem, 2vw, 1.6rem);
-  letter-spacing: 0.08em;
-}
-.dday-admin-contestant-placeholder span {
   font-size: 0.85rem;
 }
 
@@ -712,7 +675,6 @@
     padding: 1rem;
   }
   .dday-admin-countdown-layout {
-    grid-template-columns: 1fr;
     gap: 1.5rem;
     overflow: visible;
     padding: 1.5rem 0;
@@ -724,9 +686,6 @@
   }
   .dday-admin-modal--fullscreen .dday-admin-countdown strong {
     font-size: clamp(1.5rem, 7vw, 3rem);
-  }
-  .dday-admin-contestant-placeholder {
-    min-height: 260px;
   }
 }
 

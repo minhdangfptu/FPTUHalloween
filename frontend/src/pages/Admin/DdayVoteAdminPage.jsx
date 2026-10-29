@@ -925,20 +925,6 @@ const DdayVoteAdminPage = () => {
                 />
               </div>
             </section>
-            <section
-              className="dday-admin-contestant-panel"
-              aria-label={adminVoteText("contestantImage")}
-            >
-              <div
-                className="dday-admin-contestant-placeholder"
-                role="img"
-                aria-label={adminVoteText("contestantPlaceholderAria")}
-              >
-                <Users size={76} strokeWidth={1.3} />
-                <strong>{adminVoteText("contestantImageLabel")}</strong>
-                <span>{adminVoteText("contestantPlaceholder")}</span>
-              </div>
-            </section>
           </div>
           <div className="dday-admin-modal__actions">
             {/* <button
