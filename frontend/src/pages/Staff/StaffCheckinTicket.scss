@@ -213,7 +213,7 @@
 }
 .staff-checkin-stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
   margin: 1.5rem 0 1.1rem;
 }
@@ -497,22 +497,52 @@
   .staff-checkin-main {
     padding: 2rem 1rem 3rem;
   }
+  .staff-checkin-list article {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 0.75rem;
+    row-gap: 0.55rem;
+  }
+  .staff-checkin-ticket-icon {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .staff-checkin-ticket-copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .staff-checkin-list time {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    width: auto;
+    min-width: 0;
+    margin-left: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    flex-wrap: wrap;
+  }
+  .staff-checkin-checker {
+    flex: 1 0 100%;
+    min-width: 0;
+    margin-left: 0;
+    overflow-wrap: anywhere;
+  }
+  .staff-checkin-ticket-ok {
+    grid-column: 3;
+    grid-row: 1;
+  }
   .staff-checkin-manual {
     flex-direction: column;
   }
   .staff-checkin-manual button {
     min-height: 40px;
   }
-  .staff-checkin-list article {
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-  .staff-checkin-list time {
-    width: 100%;
-    margin-left: 47px;
-  }
 }
 @media (max-width: 680px) {
+  .staff-checkin-stats {
+    grid-template-columns: 1fr;
+  }
   .staff-checkin-ticket-dialog {
     width: min(100%, 480px);
     padding: 1.25rem;

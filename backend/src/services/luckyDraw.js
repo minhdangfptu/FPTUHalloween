@@ -1,12 +1,18 @@
 const mongoose = require('mongoose')
 const { LuckyDraw } = require('../models')
 const { config } = require('../config/environment')
+const { normalizeWheelPath, getWheelPath, buildWheelLink } = require('../utils/wheel-path')
 
 const PAGE_SIZE = 10
 
 const buildError = (statusCode, message) => Object.assign(new Error(message), { statusCode })
 
-const getWheelPath = result => result?.data?.path || result?.data?.wheel?.path || result?.data?.wheels?.[0]?.path || null
+const getWheelApiBaseUrl = () => config.WHEEL_OF_NAME_API_URL.replace(/\/private$/, '')
+
+const getWheelApiUrl = path => {
+  const baseUrl = getWheelApiBaseUrl()
+  return path ? `${baseUrl}/${path}` : baseUrl
+}
 
 const getWheelEntryText = entry => {
   const phoneDigits = String(entry.phoneNumber || '').replace(/\D/g, '')
@@ -59,15 +65,31 @@ const syncLuckyDrawWheel = async () => {
   const timeout = setTimeout(() => controller.abort(), config.WHEEL_OF_NAME_TIMEOUT_MS)
 
   try {
-    const response = await fetch(config.WHEEL_OF_NAME_API_URL, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': config.WHEEL_OF_NAME_APIKEY
-      },
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-api-key': config.WHEEL_OF_NAME_APIKEY
+    }
+    const listResponse = await fetch(`${getWheelApiUrl()}?fields=title,path,shareMode`, {
+      headers,
+      signal: controller.signal
+    })
+
+    if (!listResponse.ok) {
+      const errorBody = await listResponse.text()
+      throw buildError(502, `Unable to list Wheel of Names wheels (${listResponse.status}): ${errorBody.slice(0, 200)}`)
+    }
+
+    const listResult = await listResponse.json()
+    const existingWheel = (listResult.data?.wheels || [])
+      .find(item => item.title === config.WHEEL_OF_NAME_TITLE)
+    const existingPath = normalizeWheelPath(existingWheel?.path)
+    const response = await fetch(getWheelApiUrl(existingPath), {
+      method: existingPath ? 'PUT' : 'POST',
+      headers,
       body: JSON.stringify({
         title: config.WHEEL_OF_NAME_TITLE,
-        description: 'FPTU Halloween lucky draw participants',
+        description: 'Vòng quay may mắn sự kiện FPTU Halloween 2026',
+        shareMode: 'spin-only',
         wheelConfigs: [{
           entries: entries.map(entry => ({ text: getWheelEntryText(entry) }))
         }]
@@ -81,7 +103,9 @@ const syncLuckyDrawWheel = async () => {
     }
 
     const result = await response.json()
-    return { synced: true, path: getWheelPath(result) }
+    const path = existingPath || getWheelPath(result)
+    if (!path) throw buildError(502, 'Wheel of Names did not return a valid wheel path')
+    return { synced: true, path }
   } finally {
     clearTimeout(timeout)
   }
@@ -93,16 +117,18 @@ const getLuckyDrawWheel = async () => {
   }
 
   const syncedWheel = await syncLuckyDrawWheel()
-  if (syncedWheel.path) return { path: syncedWheel.path, url: `https://wheelofnames.com/${syncedWheel.path}` }
+  const syncedWheelLink = buildWheelLink(syncedWheel.path)
+  if (syncedWheelLink) return syncedWheelLink
 
-  const response = await fetch(`${config.WHEEL_OF_NAME_API_URL.replace('/private', '/private')}?fields=title,path`, {
+  const response = await fetch(`${getWheelApiUrl()}?fields=title,path,shareMode`, {
     headers: { 'x-api-key': config.WHEEL_OF_NAME_APIKEY }
   })
   if (!response.ok) throw buildError(502, `Unable to load Wheel of Names (${response.status})`)
 
   const result = await response.json()
   const wheel = (result.data?.wheels || []).find(item => item.title === config.WHEEL_OF_NAME_TITLE)
-  if (wheel?.path) return { path: wheel.path, url: `https://wheelofnames.com/${wheel.path}` }
+  const wheelLink = buildWheelLink(wheel?.path)
+  if (wheelLink) return wheelLink
 
   throw buildError(404, 'Lucky draw wheel not found')
 }

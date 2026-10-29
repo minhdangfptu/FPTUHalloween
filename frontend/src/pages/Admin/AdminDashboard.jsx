@@ -10,14 +10,13 @@ import {
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { DashboardSkeleton } from "../../components/LoadingSkeletons";
-import axiosClient from "../../apis/axiosClient";
 import orderAPI from "../../apis/orderAPI";
 import ManageSidebar from "../../components/ManageSidebar";
 import { translateError } from "../../utils/translateResponse";
 import {
-  buildLineGeometry,
   filterTicketsByDay,
   getDashboardDates,
+  getTicketTime,
   getTimeSlots,
 } from "../../utils/dashboardUtils";
 import "./AdminDashboard.scss";
@@ -32,11 +31,14 @@ const AdminDashboard = () => {
     style: "currency",
     currency: "VND",
   }).format(value || 0);
-  const [orders, setOrders] = useState([]);
-  const [tickets, setTickets] = useState([]);
-  const [ticketTotal, setTicketTotal] = useState(0);
-  const [checkedTicketTotal, setCheckedTicketTotal] = useState(0);
-  const [userTotal, setUserTotal] = useState(0);
+  const [dashboard, setDashboard] = useState({
+    revenue: 0,
+    paidOrders: 0,
+    ticketTotal: 0,
+    checkedTicketTotal: 0,
+    userTotal: 0,
+    ticketDistribution: [],
+  });
   const [loading, setLoading] = useState(true);
   const [distributionDate, setDistributionDate] = useState("all");
   const [checkInDate, setCheckInDate] = useState("all");
@@ -46,20 +48,16 @@ const AdminDashboard = () => {
     toast.loading(dashboardText("adminLoading"), { id: toastId });
     setLoading(true);
     try {
-      const [ordersResponse, ticketsResponse, usersResponse] =
-        await Promise.all([
-          orderAPI.getAdminOrders({ page: 1, pageSize: 100 }),
-          axiosClient.get("/tickets", { params: { page: 1, pageSize: 100 } }),
-          axiosClient.get("/users", { params: { page: 1, pageSize: 100 } }),
-        ]);
-      const orderData = payload(ordersResponse);
-      const ticketData = payload(ticketsResponse);
-      const userData = payload(usersResponse);
-      setOrders(orderData.orders || []);
-      setTickets(ticketData.tickets);
-      setTicketTotal(ticketData.pagination.total);
-      setCheckedTicketTotal(ticketData.summary.checkedIn);
-      setUserTotal(userData.pagination.total);
+      const response = await orderAPI.getAdminDashboardStatistics();
+      const dashboardData = payload(response);
+      setDashboard({
+        revenue: Number(dashboardData.revenue || 0),
+        paidOrders: Number(dashboardData.paidOrders || 0),
+        ticketTotal: Number(dashboardData.ticketTotal || 0),
+        checkedTicketTotal: Number(dashboardData.checkedTicketTotal || 0),
+        userTotal: Number(dashboardData.userTotal || 0),
+        ticketDistribution: dashboardData.ticketDistribution || [],
+      });
       toast.success(dashboardText("adminUpdated"), { id: toastId });
     } catch (error) {
       toast.error(translateError(error), { id: toastId });
@@ -71,40 +69,42 @@ const AdminDashboard = () => {
   useEffect(() => {
     load();
   }, []);
-  const paidOrders = orders.filter((order) => order.orderStatus === "Paid");
-  const revenue = paidOrders.reduce(
-    (sum, order) => sum + Number(order.totalAmount || 0),
-    0,
-  );
-  const dates = useMemo(() => getDashboardDates(tickets), [tickets]);
-  const timeSlots = useMemo(() => getTimeSlots(tickets), [tickets]);
+  const {
+    revenue,
+    paidOrders,
+    ticketTotal,
+    checkedTicketTotal,
+    userTotal,
+    ticketDistribution,
+  } = dashboard;
+  const dates = useMemo(() => getDashboardDates(ticketDistribution), [ticketDistribution]);
+  const timeSlots = useMemo(() => getTimeSlots(ticketDistribution), [ticketDistribution]);
   const distributionTickets = useMemo(
-    () => filterTicketsByDay(tickets, distributionDate),
-    [distributionDate, tickets],
+    () => filterTicketsByDay(ticketDistribution, distributionDate),
+    [distributionDate, ticketDistribution],
   );
   const checkInTickets = useMemo(
-    () => filterTicketsByDay(tickets, checkInDate),
-    [checkInDate, tickets],
+    () => filterTicketsByDay(ticketDistribution, checkInDate),
+    [checkInDate, ticketDistribution],
   );
   const distribution = timeSlots.map((time) => ({
     label: time,
-    value: distributionTickets.filter(
-      (ticket) => ticket.ticketTypeId?.ticketTypeTime === time,
-    ).length,
+    value: distributionTickets
+      .filter((ticket) => getTicketTime(ticket) === time)
+      .reduce((sum, ticket) => sum + Number(ticket.count || 0), 0),
   }));
   const maxDistribution = Math.max(...distribution.map((bar) => bar.value), 1);
-  const checkInCount = checkInTickets.filter(
-    (ticket) => ticket.ticketStatus === "Checked",
-  ).length;
-  const checkInProgress = checkInTickets.length
-    ? Math.round((checkInCount / checkInTickets.length) * 100)
-    : 0;
-  const revenueValues = dates.map((day) =>
-    paidOrders
-      .filter((order) => new Date(order.createdAt).getDate() === Number(day))
-      .reduce((sum, order) => sum + Number(order.totalAmount || 0), 0),
+  const checkInCount = checkInTickets.reduce(
+    (sum, ticket) => sum + Number(ticket.checkedIn || 0),
+    0,
   );
-  const revenueGeometry = buildLineGeometry(revenueValues);
+  const checkInTotal = checkInTickets.reduce(
+    (sum, ticket) => sum + Number(ticket.count || 0),
+    0,
+  );
+  const checkInProgress = checkInTotal
+    ? Math.round((checkInCount / checkInTotal) * 100)
+    : 0;
 
   return (
     <div className="dashboard-shell admin-dashboard">
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
             icon={<CircleDollarSign />}
             label={dashboardText("totalRevenue")}
             value={money(revenue)}
-            note={dashboardText("paidOrders", { count: paidOrders.length })}
+            note={dashboardText("paidOrders", { count: paidOrders })}
           />
           <Metric
             icon={<Ticket />}
@@ -204,7 +204,7 @@ const AdminDashboard = () => {
                 style={{ "--pie-progress": `${checkInProgress}%` }}
               >
                 <strong>
-                  {checkInTickets.length ? `${checkInProgress}%` : "—"}
+                  {checkInTotal ? `${checkInProgress}%` : "—"}
                 </strong>
               </div>
               <div className="legend">
@@ -215,7 +215,7 @@ const AdminDashboard = () => {
                 <span>
                   <i className="legend-dot legend-dot--gray" />
                   {dashboardText("unused")} {" "}
-                  <b>{Math.max(checkInTickets.length - checkInCount, 0)}</b>
+                  <b>{Math.max(checkInTotal - checkInCount, 0)}</b>
                 </span>
               </div>
             </div>

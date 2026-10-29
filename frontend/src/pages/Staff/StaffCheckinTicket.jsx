@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import ManageSidebar from "../../components/ManageSidebar";
+import orderAPI from "../../apis/orderAPI";
 import ticketAPI from "../../apis/ticketAPI";
 import { translateError } from "../../utils/translateResponse";
 import successSound from "../../assets/success_sound.mp3";
@@ -27,7 +28,8 @@ const StaffCheckinTicket = () => {
   const role = location.pathname.startsWith("/admin/") ? "admin" : "staff";
   const cameraScanInFlightRef = useRef(false);
   const [scannedTickets, setScannedTickets] = useState([]);
-  const [scannedTotal, setScannedTotal] = useState(0);
+  const [scannedToday, setScannedToday] = useState(0);
+  const [totalCheckedIn, setTotalCheckedIn] = useState(0);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [manualCode, setManualCode] = useState("");
   const [pendingTicket, setPendingTicket] = useState(null);
@@ -39,10 +41,20 @@ const StaffCheckinTicket = () => {
 
   const loadScannedTickets = () => {
     const params = { status: "Checked", pageSize: role === "admin" ? 15 : 100, ...(role === "admin" ? { page: adminPage, ...adminFilters, ...(adminFilters.date === "all" ? { date: undefined } : {}) } : { date: new Date().getDate() }) };
-    return ticketAPI.getCheckedInTickets(params).then(({ data }) => {
-      const result = data.data || data;
+    const dashboardRequest = role === "admin"
+      ? orderAPI.getAdminDashboardStatistics()
+      : Promise.resolve(null);
+    return Promise.all([ticketAPI.getCheckedInTickets(params), dashboardRequest]).then(([ticketResponse, dashboardResponse]) => {
+      const resultData = ticketResponse.data;
+      const result = resultData.data || resultData;
+      const dashboardData = dashboardResponse?.data?.data || dashboardResponse?.data || {};
       setScannedTickets(result.tickets || []);
-      setScannedTotal(result.summary?.checkedIn ?? result.pagination?.total ?? result.tickets?.length ?? 0);
+      setScannedToday(role === "admin"
+        ? Number(dashboardData.checkedInToday || 0)
+        : result.summary?.checkedIn ?? result.pagination?.total ?? result.tickets?.length ?? 0);
+      setTotalCheckedIn(role === "admin"
+        ? Number(dashboardData.checkedTicketTotal || 0)
+        : result.summary?.checkedIn ?? result.pagination?.total ?? result.tickets?.length ?? 0);
       if (role === "admin") setAdminPagination(result.pagination || { page: 1, totalPages: 1 });
     });
   };
@@ -113,7 +125,8 @@ const StaffCheckinTicket = () => {
       const { data } = await ticketAPI.checkIn(pendingTicket.code);
       const checkedTicket = data.data || data;
       setScannedTickets((tickets) => [checkedTicket, ...tickets]);
-      setScannedTotal((total) => total + 1);
+      setScannedToday((total) => total + 1);
+      setTotalCheckedIn((total) => total + 1);
       setManualCode("");
       setPendingTicket(null);
       toast.success(checkInText("success"));
@@ -196,7 +209,11 @@ const StaffCheckinTicket = () => {
         <section className="staff-checkin-stats">
           <div>
             <span>{checkInText("scannedToday")}</span>
-            <strong>{scannedTotal}</strong>
+            <strong>{scannedToday}</strong>
+          </div>
+          <div>
+            <span>{checkInText("totalCheckedIn")}</span>
+            <strong>{totalCheckedIn}</strong>
           </div>
           <div>
             <span>{checkInText("latestScan")}</span>

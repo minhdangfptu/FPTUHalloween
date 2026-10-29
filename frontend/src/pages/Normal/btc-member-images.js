@@ -72,6 +72,7 @@ const photoDisplayNames = {
   "thai-son": "Thái Sơn",
   "truong-phat": "Trường Phát",
   "tuyet-nhung": "Tuyết Nhung",
+  "le-tuan-phong": "Lê Tuấn Phong",
   "chu-minh-hang": "Chử Minh Hằng",
   "nguyen-hoang-thuong": "Nguyễn Hoàng Thương",
 };
@@ -254,6 +255,7 @@ export const departmentPhotoMembers = {
   ],
   7: [
     departmentImage("ban-nha-ma", "cam-van"),
+    departmentImage("ban-nha-ma", "le-tuan-phong"),
     departmentImage("ban-nha-ma", "hoang-anh"),
     departmentImage("ban-nha-ma", "khanh-tam"),
     departmentImage("ban-nha-ma", "le-huu-binh"),

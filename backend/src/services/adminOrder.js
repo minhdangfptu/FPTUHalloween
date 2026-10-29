@@ -4,6 +4,13 @@ const { reconcileExpiredOrder } = require('./payOS')
 const { getOrderPricing } = require('../utils/order-pricing')
 const { normalizeSearch, searchPattern, idContains } = require('../utils/adminSearch')
 const AUTOMATIC_RECONCILIATION_WINDOW_MS = 24 * 60 * 60 * 1000
+const VIETNAM_OFFSET_MS = 7 * 60 * 60 * 1000
+
+const getVietnamTodayRange = () => {
+  const vietnamNow = new Date(Date.now() + VIETNAM_OFFSET_MS)
+  const startOfDay = new Date(Date.UTC(vietnamNow.getUTCFullYear(), vietnamNow.getUTCMonth(), vietnamNow.getUTCDate()) - VIETNAM_OFFSET_MS)
+  return { startOfDay, endOfDay: new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000) }
+}
 
 const expirePendingOrders = async userId => {
   const reconciliationSince = new Date(Date.now() - AUTOMATIC_RECONCILIATION_WINDOW_MS)
@@ -130,4 +137,87 @@ const getTicketSalesStatistics = async ({ groupBy = 'type' } = {}) => {
   return { groupBy, totalSold: paidTickets.length, statistics: [...grouped.values()].sort((a, b) => a.key.localeCompare(b.key)) }
 }
 
-module.exports = { expirePendingOrders, getOrders, getOrderById, getMyOrders, getMyOrderById, getTicketSalesStatistics }
+const getDashboardStatistics = async () => {
+  const { startOfDay, endOfDay } = getVietnamTodayRange()
+  const [orderSummary, userTotal, ticketSummary, checkedInToday, ticketDistribution] = await Promise.all([
+    Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          paidOrders: {
+            $sum: { $cond: [{ $eq: ['$orderStatus', 'Paid'] }, 1, 0] }
+          },
+          revenue: {
+            $sum: {
+              $cond: [
+                { $eq: ['$orderStatus', 'Paid'] },
+                { $ifNull: ['$totalAmount', 0] },
+                0
+              ]
+            }
+          }
+        }
+      }
+    ]),
+    User.countDocuments({}),
+    UserTicket.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          checkedIn: {
+            $sum: { $cond: [{ $eq: ['$ticketStatus', 'Checked'] }, 1, 0] }
+          }
+        }
+      }
+    ]),
+    UserTicket.countDocuments({
+      ticketStatus: 'Checked',
+      checkedInAt: { $gte: startOfDay, $lt: endOfDay }
+    }),
+    UserTicket.aggregate([
+      {
+        $lookup: {
+          from: 'TicketTypes',
+          localField: 'ticketTypeId',
+          foreignField: '_id',
+          as: 'ticketType'
+        }
+      },
+      { $unwind: '$ticketType' },
+      {
+        $group: {
+          _id: {
+            date: '$ticketType.ticketTypeDate',
+            time: '$ticketType.ticketTypeTime'
+          },
+          count: { $sum: 1 },
+          checkedIn: {
+            $sum: { $cond: [{ $eq: ['$ticketStatus', 'Checked'] }, 1, 0] }
+          }
+        }
+      },
+      { $sort: { '_id.date': 1, '_id.time': 1 } }
+    ])
+  ])
+
+  const orders = orderSummary[0] || { paidOrders: 0, revenue: 0 }
+  const tickets = ticketSummary[0] || { total: 0, checkedIn: 0 }
+
+  return {
+    revenue: orders.revenue,
+    paidOrders: orders.paidOrders,
+    ticketTotal: tickets.total,
+    checkedTicketTotal: tickets.checkedIn,
+    checkedInToday,
+    userTotal,
+    ticketDistribution: ticketDistribution.map(({ _id, count, checkedIn }) => ({
+      date: _id.date,
+      time: _id.time,
+      count,
+      checkedIn
+    }))
+  }
+}
+
+module.exports = { expirePendingOrders, getOrders, getOrderById, getMyOrders, getMyOrderById, getTicketSalesStatistics, getDashboardStatistics }

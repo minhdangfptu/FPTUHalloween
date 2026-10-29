@@ -1,7 +1,9 @@
 export const DEFAULT_DASHBOARD_DATES = ["27", "28", "29"]
 export const DEFAULT_TIME_SLOTS = ["08:00", "10:00", "12:00", "14:00", "16:00"]
 
-export const getTicketDay = (ticket) => String(ticket.ticketTypeId?.ticketTypeDate || "")
+export const getTicketDay = (ticket) => String(ticket.ticketTypeId?.ticketTypeDate ?? ticket.date ?? "")
+
+export const getTicketTime = (ticket) => ticket.ticketTypeId?.ticketTypeTime ?? ticket.time ?? ""
 
 export const getDashboardDates = (tickets) => {
   const dates = [...new Set(tickets.map(getTicketDay).filter(Boolean))]
@@ -9,7 +11,7 @@ export const getDashboardDates = (tickets) => {
 }
 
 export const getTimeSlots = (tickets) => {
-  const slots = [...new Set(tickets.map((ticket) => ticket.ticketTypeId?.ticketTypeTime).filter(Boolean))]
+  const slots = [...new Set(tickets.map(getTicketTime).filter(Boolean))]
   return (slots.length ? slots : DEFAULT_TIME_SLOTS).sort()
 }
 

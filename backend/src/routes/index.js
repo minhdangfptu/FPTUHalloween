@@ -130,6 +130,7 @@ router.get('/orders/me/:id', requireAuth, adminOrderCtrl.getMyOrderById)
 router.get('/orders', requireAuth, requireRole('Admin'), adminOrderCtrl.getList)
 router.get('/orders/:id', requireAuth, requireRole('Admin'), adminOrderCtrl.getDetail)
 router.get('/statistics/tickets', requireAuth, requireRole('Admin'), adminOrderCtrl.getTicketStatistics)
+router.get('/statistics/dashboard', requireAuth, requireRole('Admin'), adminOrderCtrl.getDashboardStatistics)
 router.patch('/admin/users/:id/promote-staff', requireAuth, requireRole('Admin'), adminCtrl.promoteUserToStaff)
 
 // FEEDBACK FORMS AND RESPONSES

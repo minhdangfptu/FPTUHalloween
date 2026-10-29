@@ -7,5 +7,6 @@ const getDetail = wrap(req => svc.getOrderById(req.params.id))
 const getMyOrders = wrap(req => svc.getMyOrders(req.user.id))
 const getMyOrderById = wrap(req => svc.getMyOrderById(req.user.id, req.params.id))
 const getTicketStatistics = wrap(req => svc.getTicketSalesStatistics(req.query))
+const getDashboardStatistics = wrap(() => svc.getDashboardStatistics())
 
-module.exports = { getList, getDetail, getMyOrders, getMyOrderById, getTicketStatistics }
+module.exports = { getList, getDetail, getMyOrders, getMyOrderById, getTicketStatistics, getDashboardStatistics }
