@@ -639,7 +639,7 @@ resources.en.translation.management.feedback = {
 };
 
 resources.vi.translation.management.voteAdmin = {
-  statusDraft: 'Bản nháp', statusOpen: 'Đang mở', statusClosed: 'Đã đóng', expired: 'Đã hết thời gian',
+  statusDraft: 'Bản nháp', statusOpen: 'Đang mở', statusClosed: 'Đã đóng', statusNotStarted: 'Chưa bắt đầu', statusInProgress: 'Đang diễn ra', statusEnded: 'Đã kết thúc', expired: 'Đã hết thời gian',
   days: '{{count}} ngày', hours: '{{count}} giờ', minutes: '{{count}} phút', seconds: '{{count}} giây',
   validationInformation: 'Vui lòng nhập đầy đủ thông tin Phiên Vote: tiêu đề, mô tả, thời gian bắt đầu và thời gian đóng.',
   validationCategories: 'Vui lòng thêm ít nhất một hạng mục bình chọn và hai đáp án.',
@@ -665,7 +665,7 @@ resources.vi.translation.management.voteAdmin = {
   summaryResults: 'Kết quả tổng hợp', validVotes: '{{count}} lượt bình chọn hợp lệ',
   closeWarning: 'Bạn có chắc muốn đóng bình chọn ngay không? Người tham gia sẽ không thể gửi lượt bình chọn mới sau thao tác này.',
   reopenWarning: 'Bình chọn sẽ được mở lại để có thêm thời gian. Hãy chọn thời điểm đóng mới.',
-  openWarning: 'Bình chọn sẽ bắt đầu nhận lượt bình chọn ngay sau khi xác nhận.',
+  openWarning: 'Bình chọn sẽ bắt đầu theo thời gian mở đã thiết lập sau khi xác nhận.',
   closeTimeWarning: 'Thời điểm đóng hiện tại sẽ được thay bằng thời điểm mới. Người tham gia vẫn có thể bình chọn trong thời gian bình chọn đang mở.',
   processing: 'Đang xử lý…', closeVoting: 'Đóng bình chọn', saveNewTime: 'Lưu thời điểm mới',
   reopenAndExtend: 'Mở lại và thêm thời gian', remainingTime: 'Thời gian bình chọn còn lại', closesAt: 'Thời điểm đóng: {{time}}',
@@ -686,7 +686,7 @@ resources.vi.translation.management.voteAdmin = {
   openPublishScreen: 'Mở màn hình công bố',
 };
 resources.en.translation.management.voteAdmin = {
-  statusDraft: 'Draft', statusOpen: 'Open', statusClosed: 'Closed', expired: 'Time expired',
+  statusDraft: 'Draft', statusOpen: 'Open', statusClosed: 'Closed', statusNotStarted: 'Not started', statusInProgress: 'In progress', statusEnded: 'Ended', expired: 'Time expired',
   days: '{{count}} days', hours: '{{count}} hours', minutes: '{{count}} minutes', seconds: '{{count}} seconds',
   validationInformation: 'Enter all campaign information: title, description, opening time and closing time.',
   validationCategories: 'Add at least one voting category with two options.',
@@ -711,7 +711,7 @@ resources.en.translation.management.voteAdmin = {
   summaryResults: 'Results summary', validVotes: '{{count}} valid votes',
   closeWarning: 'Are you sure you want to close voting now? Participants will not be able to submit new votes afterward.',
   reopenWarning: 'Voting will reopen for additional time. Choose a new closing time.',
-  openWarning: 'Voting will begin accepting votes immediately after confirmation.',
+  openWarning: 'Voting will begin according to the planned opening time after confirmation.',
   closeTimeWarning: 'The current closing time will be replaced. Participants can continue voting while the campaign remains open.',
   processing: 'Processing…', closeVoting: 'Close voting', saveNewTime: 'Save new time', reopenAndExtend: 'Reopen and extend',
   remainingTime: 'Voting time remaining', closesAt: 'Closes at: {{time}}', scanToVote: 'Scan to vote',
@@ -745,7 +745,7 @@ resources.en.translation.management.publish = {
 };
 
 resources.vi.translation.vote = {
-  statusOpen: 'Đang mở', statusClosed: 'Đã đóng', statusDraft: 'Chưa mở',
+  statusOpen: 'Đang mở', statusClosed: 'Đã đóng', statusDraft: 'Chưa mở', statusScheduled: 'Chưa đến giờ',
   googleNotReady: 'Google chưa sẵn sàng. Vui lòng thử lại sau ít giây.',
   googleAuthError: 'Không thể xác thực tài khoản Google.', googleAuthSuccess: 'Xác thực Google thành công.',
   verifyBeforeSubmit: 'Vui lòng xác thực Google trước khi gửi bình chọn.', loading: 'Đang tải thông tin bình chọn…',
@@ -765,15 +765,15 @@ resources.vi.translation.vote = {
   successText: 'Bình chọn của bạn đã được ghi nhận và không thể thay đổi.', submittedAt: 'Thời gian gửi: {{time}}',
   relatedPages: 'Tham khảo thêm về sự kiện', relatedPagesAria: 'Các trang liên quan', organizers: 'Ban tổ chức',
   eventIntroduction: 'Giới thiệu sự kiện', home: 'Trang chủ', contact: 'Liên hệ',
-  closedLabel: 'BÌNH CHỌN ĐÃ ĐÓNG', notOpenLabel: 'BÌNH CHỌN CHƯA MỞ',
+  closedLabel: 'BÌNH CHỌN ĐÃ ĐÓNG', notOpenLabel: 'BÌNH CHỌN CHƯA MỞ', scheduledLabel: 'CHƯA ĐẾN THỜI GIAN VOTE',
   closedTitle: 'Thời gian bình chọn đã kết thúc.', notOpenTitle: 'Bình chọn chưa bắt đầu.',
   closedText: 'Ban tổ chức sẽ công bố kết quả sau khi hoàn tất kiểm tra.',
-  notOpenText: 'Vui lòng quay lại sau khi ban tổ chức mở bình chọn.', resultsLabel: 'KẾT QUẢ BÌNH CHỌN',
+  notOpenText: 'Vui lòng quay lại sau khi ban tổ chức mở bình chọn.', scheduledTitle: 'Chưa đến thời gian vote...', scheduledText: 'Bình chọn sẽ bắt đầu lúc {{time}}. Vui lòng quay lại vào thời gian này.', resultsLabel: 'KẾT QUẢ BÌNH CHỌN',
   totalVotes: '{{count}} phiếu đã gửi', closedAt: 'Kết thúc lúc {{time}}',
 };
 
 resources.en.translation.vote = {
-  statusOpen: 'Open', statusClosed: 'Closed', statusDraft: 'Not open',
+  statusOpen: 'Open', statusClosed: 'Closed', statusDraft: 'Not open', statusScheduled: 'Scheduled',
   googleNotReady: 'Google is not ready. Please try again in a few seconds.',
   googleAuthError: 'Unable to authenticate your Google account.', googleAuthSuccess: 'Google authentication successful.',
   verifyBeforeSubmit: 'Please verify with Google before submitting your vote.', loading: 'Loading voting information…',
@@ -793,10 +793,10 @@ resources.en.translation.vote = {
   successText: 'Your vote has been recorded and cannot be changed.', submittedAt: 'Submitted at: {{time}}',
   relatedPages: 'Learn more about the event', relatedPagesAria: 'Related pages', organizers: 'Organizers',
   eventIntroduction: 'Event introduction', home: 'Home', contact: 'Contact',
-  closedLabel: 'VOTING CLOSED', notOpenLabel: 'VOTING NOT OPEN',
+  closedLabel: 'VOTING CLOSED', notOpenLabel: 'VOTING NOT OPEN', scheduledLabel: 'VOTING NOT STARTED',
   closedTitle: 'The voting period has ended.', notOpenTitle: 'Voting has not started.',
   closedText: 'The organizers will publish the results after verification is complete.',
-  notOpenText: 'Please return after the organizers open voting.', resultsLabel: 'VOTING RESULTS',
+  notOpenText: 'Please return after the organizers open voting.', scheduledTitle: 'Voting has not started yet.', scheduledText: 'Voting will start at {{time}}. Please return at that time.', resultsLabel: 'VOTING RESULTS',
   totalVotes: '{{count}} votes submitted', closedAt: 'Closed at {{time}}',
 };
 

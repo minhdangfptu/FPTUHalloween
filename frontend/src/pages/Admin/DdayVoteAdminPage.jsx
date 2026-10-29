@@ -225,11 +225,15 @@ const DdayVoteAdminPage = () => {
   }, [load]);
 
   useEffect(() => {
-    if (!countdownOpen) return undefined;
+    const openAtTimestamp = config.openAt ? new Date(config.openAt).getTime() : NaN;
+    const hasScheduledOpening = config.status !== "closed"
+      && Number.isFinite(openAtTimestamp)
+      && openAtTimestamp > Date.now();
+    if (!countdownOpen && !hasScheduledOpening) return undefined;
     setNow(Date.now());
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(timer);
-  }, [countdownOpen, config.closeAt]);
+  }, [countdownOpen, config.closeAt, config.openAt, config.status]);
 
   useEffect(() => {
     if (!pendingAction && !countdownOpen) return undefined;
@@ -463,6 +467,20 @@ const DdayVoteAdminPage = () => {
   const isDraft = config.status === "draft";
   const canEdit = isDraft && (!campaignExists || editing);
   const isOpen = config.status === "open";
+  const openAtTimestamp = config.openAt ? new Date(config.openAt).getTime() : NaN;
+  const isBeforeOpen = config.status !== "closed"
+    && Number.isFinite(openAtTimestamp)
+    && openAtTimestamp > now;
+  const adminStatusState = config.status === "closed"
+    ? "ended"
+    : isOpen && !isBeforeOpen
+      ? "active"
+      : "notStarted";
+  const adminStatusLabel = {
+    notStarted: adminVoteText("statusNotStarted"),
+    active: adminVoteText("statusInProgress"),
+    ended: adminVoteText("statusEnded"),
+  };
   const remainingMilliseconds = config.closeAt
     ? new Date(config.closeAt).getTime() - now
     : 0;
@@ -540,7 +558,7 @@ const DdayVoteAdminPage = () => {
             <section className="dday-admin-metrics">
               <div>
                 <small>{t("management.common.status")}</small>
-                <strong>{statusLabel[config.status] || config.status}</strong>
+                <strong>{adminStatusLabel[adminStatusState]}</strong>
               </div>
               <div>
                 <small>{adminVoteText("totalVotes")}</small>

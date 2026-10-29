@@ -72,6 +72,7 @@ const DdayVotePage = () => {
     open: voteText("statusOpen"),
     closed: voteText("statusClosed"),
     draft: voteText("statusDraft"),
+    scheduled: voteText("statusScheduled"),
   };
   const [config, setConfig] = useState(null);
   const [results, setResults] = useState(null);
@@ -85,6 +86,7 @@ const DdayVotePage = () => {
   const [isCheckingVoteStatus, setIsCheckingVoteStatus] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [now, setNow] = useState(Date.now());
 
   const loadConfig = useCallback(async () => {
     setIsLoading(true);
@@ -111,6 +113,13 @@ const DdayVotePage = () => {
   }, [loadConfig]);
 
   useEffect(() => {
+    if (!config?.openAt) return undefined;
+    setNow(Date.now());
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [config?.openAt]);
+
+  useEffect(() => {
     const initializeGoogle = () => {
       if (!window.google?.accounts?.oauth2 || !GOOGLE_CLIENT_ID) return;
       setGoogleClient(
@@ -135,7 +144,12 @@ const DdayVotePage = () => {
     return undefined;
   }, []);
 
-  const isOpen = config?.status === "open";
+  const openAtTimestamp = config?.openAt ? new Date(config.openAt).getTime() : NaN;
+  const isBeforeOpen = config?.status !== "closed"
+    && Number.isFinite(openAtTimestamp)
+    && openAtTimestamp > now;
+  const isOpen = config?.status === "open" && !isBeforeOpen;
+  const displayedStatus = isBeforeOpen ? "scheduled" : config?.status || "draft";
   const isComplete = useMemo(
     () => Boolean(config?.categories?.length) && config.categories.every((category) => selectedChoices[category.categoryId]),
     [config, selectedChoices],
@@ -219,7 +233,7 @@ const DdayVotePage = () => {
         <h1>{config?.title || voteText("title")}</h1>
         <DdayDescription description={config?.description || voteText("description")} />
         <div className="dday-vote-meta">
-          <span className={`dday-status dday-status--${config?.status || "draft"}`}>{statusLabels[config?.status] || voteText("statusDraft")}</span>
+          <span className={`dday-status dday-status--${displayedStatus}`}>{statusLabels[displayedStatus] || voteText("statusDraft")}</span>
           {config?.closeAt && <span>{voteText("closingTime", { time: formatDate(config.closeAt) })}</span>}
         </div>
       </section>
@@ -288,7 +302,9 @@ const DdayVotePage = () => {
         </section>
       )}
 
-      {!isOpen && !hasVoted && <section className="dday-vote-card dday-vote-card--closed"><span className="dday-vote-eyebrow">{voteText(config?.status === "closed" ? "closedLabel" : "notOpenLabel")}</span><h2>{voteText(config?.status === "closed" ? "closedTitle" : "notOpenTitle")}</h2><p>{voteText(config?.status === "closed" ? "closedText" : "notOpenText")}</p></section>}
+      {isBeforeOpen && !hasVoted && <section className="dday-vote-card dday-vote-card--closed"><span className="dday-vote-eyebrow">{voteText("scheduledLabel")}</span><h2>{voteText("scheduledTitle")}</h2><p>{voteText("scheduledText", { time: formatDate(config.openAt) })}</p></section>}
+
+      {!isOpen && !isBeforeOpen && !hasVoted && <section className="dday-vote-card dday-vote-card--closed"><span className="dday-vote-eyebrow">{voteText(config?.status === "closed" ? "closedLabel" : "notOpenLabel")}</span><h2>{voteText(config?.status === "closed" ? "closedTitle" : "notOpenTitle")}</h2><p>{voteText(config?.status === "closed" ? "closedText" : "notOpenText")}</p></section>}
 
       {results && (
         <section className="dday-results-card"><div className="dday-results-heading"><div><span className="dday-vote-eyebrow">{voteText("resultsLabel")}</span><h2>{voteText("totalVotes", { count: results.totalVotes })}</h2></div><span>{voteText("closedAt", { time: formatDate(results.closedAt) })}</span></div>{results.categories.map((category) => <div className="dday-result-category" key={category.categoryId}><h3>{category.label}</h3>{category.options.map((option) => <div className="dday-result-row" key={option.optionId}><span>{option.label}</span><strong>{option.count}</strong></div>)}</div>)}</section>

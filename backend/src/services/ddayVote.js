@@ -155,10 +155,13 @@ const openConfig = async (userId, payload = {}) => {
   const closeAt = payload.closeAt === undefined ? config.closeAt : normalizeDate(payload.closeAt, 'Close time')
   if (!closeAt) throw buildError(400, 'Close time is required before opening the vote')
   if (closeAt <= new Date()) throw buildError(400, 'Close time must be later than the current time')
+  const now = new Date()
+  const configuredOpenAt = config.openAt ? new Date(config.openAt) : null
+  const openAt = configuredOpenAt && configuredOpenAt > now ? configuredOpenAt : now
 
   const opened = await DdayVoteConfig.findOneAndUpdate(
     { configKey: CONFIG_KEY, status: config.status },
-    { $set: { status: 'open', openAt: new Date(), closeAt, openedBy: userId, updatedBy: userId }, $unset: { closedAt: 1, closedBy: 1 } },
+    { $set: { status: 'open', openAt, closeAt, openedBy: userId, updatedBy: userId }, $unset: { closedAt: 1, closedBy: 1 } },
     { new: true, runValidators: true }
   ).lean()
   if (!opened) throw buildError(409, 'Vote campaign status has changed; please refresh and try again')
