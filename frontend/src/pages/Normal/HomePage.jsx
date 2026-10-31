@@ -15,7 +15,7 @@ import gauUniformLogo from "../../assets/ntt/Logo Gấu xanh.png";
 import tranLongLogo from "../../assets/ntt/05a96034-44bb-448c-b5e8-ecb50402b022.png";
 import "./HomePage.scss";
 
-const EVENT_DATE = new Date("2026-10-29T15:00:00+07:00");
+const EVENT_DATE = new Date("2027-10-31T15:00:00+07:00");
 
 const getCountdown = () => {
   const difference = Math.max(EVENT_DATE.getTime() - Date.now(), 0);
@@ -149,10 +149,6 @@ export default function HomePage() {
   const { t } = useTranslation();
   const home = (key, options) => t(`normal.home.${key}`, options);
   const mapLegendItems = home("mapLegendItems", { returnObjects: true });
-  const countdownLabelWords = home("countdownLabel").split(" ");
-  const countdownLabelMain = countdownLabelWords.slice(0, -1).join(" ");
-  const countdownLabelEmphasis = countdownLabelWords.at(-1);
-
   const [countdown, setCountdown] = useState(getCountdown);
 
   const handleExploreClick = (event) => {
@@ -251,17 +247,11 @@ export default function HomePage() {
           <div className="home-countdown__heading">
             <div className="home-countdown__topline">
               <p id="home-countdown-title" className="home-countdown__label">
-                <span>{countdownLabelMain}</span>
+                <span>{home("countdownLabel")}</span>
                 <span className="home-countdown__label-emphasis">
-                  {countdownLabelEmphasis}
+                  {home("countdownTitle")}
                 </span>
               </p>
-              <time
-                className="home-countdown__target"
-                dateTime={EVENT_DATE.toISOString()}
-              >
-                {home("countdownTarget")}
-              </time>
             </div>
           </div>
           <div className="home-countdown__grid" aria-live="polite">
