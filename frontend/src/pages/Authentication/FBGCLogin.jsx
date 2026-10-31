@@ -8,7 +8,7 @@ import {
   translateError,
   translateSuccess,
 } from "../../utils/translateResponse";
-import coverImg from "../../assets/cover.jpg";
+import coverImg from "../../assets/hlw_cover_2026_new.png";
 import fbgcLogo from "../../assets/fbgc.png";
 import "./FBGCLogin.scss";
 

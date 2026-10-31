@@ -21,8 +21,8 @@ const eventsData = [
   {
     id: 6,
     title: "FPTU Halloween 2026",
-    status: "Sắp diễn ra",
-    statusColor: "success",
+    status: "Đã kết thúc",
+    statusColor: "error",
     date: "Đang cập nhật",
     description:
       "Thông tin concept Halloween FPTU 2026 sẽ được Ban tổ chức cập nhật trong thời gian tới.",

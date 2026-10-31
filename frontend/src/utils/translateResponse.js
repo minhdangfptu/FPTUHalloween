@@ -11,6 +11,12 @@
 import axios from 'axios';
 import i18n from '../i18n';
 
+const EVENT_ENDED_TOAST_MESSAGES = Object.freeze({
+  vi: 'Sự kiện FPTU Halloween 2026 đã kết thúc. Hẹn gặp lại bạn vào mùa FPTU Halloween tiếp theo.',
+  en: 'The FPTU Halloween 2026 event has ended. See you at the next FPTU Halloween season.',
+  ja: 'FPTUハロウィン2026のイベントは終了しました。次回のFPTUハロウィンでお会いしましょう。',
+});
+
 // ============================================================
 // BẢNG DỊCH ERROR MESSAGE — Tiếng Anh → Tiếng Việt
 // Thêm key mới khi backend trả thêm message mới
@@ -89,7 +95,7 @@ const ERROR_TRANSLATIONS = {
   'Hot news link must be at most 2048 characters': 'Liên kết thông báo tối đa 2048 ký tự.',
   'At least one hot news field is required': 'Vui lòng nhập ít nhất một trường thông báo.',
   'isActive must be a boolean': 'Trạng thái thông báo không hợp lệ.',
-  'Network error. Please check your connection.': 'Không thể kết nối máy chủ. Vui lòng kiểm tra mạng.',
+  'Network error. Please check your connection.': EVENT_ENDED_TOAST_MESSAGES.vi,
   'Cart not found': 'Không tìm thấy giỏ hàng.',
   'Cart item not found': 'Không tìm thấy vé trong giỏ hàng.',
   'Ticket type not found': 'Không tìm thấy loại vé.',
@@ -185,6 +191,7 @@ ERROR_TRANSLATIONS['Invalid lucky draw ID'] = 'Mã lượt tham gia không hợp
 const ERROR_TRANSLATIONS_EN = Object.fromEntries(
   Object.keys(ERROR_TRANSLATIONS).map((message) => [message, message]),
 );
+ERROR_TRANSLATIONS_EN['Network error. Please check your connection.'] = EVENT_ENDED_TOAST_MESSAGES.en;
 
 const ERROR_TRANSLATIONS_JA = {
   'Username, email or phone already exists': 'ユーザー名、メールアドレス、または電話番号はすでに登録されています。',
@@ -205,7 +212,7 @@ const ERROR_TRANSLATIONS_JA = {
   'This account uses Google login': 'このアカウントはGoogleログインを使用しています。',
   'Default role not found': 'アカウントの既定のロールが見つかりません。',
   'Invalid or expired refresh token': 'ログインセッションの期限が切れています。もう一度ログインしてください。',
-  'Network error. Please check your connection.': 'ネットワークエラーです。接続を確認してください。',
+  'Network error. Please check your connection.': EVENT_ENDED_TOAST_MESSAGES.ja,
 };
 
 /**
@@ -442,6 +449,7 @@ export {
   ERROR_TRANSLATIONS,
   ERROR_TRANSLATIONS_EN,
   ERROR_TRANSLATIONS_JA,
+  EVENT_ENDED_TOAST_MESSAGES,
   SUCCESS_TRANSLATIONS,
   SUCCESS_TRANSLATIONS_EN,
   SUCCESS_TRANSLATIONS_JA,

@@ -4,7 +4,7 @@ import { ArrowUpRight, Mail, ShieldCheck, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import coverArt from "../../assets/cover-01.png";
-import groupPhoto from "../../assets/cover.jpg";
+import groupPhoto from "../../assets/hlw_cover_2026_new.png";
 import {
   coreTeamImagePositions,
   coreTeamImageScales,

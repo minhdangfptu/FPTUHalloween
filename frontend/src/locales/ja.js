@@ -262,7 +262,7 @@ const ja = {
     "concept": "概念",
     "closeConcept": "密接な概念",
     "eventInfo": "{{title}}に関する情報",
-    "event6Status": "今後の",
+    "event6Status": "終了した",
     "event6Date": "後日発表",
     "event6Location": "デルタ棟前の広場、FPT大学ハノイ（デルタ棟のホーンテッドハウス）",
     "event6Scale": "後日発表",

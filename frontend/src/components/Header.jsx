@@ -11,6 +11,21 @@ import ThemeAsset from "./ThemeAsset";
 import wtmDark from "../assets/wtm.png";
 import wtmLight from "../assets/wtm_lightmode.png";
 
+const FALLBACK_TICKER_ITEMS = [
+  {
+    _id: "fallback-vi",
+    content: "Xin chào và hẹn gặp lại tại FPTU Halloween 2027!",
+  },
+  {
+    _id: "fallback-ja",
+    content: "こんにちは！FPTUハロウィン2027でまたお会いしましょう！",
+  },
+  {
+    _id: "fallback-en",
+    content: "Hello, and see you again at FPTU Halloween 2027!",
+  },
+];
+
 const renderTickerContent = (items) =>
   items.map((item, index) => (
     <React.Fragment key={item._id || index}>
@@ -128,11 +143,9 @@ function Header() {
   }, []);
 
   const tickerItems =
-    hotNewsState === "error"
-      ? [{ _id: "error", content: t("header.tickerFallback") }]
-      : hotNewsState === "ready"
-        ? activeHotNews
-        : [];
+    hotNewsState === "ready" && activeHotNews.length > 0
+      ? activeHotNews
+      : FALLBACK_TICKER_ITEMS;
 
   const handleLanguageChange = async (nextLanguage) => {
     if (isLanguageChanging || nextLanguage === language) {

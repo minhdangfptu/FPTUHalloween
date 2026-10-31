@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
 
+const DEFAULT_CONTENT = [
+    "Xin chào và hẹn gặp lại tại FPTU Halloween 2027!",
+    "こんにちは！FPTUハロウィン2027でまたお会いしましょう！",
+    "Hello, and see you again at FPTU Halloween 2027!"
+].join("\n");
+
 const HotNews = new mongoose.Schema({
     content: {
         type: String,
         required: true,
         maxlength: 500,
-        default: "Sự kiện FPTU Halloween sắp bùng nổ! 🦇"
+        default: DEFAULT_CONTENT
     },
     isActive: {
         type: Boolean,

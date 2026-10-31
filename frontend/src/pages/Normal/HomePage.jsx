@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
-import heroImage from "../../assets/cover-01.png";
+import heroImage from "../../assets/hlw_cover_2026_new.png";
 import mapImage from "../../assets/map.png";
 import pdpLogo from "../../assets/pdpava.png";
 import fptuLogo from "../../assets/logo fptu.webp";
